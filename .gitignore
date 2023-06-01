@@ -1,5 +1,10 @@
-# Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,windows,git
-# Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,windows,git
+# Created by https://www.toptal.com/developers/gitignore/api/java,windows,eclipse,maven,react,git, visualstudiocode, sass
+# Edit at https://www.toptal.com/developers/gitignore?templates=java,windows,eclipse,maven,react,git
+
+### self added ###
+.classpath
+.project
+build/
 
 ### Eclipse ###
 .metadata
@@ -13,11 +18,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
-.classpath
-.project
-build/
-
 
 # External tool builders
 .externalToolBuilders/
@@ -113,24 +113,39 @@ build/
 hs_err_pid*
 replay_pid*
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+.mvn/wrapper/maven-wrapper.jar
 
-# Local History for Visual Studio Code
-.history/
+# Eclipse m2e generated files
+# Eclipse Core
+.project
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
 
-# Built Visual Studio Code Extensions
-*.vsix
+### react ###
+.DS_*
+logs
+**/*.backup.*
+**/*.back.*
 
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
+node_modules
+bower_components
+
+*.sublime*
+
+psd
+thumb
+sketch
 
 ### Windows ###
 # Windows thumbnail cache files
@@ -158,6 +173,30 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
 
 
-# End of https://www.toptal.com/developers/gitignore/api/eclipse,java,windows,git
+### Sass ###
+.sass-cache/
+*.css.map
+*.sass.map
+*.scss.map
+
+# End of https://www.toptal.com/developers/gitignore/api/java,windows,eclipse,maven,react,git
