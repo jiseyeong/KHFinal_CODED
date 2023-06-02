@@ -5,6 +5,8 @@
 .classpath
 .project
 build/
+.settings
+pom.xml
 
 ### Eclipse ###
 .metadata
