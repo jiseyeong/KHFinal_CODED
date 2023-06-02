@@ -17,7 +17,7 @@ public class TestController {
 	private MoviesService moviesService;
 	
 	@ResponseBody
-	@GetMapping("/")
+	@GetMapping("/test")
 	public List<MoviesDTO> test() {
 		for(MoviesDTO dto : moviesService.selectAll()) {
 			System.out.println(dto.getId() +" : "+ dto.getTitle() +" : "+ dto.getGenre());
