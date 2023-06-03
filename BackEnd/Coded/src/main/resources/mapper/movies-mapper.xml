@@ -6,4 +6,18 @@
 	<select id="selectAll" resultType="kh.coded.dto.MoviesDTO">
 		select * from MOVIES order by ID desc
 	</select>
+	
+	<select id="selectByID" resultType="kh.coded.dto.MoviesDTO">
+		select * from MOVIES where ID=${id}
+	</select>
+	
+	<insert id="insert">
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			select MOVIES_SEQ.nextval from DUAL
+		</selectKey>
+		insert into MOVIES(ID, TITLE, GENRE)
+		 values(${id}, #{title}, #{genre})
+	</insert>
+	
+
 </mapper>

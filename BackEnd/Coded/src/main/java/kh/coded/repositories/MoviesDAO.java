@@ -16,4 +16,13 @@ public class MoviesDAO {
 	public List<MoviesDTO> selectAll(){
 		return mybatis.selectList("Movies.selectAll");
 	}
+	
+	public MoviesDTO selectByID(int id) {
+		return mybatis.selectOne("Movies.selectByID", id);
+	}
+	
+	public int insert(MoviesDTO dto) {
+		mybatis.insert("Movies.insert", dto);
+		return dto.getId();
+	}
 }
