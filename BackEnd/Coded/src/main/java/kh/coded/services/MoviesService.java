@@ -16,4 +16,12 @@ public class MoviesService {
 	public List<MoviesDTO> selectAll(){
 		return moviesDAO.selectAll();
 	}
+	
+	public MoviesDTO selectByID(int id) {
+		return moviesDAO.selectByID(id);
+	}
+	
+	public int insert(MoviesDTO dto) {
+		return moviesDAO.insert(dto);
+	}
 }
