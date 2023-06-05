@@ -14,8 +14,8 @@ public class MemberService implements UserDetailsService {
 
 	@Autowired
 	private MemberDAO memberDAO;
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -39,7 +39,7 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	public int join(MemberDTO dto) {
-//		dto.setPw(passwordEncoder.encode(dto.getPw()));
+		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMemeber(dto);
 	}
 }
