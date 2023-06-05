@@ -12,7 +12,7 @@ public class MemberDAO {
 	private SqlSessionTemplate mybatis;
 	
 	public MemberDTO selectMemberById(String userID) {
-		return mybatis.selectOne("member.selectmemberbyid",userID);
+		return mybatis.selectOne("Member.selectMemberById",userID);
 	}
 	
 	public MemberDTO selectMemberByUserNo(int userNo) {
