@@ -6,7 +6,7 @@ function App () {
     const [message, setMessage] = useState("");
  
     useEffect(() => {
-        fetch('/test')
+        fetch('/test/')
             .then(response => response.text())
             .then(message => {
                 setMessage(message);
