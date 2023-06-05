@@ -51,12 +51,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Spring Security -->
+		<!--Spring Security 
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
 		    <version>3.1.0</version>
-		</dependency>
+		</dependency>-->
 		<!-- JWT -->
 		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
