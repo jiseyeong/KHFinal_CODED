@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import kh.coded.repositories.AddressCoordDAO;
 
 @Service
-public class WetherService {
+public class WeatherService {
 	@Autowired
 	private AddressCoordDAO addressCoordDAO;
 	
