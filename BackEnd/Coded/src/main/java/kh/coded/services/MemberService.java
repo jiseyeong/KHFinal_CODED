@@ -19,7 +19,7 @@ public class MemberService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberDTO user = memberDAO.getMemberById(username);
+		MemberDTO user = memberDAO.selectMemberById(username);
 		if(user == null) {
 			throw new UsernameNotFoundException(username + "은 없는 회원입니다.");
 		}
@@ -28,6 +28,14 @@ public class MemberService implements UserDetailsService {
 				.password(user.getPw())
 				.roles(user.getRole().getValue())
 				.build();
+	}
+	
+	public MemberDTO selectByID(String userID) {
+		return memberDAO.selectMemberById(userID);
+	}
+	
+	public MemberDTO selectByUserNo(int userNo) {
+		return memberDAO.selectMemberByUserNo(userNo);
 	}
 	
 	public int join(MemberDTO dto) {
