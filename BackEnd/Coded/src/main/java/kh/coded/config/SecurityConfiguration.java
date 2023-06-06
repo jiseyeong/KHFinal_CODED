@@ -1,5 +1,6 @@
 package kh.coded.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,11 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import jakarta.servlet.DispatcherType;
+import kh.coded.services.OAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-		
+	
+	@Autowired
+	private OAuth2UserService oAuth2UserService;
+	
+	private final String loginPage = "/auth/login";
+	
 	@Bean
 	public WebSecurityCustomizer configure() {
 		return (web) -> web.ignoring()
@@ -43,7 +50,7 @@ public class SecurityConfiguration {
 						.anyRequest().authenticated()
 				)
 				.formLogin((login) -> login
-						.loginPage("/auth/login") // 커스텀 로그인 페이지 지정
+						.loginPage(loginPage) // 커스텀 로그인 페이지 지정
 						.loginProcessingUrl("/login-submit") // submit 받을 url
 						.usernameParameter("userID") // submit 할 아이디 (name값)
 						.passwordParameter("pw")     // submit 할 비밀번호 (name값)
@@ -53,6 +60,13 @@ public class SecurityConfiguration {
 				)
 				.exceptionHandling().accessDeniedPage("/error")
 				.and()
+				.oauth2Login((login)-> login
+						.loginPage(loginPage)
+						.failureUrl(loginPage)
+						.userInfoEndpoint((endpoint)-> endpoint
+								.userService(oAuth2UserService)
+								)
+						)
 				.logout((logout) -> logout
 						.logoutUrl("/logout") //설정 안하면 '/logout'으로 기본 설정
 						.logoutSuccessUrl("/login")
