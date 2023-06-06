@@ -60,14 +60,10 @@ const ButtonWithMarginTop = styled(Button)`
 const AuthForm = ({ type }) => {
   const text = textMap[type];
 
-  function onSubmit(e) {
-    e.preventDefault();
+  function doRegister(e) {
+    //e.preventDefault();
 
-    console.log(idRef.current.value);
-    console.log(pwRef.current.value);
-    console.log(nickNameRef.current.value);
-
-    //또는 axios.post("/auth/join", null, {params : ~})
+    //또는 axios.post("/auth/join", null, {params : {~}})
     // 두번째 인자가 data긴 한데, 들어가는 방식이 Query 방식이 아님.
     //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함. 
     axios({
@@ -90,6 +86,13 @@ const AuthForm = ({ type }) => {
       });
   }
 
+  function doLogin(e){
+    axios.post("/auth/login", null, {params:{
+        userID: idRef.current.value,
+        pw: pwRef.current.value,
+    }});
+  }
+
   const nickNameRef = useRef(null);
   const idRef = useRef(null);
   const pwRef = useRef(null);
@@ -98,7 +101,6 @@ const AuthForm = ({ type }) => {
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
-      <form onSubmit={onSubmit}>
         {type === 'register' && (
           <StyledInput
             autoComplete="name"
@@ -129,10 +131,9 @@ const AuthForm = ({ type }) => {
             ref={pwConfirmRef}
           />
         )}
-        <ButtonWithMarginTop cyan={true} fullWidth>
+        <ButtonWithMarginTop cyan={true} fullWidth onClick={type==='register' ? (doRegister) : (doLogin)}>
           {text}
         </ButtonWithMarginTop>
-      </form>
       <Footer>
         {type === 'login' ? (
           <Link to="/register">회원가입</Link>
