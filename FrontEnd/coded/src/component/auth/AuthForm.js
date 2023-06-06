@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import palette from '../../lib/styles/pallets';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 
 /*
@@ -59,6 +59,7 @@ const ButtonWithMarginTop = styled(Button)`
 
 const AuthForm = ({ type }) => {
   const text = textMap[type];
+  const navigate = useNavigate();
 
   function doRegister(e) {
     //e.preventDefault();
@@ -79,6 +80,7 @@ const AuthForm = ({ type }) => {
     })
       .then(function (response) {
         console.log(response.data);
+        navigate("/login");
         //return JSON.parse(response);
       })
       .catch(function (error) {
@@ -90,7 +92,10 @@ const AuthForm = ({ type }) => {
     axios.post("/auth/login", null, {params:{
         userID: idRef.current.value,
         pw: pwRef.current.value,
-    }});
+    }})
+    .then(function (response){
+      navigate("/");
+    });
   }
 
   const nickNameRef = useRef(null);
