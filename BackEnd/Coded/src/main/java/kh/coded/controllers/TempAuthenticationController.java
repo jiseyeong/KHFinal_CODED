@@ -10,13 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.TempMemberDTO;
 import kh.coded.dto.TempMemberDTO.Role;
-import kh.coded.services.TempMemberService;
+import kh.coded.services.MemberService;
 
 @RestController
 @RequestMapping("/auth/")
 public class TempAuthenticationController {
 	@Autowired
-	private TempMemberService memberService;
+	private MemberService memberService;
 	
 	@PostMapping(value="join")
 	public void join(

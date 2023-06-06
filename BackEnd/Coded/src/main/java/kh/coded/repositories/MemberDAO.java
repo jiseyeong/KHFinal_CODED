@@ -7,26 +7,26 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kh.coded.dto.TempMemberDTO;
+import kh.coded.dto.MemberDTO;
 
 @Repository
 public class MemberDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-	public TempMemberDTO selectMemberById(String userID) {
+	public MemberDTO selectMemberById(String userID) {
 		return mybatis.selectOne("Member.selectMemberById",userID);
 	}
 
-	public TempMemberDTO selectMemberByUserNo(int userNo) {
+	public MemberDTO selectMemberByUserNo(int userNo) {
 		return mybatis.selectOne("Member.selectMemberByUserNo",userNo);
 	}
 
-	public int insertMember(TempMemberDTO dto) {
+	public int insertMember(MemberDTO dto) {
 		return mybatis.insert("Member.insertMember",dto); //구현하면 됨. selectKey의 ID값으로 돌려줄 것.
 	}
 
-	public int updateMember(TempMemberDTO dto) {
+	public int updateMember(MemberDTO dto) {
 		return mybatis.update("Member.updateMember",dto);
 	}
 
