@@ -6,8 +6,8 @@
 .project
 build/
 .settings
-application.properties
-pom.xml
+application-server.properties
+application-auth.properties
 
 ### Eclipse ###
 .metadata
