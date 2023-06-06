@@ -26,14 +26,25 @@ public class AuthenticationController {
 	private MemberService memberService;
 	
 	@PostMapping(value="join")
-	public void join(
+	public int join(
 			@RequestParam(value="userID") String id,
 			@RequestParam(value="pw") String pw,
-			@RequestParam(value="address1") String address1,
-			@RequestParam(value="address2") String address2
+			@RequestParam(value="userNickName") String nickName
+//			@RequestParam(value="address1") String address1,
+//			@RequestParam(value="address2") String address2
 			) {
+		//임시
+		String address1 = null;
+		String address2 = null;
+		
 		//userNo, id, pw, nickname, bio, favBrand, Address1, Address2, NaverToken, KakaoToken, Role
-		MemberDTO dto = new MemberDTO(0, id, pw, null, null, null, address1, address2, null, null, Role.USER);
+		MemberDTO dto = new MemberDTO(0, id, pw, nickName, null, null, address1, address2, null, null, Role.USER);
+		
+		System.out.println(id);
+		System.out.println(pw);
+		System.out.println(nickName);
+		
+		return 1;
 	}
 	
 	@PostMapping(value="login")
