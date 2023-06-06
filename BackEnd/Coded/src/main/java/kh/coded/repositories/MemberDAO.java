@@ -23,17 +23,18 @@ public class MemberDAO {
 	}
 
 	public int insertMember(MemberDTO dto) {
-		return mybatis.insert("Member.insertMember",dto); //구현하면 됨. selectKey의 ID값으로 돌려줄 것.
+		mybatis.insert("Member.insertMember",dto);
+		return dto.getUserNo();//구현하면 됨. selectKey의 ID값으로 돌려줄 것.
 	}
 
 	public int updateMember(MemberDTO dto) {
 		return mybatis.update("Member.updateMember",dto);
 	}
 
-	public int deleteMember(String userID,String userPw) {
+	public int deleteMember(String userID,String pw) {
 		Map<String,String> map = new HashMap<>();
 		map.put("userID", userID);
-		map.put("userPw", userPw);
+		map.put("userPw", pw);
 		return mybatis.delete("Member.deleteMember",map);
 	}
 }
