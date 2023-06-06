@@ -6,6 +6,8 @@
 .project
 build/
 .settings
+application.properties
+pom.xml
 
 ### Eclipse ###
 .metadata

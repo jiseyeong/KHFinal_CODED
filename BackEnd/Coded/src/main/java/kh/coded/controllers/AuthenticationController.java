@@ -1,6 +1,9 @@
 package kh.coded.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,4 +49,8 @@ public class AuthenticationController {
 		
 //		MemberDTO dto = new MemberDTO();
 	}
+	
+	//@PostMapping(value="logout")
+	//자동 기능 지원됨
+
 }
