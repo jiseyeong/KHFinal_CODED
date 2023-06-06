@@ -14,9 +14,9 @@
   			select member_userNo.nextval from dual
   		</selectKey>
   			insert into member values(${userNo},#{userID},#{pw},#{userName},
-  			#{Bio},#{FavBrand},#{Address1},#{Address2},#{naverToken},#{kakaoToken})
+  			#{bio},#{favBrand},#{address1},#{address2},#{naverToken},#{kakaoToken})
   	</insert>
 	<delete id="deleteMember">
-		delete member where userID = #{userID} and userPw = #{pw}
+		delete member where userID = #{userID} and pw = #{pw}
 	</delete>
   </mapper>
