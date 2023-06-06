@@ -1,28 +1,21 @@
-import React, {useState, useEffect} from 'react';
-import logo from './logo.svg';
-import './App.css';
- 
-function App () {
-    const [message, setMessage] = useState("");
- 
-    useEffect(() => {
-        fetch('/test/')
-            .then(response => response.text())
-            .then(message => {
-                setMessage(message);
-            });
-    },[])
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <h1 className="App-title">{message}</h1>
-            </header>
-            <p className="App-intro">
-                To get started, edit <code>src/App.js</code> and save to reload.
-            </p>
-        </div>
-    )
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+//import logo from './logo.svg';
+//import './App.css';
+import Main from "./component/main/Main";
+import RegisterPage from "./pages/auth/RegisterPage";
+import LoginPage from "./pages/auth/LoginPage";
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage/>} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
- 
+
 export default App;

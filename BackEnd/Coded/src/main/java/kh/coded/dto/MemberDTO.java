@@ -19,7 +19,7 @@ public class MemberDTO{
 	private int userNo = 0;
 	private String userID;    //필수
 	private String pw;        //필수
-	private String userName=null;
+	private String userNickName=null;
 	private String bio=null;
 	private String favBrand=null;
 	private String address1;  //필수
@@ -28,13 +28,13 @@ public class MemberDTO{
 	private String kakaoToken=null;
 	private Role role = Role.USER;
 	//select용
-	public MemberDTO(int userNo, String userID, String pw, String userName, String bio, String favBrand, String address1,
-			String address2, String naverToken, String kakaoToken, Role role) {
+	public MemberDTO(int userNo, String userID, String pw, String userNickName, String bio, String favBrand,
+			String address1, String address2, String naverToken, String kakaoToken, Role role) {
 		super();
 		this.userNo = userNo;
 		this.userID = userID;
 		this.pw = pw;
-		this.userName = userName;
+		this.userNickName = userNickName;
 		this.bio = bio;
 		this.favBrand = favBrand;
 		this.address1 = address1;
@@ -43,11 +43,13 @@ public class MemberDTO{
 		this.kakaoToken = kakaoToken;
 		this.role = role;
 	}
+
 	//join 용
-	public MemberDTO(String userID, String pw, String address1, String address2) {
+	public MemberDTO(String userID, String pw, String userNickName, String address1, String address2) {
 		super();
 		this.userID = userID;
 		this.pw = pw;
+		this.userNickName = userNickName;
 		this.address1 = address1;
 		this.address2 = address2;
 	}
@@ -55,6 +57,7 @@ public class MemberDTO{
 	public MemberDTO() {
 		super();
 	}
+
 	public int getUserNo() {
 		return userNo;
 	}
@@ -73,11 +76,11 @@ public class MemberDTO{
 	public void setPw(String pw) {
 		this.pw = pw;
 	}
-	public String getUserName() {
-		return userName;
+	public String getUserNickName() {
+		return userNickName;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserNickName(String userNickName) {
+		this.userNickName = userNickName;
 	}
 	public String getBio() {
 		return bio;
