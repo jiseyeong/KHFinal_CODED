@@ -1,6 +1,5 @@
 package kh.coded.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,12 +7,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import jakarta.servlet.DispatcherType;
 
@@ -46,16 +43,23 @@ public class SecurityConfiguration {
 						.anyRequest().authenticated()
 				)
 				.formLogin((login) -> login
-						.loginPage("/view/login") // 커스텀 로그인 페이지 지정
+						.loginPage("/auth/login") // 커스텀 로그인 페이지 지정
 						.loginProcessingUrl("/login-submit") // submit 받을 url
-						.usernameParameter("userID") // submit 할 아이디
-						.passwordParameter("pw")     // submit 할 비밀번호
+						.usernameParameter("userID") // submit 할 아이디 (name값)
+						.passwordParameter("pw")     // submit 할 비밀번호 (name값)
+						.failureForwardUrl("/error")
 						.defaultSuccessUrl("/", true)
 						.permitAll()
 				)
-				.logout()
-				.logoutSuccessUrl("/login")
-				//.invalidateHttpSession(true)
+				.exceptionHandling().accessDeniedPage("/error")
+				.and()
+				.logout((logout) -> logout
+						.logoutUrl("/logout") //설정 안하면 '/logout'으로 기본 설정
+						.logoutSuccessUrl("/login")
+						.invalidateHttpSession(true) //기본 값 true
+						.deleteCookies("JSESSIONID") //JSESSIONID 는 톰캣 기본 발급 Session Cookie
+						)
+
 				;
 		
 		return http.build();
