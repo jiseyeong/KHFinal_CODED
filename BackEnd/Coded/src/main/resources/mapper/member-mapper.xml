@@ -3,5 +3,17 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="Member">
-  
+  	<select id="selectMemberById" resultType="kh.coded.dto.MemberDTO">
+  		select * from member where userID = #{userID}
+  	</select>
+  	<select id="selectMemberByUserNo" resultType="kh.coded.dto.MemberDTO">
+  		select * from member where userNo = ${userNo}
+  	</select>
+  	<insert id="insertMember">
+  		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
+  			select member_userNo.nextval from dual
+  		</selectKey>
+  			insert into member values(${userNo},#{userID},#{pw},#{userName},
+  			#{Bio},#{FavBrand},#{Address1},#{Address2},#{naverToken},#{kakaoToken})
+  	</insert>
   </mapper>
