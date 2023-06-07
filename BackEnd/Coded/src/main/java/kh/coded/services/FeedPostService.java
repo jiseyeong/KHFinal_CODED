@@ -3,10 +3,12 @@ package kh.coded.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.repositories.FeedPostDAO;
 
+@Service
 public class FeedPostService {
 
 	@Autowired
