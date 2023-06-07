@@ -58,7 +58,7 @@ public class MemberPrincipal implements UserDetails, OAuth2User{
 		}
 		@Override
 		public String getUsername() {
-			return this.user.getUserID();
+			return this.user.getUserId();
 		}
 		/**
 		 * 계정 만료 여부
