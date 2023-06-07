@@ -23,7 +23,7 @@ public class SecurityConfiguration {
 	@Autowired
 	private OAuth2UserService oAuth2UserService;
 	
-	private final String loginPage = "/auth/login";
+	private final String loginPage = "/login";
 	
 	@Bean
 	public WebSecurityCustomizer configure() {
@@ -43,9 +43,9 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests((request) -> request
 						.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 						//임시적으로 모든 접속에 대해서 체크 안하고 넘김.
-						.requestMatchers("/**").permitAll()
+						//.requestMatchers("/**").permitAll()
 						//특정 접속은 체크 안하고 넘김.
-						//.requestMatchers("/", "/images/**", "/view/join", "/auth/join", "/view/login", "/auth/login").permitAll()
+						.requestMatchers("/", "/images/**", "/view/join", "/auth/join", "/view/login", "/auth/login").permitAll()
 						//나머지 접속은 체크하고 넘김.
 						.anyRequest().authenticated()
 				)
@@ -58,8 +58,7 @@ public class SecurityConfiguration {
 						.defaultSuccessUrl("/", true)
 						.permitAll()
 				)
-				.exceptionHandling().accessDeniedPage("/error")
-				.and()
+				.exceptionHandling((exception)->exception.accessDeniedPage("/error"))
 				.oauth2Login((login)-> login
 						.loginPage(loginPage)
 						.failureUrl(loginPage)
@@ -73,7 +72,6 @@ public class SecurityConfiguration {
 						.invalidateHttpSession(true) //기본 값 true
 						.deleteCookies("JSESSIONID") //JSESSIONID 는 톰캣 기본 발급 Session Cookie
 						)
-
 				;
 		
 		return http.build();
