@@ -40,10 +40,23 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
 	
+	public boolean isMemberId(String userId) {
+		return memberDAO.isMemberId(userId);
+	}
 	public int join(MemberDTO dto) {
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMember(dto);
 	}
 	
+	public int deleteMember(String userId, String pw) {
+		return memberDAO.deleteMember(userId, pw);
+	}
 	
+	public int updateMember(MemberDTO dto) {
+		return memberDAO.updateMember(dto);
+	}
+	
+	public int updatePw(String userId,String pw) {
+		return memberDAO.updatePw(userId,pw);
+	}
 }

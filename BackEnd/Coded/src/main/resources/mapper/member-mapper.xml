@@ -9,6 +9,9 @@
   	<select id="selectMemberByUserNo" resultType="kh.coded.dto.MemberDTO">
   		select * from member where userNo = ${userNo}
   	</select>
+  	<select id="isMemberId" resultType="boolean">
+  		select * from member where userId = #{userId}
+  	</select>
   	<insert id="insertMember">
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select member_userno_seq.nextval from dual
@@ -17,6 +20,13 @@
   			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{favBrand},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
   	</insert>
 	<delete id="deleteMember">
-		delete member where userID = #{userID} and pw = #{pw}
+		delete member where userId = #{userId} and pw = #{pw}
 	</delete>
+	<update id="updateMember">
+		update member set usernickname = #{userNickName}, bio = #{bio}, favbrand = #{favBrand},
+		 address1 = #{address1}, address2 = #{address2} where userId = #{userId}
+	</update>
+	<update id="updatePw">
+		update member set pw = #{pw} where userId = #{userId}
+	</update>
   </mapper>
