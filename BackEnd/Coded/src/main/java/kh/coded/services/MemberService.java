@@ -57,6 +57,7 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	public int updatePw(String userId,String pw) {
-		return memberDAO.updatePw(userId,pw);
+		String encodingPw = passwordEncoder.encode(pw);
+		return memberDAO.updatePw(userId,encodingPw);
 	}
 }
