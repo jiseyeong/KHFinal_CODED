@@ -13,8 +13,8 @@
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select member_userNo.nextval from dual
   		</selectKey>
-  			insert into member values(${userNo},#{userID},#{pw},#{userNickName},
-  			#{bio},#{favBrand},#{address1},#{address2},#{naverToken},#{kakaoToken})
+  			insert into member values(${userNo},#{userId},#{pw},#{userNickName},
+  			#{bio},#{favBrand},#{address1},#{address2},#{ROLE},#{naverToken},#{kakaoToken},#{googleToken})
   	</insert>
 	<delete id="deleteMember">
 		delete member where userID = #{userID} and pw = #{pw}
