@@ -1,40 +1,39 @@
 package kh.coded.dto;
 
 public class FollowDTO {
-    private int followId;
-    private int toUserId;
-    private int fromUserId;
 
-    public FollowDTO() {
-    }
+	private int Id;
+	private int ToUserId;
+	private int FromUserId;
+	
+	public FollowDTO() {
+		super();
+	}
+	
+	public FollowDTO(int id, int toUserId, int fromUserId) {
+		super();
+		Id = id;
+		ToUserId = toUserId;
+		FromUserId = fromUserId;
+	}
 
-    public FollowDTO(int followId, int toUserId, int fromUserId) {
-        this.followId = followId;
-        this.toUserId = toUserId;
-        this.fromUserId = fromUserId;
-    }
-
-    public int getFollowId() {
-        return followId;
-    }
-
-    public void setFollowId(int followId) {
-        this.followId = followId;
-    }
-
-    public int getToUserId() {
-        return toUserId;
-    }
-
-    public void setToUserId(int toUserId) {
-        this.toUserId = toUserId;
-    }
-
-    public int getFromUserId() {
-        return fromUserId;
-    }
-
-    public void setFromUserId(int fromUserId) {
-        this.fromUserId = fromUserId;
-    }
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
+	public int getToUserId() {
+		return ToUserId;
+	}
+	public void setToUserId(int toUserId) {
+		ToUserId = toUserId;
+	}
+	public int getFromUserId() {
+		return FromUserId;
+	}
+	public void setFromUserId(int fromUserId) {
+		FromUserId = fromUserId;
+	}
+	
 }
