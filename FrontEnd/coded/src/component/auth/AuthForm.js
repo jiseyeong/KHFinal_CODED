@@ -71,7 +71,7 @@ const AuthForm = ({ type }) => {
       method: 'post',
       url: '/auth/join',
       params: {
-        userID: idRef.current.value,
+        userId: idRef.current.value,
         pw: pwRef.current.value,
         userNickName: nickNameRef.current.value,
       },
@@ -90,7 +90,7 @@ const AuthForm = ({ type }) => {
 
   function doLogin(e){
     axios.post("/auth/login", null, {params:{
-        userID: idRef.current.value,
+        userId: idRef.current.value,
         pw: pwRef.current.value,
     }})
     .then(function (response){
@@ -115,8 +115,8 @@ const AuthForm = ({ type }) => {
           />
         )}
         <StyledInput
-          autoComplete="userID"
-          name="userID"
+          autoComplete="username"
+          name="userId"
           placeholder="아이디"
           ref={idRef}
         />
