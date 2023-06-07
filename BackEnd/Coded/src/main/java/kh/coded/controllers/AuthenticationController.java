@@ -1,6 +1,10 @@
 package kh.coded.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,21 +49,33 @@ public class AuthenticationController {
 		return memberService.join(dto);
 	}
 	
-	@PostMapping(value="login")
+	@RequestMapping
+	public Authentication auth() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+	
+	@PostMapping(value="login-proc/{userId}/{pw}")
 	public boolean login(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="userId") String id,
-			@RequestParam(value="pw") String pw
+			@PathVariable(value="userId") String id,
+			@PathVariable(value="pw") String pw
+			//@RequestParam(value="userId") String id,
+			//@RequestParam(value="pw") String pw
 			) throws Exception{
 		
-		//로그인 로직 실행
+		//로그인 로직 실행	
 		
 		System.out.println(id);
 		System.out.println(pw);
 		
-		return false;
+		return memberService.isValidMember(id, pw);
 //		MemberDTO dto = new MemberDTO();
+	}
+	
+	@GetMapping(value = "fail")
+	public String failed() {
+		return "실패";
 	}
 	
 	//@PostMapping(value="logout")
