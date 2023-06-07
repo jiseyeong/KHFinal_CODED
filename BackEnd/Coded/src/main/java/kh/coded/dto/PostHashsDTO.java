@@ -33,5 +33,4 @@ public class PostHashsDTO {
 		TagId = tagId;
 	}
 	
-	
 }

@@ -2,35 +2,21 @@ package kh.coded.dto;
 
 public class MemberDTO{
 
-	public enum Role {
-		USER("ROLE_USER"),ADMIN("ROLE_ADMIN");	
-		private Role(String value) {
-			this.value = value;
-		}
-		private String value;
-		public String getValue() {
-			return value;
-		}
-		//		public void setValue(String value) {
-		//			this.value = value;
-		//		}
-	}
-
 	private int userNo = 0;
 	private String userId;    //필수
 	private String pw;        //필수
-	private String userNickName=null;
-	private String bio=null;
-	private String favBrand=null;
+	private String userNickName="";
+	private String bio="";
+	private String favBrand="";
 	private String address1;  //필수
 	private String address2;  //필수
-	private Role role = Role.USER;
-	private String naverToken=null;
-	private String kakaoToken=null;
-	private String googleToken=null;
+	private String role = Role.USER.getValue();
+	private String naverToken="";
+	private String kakaoToken="";
+	private String googleToken="";
 	//select용
 	public MemberDTO(int userNo, String userId, String pw, String userNickName, String bio, String favBrand,
-			String address1, String address2, Role role, String naverToken, String kakaoToken, String googleToken) {
+			String address1, String address2, String role, String naverToken, String kakaoToken, String googleToken) {
 		super();
 		this.userNo = userNo;
 		this.userId = userId;
@@ -40,9 +26,9 @@ public class MemberDTO{
 		this.favBrand = favBrand;
 		this.address1 = address1;
 		this.address2 = address2;
+		this.role = role;
 		this.naverToken = naverToken;
 		this.kakaoToken = kakaoToken;
-		this.role = role;
 		this.googleToken = googleToken;
 	}
 
@@ -54,8 +40,18 @@ public class MemberDTO{
 		this.userNickName = userNickName;
 		this.address1 = address1;
 		this.address2 = address2;
+		this.role = Role.USER.getValue();
 	}
 
+	//update 용
+	public MemberDTO(String userId,String userNickName,String bio, String favBrand, String address1, String address2) {
+		this.userId = userId;
+		this.userNickName = userNickName;
+		this.bio = bio;
+		this.favBrand = favBrand;
+		this.address1 = address1;
+		this.address2 = address2;
+	}
 	public MemberDTO() {
 		super();
 	}
@@ -120,10 +116,10 @@ public class MemberDTO{
 	public void setKakaoToken(String kakaoToken) {
 		this.kakaoToken = kakaoToken;
 	}
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 	public String getGoogleToken() {

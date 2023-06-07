@@ -56,7 +56,4 @@ public class TodayWeatherDTO {
 	public void setWeatherCode(int weatherCode) {
 		WeatherCode = weatherCode;
 	}
-	
-	
-
 }

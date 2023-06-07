@@ -60,5 +60,4 @@ public class FeedPostDTO {
 		WriteTempRange = writeTempRange;
 	}
 	
-	
 }

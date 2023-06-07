@@ -36,5 +36,4 @@ public class FollowDTO {
 		FromUserId = fromUserId;
 	}
 	
-	
 }

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
-import kh.coded.dto.MemberDTO.Role;
 import kh.coded.services.MemberService;
 import kh.coded.services.RefreshTokenService;
 
@@ -35,20 +34,22 @@ public class AuthenticationController {
 //		String address2 = null;
 		
 		//userNo, id, pw, nickname, bio, favBrand, Address1, Address2,  Role, NaverToken, KakaoToken
-		MemberDTO dto = new MemberDTO(0, id, pw, nickName, null, null, address1, address2, Role.USER, null, null, null);
+		//MemberDTO dto = new MemberDTO(0, id, pw, nickName, null, null, address1, address2, Role.USER.getValue(), null, null, null);
+		MemberDTO dto = new MemberDTO(id, pw, nickName, address1, address2);
+		
 		
 		System.out.println(id);
 		System.out.println(pw);
 		System.out.println(nickName);
 		
-		return 1;
+		return memberService.join(dto);
 	}
 	
 	@PostMapping(value="login")
-	public void login(
+	public boolean login(
 			HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value="userID") String id,
+			@RequestParam(value="userId") String id,
 			@RequestParam(value="pw") String pw
 			) throws Exception{
 		
@@ -57,6 +58,7 @@ public class AuthenticationController {
 		System.out.println(id);
 		System.out.println(pw);
 		
+		return false;
 //		MemberDTO dto = new MemberDTO();
 	}
 	

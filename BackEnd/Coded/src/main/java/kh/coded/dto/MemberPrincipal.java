@@ -45,7 +45,7 @@ public class MemberPrincipal implements UserDetails, OAuth2User{
 			collection.add(new GrantedAuthority(){
 				@Override
 				public String getAuthority() {
-					return self.user.getRole().getValue();
+					return self.user.getRole();
 				}
 			});
 			return collection;
