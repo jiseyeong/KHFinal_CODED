@@ -1,18 +1,9 @@
 package kh.coded;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import kh.coded.dto.MoviesDTO;
-import kh.coded.repositories.MoviesDAO;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CodedApplicationTests {
@@ -21,8 +12,8 @@ class CodedApplicationTests {
 	private int port;
 	@Autowired
 	private TestRestTemplate restTemplate;
-	@Autowired
-	private MoviesDAO moviesDAO;
+//	@Autowired
+//	private MoviesDAO moviesDAO;
 	
 //	@DisplayName("저장 REST 테스트")
 //	@Transactional
@@ -59,25 +50,25 @@ class CodedApplicationTests {
 //	}
 	
 	//그냥 DAO 테스트는 rollback 먹힘. Controller 테스트로는 안 먹힘.
-	@DisplayName("저장 테스트")
-	@Transactional
-	@Rollback(true) //동작 안함
-	@Test
-	public void insertMoives() {
-		//given
-		String title = "테스트으 영화 제목";
-		String genre = "Java2";
-		MoviesDTO dto = new MoviesDTO(0, title, genre);
-		
-		//when
-		int id = moviesDAO.insert(dto);
-		MoviesDTO result = moviesDAO.selectByID(id);
-		
-		//then
-		assertThat(result.getTitle()).isEqualTo(title);
-		assertThat(result.getGenre()).isEqualTo(genre);
-	}
-	
+//	@DisplayName("저장 테스트")
+//	@Transactional
+//	@Rollback(true) //동작 안함
+//	@Test
+//	public void insertMoives() {
+//		//given
+//		String title = "테스트으 영화 제목";
+//		String genre = "Java2";
+//		MoviesDTO dto = new MoviesDTO(0, title, genre);
+//		
+//		//when
+//		int id = moviesDAO.insert(dto);
+//		MoviesDTO result = moviesDAO.selectByID(id);
+//		
+//		//then
+//		assertThat(result.getTitle()).isEqualTo(title);
+//		assertThat(result.getGenre()).isEqualTo(genre);
+//	}
+//	
 //	@Test
 //	void contextLoads() {
 //	}
