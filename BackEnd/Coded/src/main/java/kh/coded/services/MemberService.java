@@ -26,14 +26,14 @@ public class MemberService implements UserDetailsService {
 			throw new UsernameNotFoundException(username + "은 없는 회원입니다.");
 		}
 		return User.builder()
-				.username(user.getUserID())
+				.username(user.getUserId())
 				.password(user.getPw())
 				.roles(user.getRole().getValue())
 				.build();
 	}
 	
-	public MemberDTO selectByID(String userID) {
-		return memberDAO.selectMemberById(userID);
+	public MemberDTO selectByID(String userId) {
+		return memberDAO.selectMemberById(userId);
 	}
 	
 	public MemberDTO selectByUserNo(int userNo) {
