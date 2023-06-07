@@ -1,9 +1,22 @@
-import './MyProfile/MyProfile.css';
+import React from 'react';
+import styled from 'styled-components';
+import { Link, withRouter } from 'react-router-dom';
 
 
-function MyProfile() {
-    return (
-	    <div className="container">
+
+const MyProfileFormBlock = styled.table`
+    width: 50%;
+    height: 400px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
+`;
+
+
+const MyProfileForm = ({ history }) => {
+    return(
+        <MyProfileFormBlock>
+            <div className="container">
 		    <div className="imageBox">
 			    <div className="proImage">
 					<img src={image}></img>
@@ -33,9 +46,8 @@ function MyProfile() {
                 </div>
 			</div>
 	    </div>
-
+        </MyProfileFormBlock>
     );
-  }
-  
-  export default MyProfile;
-  
+};
+
+export default withRouter(MyProfileForm);
