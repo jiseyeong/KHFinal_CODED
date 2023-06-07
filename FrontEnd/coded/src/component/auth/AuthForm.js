@@ -89,13 +89,25 @@ const AuthForm = ({ type }) => {
   }
 
   function doLogin(e){
-    axios.post("/auth/login", null, {params:{
+    axios.post("/auth/login-proc", null, {params:{
         userId: idRef.current.value,
-        pw: pwRef.current.value,
+        pw: pwRef.current.value
     }})
-    .then(function (response){
-      navigate("/");
-    });
+    // axios({
+    //   method: 'post',
+    //   url: '/auth/login',
+    //   params: {
+    //     userId: idRef.current.value,
+    //     pw: pwRef.current.value,
+    //   },
+    //   timeout: 5000
+    // })
+    // .then(function(response){
+    //   console.log(response.data);
+    // })
+    // .catch(function (error){
+    //   console.log(error);
+    // })
   }
 
   const nickNameRef = useRef(null);
