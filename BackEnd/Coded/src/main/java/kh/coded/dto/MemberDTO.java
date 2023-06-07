@@ -17,22 +17,23 @@ public class MemberDTO{
 	}
 
 	private int userNo = 0;
-	private String userID;    //필수
+	private String userId;    //필수
 	private String pw;        //필수
 	private String userNickName=null;
 	private String bio=null;
 	private String favBrand=null;
 	private String address1;  //필수
 	private String address2;  //필수
+	private Role role = Role.USER;
 	private String naverToken=null;
 	private String kakaoToken=null;
-	private Role role = Role.USER;
+	private String googleToken=null;
 	//select용
-	public MemberDTO(int userNo, String userID, String pw, String userNickName, String bio, String favBrand,
-			String address1, String address2, String naverToken, String kakaoToken, Role role) {
+	public MemberDTO(int userNo, String userId, String pw, String userNickName, String bio, String favBrand,
+			String address1, String address2, Role role, String naverToken, String kakaoToken, String googleToken) {
 		super();
 		this.userNo = userNo;
-		this.userID = userID;
+		this.userId = userId;
 		this.pw = pw;
 		this.userNickName = userNickName;
 		this.bio = bio;
@@ -42,18 +43,28 @@ public class MemberDTO{
 		this.naverToken = naverToken;
 		this.kakaoToken = kakaoToken;
 		this.role = role;
+		this.googleToken = googleToken;
 	}
 
 	//join 용
-	public MemberDTO(String userID, String pw, String userNickName, String address1, String address2) {
+	public MemberDTO(String userId, String pw, String userNickName, String address1, String address2) {
 		super();
-		this.userID = userID;
+		this.userId = userId;
 		this.pw = pw;
 		this.userNickName = userNickName;
 		this.address1 = address1;
 		this.address2 = address2;
 	}
 
+	//update 용
+	public MemberDTO(String userId,String userNickName,String bio, String favBrand, String address1, String address2) {
+		this.userId = userId;
+		this.userNickName = userNickName;
+		this.bio = bio;
+		this.favBrand = favBrand;
+		this.address1 = address1;
+		this.address2 = address2;
+	}
 	public MemberDTO() {
 		super();
 	}
@@ -64,11 +75,11 @@ public class MemberDTO{
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
-	public String getUserID() {
-		return userID;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUserID(String userID) {
-		this.userID = userID;
+	public void setUserId(String userID) {
+		this.userId = userID;
 	}
 	public String getPw() {
 		return pw;
@@ -124,4 +135,11 @@ public class MemberDTO{
 	public void setRole(Role role) {
 		this.role = role;
 	}
+	public String getGoogleToken() {
+		return googleToken;
+	}
+	public void setGoogleToken(String googleToken) {
+		this.googleToken = googleToken;
+	}
+	
 }

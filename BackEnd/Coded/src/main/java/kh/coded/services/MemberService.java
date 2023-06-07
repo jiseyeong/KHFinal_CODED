@@ -26,22 +26,37 @@ public class MemberService implements UserDetailsService {
 			throw new UsernameNotFoundException(username + "은 없는 회원입니다.");
 		}
 		return User.builder()
-				.username(user.getUserID())
+				.username(user.getUserId())
 				.password(user.getPw())
 				.roles(user.getRole().getValue())
 				.build();
 	}
 	
-	public MemberDTO selectByID(String userID) {
-		return memberDAO.selectMemberById(userID);
+	public MemberDTO selectByID(String userId) {
+		return memberDAO.selectMemberById(userId);
 	}
 	
 	public MemberDTO selectByUserNo(int userNo) {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
 	
+	public boolean isMemberId(String userId) {
+		return memberDAO.isMemberId(userId);
+	}
 	public int join(MemberDTO dto) {
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMember(dto);
+	}
+	
+	public int deleteMember(String userId, String pw) {
+		return memberDAO.deleteMember(userId, pw);
+	}
+	
+	public int updateMember(MemberDTO dto) {
+		return memberDAO.updateMember(dto);
+	}
+	
+	public int updatePw(String userId,String pw) {
+		return memberDAO.updatePw(userId,pw);
 	}
 }
