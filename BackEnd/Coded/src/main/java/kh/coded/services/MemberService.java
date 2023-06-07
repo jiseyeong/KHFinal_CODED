@@ -28,7 +28,7 @@ public class MemberService implements UserDetailsService {
 		return User.builder()
 				.username(user.getUserId())
 				.password(user.getPw())
-				.roles(user.getRole().getValue())
+				.roles(user.getRole())
 				.build();
 	}
 	
@@ -44,4 +44,6 @@ public class MemberService implements UserDetailsService {
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMember(dto);
 	}
+	
+	
 }
