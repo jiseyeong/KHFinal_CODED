@@ -34,10 +34,16 @@ public class MemberDAO {
 		return mybatis.update("Member.updateMember",dto);
 	}
 	
-	public int deleteMember(String userID,String pw) { //회원탈퇴
+	public int updatePw(String userId, String pw) { //비밀번호 수정
 		Map<String,String> map = new HashMap<>();
-		map.put("userID", userID);
-		map.put("userPw", pw);
+		map.put("userId", userId);
+		map.put("pw", pw);
+		return mybatis.update("Member.updatePw",map);
+	}
+	public int deleteMember(String userId,String pw) { //회원탈퇴
+		Map<String,String> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("pw", pw);
 		return mybatis.delete("Member.deleteMember",map);
 	}
 }

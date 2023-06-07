@@ -56,6 +56,15 @@ public class MemberDTO{
 		this.address2 = address2;
 	}
 
+	//update 용
+	public MemberDTO(String userId,String userNickName,String bio, String favBrand, String address1, String address2) {
+		this.userId = userId;
+		this.userNickName = userNickName;
+		this.bio = bio;
+		this.favBrand = favBrand;
+		this.address1 = address1;
+		this.address2 = address2;
+	}
 	public MemberDTO() {
 		super();
 	}
