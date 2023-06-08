@@ -12,5 +12,10 @@
 	<insert id="insertFeedPost">
 	insert into FeedPost values()
 	</insert>
+
+	<select id="selectTestFeedList" resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost
+	</select>
+
 	
 </mapper>
