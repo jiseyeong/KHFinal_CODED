@@ -21,4 +21,8 @@ public class FeedPostService {
 	public int insertFeedPost(FeedPostDTO dto) {
 		return feedpostDAO.insertFeedPost(dto);
 	}
+
+	public List<FeedPostDTO> selectTestFeedList() {
+		return feedpostDAO.selectTestFeedList();
+	}
 }
