@@ -9,15 +9,18 @@ public class DMDTO {
     private String message;
     private Timestamp writeDate;
 
+    private char isDelete;
+
     public DMDTO() {
     }
 
-    public DMDTO(int messageId, int roomId, int userNo, String message, Timestamp writeDate) {
+    public DMDTO(int messageId, int roomId, int userNo, String message, Timestamp writeDate, char isDelete) {
         this.messageId = messageId;
         this.roomId = roomId;
         this.userNo = userNo;
         this.message = message;
         this.writeDate = writeDate;
+        this.isDelete = isDelete;
     }
 
     public int getMessageId() {
@@ -58,5 +61,13 @@ public class DMDTO {
 
     public void setWriteDate(Timestamp writeDate) {
         this.writeDate = writeDate;
+    }
+
+    public char getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(char isDelete) {
+        this.isDelete = isDelete;
     }
 }
