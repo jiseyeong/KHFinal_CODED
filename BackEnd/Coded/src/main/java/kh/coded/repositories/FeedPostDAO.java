@@ -24,4 +24,7 @@ public class FeedPostDAO {
 		return mybatis.insert("FeedPost.insertFeedPost", dto);
 	}
 
+	public List<FeedPostDTO> selectTestFeedList() {
+		return mybatis.selectList("FeedPost.selectTestFeedList");
+	}
 }
