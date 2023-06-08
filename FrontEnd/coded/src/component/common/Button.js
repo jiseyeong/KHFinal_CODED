@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components"
-import palette from "../../lib/styles/pallets";
+import palette from "../../styles/pallets";
 /* 여기서 스타일 적용하면 여러 곳에서 같은 스타일의 버튼을 사용 가능. */
 
 const StyledButton = styled.button`

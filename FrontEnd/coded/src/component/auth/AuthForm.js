@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import palette from '../../lib/styles/pallets';
+import palette from '../../styles/pallets';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 

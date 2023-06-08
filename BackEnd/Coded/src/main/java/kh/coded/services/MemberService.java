@@ -49,12 +49,14 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.insertMember(dto);
 	}
 	
-	public boolean isValidMember(String id, String pw) {
+	public MemberDTO isValidMember(String id, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(id);
 		if(member != null) {
-			return member.getPw().equals(pw);
+			if(passwordEncoder.matches(pw, member.getPw())) {
+				return member;
+			}
 		}
-		return false;
+		return null;
 	}
 	
 	public int deleteMember(String userId, String pw) {
