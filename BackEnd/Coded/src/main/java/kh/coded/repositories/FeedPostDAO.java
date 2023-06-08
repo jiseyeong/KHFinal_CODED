@@ -46,4 +46,7 @@ public class FeedPostDAO {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
 	
+	public List<FeedPostDTO> selectTestFeedList() {
+		return mybatis.selectList("FeedPost.selectTestFeedList");
+	}
 }

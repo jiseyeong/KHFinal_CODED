@@ -40,4 +40,7 @@ public class FeedPostService {
 		return feedpostDAO.insertHashTag(HashTag);
 	}
 	
+	public List<FeedPostDTO> selectTestFeedList() {
+		return feedpostDAO.selectTestFeedList();
+	}
 }
