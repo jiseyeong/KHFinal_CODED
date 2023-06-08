@@ -81,4 +81,32 @@ public class AuthenticationController {
 	//@PostMapping(value="logout")
 	//자동 기능 지원됨
 
+	@PostMapping(value="isMember/{userId}")
+	public String isMember(@RequestParam(value="userId") String userId) {
+		boolean result = memberService.isMemberId(userId);
+		return String.valueOf(result);
+	}
+	
+	@PostMapping(value="deleteMember")
+	public String deleteMember(
+			@RequestParam(value="userId") String userId,
+			@RequestParam(value="pw") String pw) {
+		int result = memberService.deleteMember(userId, pw);
+		return "redirect:/";
+	}
+	
+	@PostMapping(value="updateMember")
+	public String updateMember(
+			@RequestParam(value="dto") MemberDTO dto) {
+		int result = memberService.updateMember(dto);
+		return "redirect:/";
+	}
+	
+	@PostMapping(value="updatePw")
+	public String updatePw(
+			@RequestParam(value="userId") String userId,
+			@RequestParam(value="pw") String pw) {
+		int result = memberService.updatePw(userId,pw);
+		return "redirect:/";
+	}
 }
