@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.repositories.FollowDAO;
 
@@ -15,15 +14,20 @@ public class FollowService {
 	@Autowired
 	private FollowDAO followDAO;
 	
-	public List<MemberDTO> selectallFollow(int FollowId) {
-		return followDAO.selectallFollow(FollowId);
+	
+	public List<MemberDTO> selectFollowingList(int ToUserId) {
+		return followDAO.selectFollowingList(ToUserId);
 	}
 	
-	public int insertFollow(int FollowId) {
-		return followDAO.insertFollow(FollowId);
+	public List<MemberDTO> selectFollowerList(int FromUserId) {
+		return followDAO.selectFollowerList(FromUserId);
 	}
 	
-	public int deleteFollow(int FollowId) {
-		return followDAO.deleteFollow(FollowId);
+	public int insertFollow(int ToUserId, int FromUserId) {
+		return followDAO.insertFollow(ToUserId, FromUserId);
+	}
+	
+	public int deleteFollow(int ToUserId, int FromUserId) {
+		return followDAO.deleteFollow(ToUserId, FromUserId);
 	}
 }

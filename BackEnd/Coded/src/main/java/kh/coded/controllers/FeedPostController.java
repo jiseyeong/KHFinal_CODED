@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
+import kh.coded.dto.TodayWeatherDTO;
+
 @RestController
 @RequestMapping("/feedpost/")
 public class FeedPostController {
@@ -20,5 +24,10 @@ public class FeedPostController {
         List<FeedPostDTO> list = feedPostService.selectTestFeedList();
         return list;
     }
-}
 
+	@GetMapping("/insertfeedpost")
+	public String insertFeedPost(FeedPostDTO fdto, HashTagDTO hdto) {
+		return "";
+	}
+	
+}

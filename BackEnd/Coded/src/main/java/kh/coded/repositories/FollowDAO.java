@@ -1,6 +1,8 @@
 package kh.coded.repositories;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +16,25 @@ public class FollowDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-//	나의 팔로잉/팔로우 리스트 - 본인의 팔로잉 / 팔로우 리스트 출력
-	public List<MemberDTO> selectallFollow(int FollowId) {
-		return mybatis.selectList("Follow.selectallFollow", FollowId);
+//	나의 팔로잉 리스트 출력
+	public List<MemberDTO> selectFollowingList(int ToUserId) {
+		return mybatis.selectList("Follow.selectFollowingList", ToUserId);
+	}
+	
+//	나의 팔로워 리스트 출력
+	public List<MemberDTO> selectFollowerList(int FromUserId) {
+		return mybatis.selectList("Follow.selectFollowerList", FromUserId);
 	}
 
 //	팔로우 등록 - 해당 유저를 팔로우 등록
-	public int insertFollow(int FollowId) {
-		return mybatis.insert("Follow.insertFollow", FollowId);
+	public int insertFollow(int ToUserId, int FromUserId) {
+		Map<String, Integer> insert = new HashMap<>();
+		return mybatis.insert("Follow.insertFollow", insert);
 	}
 
 //	팔로우 해제 - 해당 유저를 팔로우 해제
-	public int deleteFollow(int FollowId) {
-		return mybatis.delete("Follow.deleteFollow", FollowId);
+	public int deleteFollow(int ToUserId, int FromUserId) {
+		Map<String, Integer> delete = new HashMap<>();
+		return mybatis.delete("Follow.deleteFollow", delete);
 	}
 }
