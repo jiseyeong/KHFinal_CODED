@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 
 const StyledFeedListLayoutDiv = styled('div')`
   margin: auto;
-  width: 1200px;
+  width: 1202px;
   border: 1px solid black;
   display: flex;
   justify-content: start;
@@ -24,7 +24,7 @@ const FeedList = () => {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: '/feedpost/selectfeedlist',
+      url: '/feedpost/selectfeedlist/',
     })
       .then((resp) => {
         console.log(resp);

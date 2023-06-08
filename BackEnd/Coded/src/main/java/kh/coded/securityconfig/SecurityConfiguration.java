@@ -1,16 +1,19 @@
-package kh.coded.security;
+package kh.coded.securityconfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import kh.coded.security.CustomAccessDeniedHandler;
+import kh.coded.security.CustomAuthenticationEntryPoint;
+import kh.coded.security.MemberAuthenticationProvider;
 import kh.coded.services.MemberService;
 import kh.coded.services.OAuth2UserService;
 
@@ -25,9 +28,11 @@ public class SecurityConfiguration {
 	@Autowired
 	private MemberService memberService;
 	@Autowired
-	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	@Autowired
-	private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+	private CustomAccessDeniedHandler customAccessDeniedHandler;
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
 	private final String loginPage = "/login";
 	private final String[] WEB_IGNORING_LIST = {
@@ -48,7 +53,9 @@ public class SecurityConfiguration {
 			loginPage,
 			"/auth/login",
 			"/error",
-			"/auth/fail"
+			"/auth/fail",
+			"/auth/getUserNo"
+			
 	};
 	private final String[] API_USER_LIST = {
 			"/test/"
@@ -60,13 +67,6 @@ public class SecurityConfiguration {
 	@Autowired
 	public void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.authenticationProvider(memberAuthenticationProvider);
-		auth.inMemoryAuthentication().withUser(
-					User.withDefaultPasswordEncoder()
-					.username("user1")
-					.password("1111")
-					.roles("USER")
-					.build()
-				);
 	}
 	
 	@Bean
@@ -82,63 +82,47 @@ public class SecurityConfiguration {
 		http.csrf(csrf->csrf.disable());
 		//http.cors(cors->cors.disable());
 		
-		//http.authenticationProvider(memberAuthenticationProvider);
+		http.formLogin(login -> login.disable());
+		http.logout(logout -> logout.disable());
+		http.httpBasic(basic -> basic.disable());
+		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		
+		http.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		http.authorizeHttpRequests(authorize ->{
 			try {
 				authorize
 					.requestMatchers(API_WHITE_LIST).permitAll()
-					//.requestMatchers(API_USER_LIST).hasRole("USER");
-					.anyRequest().permitAll(); //.authenticated();
+					.requestMatchers(API_USER_LIST).hasRole("USER")
+					.anyRequest().authenticated();
 			}catch(Exception e) {
 				throw new RuntimeException(e);
 			}			
 		});
 		
-		//http.formLogin(login -> login.disable());
-		
-		http.formLogin(login->{
+		http.exceptionHandling(exception -> {
 			try {
-				login
-					.loginPage(loginPage)
-					//.loginProcessingUrl("/auth/login-proc") //form 방식이 아니라서 필요 없는 모양
-					.usernameParameter("userId")
-					.passwordParameter("pw")
-					.successHandler(customAuthenticationSuccessHandler)
-					.failureHandler(customAuthenticationFailureHandler);
-				
-				//.failureForwardUrl("/error")
+				exception
+					.authenticationEntryPoint(customAuthenticationEntryPoint)
+					.accessDeniedHandler(customAccessDeniedHandler);
+					
 			}catch(Exception e) {
 				throw new RuntimeException(e);
-			}
+			}			
 		});
 		
-		http.oauth2Login(login ->{
-			try {
-				login
-					.loginPage(loginPage)
-					.failureUrl(loginPage)
-					.userInfoEndpoint((endpoint) ->
-											endpoint.userService(oAuth2UserService)
-										);
-			}catch(Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
-		
-//		http.logout(logout -> logout.disable());
-		
-		http.logout(logout -> {
-			try {
-				logout
-					.logoutUrl("/logout") // 기본 '/logout'
-					.logoutSuccessUrl("/")
-					.invalidateHttpSession(true)
-					.deleteCookies("JSESSIONID");
-			}catch(Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
+//		http.oauth2Login(login ->{
+//		try {
+//			login
+//				.loginPage(loginPage)
+//				.failureUrl(loginPage)
+//				.userInfoEndpoint((endpoint) ->
+//										endpoint.userService(oAuth2UserService)
+//									);
+//		}catch(Exception e) {
+//			throw new RuntimeException(e);
+//		}
+//	});
 		
 		http.rememberMe(rememberMe -> 
 							rememberMe
