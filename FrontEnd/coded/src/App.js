@@ -1,9 +1,14 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import RegisterPage from './pages/auth/RegisterPage';
-import LoginPage from './pages/auth/LoginPage';
+
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import RegisterPage from "./pages/auth/RegisterPage";
+import LoginPage from "./pages/auth/LoginPage";
 // import MyProfilePage from './pages/user/MyProfilePage';
 import FeedList from './component/feed/FeedList';
+import MyProfilePage from "./pages/user/MyProfile/MyProfilePage";
+
+
+
 
 function App() {
   return (
