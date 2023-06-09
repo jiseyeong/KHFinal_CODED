@@ -8,31 +8,31 @@
 
 	<select id="selectFeedList"
 		resultType="kh.coded.dto.FeedPostDTO">
-		select * from FeedPost where UserNo = #{UserNo}
+		select * from FeedPost where UserNo = #{userNo}
 	</select>
 
 
 
 	<insert id="insertFeedPost">
-		insert into FeedPost values(_seq.nextval, ${UserNo},
-		#{Body}, sysdate,
-		${WriteTemp}, ${WriteTempRange})
+		insert into FeedPost values(_seq.nextval, ${userNo},
+		#{body}, sysdate,
+		${writeTemp}, ${writeTempRange})
 	</insert>
 
 	<insert id="insertFeedPhoto">
 		insert into FeedPhoto values(_seq.nextval,
-		#{OriName}, #{Sysname}, ${FeedPostId},
+		#{oriName}, #{sysname}, ${feedPostId},
 		0,0)
 	</insert>
 
 	<insert id="insertHashTag">
 		insert into HashTag values(_seq.nextval,
-		#{HashTag})
+		#{hashTag})
 	</insert>
 
 	<insert id="insertPostHashs">
 		insert into HashTag values(_seq.nextval,
-		#{FeedPostId}, #{TagId})
+		#{feedPostId}, #{tagId})
 	</insert>
 
 

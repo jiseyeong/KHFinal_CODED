@@ -1,27 +1,21 @@
 package kh.coded.controllers;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.MemberService;
-import kh.coded.services.RefreshTokenService;
-import utils.CookieUtil;
 
 @RestController
 @RequestMapping("/auth/")
@@ -34,7 +28,7 @@ public class AuthenticationController {
 	@Autowired
 	private JwtProvider jwtProvider;
 	
-	@PostMapping(value="join")
+	@PostMapping(value="member")
 	public ResponseEntity<?> join(
 			@RequestParam(value="userId") String id,
 			@RequestParam(value="pw") String pw,
@@ -53,7 +47,30 @@ public class AuthenticationController {
 		}
 	}
 	
-	@PostMapping(value="login")
+	@DeleteMapping(value="member")
+	public ResponseEntity<?> deleteMember(
+			@RequestParam(value="userId") String userId,
+			@RequestParam(value="pw") String pw) {
+		int result = memberService.deleteMember(userId, pw);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@PutMapping(value="member")
+	public ResponseEntity<?> updateMember(
+			@RequestParam(value="dto") MemberDTO dto) {
+		int result = memberService.updateMember(dto);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@PutMapping(value="updatePw")
+	public ResponseEntity<?> updatePw(
+			@RequestParam(value="userId") String userId,
+			@RequestParam(value="pw") String pw) {
+		int result = memberService.updatePw(userId,pw);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@GetMapping(value="login")
 	public ResponseEntity<?> login(
 			HttpServletRequest request,
 			HttpServletResponse response,
@@ -73,7 +90,7 @@ public class AuthenticationController {
 	}
 	
 	//badRequest 시 login 페이지로 넘겨주면 됨.
-	@PostMapping(value="refresh")
+	@GetMapping(value="refresh")
 	public ResponseEntity<?> jwtRefresh(
 			HttpServletRequest request,
 			HttpServletResponse response
@@ -105,32 +122,9 @@ public class AuthenticationController {
 		return ResponseEntity.badRequest().body("Test Failed");
 	}
 
-	@PostMapping(value="isMember/{userId}")
-	public String isMember(@RequestParam(value="userId") String userId) {
+	@GetMapping(value="isMember")
+	public boolean isMember(@RequestParam(value="userId") String userId) {
 		boolean result = memberService.isMemberId(userId);
-		return String.valueOf(result);
-	}
-	
-	@PostMapping(value="deleteMember")
-	public String deleteMember(
-			@RequestParam(value="userId") String userId,
-			@RequestParam(value="pw") String pw) {
-		int result = memberService.deleteMember(userId, pw);
-		return "redirect:/";
-	}
-	
-	@PostMapping(value="updateMember")
-	public String updateMember(
-			@RequestParam(value="dto") MemberDTO dto) {
-		int result = memberService.updateMember(dto);
-		return "redirect:/";
-	}
-	
-	@PostMapping(value="updatePw")
-	public String updatePw(
-			@RequestParam(value="userId") String userId,
-			@RequestParam(value="pw") String pw) {
-		int result = memberService.updatePw(userId,pw);
-		return "redirect:/";
+		return result;
 	}
 }
