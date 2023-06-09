@@ -53,7 +53,7 @@
 		select * from feedpost where feedpostid = ${FeedPostId} <!-- 위에서 뽑아낸 포스트 아이디를 가지고 피드를 뽑아냄 -->
 	</select>
 
-	<select id="selectTestScrollFeedList" resultType="kh.coded.dto.FeedPostDTO">
+	<select id="selectAllFeedPost" resultType="kh.coded.dto.FeedPostDTO">
 		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
 	</select>
 

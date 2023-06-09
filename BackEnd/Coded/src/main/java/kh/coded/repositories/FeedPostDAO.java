@@ -60,11 +60,11 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectTestFeedList");
 	}
 
-	public List<FeedPostDTO> selectTestScrollFeedList(int startFeedNum, int endFeedNum) {
+	public List<FeedPostDTO> selectAllFeedPost(int startFeedNum, int endFeedNum) {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);
-		return mybatis.selectList("FeedPost.selectTestScrollFeedList",map);
+		return mybatis.selectList("FeedPost.selectAllFeedPost",map);
 	}
 
 	public FeedPostDTO selectByUserNo(int userNo) {
