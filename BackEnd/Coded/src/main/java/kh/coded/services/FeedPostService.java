@@ -2,14 +2,13 @@ package kh.coded.services;
 
 import java.util.List;
 
-import kh.coded.config.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.PhotoDTO;
-import kh.coded.dto.TodayWeatherDTO;
 import kh.coded.repositories.FeedPostDAO;
+import utils.StaticValue;
 
 @Service
 public class FeedPostService {
@@ -46,7 +45,7 @@ public class FeedPostService {
 	}
 
 	public List<FeedPostDTO> selectTestScrollFeedList(int cpage) {
-		int feedCountPerPage = Settings.FEEDCOUNTPERSCROLL;
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
 		int endFeedNum = cpage*feedCountPerPage;
 		int startFeedNum = endFeedNum-(feedCountPerPage-1);
 
