@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RegisterPage from './pages/auth/RegisterPage';
 import LoginPage from './pages/auth/LoginPage';
 // import MyProfilePage from './pages/user/MyProfilePage';
-import FeedPost from './component/feed/FeedPost';
+import FeedList from './component/feed/FeedList';
+import MyProfilePage from './pages/user/MyProfile/MyProfilePage';
 
 function App() {
   return (

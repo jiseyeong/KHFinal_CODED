@@ -29,12 +29,16 @@ public class FollowDAO {
 //	팔로우 등록 - 해당 유저를 팔로우 등록
 	public int insertFollow(int ToUserId, int FromUserId) {
 		Map<String, Integer> insert = new HashMap<>();
+		insert.put("ToUserId", ToUserId);
+		insert.put("FromUserId", FromUserId);
 		return mybatis.insert("Follow.insertFollow", insert);
 	}
 
 //	팔로우 해제 - 해당 유저를 팔로우 해제
 	public int deleteFollow(int ToUserId, int FromUserId) {
 		Map<String, Integer> delete = new HashMap<>();
+		delete.put("ToUserId", ToUserId);
+		delete.put("FromUserId", FromUserId);
 		return mybatis.delete("Follow.deleteFollow", delete);
 	}
 }

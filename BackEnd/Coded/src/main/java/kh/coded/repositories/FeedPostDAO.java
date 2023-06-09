@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.PhotoDTO;
-import kh.coded.dto.TodayWeatherDTO;
 
 @Repository
 public class FeedPostDAO {
@@ -19,8 +18,8 @@ public class FeedPostDAO {
 	private SqlSessionTemplate mybatis;
 
 //	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
-	public List<FeedPostDTO> selectFeedList(String FeedPostId) {
-		return mybatis.selectList("FeedPost.selectFeedList", FeedPostId);
+	public List<FeedPostDTO> selectFeedList(String UserNo) {
+		return mybatis.selectList("FeedPost.selectFeedList", UserNo);
 	}
 
 //	피드 쓰기 - 피드를 작성 할 수 있는 페이지
@@ -44,9 +43,16 @@ public class FeedPostDAO {
 //	}
 	
 //	피드 내 해시태그 입력 - 해시태그를 활용하여 피드 작성
+	public int insertPostHashs(int FeedPostId, int TagId) {
+		Map<String, Integer> result = new HashMap<>();
+		result.put("FeedPostId", FeedPostId);
+		result.put("TagId", TagId);
+		return mybatis.insert("FeedPost.insertPostHashs", result);
+	}
 	public int insertHashTag(String HashTag) {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
+	
 	
 	public List<FeedPostDTO> selectTestFeedList() {
 		return mybatis.selectList("FeedPost.selectTestFeedList");
