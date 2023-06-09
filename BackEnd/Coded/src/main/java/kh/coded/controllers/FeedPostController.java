@@ -22,12 +22,12 @@ public class FeedPostController {
     @Autowired
     private FeedPostService feedpostService;
 
-    @GetMapping("/selectTestScrollFeedList/")
+    @GetMapping("/selectfeedlisttestscroll/")
     public ResponseEntity<?> selectFeedList(
             @RequestParam(value = "cpage", required = false, defaultValue = "1")
             int cpage) {
 //        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
-        List<FeedPostDTO> list = feedPostService.selectTestScrollFeedList(cpage);
+        List<FeedPostDTO> list = feedpostService.selectTestScrollFeedList(cpage);
         return ResponseEntity.ok().body(list);
     }
 

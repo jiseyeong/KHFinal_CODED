@@ -8,14 +8,12 @@ const FeedPostOuter = styled('div')`
   width: 1202px;
   border: 1px solid black;
   display: flex;
-  justify-content: start;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 `;
 
 const FeedList = () => {
-  const [num, setNum] = useState(0);
   const [test, setTest] = useState([]);
-  var count = 2;
 
   window.onscroll = function () {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -32,7 +30,7 @@ const FeedList = () => {
           });
           setTest([...test, ...temp]);
         })
-        .catch(console.log(resp));
+        .catch((resp) => console.log(resp));
     }
   };
 
