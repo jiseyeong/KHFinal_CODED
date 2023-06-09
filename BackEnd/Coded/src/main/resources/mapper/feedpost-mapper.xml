@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FeedPost">
+
+
+
+	<select id="selectFeedList"
+		resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost where UserNo = #{userNo}
+	</select>
+
+
+
+	<insert id="insertFeedPost">
+		insert into FeedPost values(_seq.nextval, ${userNo},
+		#{body}, sysdate,
+		${writeTemp}, ${writeTempRange})
+	</insert>
+
+	<insert id="insertFeedPhoto">
+		insert into FeedPhoto values(_seq.nextval,
+		#{oriName}, #{sysname}, ${feedPostId},
+		0,0)
+	</insert>
+
+	<insert id="insertHashTag">
+		insert into HashTag values(_seq.nextval,
+		#{hashTag})
+	</insert>
+
+	<insert id="insertPostHashs">
+		insert into HashTag values(_seq.nextval,
+		#{feedPostId}, #{tagId})
+	</insert>
+
+
+
+	<select id="selectTestFeedList"
+		resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost
+	</select>
+
+
+
+</mapper>

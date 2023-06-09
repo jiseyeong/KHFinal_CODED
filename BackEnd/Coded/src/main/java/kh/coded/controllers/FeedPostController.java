@@ -1,5 +1,6 @@
 package kh.coded.controllers;
 
+import kh.coded.config.Settings;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.services.FeedPostService;
@@ -19,15 +20,17 @@ public class FeedPostController {
     @Autowired
     private FeedPostService feedPostService;
 
-    @GetMapping("/selectfeedlist/")
-    public List<FeedPostDTO> selectFeedList(){
-        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
+    @GetMapping("/selectfeedlisttestscroll/")
+    public List<FeedPostDTO> selectFeedList(
+            @RequestParam(value = "cpage", required = false, defaultValue = "1")
+            int cpage) {
+//        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
+        List<FeedPostDTO> list = feedPostService.selectTestScrollFeedList(cpage);
         return list;
     }
 
-	@GetMapping("/insertfeedpost")
-	public String insertFeedPost(FeedPostDTO fdto, HashTagDTO hdto) {
-		return "";
-	}
-	
+    @GetMapping("/insertfeedpost")
+    public String insertFeedPost(FeedPostDTO fdto, HashTagDTO hdto) {
+        return "";
+    }
 }
