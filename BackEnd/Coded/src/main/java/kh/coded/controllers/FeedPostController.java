@@ -1,8 +1,6 @@
 package kh.coded.controllers;
 
-import kh.coded.config.Settings;
 import kh.coded.dto.FeedPostDTO;
-import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.services.FeedPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
-import kh.coded.dto.TodayWeatherDTO;
 
 @RestController
 @RequestMapping("/feedpost/")
