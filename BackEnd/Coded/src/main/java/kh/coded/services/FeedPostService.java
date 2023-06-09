@@ -54,4 +54,8 @@ public class FeedPostService {
 
 		return feedpostDAO.selectTestScrollFeedList(startFeedNum, endFeedNum);
 	}
+	
+	public FeedPostDTO selectByUserNo(int userNo) {
+		return feedpostDAO.selectByUserNo(userNo);
+	}
 }

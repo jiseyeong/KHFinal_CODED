@@ -44,6 +44,11 @@
 		select feedpostid from posthashs where tagid = ${tagId}	
 	</select>
 
+	<select id="selectByUserNo"
+		resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost where userno = ${userno}
+	</select>
+	
 	<select id="searchByFeedPost" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost where feedpostid = ${FeedPostId} <!-- 위에서 뽑아낸 포스트 아이디를 가지고 피드를 뽑아냄 -->
 	</select>
