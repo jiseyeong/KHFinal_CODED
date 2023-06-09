@@ -5,18 +5,26 @@ public class TemperatureMessageDTO {
     private String body;
     private int tempCondition;
     private char tempRangeCondition;
+    private String prefix;
+    private String mySuffix;
 
     public TemperatureMessageDTO() {
     }
+    
 
-    public TemperatureMessageDTO(int tempMessageId, String body, int tempCondition, char tempRangeCondition) {
-        this.tempMessageId = tempMessageId;
-        this.body = body;
-        this.tempCondition = tempCondition;
-        this.tempRangeCondition = tempRangeCondition;
-    }
+    public TemperatureMessageDTO(int tempMessageId, String body, int tempCondition, char tempRangeCondition,
+			String prefix, String mySuffix) {
+		super();
+		this.tempMessageId = tempMessageId;
+		this.body = body;
+		this.tempCondition = tempCondition;
+		this.tempRangeCondition = tempRangeCondition;
+		this.prefix = prefix;
+		this.mySuffix = mySuffix;
+	}
 
-    public int getTempMessageId() {
+
+	public int getTempMessageId() {
         return tempMessageId;
     }
 
@@ -47,4 +55,25 @@ public class TemperatureMessageDTO {
     public void setTempRangeCondition(char tempRangeCondition) {
         this.tempRangeCondition = tempRangeCondition;
     }
+
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+
+	public String getMySuffix() {
+		return mySuffix;
+	}
+
+
+	public void setMySuffix(String mySuffix) {
+		this.mySuffix = mySuffix;
+	}
+    
 }
