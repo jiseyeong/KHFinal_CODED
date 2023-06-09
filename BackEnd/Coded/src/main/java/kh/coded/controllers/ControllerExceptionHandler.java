@@ -1,10 +1,10 @@
 package kh.coded.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<?> exceptionHandler(Exception e) {

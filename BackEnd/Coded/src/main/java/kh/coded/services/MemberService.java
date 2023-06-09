@@ -1,9 +1,9 @@
 package kh.coded.services;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
+import kh.coded.repositories.AddressCoordDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.security.JwtProvider;
 import utils.CookieUtil;
@@ -27,6 +28,8 @@ public class MemberService implements UserDetailsService {
 
 	@Autowired
 	private MemberDAO memberDAO;
+	@Autowired
+	private AddressCoordDAO addressCoordDAO;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
@@ -115,6 +118,14 @@ public class MemberService implements UserDetailsService {
 			}
 		}
 		return null;
+	}
+	
+	public List<String> getAddress1(){
+		return addressCoordDAO.selectDistinctAddress1();
+	}
+	
+	public List<String> getAddress2(String address1){
+		return addressCoordDAO.selectScopedAddress2(address1);
 	}
 	
 	public int deleteMember(String userId, String pw) {
