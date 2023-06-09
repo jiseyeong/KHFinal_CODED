@@ -5,7 +5,7 @@ import MyProfileForm from '../components/user/MyProfileForm';
 const MyPage = () => {
     return(
         <>
-            <MyProfileTemplate />
+            <MyProfileTemplate/>
         </>
     );
 };
