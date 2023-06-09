@@ -4,7 +4,7 @@ public class TodayWeatherDTO {
 	
 	private int todayWeatherId;
 	private int addressId;
-	private int current;
+	private int recent;
 	private int min;
 	private int max;
 	private int weatherCode;
@@ -15,7 +15,7 @@ public class TodayWeatherDTO {
 		super();
 		this.todayWeatherId = todayWeatherId;
 		this.addressId = addressId;
-		this.current = current;
+		this.recent = current;
 		this.min = min;
 		this.max = max;
 		this.weatherCode = weatherCode;
@@ -33,10 +33,10 @@ public class TodayWeatherDTO {
 		this.addressId = addressId;
 	}
 	public int getCurrent() {
-		return current;
+		return recent;
 	}
 	public void setCurrent(int current) {
-		this.current = current;
+		this.recent = current;
 	}
 	public int getMin() {
 		return min;

@@ -99,7 +99,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
 						CookieUtil.deleteCookie(request, response, "CodedRefreshToken");
 					}
-					CookieUtil.addSecureCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 				}
 			}
 		}catch(Exception e) {

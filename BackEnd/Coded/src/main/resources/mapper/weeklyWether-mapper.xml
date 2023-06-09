@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="WeeklyWeather">
 	<insert id="insert">
-		insert into TodayWeather(WeekWeatherId, AddressId, Min, Max, WeatherCode, DDay)
-		 values (WeekWeatherID_SEQ.nextval, #{addressId}, #{min}, #{max}, #{weatherCode}, #{dday})
+		insert into WeeklyWeather(WeekWeatherId, AddressId, Min, Max, WeatherCode, DDay)
+		 values (WeekWeatherId_SEQ.nextval, #{addressId}, #{min}, #{max}, #{weatherCode}, #{dDay})
 	</insert>
 </mapper>

@@ -65,11 +65,11 @@ public class WetherAndAddressTest {
 			todayDTO.setAddressId(dto.getAddressID());
 			todayWeatherDAO.insert(todayDTO);
 			
-			weeklyDTO.setAddressId(dto.getAddressID());
-			for(int i = 1; i <= 6; i++) {
-				weeklyDTO.setdDay(i);
-				weeklyWeatherDAO.insert(weeklyDTO);
-			}
+//			weeklyDTO.setAddressId(dto.getAddressID());
+//			for(int i = 1; i <= 6; i++) {
+//				weeklyDTO.setdDay(i);
+//				weeklyWeatherDAO.insert(weeklyDTO);
+//			}
 		}
 	}
 	
