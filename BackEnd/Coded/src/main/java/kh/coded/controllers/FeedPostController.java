@@ -6,7 +6,6 @@ import kh.coded.dto.PhotoDTO;
 import kh.coded.services.FeedPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -42,10 +41,14 @@ public class FeedPostController {
 			@RequestParam(value="hdto") HashTagDTO hdto,
 			@RequestParam(value="pdto") PhotoDTO pdto) {
 		try {
+			Map<String, Integer> result = new HashMap<>();
 			int FeedPost = feedpostService.insertFeedPost(fdto);
 			int HashTag = feedpostService.insertHashTag(hdto.getHashTag());
 			int FeedPhoto = feedpostService.insertFeedPhoto(pdto);
-		return ResponseEntity.ok().body(FeedPost, HashTag, FeedPhoto);
+			result.put("FeedPost", FeedPost);
+			result.put("HashTag", HashTag);
+			result.put("FeedPhoto", FeedPhoto);
+		return ResponseEntity.ok().body(result);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
