@@ -12,7 +12,7 @@ const FeedPostOuter = styled('div')`
   flex-wrap: wrap;
 `;
 
-const FeedPost = () => {
+const FeedList = () => {
   const [num, setNum] = useState(0);
   const [test, setTest] = useState([]);
   var count = 2;
@@ -62,6 +62,8 @@ const FeedPost = () => {
   );
 };
 
+export default FeedList;
+
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값
 // document.body.offsetHeight 페이지 전체 높이
@@ -83,5 +85,3 @@ const FeedPost = () => {
 //   document.querySelector('section').appendChild(toAdd);
 //   }
 //   }
-
-export default FeedPost;

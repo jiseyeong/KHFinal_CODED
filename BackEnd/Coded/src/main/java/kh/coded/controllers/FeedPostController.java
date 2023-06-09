@@ -5,6 +5,7 @@ import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.services.FeedPostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,17 +21,18 @@ public class FeedPostController {
     @Autowired
     private FeedPostService feedPostService;
 
-    @GetMapping("/selectfeedlisttestscroll/")
-    public List<FeedPostDTO> selectFeedList(
+    @GetMapping("/selectTestScrollFeedList/")
+    public ResponseEntity<?> selectFeedList(
             @RequestParam(value = "cpage", required = false, defaultValue = "1")
             int cpage) {
 //        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
         List<FeedPostDTO> list = feedPostService.selectTestScrollFeedList(cpage);
-        return list;
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/insertfeedpost")
     public String insertFeedPost(FeedPostDTO fdto, HashTagDTO hdto) {
         return "";
     }
+
 }

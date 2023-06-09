@@ -27,7 +27,7 @@ public class AuthenticationController {
 	private MemberService memberService;
 	@Autowired
 	private JwtProvider jwtProvider;
-	
+
 	@PostMapping(value="member")
 	public ResponseEntity<?> join(
 			@RequestParam(value="userId") String id,
@@ -41,7 +41,7 @@ public class AuthenticationController {
 			//MemberDTO dto = new MemberDTO(0, id, pw, nickName, null, null, address1, address2, Role.USER.getValue(), null, null, null);
 			MemberDTO dto = new MemberDTO(id, pw, nickName, address1, address2);
 			int userNo = memberService.join(dto);
-			return ResponseEntity.ok().body(userNo);
+			return ResponseEntity.ok().body(dto);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
