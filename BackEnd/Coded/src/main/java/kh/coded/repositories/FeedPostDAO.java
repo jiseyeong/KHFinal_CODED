@@ -54,9 +54,7 @@ public class FeedPostDAO {
 	}
 	public int searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
 		return mybatis.selectOne(HashTag);
-	}
-	
-	public 
+	}	
 	
 	public List<FeedPostDTO> selectTestFeedList() {
 		return mybatis.selectList("FeedPost.selectTestFeedList");
