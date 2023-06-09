@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/auth/join",
 					"/login",
 					"/auth/login",
-					"/auth/getUserNo"
+					"/auth/userNo"
 					));
 
 	@Override

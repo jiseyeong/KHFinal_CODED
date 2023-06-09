@@ -54,7 +54,7 @@ public class SecurityConfiguration {
 			"/auth/login",
 			"/error",
 			"/auth/fail",
-			"/auth/getUserNo"
+			"/auth/userNo"
 			
 	};
 	private final String[] API_USER_LIST = {

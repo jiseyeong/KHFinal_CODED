@@ -111,7 +111,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(null);
 	}
 	
-	@GetMapping(value = "getUserNo")
+	@GetMapping(value = "userNo")
 	public ResponseEntity<?> getUserNo(
 			@RequestHeader(value="authorization") String authorization
 			) {
