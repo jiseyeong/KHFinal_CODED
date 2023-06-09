@@ -1,21 +1,23 @@
 package kh.coded.controllers;
 
 import java.util.HashMap;
+import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.PhotoDTO;
+import kh.coded.services.FeedPostService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
-import kh.coded.dto.PhotoDTO;
-import kh.coded.services.FeedPostService;
 
 @RestController
 @RequestMapping("/feedpost/")
@@ -49,12 +51,19 @@ public class FeedPostController {
 		}
 	}
 
-	@GetMapping("/selectfeedlisttestscroll/")
-	public List<FeedPostDTO> selectFeedList(
-			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
+    @GetMapping("/selectfeedlisttestscroll/")
+    public ResponseEntity<?> selectFeedList(
+            @RequestParam(value = "cpage", required = false, defaultValue = "1")
+            int cpage) {
 //        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
-		List<FeedPostDTO> list = feedpostService.selectTestScrollFeedList(cpage);
-		return list;
-	}
+        List<FeedPostDTO> list = feedpostService.selectTestScrollFeedList(cpage);
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/selectfeedlist/")
+    public String selectFeedList(){
+        List<FeedPostDTO> list = feedpostService.selectTestFeedList();
+        return "";
+    }
 
 }

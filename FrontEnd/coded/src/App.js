@@ -14,7 +14,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
-        <Route path="/FeedList" element={<FeedPost />} />
+        <Route path="/FeedList" element={<FeedList />} />
       </Routes>
     </BrowserRouter>
   );

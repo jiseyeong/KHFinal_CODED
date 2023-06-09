@@ -14,23 +14,27 @@ const FeedPostInner = (props) => {
 };
 
 const FeedInnerLayoutDiv = styled('div')`
-  width: 80%;
-  height: 80%;
+  width: 200px;
+  height: 300px;
+  margin: 10px;
   border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const FeedImageDiv = styled('div')`
   border: 1px solid black;
-  width: 200px;
-  height: 250px;
-  margin: 20px;
+  width: 80%;
+  height: 60%;
+  margin: 10px 20px 10px;
   display: flex;
   justify-content: center;
 `;
 
 const FeedInfoDiv = styled('div')`
   width: 80%;
-  height: 80%;
+  height: 20%;
   border: 1px solid black;
 `;
 
