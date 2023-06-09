@@ -6,6 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.coded.dto.AddressCoordDTO;
+
 @Repository
 public class AddressCoordDAO {
 	
@@ -18,5 +20,9 @@ public class AddressCoordDAO {
 	
 	public List<String> selectScopedAddress2(String address1){
 		return mybatis.selectList("AddressCoord.selectScopedAddress2", address1);
+	}
+	
+	public List<AddressCoordDTO> selectAll(){
+		return mybatis.selectList("AddressCoord.selectAll");
 	}
 }

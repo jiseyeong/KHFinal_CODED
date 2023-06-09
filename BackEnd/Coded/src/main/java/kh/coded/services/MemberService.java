@@ -49,9 +49,9 @@ public class MemberService implements UserDetailsService {
 //				.build();
 	}
 	
-	public String login(HttpServletResponse response, MemberDTO member) {
+	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
 		//TokenDTO token = jwtProvider.createAllLoginToken(member);
-		CookieUtil.addSecureCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+		CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 		
 		UserDetails authentication = this.loadUserByUsername(member.getUserId());
 		//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
@@ -82,7 +82,7 @@ public class MemberService implements UserDetailsService {
 					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(auth);
 					
-					CookieUtil.addSecureCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 					
 					jwtProvider.createLoginAccessToken(member);
 				}catch(Exception e) {

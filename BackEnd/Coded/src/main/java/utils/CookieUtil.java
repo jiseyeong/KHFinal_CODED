@@ -1,5 +1,6 @@
 package utils;
 
+import java.net.URLEncoder;
 import java.util.Base64;
 
 import org.springframework.util.SerializationUtils;
@@ -10,15 +11,28 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CookieUtil {
 	//요청값 (이름, 값, 만료 기간)을 바탕으로 쿠키 추가
-	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) throws Exception {
+		value = URLEncoder.encode(value, "utf-8");
 		Cookie cookie = new Cookie(name, value);
-		cookie.setPath("/"); //어디서든 접근 가능
+		cookie.setPath("/");
 		cookie.setMaxAge(maxAge);
 		
 		response.addCookie(cookie);
 	}
 	
-	public static void addSecureCookie(HttpServletResponse response, String name, String value, int maxAge) {
+	public static void addHttpOnlyCookie(HttpServletResponse response, String name, String value, int maxAge) throws Exception {
+		value = URLEncoder.encode(value, "utf-8");
+		Cookie cookie = new Cookie(name, value);
+		cookie.setPath("/"); //어디서든 접근 가능
+		cookie.setMaxAge(maxAge);
+		
+		cookie.setHttpOnly(true);
+		
+		response.addCookie(cookie);
+	}
+	
+	public static void addSecureCookie(HttpServletResponse response, String name, String value, int maxAge) throws Exception {
+		value = URLEncoder.encode(value, "utf-8");
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath("/");
 		cookie.setMaxAge(maxAge);
