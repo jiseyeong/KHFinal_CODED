@@ -36,7 +36,7 @@ const MyProfileForm = ({ history }) => {
             </ul>
           </div>
           <div className="btns">
-            <button className="PwChangeBtn">비밀번호 수정</button>
+            <button className="PwChangeBtn">비밀번호 변경</button>
             <button className="EditBtn">수정하기</button>
             <button className="EditCancelBtn">수정취소</button>
             <button className="EditComBtn">수정완료</button>
