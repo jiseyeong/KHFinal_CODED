@@ -3,6 +3,7 @@ package kh.coded.controllers;
 import kh.coded.config.Settings;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
+import kh.coded.dto.PhotoDTO;
 import kh.coded.services.FeedPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import kh.coded.dto.TodayWeatherDTO;
 public class FeedPostController {
 
     @Autowired
-    private FeedPostService feedPostService;
+    private FeedPostService feedpostService;
 
     @GetMapping("/selectTestScrollFeedList/")
     public ResponseEntity<?> selectFeedList(
@@ -30,9 +31,17 @@ public class FeedPostController {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping("/insertfeedpost")
-    public String insertFeedPost(FeedPostDTO fdto, HashTagDTO hdto) {
+    @GetMapping("/selectfeedlist/")
+    public String selectFeedList(){
+        List<FeedPostDTO> list = feedpostService.selectTestFeedList();
         return "";
     }
 
+	@PutMapping("/insertfeedpost")
+	public String insertFeedPost(FeedPostDTO fdto, HashTagDTO hdto, PhotoDTO pdto) {
+		feedpostService.insertFeedPost(fdto);
+		feedpostService.insertHashTag(hdto.getHashTag());
+		feedpostService.insertFeedPhoto(pdto);
+		return "";
+	}
 }
