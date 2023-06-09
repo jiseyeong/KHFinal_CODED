@@ -2,35 +2,35 @@ package kh.coded.dto;
 
 public class PostHashsDTO {
 
-	private int LinkId;
-	private int FeedPostId;
-	private int TagId;
+	private int linkId;
+	private int feedPostId;
+	private int tagId;
 	public PostHashsDTO() {
 		super();
 	}
 	public PostHashsDTO(int linkId, int feedPostId, int tagId) {
 		super();
-		LinkId = linkId;
-		FeedPostId = feedPostId;
-		TagId = tagId;
+		this.linkId = linkId;
+		this.feedPostId = feedPostId;
+		this.tagId = tagId;
 	}
 	public int getLinkId() {
-		return LinkId;
+		return linkId;
 	}
 	public void setLinkId(int linkId) {
-		LinkId = linkId;
+		this.linkId = linkId;
 	}
 	public int getFeedPostId() {
-		return FeedPostId;
+		return feedPostId;
 	}
 	public void setFeedPostId(int feedPostId) {
-		FeedPostId = feedPostId;
+		this.feedPostId = feedPostId;
 	}
 	public int getTagId() {
-		return TagId;
+		return tagId;
 	}
 	public void setTagId(int tagId) {
-		TagId = tagId;
+		this.tagId = tagId;
 	}
 	
 }
