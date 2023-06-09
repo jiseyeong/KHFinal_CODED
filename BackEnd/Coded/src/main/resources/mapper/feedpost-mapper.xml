@@ -42,6 +42,9 @@
 		select * from FeedPost
 	</select>
 
-
-
+	<select id="selectByUserNo"
+		resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost where userno = ${userno}
+	</select>
+	
 </mapper>

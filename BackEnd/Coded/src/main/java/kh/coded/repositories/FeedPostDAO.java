@@ -64,4 +64,8 @@ public class FeedPostDAO {
 		map.put("endFeedNum",endFeedNum);
 		return mybatis.selectList("FeedPost.selectTestScrollFeedList",map);
 	}
+
+	public FeedPostDTO selectByUserNo(int userNo) {
+		return mybatis.selectOne("FeedPost.selectByUserNo",userNo);
+	}
 }
