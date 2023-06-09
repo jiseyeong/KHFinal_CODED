@@ -25,13 +25,14 @@ const FeedList = () => {
       })
         .then((resp) => {
           let temp = [];
+          console.log(resp);
           resp.data.forEach((i) => {
             console.log(i);
             temp = [...temp, { id: i.feedPostId, body: i.body }];
           });
           setTest([...test, ...temp]);
         })
-        .catch(console.log('false'));
+        .catch(console.log(resp));
     }
   };
 

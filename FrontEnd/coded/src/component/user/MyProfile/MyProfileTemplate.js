@@ -25,6 +25,7 @@ const MyProfileTemplate = ({ childiren }) => {
     <MyProfileTemplateBlock>
       <WhiteBox>
         <MyProfileForm />
+        {children}
       </WhiteBox>
     </MyProfileTemplateBlock>
   );
