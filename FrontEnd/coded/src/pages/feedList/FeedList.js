@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import FeedPostInner from './FeedPostStyled';
+import FeedPostInner from '../../component/feed/FeedPostStyled';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
@@ -14,48 +14,41 @@ const FeedPostOuter = styled('div')`
 
 const FeedList = () => {
   const [test, setTest] = useState([]);
+  const [cpage, setCpage] = useState(1);
+
+  const addFeedList = () => {
+    axios({
+      method: 'GET',
+      url: '/feedpost/selectAllFeedPost/',
+      params: {
+        cpage: cpage,
+      },
+    })
+      .then((resp) => {
+        let temp = [];
+        resp.data.forEach((i) => {
+          temp = [...temp, { id: i.feedPostId, body: i.body }];
+        });
+        setTest([...test, ...temp]);
+        setCpage(cpage + 1);
+      })
+      .catch((resp) => console.log(resp));
+  };
 
   window.onscroll = function () {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      axios({
-        method: 'GET',
-        url: '/feedpost/selectfeedlisttestscroll/',
-      })
-        .then((resp) => {
-          let temp = [];
-          console.log(resp);
-          resp.data.forEach((i) => {
-            console.log(i);
-            temp = [...temp, { id: i.feedPostId, body: i.body }];
-          });
-          setTest([...test, ...temp]);
-        })
-        .catch((resp) => console.log(resp));
+      addFeedList();
     }
   };
 
   useEffect(() => {
-    axios({
-      method: 'GET',
-      url: '/feedpost/selectfeedlisttestscroll/',
-    })
-      .then((resp) => {
-        console.log(resp);
-        console.log(resp.data);
-        let temp = [];
-        resp.data.forEach((i) => {
-          console.log(i);
-          temp = [...temp, { id: i.feedPostId, body: i.body }];
-        });
-        setTest([...test, ...temp]);
-      })
-      .catch(console.log('false'));
+    addFeedList();
   }, []);
 
   return (
     <FeedPostOuter>
       {test.map((i) => (
-        <FeedPostInner id={i.id} body={i.body} />
+        <FeedPostInner key={i.id} id={i.id} body={i.body} />
       ))}
     </FeedPostOuter>
   );

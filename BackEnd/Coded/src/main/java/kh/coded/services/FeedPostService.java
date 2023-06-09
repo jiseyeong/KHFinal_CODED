@@ -47,12 +47,12 @@ public class FeedPostService {
 		return feedpostDAO.selectTestFeedList();
 	}
 
-	public List<FeedPostDTO> selectTestScrollFeedList(int cpage) {
+	public List<FeedPostDTO> selectAllFeedPost(int cpage) {
 		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
 		int endFeedNum = cpage*feedCountPerPage;
 		int startFeedNum = endFeedNum-(feedCountPerPage-1);
 
-		return feedpostDAO.selectTestScrollFeedList(startFeedNum, endFeedNum);
+		return feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
 	}
 	
 	public FeedPostDTO selectByUserNo(int userNo) {

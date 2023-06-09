@@ -57,6 +57,7 @@ public class SecurityConfiguration {
 			"/auth/userNo",
 			"/feedList",
 			"/feedpost/**",
+			"/HomePage",
 	};
 	private final String[] API_USER_LIST = {
 			"/test/"

@@ -54,12 +54,12 @@ public class FeedPostController {
 		}
 	}
 
-    @GetMapping("/selectfeedlisttestscroll/")
+    @GetMapping("/selectAllFeedPost/")
     public ResponseEntity<?> selectFeedList(
             @RequestParam(value = "cpage", required = false, defaultValue = "1")
             int cpage) {
-//        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
-        List<FeedPostDTO> list = feedpostService.selectTestScrollFeedList(cpage);
+		System.out.println(cpage);
+        List<FeedPostDTO> list = feedpostService.selectAllFeedPost(cpage);
         return ResponseEntity.ok().body(list);
     }
 

@@ -1,0 +1,11 @@
+.searchBoxLayout {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchBox {
+  width: 50%;
+  height: 50%;
+}
