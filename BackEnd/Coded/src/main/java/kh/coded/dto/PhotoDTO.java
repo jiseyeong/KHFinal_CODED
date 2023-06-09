@@ -2,59 +2,59 @@ package kh.coded.dto;
 
 public class PhotoDTO {
 
-	private int PhotoId;
-	private String OriName;
-	private String SysName;
-	private int FeedPostId;
-	private int MessageId;
-	private int UserNo;
+	private int photoId;
+	private String oriName;
+	private String sysName;
+	private int feedPostId;
+	private int messageId;
+	private int userNo;
 	public PhotoDTO() {
 		super();
 	}
 	public PhotoDTO(int photoId, String oriName, String sysName, int feedPostId, int messageId, int userNo) {
 		super();
-		PhotoId = photoId;
-		OriName = oriName;
-		SysName = sysName;
-		FeedPostId = feedPostId;
-		MessageId = messageId;
-		UserNo = userNo;
+		this.photoId = photoId;
+		this.oriName = oriName;
+		this.sysName = sysName;
+		this.feedPostId = feedPostId;
+		this.messageId = messageId;
+		this.userNo = userNo;
 	}
 	public int getPhotoId() {
-		return PhotoId;
+		return photoId;
 	}
 	public void setPhotoId(int photoId) {
-		PhotoId = photoId;
+		this.photoId = photoId;
 	}
 	public String getOriName() {
-		return OriName;
+		return oriName;
 	}
 	public void setOriName(String oriName) {
-		OriName = oriName;
+		this.oriName = oriName;
 	}
 	public String getSysName() {
-		return SysName;
+		return sysName;
 	}
 	public void setSysName(String sysName) {
-		SysName = sysName;
+		this.sysName = sysName;
 	}
 	public int getFeedPostId() {
-		return FeedPostId;
+		return feedPostId;
 	}
 	public void setFeedPostId(int feedPostId) {
-		FeedPostId = feedPostId;
+		this.feedPostId = feedPostId;
 	}
 	public int getMessageId() {
-		return MessageId;
+		return messageId;
 	}
 	public void setMessageId(int messageId) {
-		MessageId = messageId;
+		this.messageId = messageId;
 	}
 	public int getUserNo() {
-		return UserNo;
+		return userNo;
 	}
 	public void setUserNo(int userNo) {
-		UserNo = userNo;
+		this.userNo = userNo;
 	}
 	
 }
