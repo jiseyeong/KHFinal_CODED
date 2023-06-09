@@ -1,5 +1,6 @@
 package kh.coded.controllers;
 
+import kh.coded.config.Settings;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
@@ -34,4 +35,13 @@ public class FeedPostController {
 		return "";
 	}
 	
+    @GetMapping("/selectfeedlisttestscroll/")
+    public List<FeedPostDTO> selectFeedList(
+            @RequestParam(value = "cpage", required = false, defaultValue = "1")
+            int cpage) {
+//        List<FeedPostDTO> list = feedPostService.selectTestFeedList();
+        List<FeedPostDTO> list = feedpostService.selectTestScrollFeedList(cpage);
+        return list;
+    }
+
 }
