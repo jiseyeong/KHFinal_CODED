@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import palette from '../../styles/pallets';
+import palette from '../../styles/palette';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 
@@ -66,7 +66,7 @@ const AuthForm = ({ type }) => {
 
     //또는 axios.post("/auth/join", null, {params : {~}})
     // 두번째 인자가 data긴 한데, 들어가는 방식이 Query 방식이 아님.
-    //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함. 
+    //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함.
     axios({
       method: 'post',
       url: '/auth/join',
@@ -80,7 +80,7 @@ const AuthForm = ({ type }) => {
     })
       .then(function (response) {
         console.log(response.data);
-        navigate("/login");
+        navigate('/login');
         //return JSON.parse(response);
       })
       .catch(function (error) {
@@ -88,11 +88,13 @@ const AuthForm = ({ type }) => {
       });
   }
 
-  function doLogin(e){
-    axios.post("/auth/login-proc", null, {params:{
+  function doLogin(e) {
+    axios.post('/auth/login-proc', null, {
+      params: {
         userId: idRef.current.value,
-        pw: pwRef.current.value
-    }})
+        pw: pwRef.current.value,
+      },
+    });
     // axios({
     //   method: 'post',
     //   url: '/auth/login',
@@ -118,39 +120,43 @@ const AuthForm = ({ type }) => {
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
-        {type === 'register' && (
-          <StyledInput
-            autoComplete="name"
-            name="userNickName"
-            placeholder="닉네임"
-            ref={nickNameRef}
-          />
-        )}
+      {type === 'register' && (
         <StyledInput
-          autoComplete="username"
-          name="userId"
-          placeholder="아이디"
-          ref={idRef}
+          autoComplete="name"
+          name="userNickName"
+          placeholder="닉네임"
+          ref={nickNameRef}
         />
+      )}
+      <StyledInput
+        autoComplete="username"
+        name="userId"
+        placeholder="아이디"
+        ref={idRef}
+      />
+      <StyledInput
+        autoComplete="new-password"
+        name="pw"
+        placeholder="비밀번호"
+        type="password"
+        ref={pwRef}
+      />
+      {type === 'register' && (
         <StyledInput
           autoComplete="new-password"
-          name="pw"
-          placeholder="비밀번호"
+          name="pwConfirm"
+          placeholder="비밀번호 확인"
           type="password"
-          ref={pwRef}
+          ref={pwConfirmRef}
         />
-        {type === 'register' && (
-          <StyledInput
-            autoComplete="new-password"
-            name="pwConfirm"
-            placeholder="비밀번호 확인"
-            type="password"
-            ref={pwConfirmRef}
-          />
-        )}
-        <ButtonWithMarginTop cyan={true} fullWidth onClick={type==='register' ? (doRegister) : (doLogin)}>
-          {text}
-        </ButtonWithMarginTop>
+      )}
+      <ButtonWithMarginTop
+        cyan={true}
+        fullWidth
+        onClick={type === 'register' ? doRegister : doLogin}
+      >
+        {text}
+      </ButtonWithMarginTop>
       <Footer>
         {type === 'login' ? (
           <Link to="/register">회원가입</Link>

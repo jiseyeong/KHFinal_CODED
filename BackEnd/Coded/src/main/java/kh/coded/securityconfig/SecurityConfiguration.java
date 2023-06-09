@@ -43,7 +43,7 @@ public class SecurityConfiguration {
 			"/js/**" ,
 			"/img/**",
 			"/favicon.ico",
-			"/error"
+			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
 			"/",
@@ -54,8 +54,9 @@ public class SecurityConfiguration {
 			"/auth/login",
 			"/error",
 			"/auth/fail",
-			"/auth/userNo"
-			
+			"/auth/userNo",
+			"/feedList",
+			"/feedpost/**",
 	};
 	private final String[] API_USER_LIST = {
 			"/test/"
