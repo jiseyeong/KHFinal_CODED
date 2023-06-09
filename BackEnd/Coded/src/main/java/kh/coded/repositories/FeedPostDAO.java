@@ -1,6 +1,8 @@
 package kh.coded.repositories;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +50,12 @@ public class FeedPostDAO {
 	
 	public List<FeedPostDTO> selectTestFeedList() {
 		return mybatis.selectList("FeedPost.selectTestFeedList");
+	}
+
+	public List<FeedPostDTO> selectTestScrollFeedList(int startFeedNum, int endFeedNum) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		return mybatis.selectList("FeedPost.selectTestScrollFeedList",map);
 	}
 }

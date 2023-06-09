@@ -10,12 +10,15 @@
 	</select>
 	
 	<insert id="insertFeedPost">
-	insert into FeedPost values()
+		insert into FeedPost values()
 	</insert>
 
 	<select id="selectTestFeedList" resultType="kh.coded.dto.FeedPostDTO">
 		select * from FeedPost
 	</select>
 
+	<select id="selectTestScrollFeedList" resultType="kh.coded.dto.FeedPostDTO">
+		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
+	</select>
 	
 </mapper>
