@@ -18,7 +18,7 @@ public class FeedPostDAO {
 	private SqlSessionTemplate mybatis;
 
 //	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
-	public List<FeedPostDTO> selectFeedList(String UserNo) {
+	public List<FeedPostDTO> selectFeedList(int UserNo) {
 		return mybatis.selectList("FeedPost.selectFeedList", UserNo);
 	}
 
@@ -52,7 +52,9 @@ public class FeedPostDAO {
 	public int insertHashTag(String HashTag) {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
-	
+	public int searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
+		return mybatis.selectOne(HashTag);
+	}	
 	
 	public List<FeedPostDTO> selectTestFeedList() {
 		return mybatis.selectList("FeedPost.selectTestFeedList");

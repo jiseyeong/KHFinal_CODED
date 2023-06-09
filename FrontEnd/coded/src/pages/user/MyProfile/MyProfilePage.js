@@ -1,13 +1,12 @@
 import React from 'react';
-import MyProfileTemplate from '../components/user/MyProfileTemplate';
-import MyProfileForm from '../components/user/MyProfileForm';
+import MyProfileTemplate from '../../../component/user/MyProfile/MyProfileTemplate';
+// import MyProfileForm from '../components/user/MyProfileForm';
 
-const MyPage = () => {
-    return(
-        <>
-            <MyProfileTemplate/>
-        </>
-    );
+const MyProfilePage = () => {
+  return (
+    <>
+      <MyProfileTemplate />
+    </>
+  );
 };
-  export default MyProfilePage;
-  
+export default MyProfilePage;

@@ -2,58 +2,58 @@ package kh.coded.dto;
 
 public class TodayWeatherDTO {
 	
-	private int TodayWeatherId;
-	private int AddressId;
-	private int Current;
-	private int Min;
-	private int Max;
-	private int WeatherCode;
+	private int todayWeatherId;
+	private int addressId;
+	private int current;
+	private int min;
+	private int max;
+	private int weatherCode;
 	public TodayWeatherDTO() {
 		super();
 	}
 	public TodayWeatherDTO(int todayWeatherId, int addressId, int current, int min, int max, int weatherCode) {
 		super();
-		TodayWeatherId = todayWeatherId;
-		AddressId = addressId;
-		Current = current;
-		Min = min;
-		Max = max;
-		WeatherCode = weatherCode;
+		this.todayWeatherId = todayWeatherId;
+		this.addressId = addressId;
+		this.current = current;
+		this.min = min;
+		this.max = max;
+		this.weatherCode = weatherCode;
 	}
 	public int getTodayWeatherId() {
-		return TodayWeatherId;
+		return todayWeatherId;
 	}
 	public void setTodayWeatherId(int todayWeatherId) {
-		TodayWeatherId = todayWeatherId;
+		this.todayWeatherId = todayWeatherId;
 	}
 	public int getAddressId() {
-		return AddressId;
+		return addressId;
 	}
 	public void setAddressId(int addressId) {
-		AddressId = addressId;
+		this.addressId = addressId;
 	}
 	public int getCurrent() {
-		return Current;
+		return current;
 	}
 	public void setCurrent(int current) {
-		Current = current;
+		this.current = current;
 	}
 	public int getMin() {
-		return Min;
+		return min;
 	}
 	public void setMin(int min) {
-		Min = min;
+		this.min = min;
 	}
 	public int getMax() {
-		return Max;
+		return max;
 	}
 	public void setMax(int max) {
-		Max = max;
+		this.max = max;
 	}
 	public int getWeatherCode() {
-		return WeatherCode;
+		return weatherCode;
 	}
 	public void setWeatherCode(int weatherCode) {
-		WeatherCode = weatherCode;
+		this.weatherCode = weatherCode;
 	}
 }

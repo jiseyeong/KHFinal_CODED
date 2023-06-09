@@ -8,14 +8,12 @@ const FeedPostOuter = styled('div')`
   width: 1202px;
   border: 1px solid black;
   display: flex;
-  justify-content: start;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 `;
 
-const FeedPost = () => {
-  const [num, setNum] = useState(0);
+const FeedList = () => {
   const [test, setTest] = useState([]);
-  var count = 2;
 
   window.onscroll = function () {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -25,13 +23,14 @@ const FeedPost = () => {
       })
         .then((resp) => {
           let temp = [];
+          console.log(resp);
           resp.data.forEach((i) => {
             console.log(i);
             temp = [...temp, { id: i.feedPostId, body: i.body }];
           });
           setTest([...test, ...temp]);
         })
-        .catch(console.log('false'));
+        .catch((resp) => console.log(resp));
     }
   };
 
@@ -62,6 +61,8 @@ const FeedPost = () => {
   );
 };
 
+export default FeedList;
+
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값
 // document.body.offsetHeight 페이지 전체 높이
@@ -83,5 +84,3 @@ const FeedPost = () => {
 //   document.querySelector('section').appendChild(toAdd);
 //   }
 //   }
-
-export default FeedPost;
