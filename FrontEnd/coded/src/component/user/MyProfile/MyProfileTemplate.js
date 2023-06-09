@@ -20,12 +20,11 @@ const WhiteBox = styled.div`
   width: 100%;
 `;
 
-const MyProfileTemplate = ({ childiren }) => {
+const MyProfileTemplate = () => {
   return (
     <MyProfileTemplateBlock>
       <WhiteBox>
         <MyProfileForm />
-        {children}
       </WhiteBox>
     </MyProfileTemplateBlock>
   );
