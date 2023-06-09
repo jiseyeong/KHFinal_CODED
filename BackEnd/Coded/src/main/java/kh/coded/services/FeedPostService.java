@@ -16,8 +16,8 @@ public class FeedPostService {
 	@Autowired
 	private FeedPostDAO feedpostDAO;
 	
-	public List<FeedPostDTO> selectFeedList(String FeedPostId){
-		return feedpostDAO.selectFeedList(FeedPostId);
+	public List<FeedPostDTO> selectFeedList(int UserNo){
+		return feedpostDAO.selectFeedList(UserNo);
 	}
 	
 	public int insertFeedPost(FeedPostDTO dto) {
@@ -35,6 +35,9 @@ public class FeedPostService {
 //	public int insertWeatherCode(int WeatherCode) {
 //		return feedpostDAO.insertWeatherCode(WeatherCode);
 //	}
+	public int insertPostHashs(int FeedPost, int TagId) {
+		return feedpostDAO.insertPostHashs(FeedPost, TagId);
+	}
 	
 	public int insertHashTag(String HashTag) {
 		return feedpostDAO.insertHashTag(HashTag);
