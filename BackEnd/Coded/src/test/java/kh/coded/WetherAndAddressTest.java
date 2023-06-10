@@ -56,8 +56,8 @@ public class WetherAndAddressTest {
 //	@Rollback(false)
 //	@Test
 //	public void insertData() {
-//		TodayWeatherDTO todayDTO = new TodayWeatherDTO(0, 0, 0, 0, 0, 0, 0);
-//		WeeklyWeatherDTO weeklyDTO = new WeeklyWeatherDTO(0, 0, 0, 0, 0, 0);
+//		TodayWeatherDTO todayDTO = new TodayWeatherDTO(0, 0, 0, 0, 0, 0, 0, 0);
+//		WeeklyWeatherDTO weeklyDTO = new WeeklyWeatherDTO(0, 0, 0, 0, 0, 0, 0);
 //		
 //		List<AddressCoordDTO> addressList = addressCoordDAO.selectAll();
 //		
@@ -68,12 +68,26 @@ public class WetherAndAddressTest {
 //				todayWeatherDAO.insert(todayDTO);
 //			}
 //
-//			
-////			weeklyDTO.setAddressId(dto.getAddressID());
-////			for(int i = 1; i <= 6; i++) {
-////				weeklyDTO.setdDay(i);
-////				weeklyWeatherDAO.insert(weeklyDTO);
-////			}
+//			weeklyDTO.setAddressId(dto.getAddressID());
+//			for(int i = 1; i <= 6; i++) {
+//				weeklyDTO.setdDay(i);
+//				weeklyWeatherDAO.insert(weeklyDTO);
+//			}
+//		}
+//	}
+	
+//	@DisplayName("하루치씩만 더 추가")
+//	@Transactional
+//	@Rollback(false)
+//	@Test
+//	public void extraInsertTest() throws Exception{
+//		int i = 7;
+//		WeeklyWeatherDTO weeklyDTO = new WeeklyWeatherDTO(0, 0, 0, 0, 0, 0, 0);
+//		List<AddressCoordDTO> addressList = addressCoordDAO.selectAll();
+//		for(AddressCoordDTO dto : addressList) {
+//			weeklyDTO.setAddressId(dto.getAddressID());
+//			weeklyDTO.setdDay(7);
+//			weeklyWeatherDAO.insert(weeklyDTO);
 //		}
 //	}
 	

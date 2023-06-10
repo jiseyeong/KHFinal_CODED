@@ -25,6 +25,10 @@ public class WeeklyWeatherDAO {
 		return mybatis.selectOne("WeeklyWeather.selectByAddressIdAndDDay", data);
 	}
 	
+	public void updateAll(WeeklyWeatherDTO dto) {
+		mybatis.update("WeeklyWeather.updateAll", dto);
+	}
+	
 //	public List<WeeklyWeatherDTO> selectByAddressIdOrderByDDay(int addressId){
 //		return mybatis.selectList("WeeklyWeather.selectByAddressIdOrderByDDay", addressId);
 //	}
