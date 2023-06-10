@@ -22,6 +22,9 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectMemberByUserNo",userNo);
 	}
 
+	public MemberDTO selectMemberByNickname(String userNickname) {
+		return mybatis.selectOne("Member.selectMemberByNickname",userNickname);
+	}
 	public boolean isMemberId(String userID) { //아이디 중복확인
 		return mybatis.selectOne("Member.isMemberId",userID);
 	}
