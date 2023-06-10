@@ -55,11 +55,11 @@ public class FeedPostDAO {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
 	public List<HashTagDTO> searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
-		return mybatis.selectOne(HashTag);
+		return mybatis.selectList("FeedPost.searchByHashs",HashTag);
 	}	
 	
-	public List<PostHashsDTO> seachByPostHashs(int tagId) { //위에서 뽑아낸 태그 아이디로 포스트 아이디들 뽑기
-		return mybatis.selectList("FeedPost.seachByPostHashs",tagId);
+	public List<PostHashsDTO> searchByPostHashs(int tagId) { //위에서 뽑아낸 태그 아이디로 포스트 아이디들 뽑기
+		return mybatis.selectList("FeedPost.searchByPostHashs",tagId);
 	}
 	
 	public FeedPostDTO searchByFeedPost(int feedPostId) { //위에서 뽑아낸 포스트 아이디로 피드 뽑기
