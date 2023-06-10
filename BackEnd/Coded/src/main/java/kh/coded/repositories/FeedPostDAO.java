@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
 
@@ -53,7 +54,7 @@ public class FeedPostDAO {
 	public int insertHashTag(String HashTag) {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
-	public int searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
+	public List<HashTagDTO> searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
 		return mybatis.selectOne(HashTag);
 	}	
 	

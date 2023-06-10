@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
 import kh.coded.repositories.FeedPostDAO;
@@ -48,7 +49,7 @@ public class FeedPostService {
 		return feedpostDAO.selectTestFeedList();
 	}
 
-	public int searchByHashs(String HashTag) {
+	public List<HashTagDTO> searchByHashs(String HashTag) {
 		return feedpostDAO.searchByHashs(HashTag);
 	}
 	

@@ -39,7 +39,7 @@
 		select * from FeedPost
 	</select>
 	
-	<select id="searchByHashs" resultType="int"> <!-- 해시태그 있는 지 검색 -->
+	<select id="searchByHashs" resultType="kh.coded.dto.HashTagDTO"> <!-- 해시태그 있는 지 검색 -->
 		select tagid from hashTag where hashTag = '%'||#{hashTag}#||'%' 
 	</select>
 	
