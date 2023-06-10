@@ -85,18 +85,18 @@ public class FeedPostController {
 	@GetMapping("/searchByHashs") //해쉬태그로 검색 시 피드 뽑기
 	public ResponseEntity<?> selectByHashs(@RequestParam String hashTag) {
 		List<HashTagDTO> tagId = feedpostService.searchByHashs(hashTag);
-		List<PostHashsDTO> postHashs = new ArrayList<>();
-		for(HashTagDTO dto : tagId) {
+		List<FeedPostDTO> feedposts = new ArrayList<>();
+		
+		for(HashTagDTO hashTagDTO : tagId) {
+			List<PostHashsDTO> postHashs = feedpostService.seachByPostHashs(hashTagDTO.getTagId());
+			
+			for(PostHashsDTO dto : postHashs) {
+				feedposts.add(feedpostService.searchByFeedPost(dto.getFeedPostId()));
+			}
 		}
 			
-		List<FeedPostDTO> feedposts = new ArrayList<>();
-
-		for(PostHashsDTO dto : postHashs) {
-			feedposts.add(feedpostService.searchByFeedPost(dto.getFeedPostId()));
-		}
 		return ResponseEntity.ok().body(feedposts); 
 	}
-
 
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
