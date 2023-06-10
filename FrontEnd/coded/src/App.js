@@ -5,7 +5,7 @@ import LoginPage from './pages/auth/LoginPage';
 // import MyProfilePage from './pages/user/MyProfilePage';
 import FeedList from './pages/feedList/FeedList';
 import MyProfilePage from './pages/user/MyProfile/MyProfilePage';
-import HomePage from './pages/main/HomePage';
+import HomePageTemplate from './pages/main/HomePageTemplate';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
         <Route path="/FeedList" element={<FeedList />} />
-        <Route path="/HomePage" element={<HomePage />} />
+        <Route path="/HomePage" element={<HomePageTemplate />} />
       </Routes>
     </BrowserRouter>
   );
