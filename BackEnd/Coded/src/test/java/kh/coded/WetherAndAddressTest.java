@@ -51,26 +51,38 @@ public class WetherAndAddressTest {
 //		System.out.println(message);
 //	}
 	
-	@DisplayName("날짜 데이터들 데이터베이스 입력")
+//	@DisplayName("날짜 데이터들 데이터베이스 입력")
+//	@Transactional
+//	@Rollback(false)
+//	@Test
+//	public void insertData() {
+//		TodayWeatherDTO todayDTO = new TodayWeatherDTO(0, 0, 0, 0, 0, 0, 0);
+//		WeeklyWeatherDTO weeklyDTO = new WeeklyWeatherDTO(0, 0, 0, 0, 0, 0);
+//		
+//		List<AddressCoordDTO> addressList = addressCoordDAO.selectAll();
+//		
+//		for(AddressCoordDTO dto : addressList) {
+//			todayDTO.setAddressId(dto.getAddressID());
+//			for(int i = 0; i <= 23; i++) {
+//				todayDTO.setTime(i);
+//				todayWeatherDAO.insert(todayDTO);
+//			}
+//
+//			
+////			weeklyDTO.setAddressId(dto.getAddressID());
+////			for(int i = 1; i <= 6; i++) {
+////				weeklyDTO.setdDay(i);
+////				weeklyWeatherDAO.insert(weeklyDTO);
+////			}
+//		}
+//	}
+	
+	@DisplayName("오늘의 날씨 정보 긁어서 입력")
 	@Transactional
 	@Rollback(false)
 	@Test
-	public void insertData() {
-		TodayWeatherDTO todayDTO = new TodayWeatherDTO(0, 0, 0, 0, 0, 0);
-		WeeklyWeatherDTO weeklyDTO = new WeeklyWeatherDTO(0, 0, 0, 0, 0, 0);
-		
-		List<AddressCoordDTO> addressList = addressCoordDAO.selectAll();
-		
-		for(AddressCoordDTO dto : addressList) {
-			todayDTO.setAddressId(dto.getAddressID());
-			todayWeatherDAO.insert(todayDTO);
-			
-//			weeklyDTO.setAddressId(dto.getAddressID());
-//			for(int i = 1; i <= 6; i++) {
-//				weeklyDTO.setdDay(i);
-//				weeklyWeatherDAO.insert(weeklyDTO);
-//			}
-		}
+	public void updateTodayData() throws Exception{
+		wetherService.setFullTodayWeather();
 	}
 	
 }

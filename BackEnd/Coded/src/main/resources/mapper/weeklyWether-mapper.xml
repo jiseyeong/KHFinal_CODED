@@ -5,6 +5,12 @@
 <mapper namespace="WeeklyWeather">
 	<insert id="insert">
 		insert into WeeklyWeather(WeekWeatherId, AddressId, Min, Max, WeatherCode, DDay)
-		 values (WeekWeatherId_SEQ.nextval, #{addressId}, #{min}, #{max}, #{weatherCode}, #{dDay})
+		 values (WeekWeatherId_SEQ.nextval, ${addressId}, ${min}, ${max}, ${weatherCode}, ${dDay})
 	</insert>
+	<select id="selectByAddressIdOrderByDDay" resultType="kh.coded.dto.WeeklyWeatherDTO">
+		select * from WeeklyWeather where AddressId=${addressId} order by DDay asc
+	</select>
+	<select id="selectByAddressIdAndDDay" resultType="kh.coded.dto.WeeklyWeatherDTO">
+		select * from WeeklyWeather where AddressId=${addressId} and dDay=${dDay} 
+	</select>
 </mapper>

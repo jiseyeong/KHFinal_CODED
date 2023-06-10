@@ -8,18 +8,23 @@ public class TodayWeatherDTO {
 	private int min;
 	private int max;
 	private int weatherCode;
+	private int time;
+	
 	public TodayWeatherDTO() {
 		super();
 	}
-	public TodayWeatherDTO(int todayWeatherId, int addressId, int current, int min, int max, int weatherCode) {
+	
+	public TodayWeatherDTO(int todayWeatherId, int addressId, int recent, int min, int max, int weatherCode, int time) {
 		super();
 		this.todayWeatherId = todayWeatherId;
 		this.addressId = addressId;
-		this.recent = current;
+		this.recent = recent;
 		this.min = min;
 		this.max = max;
 		this.weatherCode = weatherCode;
+		this.time = time;
 	}
+
 	public int getTodayWeatherId() {
 		return todayWeatherId;
 	}
@@ -31,12 +36,6 @@ public class TodayWeatherDTO {
 	}
 	public void setAddressId(int addressId) {
 		this.addressId = addressId;
-	}
-	public int getCurrent() {
-		return recent;
-	}
-	public void setCurrent(int current) {
-		this.recent = current;
 	}
 	public int getMin() {
 		return min;
@@ -55,5 +54,21 @@ public class TodayWeatherDTO {
 	}
 	public void setWeatherCode(int weatherCode) {
 		this.weatherCode = weatherCode;
+	}
+
+	public int getRecent() {
+		return recent;
+	}
+
+	public void setRecent(int recent) {
+		this.recent = recent;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
 	}
 }
