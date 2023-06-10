@@ -12,6 +12,9 @@
   	<select id="isMemberId" resultType="boolean">
   		select * from member where userId = #{userId}
   	</select>
+  	<select id="selectMemberByNickname" resultType="kh.coded.dto.MemberDTO">
+  		select * from member where userNickname = #{userNickname}
+  	</select>
   	<insert id="insertMember">
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select userno_seq.nextval from dual
