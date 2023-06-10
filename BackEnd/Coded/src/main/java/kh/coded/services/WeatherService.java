@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -80,6 +81,7 @@ public class WeatherService {
 		return weeklyWeatherDAO.selectByAddressIdAndDDay(addressId, dDay);
 	}
 	
+	@Scheduled(cron = "0 15 2 * * ?")
 	@Transactional
 	public void setFullTodayWeather(){
 		Calendar cal = Calendar.getInstance();
@@ -136,8 +138,8 @@ public class WeatherService {
 						//1시간 온도
 						//fcstTime 은 0400 등으로 들어있다보니, 400으로 인식될것임
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						if(index < 2) {
-							if(diff <= 1) {
+						if(index <= 2) {
+							if(diff == 1) {
 								todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}else {
@@ -150,8 +152,8 @@ public class WeatherService {
 					else if(category.equals("SKY")) {
 						//1시간 기상 상태 코드
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						if(index <= 1) {
-							if(diff <= 1) {
+						if(index <= 2) {
+							if(diff == 1) {
 								todayList.get(index).setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 
@@ -168,8 +170,8 @@ public class WeatherService {
 						}
 					}else if(category.equals("PTY")) {
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						if(index < 2) {
-							if(diff <= 1) {
+						if(index <= 2) {
+							if(diff == 1) {
 								todayList.get(index).setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}else {
