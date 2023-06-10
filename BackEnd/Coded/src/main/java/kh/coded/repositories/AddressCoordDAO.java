@@ -1,6 +1,8 @@
 package kh.coded.repositories;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +26,12 @@ public class AddressCoordDAO {
 	
 	public List<AddressCoordDTO> selectAll(){
 		return mybatis.selectList("AddressCoord.selectAll");
+	}
+	
+	public AddressCoordDTO selectByAddresses(String address1, String address2) {
+		Map<String, String> data = new HashMap<>();
+		data.put("address1", address1);
+		data.put("address2", address2);
+		return mybatis.selectOne("AddressCoord.selectByAddresses", data);
 	}
 }

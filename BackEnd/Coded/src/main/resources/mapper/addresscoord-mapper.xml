@@ -12,4 +12,7 @@
 	<select id="selectAll" resultType="kh.coded.dto.AddressCoordDTO">
 		SELECT * FROM AddressCoord
 	</select>
+	<select id="selectByAddresses" resultType="kh.coded.dto.AddressCoordDTO">
+		select * from AddressCoord where Address1=#{address1} and Address2=#{address2}
+	</select>
 </mapper>

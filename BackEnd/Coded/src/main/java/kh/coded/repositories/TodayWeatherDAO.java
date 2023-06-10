@@ -14,4 +14,16 @@ public class TodayWeatherDAO {
 	public void insert(TodayWeatherDTO dto) {
 		mybatis.insert("TodayWeather.insert", dto);
 	}
+	
+	public TodayWeatherDTO selectByAddressId(int addressId) {
+		return mybatis.selectOne("TodayWeather.selectByAddressId",addressId);
+	}
+	
+	public void updateAll(TodayWeatherDTO dto) {
+		mybatis.update("TodayWeather.updateAll", dto);
+	}
+	
+	public void updatePart(TodayWeatherDTO dto) {
+		mybatis.update("TodayWeather.updatePart", dto);
+	}
 }
