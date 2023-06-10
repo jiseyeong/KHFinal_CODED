@@ -87,7 +87,6 @@ public class FeedPostController {
 		List<HashTagDTO> tagId = feedpostService.searchByHashs(hashTag);
 		List<PostHashsDTO> postHashs = new ArrayList<>();
 		for(HashTagDTO dto : tagId) {
-			
 		}
 			
 		List<FeedPostDTO> feedposts = new ArrayList<>();
