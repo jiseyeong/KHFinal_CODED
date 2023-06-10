@@ -42,7 +42,7 @@ public class WeatherService {
 	private String weatherAPIKey;
 	
 
-	private int[] tempConditions = {
+	private final int[] tempConditions = {
 			4, //0
 			8, //1
 			11, //2
@@ -52,6 +52,7 @@ public class WeatherService {
 			27, //6
 			28 //7
 	};
+	private final int WEEKLY_SET_TIME = 9;
 
 
 	public String getMessage(int curr, int max, int min) {
@@ -71,8 +72,8 @@ public class WeatherService {
 		return tempMessageDAO.selectMessageByCondition(condition, rangeCondition);
 	}
 
-	public TodayWeatherDTO getTodayWeather(int addressId) {
-		return todayWeatherDAO.selectByAddressId(addressId);
+	public TodayWeatherDTO getTodayWeather(int addressId, int time) {
+		return todayWeatherDAO.selectByAddressId(addressId, time);
 	}
 
 	public WeeklyWeatherDTO getWeeklyWeather(int addressId, int dDay) {
@@ -86,6 +87,7 @@ public class WeatherService {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		SimpleDateFormat hourFormatter = new SimpleDateFormat("HH");
 		SimpleDateFormat minuteFormatter = new SimpleDateFormat("mm");
+		SimpleDateFormat dayFormatter = new SimpleDateFormat("dd");
 		if((Integer.parseInt(hourFormatter.format(cal.getTime())) >= 2 && Integer.parseInt(minuteFormatter.format(cal.getTime())) > 40)
 			|| Integer.parseInt(hourFormatter.format(cal.getTime())) >= 3) {
 			now = cal.getTime();
@@ -97,13 +99,12 @@ public class WeatherService {
 		List<AddressCoordDTO> coordList = addressCoordDAO.selectAll();
 		
 		RestTemplate restTemplate = new RestTemplate();
-		SimpleDateFormat tempForm = new SimpleDateFormat("HHmm");
 		
 		try {
 			for(AddressCoordDTO coord : coordList) {						
 				UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst")
 						.queryParam("serviceKey", weatherAPIKey)
-						.queryParam("numOfRows", 300)
+						.queryParam("numOfRows", 900)
 						.queryParam("pageNo", 1)
 						.queryParam("base_date", day)
 						.queryParam("base_time", "0200")
@@ -120,38 +121,102 @@ public class WeatherService {
 
 				
 				List<TodayWeatherDTO> todayList = new ArrayList<>();
+				WeeklyWeatherDTO nextDay = new WeeklyWeatherDTO(0, coord.getAddressID(), 0, 0, 1, 0,0);
+				WeeklyWeatherDTO twoDay = new WeeklyWeatherDTO(0, coord.getAddressID(), 0, 0, 2, 0, 0);
 				for(int i = 0; i < 24; i++) {
-					todayList.add(new TodayWeatherDTO(0, coord.getAddressID(), 0, 0, 0, 0, i));
+					//TodayWeatherID, AddressID, Recent, Min, Max, Time, SKYCode, PTYCode
+					todayList.add(new TodayWeatherDTO(0, coord.getAddressID(), 0, 0, 0, i, 0, 0));
 				}
 				JSONArray jsonArray = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
 				for(int i = 0; i < jsonArray.length(); i++) {
 					String category = jsonArray.getJSONObject(i).getString("category");
+					Date date = formatter.parse(Integer.toString(jsonArray.getJSONObject(i).getInt("fcstDate")));
+					int diff = Math.abs(Integer.parseInt(dayFormatter.format(date)) - Integer.parseInt(dayFormatter.format(new Date())));
 					if(category.equals("TMP")) {
 						//1시간 온도
 						//fcstTime 은 0400 등으로 들어있다보니, 400으로 인식될것임
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						if(index < 2) {
+							if(diff <= 1) {
+								todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}else {
+							if(diff == 0) {
+								todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}
+						
 					}
 					else if(category.equals("SKY")) {
 						//1시간 기상 상태 코드
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						todayList.get(index).setWeatherCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						if(index <= 1) {
+							if(diff <= 1) {
+								todayList.get(index).setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+
+						}else if(diff == 0){
+							todayList.get(index).setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						}
+						
+						if(index == WEEKLY_SET_TIME) {
+							if(diff == 1) {
+								nextDay.setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}else if (diff == 2) {
+								twoDay.setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}
+					}else if(category.equals("PTY")) {
+						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
+						if(index < 2) {
+							if(diff <= 1) {
+								todayList.get(index).setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}else {
+							if(diff == 0) {
+								todayList.get(index).setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}
+						
+						if(index == WEEKLY_SET_TIME) {
+							if(diff == 1) {
+								nextDay.setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}else if (diff == 2) {
+								twoDay.setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}
 					}
 					else if(category.equals("TMN")) {
 						//일일 최저 기온
-						for(int j = 0; j < 23; j++) {
-							todayList.get(j).setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						if(diff == 0) {
+							for(int j = 0; j < 23; j++) {
+								todayList.get(j).setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}else if(diff == 1){
+							nextDay.setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						}else if(diff == 2) {
+							twoDay.setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
 						}
+							
 					}else if(category.equals("TMX")) {
 						//일일 최고 기온
-						for(int j = 0; j < 23; j++) {
-							todayList.get(j).setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						if(diff == 0) {
+							for(int j = 0; j < 23; j++) {
+								todayList.get(j).setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
+							}
+						}else if(diff == 1) {
+							nextDay.setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
+						}else if(diff == 2) {
+							twoDay.setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
 						}
+						
 					}
 				}
 				for(TodayWeatherDTO today : todayList) {
 					todayWeatherDAO.updateAll(today);
 				}
+				weeklyWeatherDAO.updateAll(nextDay);
+				weeklyWeatherDAO.updateAll(twoDay);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
