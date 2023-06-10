@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.XML;
@@ -55,16 +57,16 @@ public class WeatherService {
 	private final int WEEKLY_SET_TIME = 9;
 
 
-	public String getMessage(int curr, int max, int min) {
+	public String getMessage(int max, int min) {
 		int condition = 0;
 		String rangeCondition = (max - min) >= 10 ? "T" : "F"; // 비교 연산 결과 불린 연산값이 돌아감.
-		if(curr < tempConditions[0]) {
+		if(max < tempConditions[0]) {
 			condition = tempConditions[0];
-		}else if(curr > tempConditions[7]) {
+		}else if(max > tempConditions[7]) {
 			condition = tempConditions[7];
 		}else {
 			for(int i = 0; i < tempConditions.length-1; i++) {
-				if(curr >= tempConditions[i] && curr < tempConditions[i+1]) {
+				if(max >= tempConditions[i] && max < tempConditions[i+1]) {
 					condition = tempConditions[i+1];
 				}
 			}
@@ -78,6 +80,36 @@ public class WeatherService {
 
 	public WeeklyWeatherDTO getWeeklyWeather(int addressId, int dDay) {
 		return weeklyWeatherDAO.selectByAddressIdAndDDay(addressId, dDay);
+	}
+	
+	public List<WeeklyWeatherDTO> getWeeklyWeatherList(int addressId){
+		return weeklyWeatherDAO.selectByAddressId(addressId);
+	}
+	
+	private Map<String, Integer> parseWeatherCode(String weather){
+		Map<String, Integer> result = new HashMap<>();
+		String skyCodeKey = "SKY";
+		String ptyCodeKey = "PTY";
+		if(weather.equals("맑음")) {
+			result.put(skyCodeKey, 1);
+			result.put(ptyCodeKey, 0);
+		}else {
+			if(weather.contains("구름")) {
+				result.put(skyCodeKey, 3);
+			}else if(weather.contains("흐")) {
+				result.put(skyCodeKey, 4);
+			}
+			if(weather.contains("비/눈")) {
+				result.put(ptyCodeKey, 2);
+			}else if(weather.contains("비")) {
+				result.put(ptyCodeKey, 1);
+			}else if(weather.contains("눈")) {
+				result.put(ptyCodeKey, 3);
+			}else if(weather.contains("소나기")) {
+				result.put(ptyCodeKey, 4);
+			}
+		}
+		return result;
 	}
 	
 	@Transactional
@@ -136,8 +168,8 @@ public class WeatherService {
 						//1시간 온도
 						//fcstTime 은 0400 등으로 들어있다보니, 400으로 인식될것임
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						if(index < 2) {
-							if(diff <= 1) {
+						if(index <= 2) {
+							if(diff == 1) {
 								todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}else {
@@ -150,8 +182,8 @@ public class WeatherService {
 					else if(category.equals("SKY")) {
 						//1시간 기상 상태 코드
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						if(index <= 1) {
-							if(diff <= 1) {
+						if(index <= 2) {
+							if(diff == 1) {
 								todayList.get(index).setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 
@@ -168,8 +200,8 @@ public class WeatherService {
 						}
 					}else if(category.equals("PTY")) {
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
-						if(index < 2) {
-							if(diff <= 1) {
+						if(index <= 2) {
+							if(diff == 1) {
 								todayList.get(index).setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}else {
