@@ -26,14 +26,5 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 			AuthenticationException authException) throws IOException, ServletException {
 		System.out.println("UnAuthorized");
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
-		
-//		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//		response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		
-//		try(OutputStream os = response.getOutputStream()){
-//			ObjectMapper om = new ObjectMapper();
-//			om.writeValue(os, rse);
-//			os.flush();
-//		}
 	}
 }

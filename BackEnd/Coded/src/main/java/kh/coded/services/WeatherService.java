@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.XML;
@@ -13,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -56,16 +57,16 @@ public class WeatherService {
 	private final int WEEKLY_SET_TIME = 9;
 
 
-	public String getMessage(int curr, int max, int min) {
+	public String getMessage(int max, int min) {
 		int condition = 0;
 		String rangeCondition = (max - min) >= 10 ? "T" : "F"; // 비교 연산 결과 불린 연산값이 돌아감.
-		if(curr < tempConditions[0]) {
+		if(max < tempConditions[0]) {
 			condition = tempConditions[0];
-		}else if(curr > tempConditions[7]) {
+		}else if(max > tempConditions[7]) {
 			condition = tempConditions[7];
 		}else {
 			for(int i = 0; i < tempConditions.length-1; i++) {
-				if(curr >= tempConditions[i] && curr < tempConditions[i+1]) {
+				if(max >= tempConditions[i] && max < tempConditions[i+1]) {
 					condition = tempConditions[i+1];
 				}
 			}
@@ -81,7 +82,36 @@ public class WeatherService {
 		return weeklyWeatherDAO.selectByAddressIdAndDDay(addressId, dDay);
 	}
 	
-	@Scheduled(cron = "0 15 2 * * ?")
+	public List<WeeklyWeatherDTO> getWeeklyWeatherList(int addressId){
+		return weeklyWeatherDAO.selectByAddressId(addressId);
+	}
+	
+	private Map<String, Integer> parseWeatherCode(String weather){
+		Map<String, Integer> result = new HashMap<>();
+		String skyCodeKey = "SKY";
+		String ptyCodeKey = "PTY";
+		if(weather.equals("맑음")) {
+			result.put(skyCodeKey, 1);
+			result.put(ptyCodeKey, 0);
+		}else {
+			if(weather.contains("구름")) {
+				result.put(skyCodeKey, 3);
+			}else if(weather.contains("흐")) {
+				result.put(skyCodeKey, 4);
+			}
+			if(weather.contains("비/눈")) {
+				result.put(ptyCodeKey, 2);
+			}else if(weather.contains("비")) {
+				result.put(ptyCodeKey, 1);
+			}else if(weather.contains("눈")) {
+				result.put(ptyCodeKey, 3);
+			}else if(weather.contains("소나기")) {
+				result.put(ptyCodeKey, 4);
+			}
+		}
+		return result;
+	}
+	
 	@Transactional
 	public void setFullTodayWeather(){
 		Calendar cal = Calendar.getInstance();
