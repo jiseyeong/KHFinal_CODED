@@ -11,16 +11,17 @@ const Container = styled('div')`
   height: 100%;
 `;
 
-const HomePage = () => {
+const HomePageTemplate = () => {
   return (
     <Container>
       <GlobalStyles />
       <Header />
       <Navigator />
+      {/* FeedList대신 다른 Component로 교체 후 사용*/}
       <FeedList />
       <Footer />
     </Container>
   );
 };
 
-export default HomePage;
+export default HomePageTemplate;
