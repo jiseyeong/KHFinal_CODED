@@ -82,9 +82,10 @@ public class MemberService implements UserDetailsService {
 					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(auth);
 					
+					CookieUtil.deleteCookie(request, response, "CodedRefreshToken");
 					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 					
-					jwtProvider.createLoginAccessToken(member);
+					return jwtProvider.createLoginAccessToken(member);
 				}catch(Exception e) {
 					return null;
 				}
