@@ -1,18 +1,30 @@
 package kh.coded.services;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.DefaultResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
-import jakarta.servlet.http.Cookie;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
@@ -34,7 +46,11 @@ public class MemberService implements UserDetailsService {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private JwtProvider jwtProvider;
-	
+	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+	private String CLIENT_ID;
+	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	private String CLIENT_SECRET; 
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberDTO user = memberDAO.selectMemberById(username);
@@ -42,37 +58,33 @@ public class MemberService implements UserDetailsService {
 			throw new UsernameNotFoundException(username + "은 없는 회원입니다.");
 		}
 		return new MemberPrincipal(user);
-//		return User.builder()
-//				.username(user.getUserId())
-//				.password(user.getPw())
-//				.roles(user.getRole())
-//				.build();
+		//		return User.builder()
+		//				.username(user.getUserId())
+		//				.password(user.getPw())
+		//				.roles(user.getRole())
+		//				.build();
 	}
-	
+
 	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
 		//TokenDTO token = jwtProvider.createAllLoginToken(member);
 		CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
-		
+
 		UserDetails authentication = this.loadUserByUsername(member.getUserId());
 		//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
-		
+
 		return jwtProvider.createLoginAccessToken(member);
 	}
-	
+
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
 		SecurityContextHolder.getContext().setAuthentication(null);
-		CookieUtil.deleteCookie(request, response, "CodedRefreshToken");
+		CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 	}
-	
+
 	public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
-		Cookie[] cookies = request.getCookies();
-		if(cookies.length > 0) {
-			String refreshToken = Arrays.stream(cookies)
-					.filter(c -> c.getName().equals("CodedRefreshToken"))
-					.findFirst().map(Cookie::getValue)
-					.orElse(null);
+		if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+			String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
 			if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
 				refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
 				try {
@@ -81,10 +93,10 @@ public class MemberService implements UserDetailsService {
 					//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
 					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(auth);
-					
-					CookieUtil.deleteCookie(request, response, "CodedRefreshToken");
-					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
-					
+
+					CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
+					CookieUtil.addHttpOnlyCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+
 					return jwtProvider.createLoginAccessToken(member);
 				}catch(Exception e) {
 					return null;
@@ -94,19 +106,19 @@ public class MemberService implements UserDetailsService {
 		// 쿠키(리프레시 토큰)이 없는 경우
 		return null;
 	}
-	
+
 	public MemberDTO selectByID(String userId) {
 		return memberDAO.selectMemberById(userId);
 	}
-	
+
 	public MemberDTO selectByUserNo(int userNo) {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
-	
+
 	public MemberDTO selectByNickname(String userNickname) {
 		return memberDAO.selectMemberByNickname(userNickname);
 	}
-	
+
 	public boolean isMemberId(String userId) {
 		return memberDAO.isMemberId(userId);
 	}
@@ -114,7 +126,7 @@ public class MemberService implements UserDetailsService {
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMember(dto);
 	}
-	
+
 	public MemberDTO isValidMember(String id, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(id);
 		if(member != null) {
@@ -124,25 +136,104 @@ public class MemberService implements UserDetailsService {
 		}
 		return null;
 	}
-	
+
 	public List<String> getAddress1(){
 		return addressCoordDAO.selectDistinctAddress1();
 	}
-	
+
 	public List<String> getAddress2(String address1){
 		return addressCoordDAO.selectScopedAddress2(address1);
 	}
-	
+
 	public int deleteMember(String userId, String pw) {
 		return memberDAO.deleteMember(userId, pw);
 	}
-	
+
 	public int updateMember(MemberDTO dto) {
 		return memberDAO.updateMember(dto);
 	}
-	
+
 	public int updatePw(String userId,String pw) {
 		String encodingPw = passwordEncoder.encode(pw);
 		return memberDAO.updatePw(userId,encodingPw);
+	}
+
+	public MemberDTO selectMemberByKakaoToken(String token) {
+		return memberDAO.selectMemberByKakaoToken(token);
+	}
+
+	public String kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+		//인가 코드로 엑세스 토큰 요청.
+		String accessToken = this.getKakaoAccessToken(code);
+
+		//토큰으로 카카오 API 호출
+		Long kakaoId = this.getKakaoUserInfo(accessToken);
+		String token = Long.toString(kakaoId);
+		MemberDTO member = this.selectMemberByKakaoToken(token);
+
+		if(member == null) {
+			//등록 하려 누른 것일 것임.
+			if(auth != null) {
+				System.out.println("여기 들어온다고?");
+				member = memberDAO.selectMemberById(auth.getName());
+				memberDAO.updateKakaoToken(member.getUserNo(), token);
+				return "T";
+			}
+		}else {
+			return this.login(response, member);
+		}
+		return "F";
+	}
+
+	private String getKakaoAccessToken(String code) throws Exception{
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+		body.add("grant_type", "authorization_code");
+		body.add("client_id", CLIENT_ID);
+		body.add("client_secret", CLIENT_SECRET);
+		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/kakao");
+		body.add("code", code);
+
+		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
+		RestTemplate rt = new RestTemplate();
+		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+		rt.setErrorHandler(new DefaultResponseErrorHandler());
+		ResponseEntity<String> response = rt.exchange(
+				"https://kauth.kakao.com/oauth/token",
+				HttpMethod.POST,
+				kakaoTokenRequest,
+				String.class
+				);
+
+		String responseBody = response.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(responseBody);
+		return jsonNode.get("access_token").asText();
+	}
+
+	private Long getKakaoUserInfo(String accessToken) throws Exception{
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + accessToken);
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity<String> response = rt.exchange(
+				"https://kapi.kakao.com/v2/user/me",
+				HttpMethod.POST,
+				kakaoUserInfoRequest,
+				String.class
+				);
+
+		String responseBody = response.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+		Long id = jsonNode.get("id").asLong();
+		System.out.println("카카오 사용자 정보 : " + id);
+
+		return id;
 	}
 }
