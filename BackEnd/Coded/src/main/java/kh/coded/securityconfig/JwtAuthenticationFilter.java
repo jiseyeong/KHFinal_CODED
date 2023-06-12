@@ -41,11 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			Arrays.asList(
 					"/static/**",
 					"/favicon.ico",
-					"/join",
-					"/auth/join",
+					
 					"/login",
+					"/register",
+					"/auth/member",
 					"/auth/login",
-					"/auth/oauth/callback/**"
+					"/auth/oauth/**",
+					"/login/oauth2/code/kakao",
+					"/login/oauth2/callback/kakao"
 					));
 
 	@Override
