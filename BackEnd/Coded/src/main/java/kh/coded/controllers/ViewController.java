@@ -10,4 +10,6 @@ public class ViewController {
 //	public String loginPage() {
 //		return "redirect:/";
 //	}
+
 }
+

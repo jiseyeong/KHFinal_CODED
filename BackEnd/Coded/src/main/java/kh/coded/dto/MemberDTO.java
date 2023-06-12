@@ -7,7 +7,7 @@ public class MemberDTO{
 	private String pw;        //필수
 	private String userNickName="";
 	private String bio="";
-	private String favBrand="";
+	private String hashtag="";
 	private String address1;  //필수
 	private String address2;  //필수
 	private String role = Role.USER.getValue();
@@ -15,7 +15,7 @@ public class MemberDTO{
 	private String kakaoToken="";
 	private String googleToken="";
 	//select용
-	public MemberDTO(int userNo, String userId, String pw, String userNickName, String bio, String favBrand,
+	public MemberDTO(int userNo, String userId, String pw, String userNickName, String bio, String hashtag,
 			String address1, String address2, String role, String naverToken, String kakaoToken, String googleToken) {
 		super();
 		this.userNo = userNo;
@@ -23,7 +23,7 @@ public class MemberDTO{
 		this.pw = pw;
 		this.userNickName = userNickName;
 		this.bio = bio;
-		this.favBrand = favBrand;
+		this.hashtag = hashtag;
 		this.address1 = address1;
 		this.address2 = address2;
 		this.role = role;
@@ -44,11 +44,11 @@ public class MemberDTO{
 	}
 
 	//update 용
-	public MemberDTO(String userId,String userNickName,String bio, String favBrand, String address1, String address2) {
+	public MemberDTO(String userId,String userNickName,String bio, String hashtag, String address1, String address2) {
 		this.userId = userId;
 		this.userNickName = userNickName;
 		this.bio = bio;
-		this.favBrand = favBrand;
+		this.hashtag = hashtag;
 		this.address1 = address1;
 		this.address2 = address2;
 	}
@@ -86,11 +86,11 @@ public class MemberDTO{
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	public String getFavBrand() {
-		return favBrand;
+	public String gethashtag() {
+		return hashtag;
 	}
-	public void setFavBrand(String favBrand) {
-		this.favBrand = favBrand;
+	public void sethashtag(String hashtag) {
+		this.hashtag = hashtag;
 	}
 	public String getAddress1() {
 		return address1;

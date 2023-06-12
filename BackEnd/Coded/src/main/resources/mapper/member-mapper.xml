@@ -15,19 +15,25 @@
   	<select id="selectMemberByNickname" resultType="kh.coded.dto.MemberDTO">
   		select * from member where userNickname = #{userNickname}
   	</select>
+  	<select id="selectMemberByKakaoToken" resultType="kh.coded.dto.MemberDTO">
+  		select * from Member where KakaoToken=#{kakaoToken}
+  	</select>
   	<insert id="insertMember">
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select userno_seq.nextval from dual
   		</selectKey>
-  			insert into member(userNo, userId, pw, userNickname, bio, favBrand, address1, address2, role, naverToken, kakaoToken, googleToken)
-  			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{favBrand},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
+  			insert into member(userNo, userId, pw, userNickname, bio, hashtag, address1, address2, role, naverToken, kakaoToken, googleToken)
+  			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{hashtag},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
   	</insert>
 	<delete id="deleteMember">
 		delete member where userId = #{userId} and pw = #{pw}
 	</delete>
 	<update id="updateMember">
-		update member set usernickname = #{userNickName}, bio = #{bio}, favbrand = #{favBrand},
+		update member set usernickname = #{userNickName}, bio = #{bio}, hashtag = #{hashtag},
 		 address1 = #{address1}, address2 = #{address2} where userId = #{userId}
+	</update>
+	<update id="updateKakaoToken">
+		update Member set KakaoToken=#{kakaoToken} where userNo=${userNo}
 	</update>
 	<update id="updatePw">
 		update member set pw = #{pw} where userId = #{userId}

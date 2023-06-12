@@ -4,11 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -21,10 +17,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import kh.coded.dto.MemberDTO;
-import kh.coded.dto.RefreshTokenDTO;
-import kh.coded.repositories.TokenDTO;
-import kh.coded.services.MemberService;
-import kh.coded.services.RefreshTokenService;
 
 @Component
 public class JwtProvider {
@@ -32,8 +24,6 @@ public class JwtProvider {
 	private String salt;
 //	@Autowired
 //	private MemberService memberService;
-//	@Autowired
-//	private RefreshTokenService rService;
 	
 	private Key secretKey;
 	private static final long ACCESS_TIME = 1000L * 60 * 30; // 30분
@@ -43,13 +33,6 @@ public class JwtProvider {
 	@PostConstruct
 	protected void init() {
 		secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
-	}
-	
-	public TokenDTO createAllLoginToken(MemberDTO member) {
-		return new TokenDTO(
-					this.createLoginAccessToken(member),
-					this.createLoginRefreshToken(member)
-				);
 	}
 	
 	public String createLoginAccessToken(MemberDTO member) {
@@ -79,29 +62,6 @@ public class JwtProvider {
 				.compact();
 	}
 	
-//	public boolean reCreateLoginRefreshToken(MemberDTO member) {
-//		RefreshTokenDTO rDTO = rService.findByUserNo(member.getUserNo());
-//		
-//		if(rDTO == null) {
-//			return false;
-//		}
-//		
-//		try {
-//			String refreshToken = rDTO.getRefreshToken().substring(PRE_WORD.length(), rDTO.getRefreshToken().length());
-//			Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(refreshToken);
-//			System.out.println("리프레시 토큰이 아직 만료되지 않았습니다.");
-//			return true;
-//		}catch(ExpiredJwtException e) {
-//			rDTO.setRefreshToken(PRE_WORD + this.createLoginRefreshToken(member));
-//			System.out.println("Refresh 토큰 재발급");
-//			return true;
-//		}catch(Exception e) {
-//			System.out.println("Refresh 토큰 재발급 중 오류 발생");
-//			e.printStackTrace();
-//			return false;
-//		}
-//	}
-	
 	public boolean validateToken(String token) {
 		try {
 			Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
@@ -124,16 +84,6 @@ public class JwtProvider {
 	    }
 	    return false;
 	}
-	
-//	public boolean validateRefreshToken(String token) {
-//		if(!this.validateToken(token)) return false;
-//		
-//		RefreshTokenDTO refreshToken = rService.findByUserNo(this.getLoginUserNo(token));
-//		if(refreshToken != null && token.equals(refreshToken.getRefreshToken())) {
-//			return true;
-//		}
-//		return false;
-//	}
 		
 //	public Authentication getAuthentication(String token) {
 //		UserDetails member = memberService.loadUserByUsername(this.getLoiginUserID(token));
