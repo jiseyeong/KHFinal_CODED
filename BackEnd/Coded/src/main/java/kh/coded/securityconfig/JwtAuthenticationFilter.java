@@ -45,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/auth/join",
 					"/login",
 					"/auth/login",
-					"/auth/getUserNo"
+					"/auth/oauth/callback/**"
 					));
 
 	@Override
@@ -90,16 +90,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		try {
 			if(member != null) {
 				//jwtProvider.reCreateLoginRefreshToken(member);
-				Cookie[] cookies = request.getCookies();
-				if(cookies.length > 0) {
-					String refreshToken = Arrays.stream(cookies)
-							.filter(c -> c.getName().equals("CodedRefreshToken"))
-							.findFirst().map(Cookie::getValue)
-							.orElse(null);
+				
+				if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+					String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
 					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
-						CookieUtil.deleteCookie(request, response, "CodedRefreshToken");
+						CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 					}
-					CookieUtil.addSecureCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 				}
 			}
 		}catch(Exception e) {

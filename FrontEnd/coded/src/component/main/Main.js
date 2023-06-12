@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import logo from "../../logo.svg";
-import "../../App.css";
+import React, { useState, useEffect } from 'react';
+import logo from '../../logo.svg';
+import '../../App.css';
 
-const Main = () =>{
-    const [message, setMessage] = useState("");
+const Main = () => {
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch("/test/")
+    fetch('/test/')
       .then((response) => response.text())
       .then((message) => {
         setMessage(message);
@@ -24,6 +24,6 @@ const Main = () =>{
       </p>
     </div>
   );
-}
+};
 
 export default Main;

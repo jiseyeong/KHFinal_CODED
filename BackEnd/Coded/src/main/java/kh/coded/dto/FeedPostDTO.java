@@ -4,60 +4,60 @@ import java.security.Timestamp;
 
 public class FeedPostDTO {
 
-	private int FeedPostId;
-	private int UserNo;
-	private String Body;
-	private Timestamp WriteDate;
-	private int WriteTemp;
-	private int WriteTempRange;
+	private int feedPostId;
+	private int userNo;
+	private String body;
+	private Timestamp writeDate;
+	private int writeTemp;
+	private int writeTempRange;
 	public FeedPostDTO() {
 		super();
 	}
 	public FeedPostDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
 			int writeTempRange) {
 		super();
-		FeedPostId = feedPostId;
-		UserNo = userNo;
-		Body = body;
-		WriteDate = writeDate;
-		WriteTemp = writeTemp;
-		WriteTempRange = writeTempRange;
+		this.feedPostId = feedPostId;
+		this.userNo = userNo;
+		this.body = body;
+		this.writeDate = writeDate;
+		this.writeTemp = writeTemp;
+		this.writeTempRange = writeTempRange;
 	}
 	public int getFeedPostId() {
-		return FeedPostId;
+		return feedPostId;
 	}
 	public void setFeedPostId(int feedPostId) {
-		FeedPostId = feedPostId;
+		this.feedPostId = feedPostId;
 	}
 	public int getUserNo() {
-		return UserNo;
+		return userNo;
 	}
 	public void setUserNo(int userNo) {
-		UserNo = userNo;
+		this.userNo = userNo;
 	}
 	public String getBody() {
-		return Body;
+		return body;
 	}
 	public void setBody(String body) {
-		Body = body;
+		this.body = body;
 	}
 	public Timestamp getWriteDate() {
-		return WriteDate;
+		return this.writeDate;
 	}
 	public void setWriteDate(Timestamp writeDate) {
-		WriteDate = writeDate;
+		this.writeDate = writeDate;
 	}
 	public int getWriteTemp() {
-		return WriteTemp;
+		return writeTemp;
 	}
 	public void setWriteTemp(int writeTemp) {
-		WriteTemp = writeTemp;
+		this.writeTemp = writeTemp;
 	}
 	public int getWriteTempRange() {
-		return WriteTempRange;
+		return writeTempRange;
 	}
 	public void setWriteTempRange(int writeTempRange) {
-		WriteTempRange = writeTempRange;
+		this.writeTempRange = writeTempRange;
 	}
 	
 }

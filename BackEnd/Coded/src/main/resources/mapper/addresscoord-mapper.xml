@@ -9,4 +9,10 @@
 	<select id="selectScopedAddress2" resultType="String">
 		SELECT Address2 FROM AddressCoord WHERE Address1=#{address1}
 	</select>
+	<select id="selectAll" resultType="kh.coded.dto.AddressCoordDTO">
+		SELECT * FROM AddressCoord
+	</select>
+	<select id="selectByAddresses" resultType="kh.coded.dto.AddressCoordDTO">
+		select * from AddressCoord where Address1=#{address1} and Address2=#{address2}
+	</select>
 </mapper>

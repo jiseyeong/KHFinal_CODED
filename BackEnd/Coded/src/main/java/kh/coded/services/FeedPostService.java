@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
+import kh.coded.dto.PostHashsDTO;
 import kh.coded.repositories.FeedPostDAO;
 import utils.StaticValue;
 
@@ -16,8 +18,8 @@ public class FeedPostService {
 	@Autowired
 	private FeedPostDAO feedpostDAO;
 	
-	public List<FeedPostDTO> selectFeedList(String FeedPostId){
-		return feedpostDAO.selectFeedList(FeedPostId);
+	public List<FeedPostDTO> selectFeedList(int UserNo){
+		return feedpostDAO.selectFeedList(UserNo);
 	}
 	
 	public int insertFeedPost(FeedPostDTO dto) {
@@ -35,6 +37,9 @@ public class FeedPostService {
 //	public int insertWeatherCode(int WeatherCode) {
 //		return feedpostDAO.insertWeatherCode(WeatherCode);
 //	}
+	public int insertPostHashs(int FeedPost, int TagId) {
+		return feedpostDAO.insertPostHashs(FeedPost, TagId);
+	}
 	
 	public int insertHashTag(String HashTag) {
 		return feedpostDAO.insertHashTag(HashTag);
@@ -44,11 +49,27 @@ public class FeedPostService {
 		return feedpostDAO.selectTestFeedList();
 	}
 
-	public List<FeedPostDTO> selectTestScrollFeedList(int cpage) {
+	public List<HashTagDTO> searchByHashs(String HashTag) {
+		return feedpostDAO.searchByHashs(HashTag);
+	}
+	
+	public List<PostHashsDTO> seachByPostHashs(int tagId) {
+		return feedpostDAO.seachByPostHashs(tagId);
+	}
+	
+	public FeedPostDTO searchByFeedPost(int feedPostId) {
+		return feedpostDAO.searchByFeedPost(feedPostId);
+	}
+	
+	public List<FeedPostDTO> selectAllFeedPost(int cpage) {
 		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
 		int endFeedNum = cpage*feedCountPerPage;
 		int startFeedNum = endFeedNum-(feedCountPerPage-1);
 
-		return feedpostDAO.selectTestScrollFeedList(startFeedNum, endFeedNum);
+		return feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
+	}
+	
+	public FeedPostDTO selectByUserNo(int userNo) {
+		return feedpostDAO.selectByUserNo(userNo);
 	}
 }

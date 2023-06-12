@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
+import kh.coded.dto.PostHashsDTO;
 
 @Repository
 public class FeedPostDAO {
@@ -18,8 +20,8 @@ public class FeedPostDAO {
 	private SqlSessionTemplate mybatis;
 
 //	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
-	public List<FeedPostDTO> selectFeedList(String UserNo) {
-		return mybatis.selectList("FeedPost.selectFeedList", UserNo);
+	public List<FeedPostDTO> selectFeedList(int UserNo) {
+		return mybatis.selectList("FeedPost.selectByUserNo", UserNo);
 	}
 
 //	피드 쓰기 - 피드를 작성 할 수 있는 페이지
@@ -52,16 +54,29 @@ public class FeedPostDAO {
 	public int insertHashTag(String HashTag) {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
+	public List<HashTagDTO> searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
+		return mybatis.selectOne(HashTag);
+	}	
 	
+	public List<PostHashsDTO> seachByPostHashs(int tagId) { //위에서 뽑아낸 태그 아이디로 포스트 아이디들 뽑기
+		return mybatis.selectList("FeedPost.seachByPostHashs",tagId);
+	}
 	
+	public FeedPostDTO searchByFeedPost(int feedPostId) { //위에서 뽑아낸 포스트 아이디로 피드 뽑기
+		return mybatis.selectOne("FeedPost.searchByFeedPost",feedPostId);
+	}
 	public List<FeedPostDTO> selectTestFeedList() {
 		return mybatis.selectList("FeedPost.selectTestFeedList");
 	}
 
-	public List<FeedPostDTO> selectTestScrollFeedList(int startFeedNum, int endFeedNum) {
+	public List<FeedPostDTO> selectAllFeedPost(int startFeedNum, int endFeedNum) {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);
-		return mybatis.selectList("FeedPost.selectTestScrollFeedList",map);
+		return mybatis.selectList("FeedPost.selectAllFeedPost",map);
+	}
+
+	public FeedPostDTO selectByUserNo(int userNo) {
+		return mybatis.selectOne("FeedPost.selectByUserNo",userNo);
 	}
 }

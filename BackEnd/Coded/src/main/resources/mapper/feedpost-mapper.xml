@@ -4,19 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="FeedPost">
 
-
-
-	<select id="selectFeedList"
-		resultType="kh.coded.dto.FeedPostDTO">
-		select * from FeedPost where UserNo = #{userNo}
-	</select>
-
 	<insert id="insertFeedPost">
 		insert into FeedPost values(_seq.nextval, ${userNo},
 		#{body}, sysdate,
 		${writeTemp}, ${writeTempRange})
 	</insert>
-
+	
 	<insert id="insertFeedPhoto">
 		insert into FeedPhoto values(_seq.nextval,
 		#{oriName}, #{sysname}, ${feedPostId},
@@ -32,15 +25,34 @@
 		insert into HashTag values(_seq.nextval,
 		#{feedPostId}, #{tagId})
 	</insert>
-
+	
+	<select id="selectByUserNo" resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost where userno = ${userno}
+	</select>
+	
+	<select id="selectByUserNoList" resultType="kh.coded.dto.FeedPostDTO">
+		select * from FeedPost where userno = ${userno}
+	</select>
+	
 	<select id="selectTestFeedList"
 		resultType="kh.coded.dto.FeedPostDTO">
 		select * from FeedPost
 	</select>
-
-	<select id="selectTestScrollFeedList" resultType="kh.coded.dto.FeedPostDTO">
-		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
+	
+	<select id="searchByHashs" resultType="kh.coded.dto.HashTagDTO"> <!-- 해시태그 있는 지 검색 -->
+		select tagid from hashTag where hashTag = '%'||#{hashTag}#||'%' 
+	</select>
+	
+	<select id="seachByPostHashs" resultType="kh.coded.dto.PostHashsDTO"> <!-- 위에서 뽑아낸 태그아이디를 가지고 포스트 아이디를 뽑아냄 -->
+		select feedpostid from posthashs where tagid = ${tagId}	
+	</select>
+	
+	<select id="searchByFeedPost" resultType="kh.coded.dto.FeedPostDTO">
+		select * from feedpost where feedpostid = ${FeedPostId} <!-- 위에서 뽑아낸 포스트 아이디를 가지고 피드를 뽑아냄 -->
 	</select>
 
+	<select id="selectAllFeedPost" resultType="kh.coded.dto.FeedPostDTO">
+		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
+	</select>
 
 </mapper>
