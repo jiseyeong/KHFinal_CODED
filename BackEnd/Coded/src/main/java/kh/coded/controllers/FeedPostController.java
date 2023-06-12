@@ -31,7 +31,7 @@ public class FeedPostController {
 	@Autowired
 	private MemberService memberService;
 
-	@GetMapping(value = "feedpost")
+	@GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
 		try {
 			List<FeedPostDTO> list = feedpostService.selectFeedList(UserNo);
@@ -41,7 +41,7 @@ public class FeedPostController {
 		}
 	}
 
-	@PutMapping(value="feedpost")
+	@PutMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	public ResponseEntity<?> insertFeedPost(
 			@RequestParam(value="fdto") FeedPostDTO fdto,
 			@RequestParam(value="hdto") HashTagDTO hdto,
