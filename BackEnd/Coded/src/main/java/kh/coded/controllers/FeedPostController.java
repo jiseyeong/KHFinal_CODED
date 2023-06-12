@@ -60,20 +60,21 @@ public class FeedPostController {
 		}
 	}
 
-	@GetMapping("/searchById/") //유저 아이디로 검색 시 유저 정보, 피드 뽑기
+	@GetMapping("searchById") //유저 아이디로 검색 시 유저 정보, 피드 뽑기
 	public ResponseEntity<?> selectMemberById(@RequestParam String userId) {
-		MemberDTO member = memberService.selectByID(userId); 
+		MemberDTO member = memberService.selectByID(userId);
 		List<FeedPostDTO> list = feedpostService.selectFeedList(member.getUserNo());
 		Map<String,Object> result = new HashMap<>();
 		result.put("MemberDTO", member);
-		result.put("feedlist", result);
+		result.put("feedlist", list);
 
 		return ResponseEntity.ok().body(result);
 	}
 
-	@GetMapping("/searchByNickname/") //유저 닉네임으로 검색 시 유저 정보, 피드 뽑기
-	public ResponseEntity<?> selectMemberByNickname(@RequestParam String userNickname) {
-		MemberDTO member = memberService.selectByNickname(userNickname);
+	@GetMapping("searchByNickname") //유저 닉네임으로 검색 시 유저 정보, 피드 뽑기
+	public ResponseEntity<?> selectMemberByNickname(@RequestParam String userNickName) {
+		System.out.println(userNickName);
+		MemberDTO member = memberService.selectMemberByNickName(userNickName);
 		List<FeedPostDTO> list = feedpostService.selectFeedList(member.getUserNo());
 		Map<String,Object> result = new HashMap<>();
 		result.put("MemberDTO", member);
@@ -82,20 +83,18 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(result); 
 	}
 
-	@GetMapping("/searchByHashs") //해쉬태그로 검색 시 피드 뽑기
+	@GetMapping("searchByHashs") //해쉬태그로 검색 시 피드 뽑기
 	public ResponseEntity<?> selectByHashs(@RequestParam String hashTag) {
 		List<HashTagDTO> tagId = feedpostService.searchByHashs(hashTag);
 		List<FeedPostDTO> feedposts = new ArrayList<>();
-		
 		for(HashTagDTO hashTagDTO : tagId) {
-			List<PostHashsDTO> postHashs = feedpostService.seachByPostHashs(hashTagDTO.getTagId());
+			List<PostHashsDTO> postHashs = feedpostService.searchByPostHashs(hashTagDTO.getTagId());
 			
 			for(PostHashsDTO dto : postHashs) {
 				feedposts.add(feedpostService.searchByFeedPost(dto.getFeedPostId()));
 			}
 		}
-			
-		return ResponseEntity.ok().body(feedposts); 
+		return ResponseEntity.ok().body(feedposts);
 	}
 
 	@GetMapping("/selectAllFeedPost/")
