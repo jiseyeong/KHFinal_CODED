@@ -57,22 +57,22 @@ public class SecurityConfiguration {
 			"/manifest.json",
 			"/logo192.png",
 			
-			"/register",
-			"/auth/join",
-			"/login",
-			"/auth/login",
 			"/error",
-			"/auth/fail",
-			"/auth/userNo",
 			"/feedList",
 			"/feedpost/**",
 			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
+			
+			"/login",
+			"/register",
+			
+			"/auth/member",
+			"/auth/login",
+			"/auth/userNo",
 			"/auth/oauth/**",
 			"/login/oauth2/code/kakao",
 			"/login/oauth2/callback/kakao",
-			"/**",
 
 	};
 	private final String[] API_USER_LIST = {

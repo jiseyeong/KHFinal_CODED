@@ -91,12 +91,20 @@ public class WetherAndAddressTest {
 //		}
 //	}
 	
-	@DisplayName("오늘의 날씨 정보 긁어서 입력")
+//	@DisplayName("오늘의 날씨 정보 긁어서 입력")
+//	@Transactional
+//	@Rollback(false)
+//	@Test
+//	public void updateTodayData() throws Exception{
+//		wetherService.setFullTodayWeather();
+//	}
+	
+	@DisplayName("주간 날씨 정보 긁어서 입력")
 	@Transactional
 	@Rollback(false)
 	@Test
 	public void updateTodayData() throws Exception{
-		wetherService.setFullTodayWeather();
+		wetherService.setFullWeekleyWeather();
 	}
 	
 }
