@@ -114,9 +114,9 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectByUserNo(int userNo) {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
-
-	public MemberDTO selectByNickname(String userNickname) {
-		return memberDAO.selectMemberByNickname(userNickname);
+	
+	public MemberDTO selectMemberByNickName(String userNickName) {
+		return memberDAO.selectMemberByNickName(userNickName);
 	}
 
 	public boolean isMemberId(String userId) {

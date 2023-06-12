@@ -6,6 +6,9 @@ import LoginPage from './pages/auth/LoginPage';
 import FeedList from './pages/feedList/FeedList';
 import MyProfilePage from './pages/user/MyProfile/MyProfilePage';
 import HomePageTemplate from './pages/main/HomePageTemplate';
+import FeedListByIdWithMain from './pages/test/FeedListByIdWithMain';
+import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
+import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
         {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
         <Route path="/FeedList" element={<FeedList />} />
         <Route path="/HomePage" element={<HomePageTemplate />} />
+        <Route path="/FeedList/id" element={<FeedListByIdWithMain />} />
+        <Route path="/FeedList/nick" element={<FeedListByNickNameWithMain />} />
+        <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />
       </Routes>
     </BrowserRouter>
   );

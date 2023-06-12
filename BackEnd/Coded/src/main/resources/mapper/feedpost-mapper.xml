@@ -40,10 +40,10 @@
 	</select>
 	
 	<select id="searchByHashs" resultType="kh.coded.dto.HashTagDTO"> <!-- 해시태그 있는 지 검색 -->
-		select tagid from hashTag where hashTag = '%'||#{hashTag}#||'%' 
+		select tagid from hashTag where hashTag like '%'||#{hashTag}||'%'
 	</select>
 	
-	<select id="seachByPostHashs" resultType="kh.coded.dto.PostHashsDTO"> <!-- 위에서 뽑아낸 태그아이디를 가지고 포스트 아이디를 뽑아냄 -->
+	<select id="searchByPostHashs" resultType="kh.coded.dto.PostHashsDTO"> <!-- 위에서 뽑아낸 태그아이디를 가지고 포스트 아이디를 뽑아냄 -->
 		select feedpostid from posthashs where tagid = ${tagId}	
 	</select>
 	
