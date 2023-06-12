@@ -41,11 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			Arrays.asList(
 					"/static/**",
 					"/favicon.ico",
-					"/join",
-					"/auth/join",
+					
 					"/login",
+					"/register",
+					"/auth/member",
 					"/auth/login",
-					"/auth/userNo"
+					"/auth/oauth/**",
+					"/login/oauth2/code/kakao",
+					"/login/oauth2/callback/kakao"
 					));
 
 	@Override
@@ -90,14 +93,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		try {
 			if(member != null) {
 				//jwtProvider.reCreateLoginRefreshToken(member);
-				Cookie[] cookies = request.getCookies();
-				if(cookies.length > 0) {
-					String refreshToken = Arrays.stream(cookies)
-							.filter(c -> c.getName().equals("CodedRefreshToken"))
-							.findFirst().map(Cookie::getValue)
-							.orElse(null);
+				
+				if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+					String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
 					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
-						CookieUtil.deleteCookie(request, response, "CodedRefreshToken");
+						CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 					}
 					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 				}
