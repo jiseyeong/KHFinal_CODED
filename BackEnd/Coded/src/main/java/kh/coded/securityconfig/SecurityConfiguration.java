@@ -14,16 +14,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import kh.coded.security.CustomAccessDeniedHandler;
 import kh.coded.security.CustomAuthenticationEntryPoint;
 import kh.coded.security.MemberAuthenticationProvider;
-import kh.coded.security.oauth.OAuth2SuccessHandler;
-import kh.coded.security.oauth.OAuth2UserService;
 import kh.coded.services.MemberService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 	
-	@Autowired
-	private OAuth2UserService oAuth2UserService;
+//	@Autowired
+//	private OAuth2UserService oAuth2UserService;
 	@Autowired
 	private MemberAuthenticationProvider memberAuthenticationProvider;
 	@Autowired
@@ -34,8 +32,8 @@ public class SecurityConfiguration {
 	private CustomAccessDeniedHandler customAccessDeniedHandler;
 	//@Autowired
 	//private OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
-	@Autowired
-	private OAuth2SuccessHandler oAuth2SuccessHandler;
+//	@Autowired
+//	private OAuth2SuccessHandler oAuth2SuccessHandler;
 	//@Autowired
 	//private OAuth2FailureHandler oAuth2FailureHandler;
 	@Autowired
@@ -78,6 +76,9 @@ public class SecurityConfiguration {
 			"/auth/oauth/**",
 			"/login/oauth2/code/kakao",
 			"/login/oauth2/callback/kakao",
+			"/login/oauth2/code/naver",
+			"/login/oauth2/callback/naver",
+			
 
 	};
 	private final String[] API_USER_LIST = {
@@ -146,9 +147,9 @@ public class SecurityConfiguration {
 												)
 					.redirectionEndpoint(redirect ->
 											redirect.baseUri("/auth/oauth/**")
-											)
-					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-					.successHandler(oAuth2SuccessHandler);
+											);
+//					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+//					.successHandler(oAuth2SuccessHandler);
 					//.failureHandler(oAuth2FailureHandler);
 			}catch(Exception e) {
 				throw new RuntimeException(e);

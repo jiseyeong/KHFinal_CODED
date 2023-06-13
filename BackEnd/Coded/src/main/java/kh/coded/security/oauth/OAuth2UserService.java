@@ -41,7 +41,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService{
 		String provider = userRequest.getClientRegistration().getRegistrationId(); // google 등이 나옴
 		String providerID = oAuth2User.getAttribute("sub");
 		//String userCode = provider+"_"+providerID;
-		//OAuth 로긘 진행 시 키가 되는 필드 값.
+		//OAuth 로그인 진행 시 키가 되는 필드 값.
 		String userNameAttribute = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 		
 		//String eamil = oAuth2User.getAttribute("email");

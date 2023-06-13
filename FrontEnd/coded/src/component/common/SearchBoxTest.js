@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import style from './SearchBoxTest.module.css';
+import style from './SearchBoxTest.scss';
 import { styled } from 'styled-components';
 import SearchAutoCompleteBox from './SearchAutoCompleteBox';
 

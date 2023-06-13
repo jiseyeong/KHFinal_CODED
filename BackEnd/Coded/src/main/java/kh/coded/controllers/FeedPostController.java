@@ -20,6 +20,8 @@ import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
+import kh.coded.services.PhotoService;
+
 
 @RestController
 @RequestMapping("/feedpost/")
@@ -28,6 +30,9 @@ public class FeedPostController {
 	@Autowired
 	private FeedPostService feedpostService;
 
+	@Autowired
+	private PhotoService photoService;
+	
 	@Autowired
 	private MemberService memberService;
 
@@ -67,10 +72,11 @@ public class FeedPostController {
 		Map<String,Object> result = new HashMap<>();
 		result.put("MemberDTO", member);
 		result.put("feedlist", list);
-
+		
 		return ResponseEntity.ok().body(result);
 	}
-
+    
+    
 	@GetMapping("searchByNickname") //유저 닉네임으로 검색 시 유저 정보, 피드 뽑기
 	public ResponseEntity<?> selectMemberByNickname(@RequestParam String userNickName) {
 		System.out.println(userNickName);
@@ -97,6 +103,22 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(feedposts);
 	}
 
+
+    @GetMapping("/selectFeedNew")
+    public ResponseEntity<?> selectFeedNew() {
+    	List<FeedPostDTO> list = feedpostService.selectFeedNew();
+    	List<PhotoDTO> list2 = new ArrayList<>();
+    	
+    	for(FeedPostDTO e : list) {
+    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
+    	}
+    	Map<String,Object> result = new HashMap<>();
+    	result.put("feedpostDTO", list);
+    	result.put("photoDTO",list2);
+    	
+    	return ResponseEntity.ok().body(result);
+    	
+    }
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")
@@ -112,5 +134,6 @@ public class FeedPostController {
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
 		return "";
 	}
+
 
 }

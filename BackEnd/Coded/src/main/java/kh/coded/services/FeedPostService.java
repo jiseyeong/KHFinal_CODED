@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.coded.repositories.FeedPostDAO;
+import kh.coded.repositories.PhotoDAO;
 import utils.StaticValue;
 
 @Service
@@ -36,7 +37,7 @@ public class FeedPostService {
         return feedpostDAO.insertFeedPhoto(dto);
     }
 
-    //	public TodayWeatherDTO select(int WeatherCode) {
+//	public TodayWeatherDTO select(int WeatherCode) {
 //		return feedpostDAO.selectTodayWeather(WeatherCode);
 //	}
 //	
@@ -83,4 +84,12 @@ public class FeedPostService {
     public FeedPostDTO selectByUserNo(int userNo) {
         return feedpostDAO.selectByUserNo(userNo);
     }
+    	public List<FeedPostDTO> selectFeedNew() {
+		return feedpostDAO.selectFeedNew();
+	}
+
+    
+    	public PhotoDTO selectByFeedpostId(int feedPostId) {
+		return photoDAO.selectByFeedpostId(feedPostId);
+	}
 }

@@ -1,0 +1,26 @@
+.HeaderLayout {
+  width: 100%;
+  height: 150px;
+  display: flex;
+}
+
+.HeaderLayout > div {
+  height: 100%;
+  float: left;
+}
+.LogoLayout {
+  width: 20%;
+}
+
+.MainLayout {
+  width: 60%;
+}
+
+.LoginLayout {
+  width: 20%;
+}
+
+.MainLayout > div {
+  width: 100%;
+  height: 50%;
+}

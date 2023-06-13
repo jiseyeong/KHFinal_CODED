@@ -47,9 +47,13 @@ public class MemberService implements UserDetailsService {
 	@Autowired
 	private JwtProvider jwtProvider;
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-	private String CLIENT_ID;
+	private String KAKAO_CLIENT_ID;
 	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-	private String CLIENT_SECRET; 
+	private String KAKAO_CLIENT_SECRET; 	
+	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
+	private String NAVER_CLIENT_ID;
+	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+	private String NAVER_CLIENT_SECRET; 
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -162,6 +166,10 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.selectMemberByKakaoToken(token);
 	}
 
+	public MemberDTO selectMemberByNaverToken(String token) {
+		return memberDAO.selectMemberByNaverToken(token);
+	}
+	
 	public String kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getKakaoAccessToken(code);
@@ -184,14 +192,14 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	private String getKakaoAccessToken(String code) throws Exception{
+	private String getKakaoAccessToken(String code) throws Exception{ 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("grant_type", "authorization_code");
-		body.add("client_id", CLIENT_ID);
-		body.add("client_secret", CLIENT_SECRET);
+		body.add("client_id", KAKAO_CLIENT_ID);
+		body.add("client_secret", KAKAO_CLIENT_SECRET);
 		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/kakao");
 		body.add("code", code);
 
@@ -212,7 +220,7 @@ public class MemberService implements UserDetailsService {
 		return jsonNode.get("access_token").asText();
 	}
 
-	private Long getKakaoUserInfo(String accessToken) throws Exception{
+	private Long getKakaoUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -231,6 +239,82 @@ public class MemberService implements UserDetailsService {
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 
 		Long id = jsonNode.get("id").asLong();
+
+		return id;
+	}
+	
+	public String naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+		//인가 코드로 엑세스 토큰 요청.
+		String accessToken = this.getNaverAccessToken(code);
+
+		//토큰으로 네이버 API 호출
+		Long naverId = this.getNaverUserInfo(accessToken);
+		String token = Long.toString(naverId);
+		MemberDTO member = this.selectMemberByNaverToken(token);
+
+		if(member == null) {
+			//등록 하려 누른 것일 것임.
+			if(auth != null) {
+				member = memberDAO.selectMemberById(auth.getName());
+				memberDAO.updateNaverToken(member.getUserNo(), token);
+				return "T";
+			}
+		}else {
+			return this.login(response, member);
+		}
+		return "F";
+	}
+
+	private String getNaverAccessToken(String code) throws Exception{ 
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+		body.add("grant_type", "authorization_code");
+		body.add("client_id", NAVER_CLIENT_ID);
+		body.add("client_secret", NAVER_CLIENT_SECRET);
+		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/naver");
+		body.add("code", code);
+		body.add("state","test");
+
+		HttpEntity<MultiValueMap<String, String>> naverTokenRequest = new HttpEntity<>(body, headers);
+		RestTemplate rt = new RestTemplate();
+		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+		rt.setErrorHandler(new DefaultResponseErrorHandler());
+		ResponseEntity<String> response = rt.exchange(
+				"https://nid.naver.com/oauth2.0/token",
+				HttpMethod.POST,
+				naverTokenRequest,
+				String.class
+				);
+
+		String responseBody = response.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		System.out.println(responseBody);
+		JsonNode jsonNode = objectMapper.readTree(responseBody);
+		return jsonNode.get("access_token").asText();
+	}
+
+	private Long getNaverUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + accessToken);
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		HttpEntity<MultiValueMap<String, String>> naverUserInfoRequest = new HttpEntity<>(headers);
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity<String> response = rt.exchange(
+				"https://openapi.naver.com/v1/nid/me",
+				HttpMethod.POST,
+				naverUserInfoRequest,
+				String.class
+				);
+
+		String responseBody = response.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		System.out.println(responseBody);
+		JsonNode jsonNode = objectMapper.readTree(responseBody);
+		
+		Long id = jsonNode.get("response").get("id").asLong();
 
 		return id;
 	}
