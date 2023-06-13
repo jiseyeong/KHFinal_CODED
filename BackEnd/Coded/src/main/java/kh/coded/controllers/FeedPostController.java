@@ -12,16 +12,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
-import kh.coded.dto.PhotoDTO;
-import kh.coded.services.FeedPostService;
-import kh.coded.services.PhotoService;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
+import kh.coded.services.PhotoService;
 
 
 @RestController
@@ -73,13 +72,9 @@ public class FeedPostController {
 		Map<String,Object> result = new HashMap<>();
 		result.put("MemberDTO", member);
 		result.put("feedlist", list);
-
-
-    @GetMapping("/selectfeedlist/")
-    public String selectFeedList(){
-        List<FeedPostDTO> list = feedpostService.selectTestFeedList();
-        return "";
-    }
+		
+		return ResponseEntity.ok().body(result);
+	}
     
     
 	@GetMapping("searchByNickname") //유저 닉네임으로 검색 시 유저 정보, 피드 뽑기
