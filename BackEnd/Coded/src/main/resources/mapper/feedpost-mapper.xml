@@ -59,38 +59,6 @@
 		select * from feedpost order by FeedPostId desc
 	</select>
 	
-<!-- 	<select id="selectUserNo" resultType="kh.coded.dto.FeedPostDTO"> -->
-<!-- 		select * from (select feedPost.* , row_number() over(order by userNo desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectWriteDate" resultType="kh.coded.dto.FeedPostDTO"> -->
-<!-- 		select * from (select feedPost.* , row_number() over(order by writeDate desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectWriteTemp" resultType="kh.coded.dto.FeedPostDTO"> -->
-<!-- 		select * from (select feedPost.* , row_number() over(order by writeTemp desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectWriteTempRange" resultType="kh.coded.dto.FeedPostDTO"> -->
-<!-- 		select * from (select feedPost.* , row_number() over(order by writeTempRange desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectOriName" resultType="kh.coded.dto.PhotoDTO"> -->
-<!-- 		select * from (select PhotoDTO.* , row_number() over(order by writeTempRange desc) rn from PhotoDTO) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectSysName" resultType="kh.coded.dto.PhotoDTO"> -->
-<!-- 		select * from (select PhotoDTO.* , row_number() over(order by SysName desc) rn from PhotoDTO) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectHashTag" resultType="kh.coded.dto.HashTagDTO"> -->
-<!-- 		select * from (select HashTagDTO.* , row_number() over(order by HashTag desc) rn from HashTagDTO) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-<!-- 	<select id="selectTagId" resultType="kh.coded.dto.HashTagDTO"> -->
-<!-- 		select * from (select HashTagDTO.* , row_number() over(order by TagId desc) rn from HashTagDTO) where rn between ${startFeedNum} and ${endFeedNum} -->
-<!-- 	</select> -->
-	
-	
+
 
 </mapper>
