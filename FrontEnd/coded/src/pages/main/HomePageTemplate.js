@@ -16,7 +16,6 @@ const HomePageTemplate = () => {
     <Container>
       <GlobalStyles />
       <Header />
-      <Navigator />
       {/* FeedList대신 다른 Component로 교체 후 사용*/}
       <FeedList />
       <Footer />

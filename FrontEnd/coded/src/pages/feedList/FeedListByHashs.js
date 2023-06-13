@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import FeedPostInner from '../../component/feed/FeedPostStyled';
+import FeedPostInner from '../../component/feed/FeedPostInner';
 
 const FeedPostOuter = styled('div')`
   margin: auto;

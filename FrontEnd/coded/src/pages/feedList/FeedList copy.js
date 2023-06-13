@@ -12,23 +12,21 @@ const FeedPostOuter = styled('div')`
   flex-wrap: wrap;
 `;
 
-const FeedListById = () => {
+const FeedList = () => {
   const [test, setTest] = useState([]);
   const [cpage, setCpage] = useState(1);
 
   const addFeedList = () => {
     axios({
       method: 'GET',
-      url: '/feedpost/searchById',
+      url: '/feedpost/selectAllFeedPost/',
       params: {
-        userId: 'test',
+        cpage: cpage,
       },
     })
       .then((resp) => {
         let temp = [];
-        console.log(resp.data.feedlist);
-        console.log(resp.data);
-        resp.data.feedlist.forEach((i) => {
+        resp.data.forEach((i) => {
           temp = [...temp, { id: i.feedPostId, body: i.body }];
         });
         setTest([...test, ...temp]);
@@ -56,7 +54,7 @@ const FeedListById = () => {
   );
 };
 
-export default FeedListById;
+export default FeedList;
 
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값

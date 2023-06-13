@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import FeedPostInner from '../../component/feed/FeedPostStyled';
+import FeedPostInner from '../../component/feed/FeedPostInner';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
-  width: 1202px;
+  width: 80%;
   border: 1px solid black;
   display: flex;
   justify-content: space-evenly;
@@ -13,6 +13,7 @@ const FeedPostOuter = styled('div')`
 `;
 
 const FeedList = () => {
+  const [user, setUser] = useState([]);
   const [test, setTest] = useState([]);
   const [cpage, setCpage] = useState(1);
 
@@ -48,7 +49,7 @@ const FeedList = () => {
   return (
     <FeedPostOuter>
       {test.map((i) => (
-        <FeedPostInner key={i.id} id={i.id} body={i.body} />
+        <FeedPostInner key={i.id} id={i.id} body={i.body}></FeedPostInner>
       ))}
     </FeedPostOuter>
   );
