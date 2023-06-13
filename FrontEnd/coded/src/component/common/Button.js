@@ -13,9 +13,9 @@ const StyledButton = styled.button`
   outline: none;
   cursor: pointer;
 
-  background: ${palette.gray[8]};
+  /* background: ${palette.gray}; */
   &:hover {
-    background: ${palette.gray[6]};
+    /* background: ${palette.gray}; */
   }
 
   ${(props) =>
@@ -25,15 +25,6 @@ const StyledButton = styled.button`
       padding-bottom: 0.75rem;
       width: 100%;
       font-size: 1.125rem;
-    `}
-
-  ${(props) =>
-    props.cyan &&
-    css`
-      background: ${palette.cyan[5]};
-      &:hover {
-        background: ${palette.cyan[4]};
-      }
     `}
 `;
 

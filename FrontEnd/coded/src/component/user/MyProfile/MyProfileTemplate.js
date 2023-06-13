@@ -4,7 +4,7 @@ import palette from '../../../styles/palette.scss';
 import MyProfileForm from './MyProfileForm';
 
 const MyProfileTemplateBlock = styled.div`
-  background: ${palette.gray[2]};
+  /* background: ${palette.gray}; */
   padding-top: 130px;
   display: flex;
   justify-content: center;
