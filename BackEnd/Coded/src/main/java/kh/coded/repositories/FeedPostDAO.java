@@ -84,37 +84,5 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectFeedNew");
 	}
 
-//	public List<FeedPostDTO> selectUserNo() {
-//		return mybatis.selectList("FeedPost.selectWriteDate");
-//	}
-//
-//	public List<FeedPostDTO> selectWriteDate() {
-//		return mybatis.selectList("FeedPost.selectWriteDate");
-//	}
-//	
-//	public List<FeedPostDTO> selectWriteTemp() {
-//		return mybatis.selectList("FeedPost.selectWriteTemp");
-//	}
-//
-//	public List<FeedPostDTO> selectWriteTempRange() {
-//		return mybatis.selectList("FeedPost.selectWriteTempRange");
-//	}
-//
-//	public List<PhotoDTO> selectOriName() {
-//		return mybatis.selectList("FeedPost.selectOriName");
-//	}
-//
-//	public List<PhotoDTO> selectSysName() {
-//		return mybatis.selectList("FeedPost.selectSysName");
-//	}
-//
-//	public List<HashTagDTO> selectHashTag() {
-//		return mybatis.selectList("FeedPost.selectHashTag");
-//	}
-//
-//	public List<HashTagDTO> selectTagId() {
-//		return mybatis.selectList("FeedPost.selectTagId");
-//	}
-//	
-	
+
 }
