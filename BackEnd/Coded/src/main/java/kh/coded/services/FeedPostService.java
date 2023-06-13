@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.repositories.FeedPostDAO;
+import kh.coded.repositories.PhotoDAO;
 import utils.StaticValue;
 
 @Service
@@ -15,6 +16,9 @@ public class FeedPostService {
 
 	@Autowired
 	private FeedPostDAO feedpostDAO;
+	
+	@Autowired
+	private PhotoDAO photoDAO;
 	
 	public List<FeedPostDTO> selectFeedList(int UserNo){
 		return feedpostDAO.selectFeedList(UserNo);
@@ -57,5 +61,13 @@ public class FeedPostService {
 	
 	public FeedPostDTO selectByUserNo(int userNo) {
 		return feedpostDAO.selectByUserNo(userNo);
+	}
+
+	public List<FeedPostDTO> selectFeedNew() {
+		return feedpostDAO.selectFeedNew();
+	}
+
+	public PhotoDTO selectByFeedpostId(int feedPostId) {
+		return photoDAO.selectByFeedpostId(feedPostId);
 	}
 }
