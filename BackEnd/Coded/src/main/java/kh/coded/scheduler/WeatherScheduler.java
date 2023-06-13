@@ -13,7 +13,12 @@ public class WeatherScheduler {
 	private WeatherService weatherService;
 	
 	@Scheduled(cron = "0 15 2 * * ?")
-	public void dataCalling() {
+	public void todayDataCalling() {
 		weatherService.setFullTodayWeather();
+	}
+	
+	@Scheduled(cron = "0 5 6 * * ?")
+	public void weeklyDataCalling() {
+		weatherService.setFullWeekleyWeather();
 	}
 }

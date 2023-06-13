@@ -114,9 +114,9 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectByUserNo(int userNo) {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
-
-	public MemberDTO selectByNickname(String userNickname) {
-		return memberDAO.selectMemberByNickname(userNickname);
+	
+	public MemberDTO selectMemberByNickName(String userNickName) {
+		return memberDAO.selectMemberByNickName(userNickName);
 	}
 
 	public boolean isMemberId(String userId) {
@@ -174,7 +174,6 @@ public class MemberService implements UserDetailsService {
 		if(member == null) {
 			//등록 하려 누른 것일 것임.
 			if(auth != null) {
-				System.out.println("여기 들어온다고?");
 				member = memberDAO.selectMemberById(auth.getName());
 				memberDAO.updateKakaoToken(member.getUserNo(), token);
 				return "T";
@@ -232,7 +231,6 @@ public class MemberService implements UserDetailsService {
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 
 		Long id = jsonNode.get("id").asLong();
-		System.out.println("카카오 사용자 정보 : " + id);
 
 		return id;
 	}

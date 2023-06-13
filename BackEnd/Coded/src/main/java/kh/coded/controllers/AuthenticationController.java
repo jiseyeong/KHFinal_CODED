@@ -131,14 +131,13 @@ public class AuthenticationController {
 	
 	//스프링 부트의 시큐리티가 자동 매핑해주는 것이 존재.
 	//카카오의 경우 '/auth/oauth/kakao'. /auth/ouath 까진 임의 매핑임.
-	//이하도 마찬가지.
 	
+	//이하도 마찬가지. 이건 완전히 정해진 매핑이 존재해서 일치시켜줘야 함.
 	@GetMapping(value="/login/oauth2/code/kakao")
 	public ResponseEntity<?> kakaoLogin(
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
 			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
-		System.out.println("콜백 불림");
 		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
 		String result = memberService.kakaoLogin(code, response, auth);
 		if(result.equals("T")) {
