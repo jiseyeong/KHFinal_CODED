@@ -18,6 +18,9 @@
   	<select id="selectMemberByKakaoToken" resultType="kh.coded.dto.MemberDTO">
   		select * from Member where KakaoToken=#{kakaoToken}
   	</select>
+  	<select id="selectMemberByNaverToken" resultType="kh.coded.dto.MemberDTO">
+  		select * from Member where NaverToken=#{naverToken}
+  	</select>
   	<insert id="insertMember">
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select userno_seq.nextval from dual
@@ -34,6 +37,9 @@
 	</update>
 	<update id="updateKakaoToken">
 		update Member set KakaoToken=#{kakaoToken} where userNo=${userNo}
+	</update>
+	<update id="updateNaverToken">
+		update Member set NaverToken=#{naverToken} where userNo=${userNo}
 	</update>
 	<update id="updatePw">
 		update member set pw = #{pw} where userId = #{userId}
