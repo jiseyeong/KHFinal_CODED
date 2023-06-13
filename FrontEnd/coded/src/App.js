@@ -18,8 +18,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
-        <Route path="/FeedList" element={<FeedList />} />
         <Route path="/HomePage" element={<HomePageTemplate />} />
+        <Route path="/FeedList" element={<FeedList />} />
         <Route path="/FeedList/id" element={<FeedListByIdWithMain />} />
         <Route path="/FeedList/nick" element={<FeedListByNickNameWithMain />} />
         <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />

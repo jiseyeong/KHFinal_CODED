@@ -24,6 +24,9 @@ public class FeedPostService {
     @Autowired
     private MemberDAO memberDAO;
 
+    @Autowired
+    private PhotoDAO photoDAO;
+
 
     public List<FeedPostDTO> selectFeedList(int UserNo) {
         return feedpostDAO.selectFeedList(UserNo);
@@ -37,7 +40,7 @@ public class FeedPostService {
         return feedpostDAO.insertFeedPhoto(dto);
     }
 
-//	public TodayWeatherDTO select(int WeatherCode) {
+    //	public TodayWeatherDTO select(int WeatherCode) {
 //		return feedpostDAO.selectTodayWeather(WeatherCode);
 //	}
 //	
@@ -78,18 +81,18 @@ public class FeedPostService {
             MemberDTO memberId = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
         }
-		return list;
+        return list;
     }
 
     public FeedPostDTO selectByUserNo(int userNo) {
         return feedpostDAO.selectByUserNo(userNo);
     }
-    	public List<FeedPostDTO> selectFeedNew() {
-		return feedpostDAO.selectFeedNew();
-	}
 
-    
-    	public PhotoDTO selectByFeedpostId(int feedPostId) {
-		return photoDAO.selectByFeedpostId(feedPostId);
-	}
+    public List<FeedPostDTO> selectFeedNew() {
+        return feedpostDAO.selectFeedNew();
+    }
+
+    public PhotoDTO selectByFeedpostId(int feedPostId) {
+        return photoDAO.selectByFeedpostId(feedPostId);
+    }
 }
