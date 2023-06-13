@@ -1,15 +1,3 @@
-// import React from 'react';
-// import style from './Navbar.module.css';
-
-// const Navbar = () => {
-//   return <div className={style.navbarLayout}></div>;
-// };
-
-// export default Navbar;
-
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-expressions */
-/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import './Navbar.scss';
 import { withRouter } from 'react-router-dom';
@@ -87,7 +75,6 @@ class Navbar extends Component {
         </nav>
       </div>
     </>
-
     );
   }
 }
