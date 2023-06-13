@@ -103,6 +103,7 @@ public class FeedPostController {
 			int cpage) {
 		System.out.println(cpage);
 		List<FeedPostDTO> list = feedpostService.selectAllFeedPost(cpage);
+
 		return ResponseEntity.ok().body(list);
 	}
 
