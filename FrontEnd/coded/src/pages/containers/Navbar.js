@@ -11,7 +11,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
-import './Navbar.module.scss';
+import './Navbar.scss';
 import { withRouter } from 'react-router-dom';
 
 class Navbar extends Component {
@@ -92,4 +92,4 @@ class Navbar extends Component {
   }
 }
 
-export default withRouter(Navbar);
+export default Navbar;
