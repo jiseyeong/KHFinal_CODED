@@ -9,7 +9,7 @@ const AuthTemplateBlock = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background-color: ${palette.gray[2]};
+  /* background-color: ${palette}; */
   display: flex;
   flex-direction: column;
   justify-content: center;
