@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
+import kh.coded.dto.PostHashsDTO;
 import kh.coded.repositories.FeedPostDAO;
 import kh.coded.repositories.PhotoDAO;
 import utils.StaticValue;
@@ -51,6 +53,18 @@ public class FeedPostService {
 		return feedpostDAO.selectTestFeedList();
 	}
 
+	public List<HashTagDTO> searchByHashs(String HashTag) {
+		return feedpostDAO.searchByHashs(HashTag);
+	}
+	
+	public List<PostHashsDTO> searchByPostHashs(int tagId) {
+		return feedpostDAO.searchByPostHashs(tagId);
+	}
+	
+	public FeedPostDTO searchByFeedPost(int feedPostId) {
+		return feedpostDAO.searchByFeedPost(feedPostId);
+	}
+	
 	public List<FeedPostDTO> selectAllFeedPost(int cpage) {
 		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
 		int endFeedNum = cpage*feedCountPerPage;

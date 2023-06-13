@@ -2,6 +2,7 @@ package utils;
 
 import java.net.URLEncoder;
 import java.util.Base64;
+import java.util.Optional;
 
 import org.springframework.util.SerializationUtils;
 
@@ -10,6 +11,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class CookieUtil {
+	public static Optional<Cookie> getCookie(HttpServletRequest request, String name){
+		Cookie[] cookies = request.getCookies();
+		
+		if(cookies != null && cookies.length > 0) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals(name)) {
+					return Optional.of(cookie);
+				}
+			}
+		}
+		return Optional.empty();
+	}
+	
 	//요청값 (이름, 값, 만료 기간)을 바탕으로 쿠키 추가
 	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) throws Exception {
 		value = URLEncoder.encode(value, "utf-8");
@@ -68,9 +82,9 @@ public class CookieUtil {
 	//쿠키를 역직렬화해 객체로 변환
 	public static <T> T deserialize(Cookie cookie, Class<T> cls) {
 		return cls.cast(
-					SerializationUtils.deserialize(
-							Base64.getUrlDecoder().decode(cookie.getValue()))
-				);
-				
+				SerializationUtils.deserialize(
+						Base64.getUrlDecoder().decode(cookie.getValue())
+				)
+			);
 	}
 }

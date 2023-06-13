@@ -15,14 +15,13 @@ import kh.coded.security.CustomAccessDeniedHandler;
 import kh.coded.security.CustomAuthenticationEntryPoint;
 import kh.coded.security.MemberAuthenticationProvider;
 import kh.coded.services.MemberService;
-import kh.coded.services.OAuth2UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 	
-	@Autowired
-	private OAuth2UserService oAuth2UserService;
+//	@Autowired
+//	private OAuth2UserService oAuth2UserService;
 	@Autowired
 	private MemberAuthenticationProvider memberAuthenticationProvider;
 	@Autowired
@@ -31,10 +30,15 @@ public class SecurityConfiguration {
 	private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	@Autowired
 	private CustomAccessDeniedHandler customAccessDeniedHandler;
+	//@Autowired
+	//private OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
+//	@Autowired
+//	private OAuth2SuccessHandler oAuth2SuccessHandler;
+	//@Autowired
+	//private OAuth2FailureHandler oAuth2FailureHandler;
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
-	private final String loginPage = "/login";
 	private final String[] WEB_IGNORING_LIST = {
 			"/static/**",
 			"/resources/**",
@@ -48,16 +52,34 @@ public class SecurityConfiguration {
 	private final String[] API_WHITE_LIST = {
 			"/",
 			"/images/**",
-			"/register",
-			"/auth/join",
-			loginPage,
-			"/auth/login",
+			"/manifest.json",
+			"/logo192.png",
+			
 			"/error",
 			"/auth/fail",
 			"/auth/userNo",
-			"/feedList",
+			"/feedList/**",
 			"/feedpost/**",
+			"/HomePage/**",
+			"/feedList",
+			"/feedost",
 			"/HomePage",
+			"/weather/today",
+			"/weather/weekly",
+			
+			"/login",
+			"/register",
+			
+			"/auth/member",
+			"/auth/login",
+			"/auth/userNo",
+			"/auth/oauth/**",
+			"/login/oauth2/code/kakao",
+			"/login/oauth2/callback/kakao",
+			"/login/oauth2/code/naver",
+			"/login/oauth2/callback/naver",
+			
+
 	};
 	private final String[] API_USER_LIST = {
 			"/test/"
@@ -111,6 +133,27 @@ public class SecurityConfiguration {
 			}catch(Exception e) {
 				throw new RuntimeException(e);
 			}			
+		});
+		
+		http.oauth2Login(login -> {
+			try {
+				login
+					//.authorizationEndpoint(authorize -> authorize.baseUri("/auth/ouath/authorize"))
+					//.redirectionEndpoint(redirect -> redirect.baseUri("/auth/ouath/callback/*"))
+					.authorizationEndpoint(authorize ->
+											authorize
+												.baseUri("/auth/oauth/")
+												//.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
+												)
+					.redirectionEndpoint(redirect ->
+											redirect.baseUri("/auth/oauth/**")
+											);
+//					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+//					.successHandler(oAuth2SuccessHandler);
+					//.failureHandler(oAuth2FailureHandler);
+			}catch(Exception e) {
+				throw new RuntimeException(e);
+			}
 		});
 		
 //		http.oauth2Login(login ->{

@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# [Codinator] 'CODED' Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+## 2023 KH 파이널 프로젝트
 
-### `yarn start`
+> 지역 및 날씨 정보를 기반으로 알맞은 옷차림(코디)을 추천해주는 패션 특화 SNS
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. 프로젝트 선정이유
 
-### `yarn test`
+> "What to wear, When to wear, Want to share."
+> 환절기나 실내외 온도차가 클 때 등 어떤 옷을 입어야 할지 애매할 때 고민을 해결하고자 
+> 패션과 관련된 주제이므로 개인 피드 관리 및 정보 공유가 용이하고, 사용자 접근성이 낮은 SNS 형태를 채택.
+> 사용자의 피드와 날씨 정보간 유기적 연결에 중점.  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. 개발 인원 및 기간
 
-### `yarn build`
+1. 개발 기간 : 2023/06/05 ~ 2023/07/05 
+2. 개발 인원 : 7명
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3. 팀 소개
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. 팀명 : Codinator 
+2. 팀원 : 김성하(PM), 김다영, 이건희, 이상우, 이주화, 지세영, 홍성준
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+### 4. 적용 툴/기술 스택
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Front-End : `React.js`, `Sass(Scss)`, `React Slick`, `React-router-dom`
+- Back-End : `Spring Boot`, `My SQL`
+- 협업에 사용 된 툴 : `Git Hub`, `Slack`, `Trello`, `Google Sheet`
+- Common : `RESTful API`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Benchmarking
+- [스타일쉐어](https://www.styleshare.kr/) _현재 서비스 종료.
 
-## Learn More
+## for Develpment
+- [Eclipse]
+- [Visual Studio Code]
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- [Trello](https://trello.com/)
+- [Kakao Oven](https://ovenapp.io/)
+- [Google Sheets](https://www.google.com/)
+- [GitHub](https://github.com/)
+- [Apache Tomcat](https://tomcat.apache.org/)
+- [Oracle](https://www.oracle.com/kr/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Framework
+- [Spring Boot](https://spring.io/)
 
-### Code Splitting
+## Library
+- [React] (https://react.dev/)
+- [React slick](https://react-slick.neostack.com/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Reference
+- [unsplash.com](https://unsplash.com/)
+- [Icon Finder](https://www.iconfinder.com/)
 
-### Analyzing the Bundle Size
+## License
+**모든 사진은 저작권이 없는 사진을 사용**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> 이 프로젝트는 학습목적으로 만들었습니다.  
+> 실무수준의 프로젝트이지만 학습용으로 만들었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.  
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

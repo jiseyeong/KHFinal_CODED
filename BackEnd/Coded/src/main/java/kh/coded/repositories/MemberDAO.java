@@ -22,6 +22,18 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectMemberByUserNo",userNo);
 	}
 
+	public MemberDTO selectMemberByNickName(String userNickName) {
+		return mybatis.selectOne("Member.selectMemberByNickName",userNickName);
+	}
+	
+	public MemberDTO selectMemberByKakaoToken(String token) {
+		return mybatis.selectOne("Member.selectMemberByKakaoToken", token);
+	}
+	
+	public MemberDTO selectMemberByNaverToken(String token) {
+		return mybatis.selectOne("Member.selectMemberByNaverToken", token);
+	}
+	
 	public boolean isMemberId(String userID) { //아이디 중복확인
 		return mybatis.selectOne("Member.isMemberId",userID);
 	}
@@ -40,6 +52,23 @@ public class MemberDAO {
 		map.put("pw", pw);
 		return mybatis.update("Member.updatePw",map);
 	}
+	
+	public void updateKakaoToken(int userNo, String kakaoToken) {
+		Map<String,Object> data = new HashMap<>();
+		data.put("userNo", userNo);
+		data.put("kakaoToken", kakaoToken);
+		
+		mybatis.update("Member.updateKakaoToken", data);
+	}
+	
+	public void updateNaverToken(int userNo, String naverToken) {
+		Map<String,Object> data = new HashMap<>();
+		data.put("userNo", userNo);
+		data.put("naverToken", naverToken);
+		
+		mybatis.update("Member.updateNaverToken", data);
+	}
+	
 	public int deleteMember(String userId,String pw) { //회원탈퇴
 		Map<String,String> map = new HashMap<>();
 		map.put("userId", userId);
