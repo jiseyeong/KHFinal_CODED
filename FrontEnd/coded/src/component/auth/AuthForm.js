@@ -69,7 +69,7 @@ const AuthForm = ({ type }) => {
     //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함.
     axios({
       method: 'post',
-      url: '/auth/join',
+      url: '/auth/member',
       params: {
         userId: idRef.current.value,
         pw: pwRef.current.value,
@@ -89,7 +89,7 @@ const AuthForm = ({ type }) => {
   }
 
   function doLogin(e) {
-    axios.post('/auth/login-proc', null, {
+    axios.post('/auth/login', null, {
       params: {
         userId: idRef.current.value,
         pw: pwRef.current.value,
