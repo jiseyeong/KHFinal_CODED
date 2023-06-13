@@ -90,21 +90,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 				SecurityContextHolder.getContext().setAuthentication(auth);
 			}
 		}
-		try {
-			if(member != null) {
-				//jwtProvider.reCreateLoginRefreshToken(member);
-				
-				if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
-					String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
-					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
-						CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
-					}
-					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
-				}
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			if(member != null) {
+//				jwtProvider.reCreateLoginRefreshToken(member);
+//				
+//				if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+//					String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
+//					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
+//						//CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
+//					}
+//					//CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+//				}
+//			}
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
 		filterChain.doFilter(request, response);
 	}
 
