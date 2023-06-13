@@ -74,8 +74,10 @@ public class SecurityConfiguration {
 			"/auth/login",
 			"/auth/userNo",
 			"/auth/oauth/**",
+			"login/oauth2/kakao",
 			"/login/oauth2/code/kakao",
 			"/login/oauth2/callback/kakao",
+			"/login/oauth2/naver",
 			"/login/oauth2/code/naver",
 			"/login/oauth2/callback/naver",
 			

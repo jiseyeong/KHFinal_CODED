@@ -1,6 +1,10 @@
 package kh.coded.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
+import kh.coded.dto.TokensDTO;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.MemberService;
 
@@ -28,7 +33,14 @@ public class AuthenticationController {
 	private MemberService memberService;
 	@Autowired
 	private JwtProvider jwtProvider;
-
+	
+	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+	private String KAKAO_CLIENT_ID;
+	private String KAKAO_REDIRECT_URI="http://localhost:9999/login/oauth2/code/kakao";
+	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
+	private String NAVER_CLIENT_ID;
+	private String NAVER_REDIRECT_URI="http://localhost:9999/login/oauth2/code/naver";
+	
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
 			@RequestParam(value="userId") String id,
@@ -77,28 +89,23 @@ public class AuthenticationController {
 			HttpServletResponse response,
 			@RequestParam(value="userId") String id,
 			@RequestParam(value="pw") String pw
-			//@RequestParam(value="userId") String id,
-			//@RequestParam(value="pw") String pw
 			) throws Exception{
 		//로그인 로직 실행	
 		MemberDTO member = memberService.isValidMember(id, pw);
 		if(member != null) {
-			String accessToken = memberService.login(response, member);
-			return ResponseEntity.ok().body(accessToken);
-		}else {
-			return ResponseEntity.badRequest().body("Login Failed");
+			return ResponseEntity.ok().body(memberService.login(response, member));
 		}
+		return ResponseEntity.badRequest().body("Login Failed");
 	}
 	
 	//여기서조차 badRequest 시 login 페이지로 넘겨주면 됨.
 	@GetMapping(value="/auth/refresh")
 	public ResponseEntity<?> jwtRefresh(
-			HttpServletRequest request,
-			HttpServletResponse response
+			@RequestParam(value="refreshToken", required=false) String refreshToken
 			){
-		String accessToken = memberService.refreshToken(request, response);
-		if(accessToken != null) {
-			return ResponseEntity.ok().body(accessToken);
+		TokensDTO Tokens = memberService.refreshToken(refreshToken);
+		if(Tokens != null) {
+			return ResponseEntity.ok().body(Tokens);
 		}
 		return ResponseEntity.badRequest().body("Refresh Failed. Please Login");
 	}
@@ -129,8 +136,13 @@ public class AuthenticationController {
 		return result;
 	}
 	
-	//스프링 부트의 시큐리티가 자동 매핑해주는 것이 존재.
-	//카카오의 경우 '/auth/oauth/kakao'. /auth/ouath 까진 임의 매핑임.
+	@GetMapping(value="/login/oauth2/kakao")
+	public ResponseEntity<?> kakaoLoginInfo(){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", KAKAO_CLIENT_ID);
+		data.put("redirect_uri", KAKAO_REDIRECT_URI);
+		return ResponseEntity.ok().body(data);
+	}
 	
 	//이하도 마찬가지. 이건 완전히 정해진 매핑이 존재해서 일치시켜줘야 함.
 	@GetMapping(value="/login/oauth2/code/kakao")
@@ -138,12 +150,12 @@ public class AuthenticationController {
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
 			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
-		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		String result = memberService.kakaoLogin(code, response, auth);
-		if(result.equals("T")) {
+		//엑세스 토큰에 "T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
+		TokensDTO result = memberService.kakaoLogin(code, response, auth);
+		if(result.getAccessToken().equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("등록되었습니다.");
-		}else if(result.equals("F")) {
+		}else if(result.getAccessToken().equals("F")) {
 			//badRequest - header 400
 			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
 		}
@@ -151,17 +163,25 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(result);
 	}
 	
+	@GetMapping(value="/login/oauth2/naver")
+	public ResponseEntity<?> naverLoginInfo(){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", NAVER_CLIENT_ID);
+		data.put("redirect_uri", NAVER_REDIRECT_URI);
+		return ResponseEntity.ok().body(data);
+	}
+	
 	@GetMapping(value="/login/oauth2/code/naver")
 	public ResponseEntity<?> naverLogin(
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
 			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
-		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		String result = memberService.naverLogin(code, response, auth);
-		if(result.equals("T")) {
+		//엑세스 토큰에 "T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
+		TokensDTO result = memberService.naverLogin(code, response, auth);
+		if(result.getAccessToken().equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("등록되었습니다.");
-		}else if(result.equals("F")) {
+		}else if(result.getAccessToken().equals("F")) {
 			//badRequest - header 400
 			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
 		}

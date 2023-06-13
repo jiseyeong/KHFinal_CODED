@@ -10,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
+import kh.coded.dto.TokensDTO;
 import kh.coded.repositories.AddressCoordDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.security.JwtProvider;
@@ -69,16 +69,16 @@ public class MemberService implements UserDetailsService {
 		//				.build();
 	}
 
-	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
+	public TokensDTO login(HttpServletResponse response, MemberDTO member) throws Exception {
 		//TokenDTO token = jwtProvider.createAllLoginToken(member);
-		CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+		//CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 
 		UserDetails authentication = this.loadUserByUsername(member.getUserId());
 		//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		return jwtProvider.createLoginAccessToken(member);
+		return jwtProvider.createLoginTokens(member);
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -86,25 +86,22 @@ public class MemberService implements UserDetailsService {
 		CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 	}
 
-	public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
-		if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
-			String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
-			if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
-				refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
-				try {
-					MemberDTO member = this.selectByUserNo(jwtProvider.getLoginUserNo(refreshToken));
-					UserDetails authentication = this.loadUserByUsername(member.getUserId());
-					//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
-					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
-					SecurityContextHolder.getContext().setAuthentication(auth);
+	public TokensDTO refreshToken(String refreshToken) {
+		if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
+			refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
+			try {
+				MemberDTO member = this.selectByUserNo(jwtProvider.getLoginUserNo(refreshToken));
+				UserDetails authentication = this.loadUserByUsername(member.getUserId());
+				//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
+				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(auth);
 
-					CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
-					CookieUtil.addHttpOnlyCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+				//CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
+				//CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 
-					return jwtProvider.createLoginAccessToken(member);
-				}catch(Exception e) {
-					return null;
-				}
+				return jwtProvider.createLoginTokens(member);
+			}catch(Exception e) {
+				return null;
 			}
 		}
 		// 쿠키(리프레시 토큰)이 없는 경우
@@ -118,7 +115,7 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectByUserNo(int userNo) {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
-	
+
 	public MemberDTO selectMemberByNickName(String userNickName) {
 		return memberDAO.selectMemberByNickName(userNickName);
 	}
@@ -169,8 +166,8 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectMemberByNaverToken(String token) {
 		return memberDAO.selectMemberByNaverToken(token);
 	}
-	
-	public String kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+
+	public TokensDTO kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getKakaoAccessToken(code);
 
@@ -184,12 +181,12 @@ public class MemberService implements UserDetailsService {
 			if(auth != null) {
 				member = memberDAO.selectMemberById(auth.getName());
 				memberDAO.updateKakaoToken(member.getUserNo(), token);
-				return "T";
+				return new TokensDTO("T", null);
 			}
 		}else {
 			return this.login(response, member);
 		}
-		return "F";
+		return new TokensDTO("F", null);
 	}
 
 	private String getKakaoAccessToken(String code) throws Exception{ 
@@ -242,8 +239,8 @@ public class MemberService implements UserDetailsService {
 
 		return id;
 	}
-	
-	public String naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+
+	public TokensDTO naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getNaverAccessToken(code);
 
@@ -257,12 +254,12 @@ public class MemberService implements UserDetailsService {
 			if(auth != null) {
 				member = memberDAO.selectMemberById(auth.getName());
 				memberDAO.updateNaverToken(member.getUserNo(), token);
-				return "T";
+				return new TokensDTO("T", null);
 			}
 		}else {
 			return this.login(response, member);
 		}
-		return "F";
+		return new TokensDTO("F", null);
 	}
 
 	private String getNaverAccessToken(String code) throws Exception{ 
@@ -313,7 +310,7 @@ public class MemberService implements UserDetailsService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		System.out.println(responseBody);
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
-		
+
 		Long id = jsonNode.get("response").get("id").asLong();
 
 		return id;

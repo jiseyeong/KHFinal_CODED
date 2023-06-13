@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import palette from '../../styles/palette.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout, setRefresh } from '../../modules/tokens';
+import { useCookies } from 'react-cookie';
 
 /*
     회원가입 또는 로그인 폼
@@ -61,6 +64,20 @@ const AuthForm = ({ type }) => {
   const text = textMap[type];
   const navigate = useNavigate();
 
+  //const access = useSelector((state) => state.token.access);
+  const dispatch = useDispatch();
+  const onLogin = useCallback(
+    (accessToken) => dispatch(login(accessToken)),
+    [dispatch],
+  );
+  const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
+  const onSetRefresh = useCallback(
+    (refreshToken) => dispatch(setRefresh(refreshToken)),
+    [dispatch],
+  );
+
+  const [cookies, setCookie] = useCookies(['refreshToken']);
+
   function doRegister(e) {
     //e.preventDefault();
 
@@ -89,27 +106,52 @@ const AuthForm = ({ type }) => {
   }
 
   function doLogin(e) {
-    axios.post('/auth/login', null, {
+    axios({
+      method: 'get',
+      url: '/auth/login',
       params: {
         userId: idRef.current.value,
         pw: pwRef.current.value,
       },
-    });
-    // axios({
-    //   method: 'post',
-    //   url: '/auth/login',
-    //   params: {
-    //     userId: idRef.current.value,
-    //     pw: pwRef.current.value,
-    //   },
-    //   timeout: 5000
-    // })
-    // .then(function(response){
-    //   console.log(response.data);
-    // })
-    // .catch(function (error){
-    //   console.log(error);
-    // })
+      timeout: 5000,
+    })
+      .then(function (response) {
+        onLogin(response.data.accessToken);
+        onSetRefresh(response.data.refreshToken);
+        setCookie('refreshToken', response.data.refreshToken, {
+          path: '/',
+          expire: new Date().getTime() + (7 * 24 * 60 * 60 * 1000)
+        })
+        console.log("Cookies:" + cookies.CodedRefreshToken);
+      })
+      .catch(function (e) {
+        console.log(e);
+        onLogout();
+      });
+  }
+
+  function doKakaoLogin(){
+    axios({
+      method: 'get',
+      url: '/login/oauth2/kakao',
+    }).then(function (response) {
+      const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;
+      window.location.href = KAKAO_AUTH_URL;
+    }).catch(function (e){
+      console.log(e);
+    })
+  }
+
+  function doNaverLogin(){
+    axios({
+      method: 'get',
+      url: '/login/oauth2/naver'
+    }).then(function (response){
+      const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
+      window.location.href = NAVER_AUTH_URL;
+    }).catch(function (e){
+      console.log(e);
+    })
   }
 
   const nickNameRef = useRef(null);
@@ -122,6 +164,7 @@ const AuthForm = ({ type }) => {
       <h3>{text}</h3>
       {type === 'register' && (
         <StyledInput
+          type="text"
           autoComplete="name"
           name="userNickName"
           placeholder="닉네임"
@@ -129,6 +172,7 @@ const AuthForm = ({ type }) => {
         />
       )}
       <StyledInput
+        type="text"
         autoComplete="username"
         name="userId"
         placeholder="아이디"
@@ -149,6 +193,12 @@ const AuthForm = ({ type }) => {
           type="password"
           ref={pwConfirmRef}
         />
+      )}
+      {type === 'login' && (
+        <>
+          <button onClick={doKakaoLogin}>카카오 로그인</button>
+          <button onClick={doNaverLogin}>네이버 로그인</button>
+        </>
       )}
       <ButtonWithMarginTop
         cyan={true}
