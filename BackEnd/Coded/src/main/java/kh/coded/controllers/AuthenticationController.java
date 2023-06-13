@@ -151,5 +151,21 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(result);
 	}
 	
-	
+	@GetMapping(value="/login/oauth2/code/naver")
+	public ResponseEntity<?> naverLogin(
+			@RequestParam(value="code") String code,
+			HttpServletResponse response,
+			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
+		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
+		String result = memberService.naverLogin(code, response, auth);
+		if(result.equals("T")) {
+			//accepted - header 202. 원래라면 put, post 용.
+			return ResponseEntity.accepted().body("등록되었습니다.");
+		}else if(result.equals("F")) {
+			//badRequest - header 400
+			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+		}
+		//ok - header 200
+		return ResponseEntity.ok().body(result);
+	}
 }
