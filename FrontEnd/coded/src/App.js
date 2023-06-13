@@ -9,12 +9,13 @@ import HomePageTemplate from './pages/main/HomePageTemplate';
 import FeedListByIdWithMain from './pages/test/FeedListByIdWithMain';
 import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
 import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
+import IndexPage from './pages/IndexPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
