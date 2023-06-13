@@ -76,6 +76,9 @@ public class SecurityConfiguration {
 			"/auth/oauth/**",
 			"/login/oauth2/code/kakao",
 			"/login/oauth2/callback/kakao",
+			"/login/oauth2/code/naver",
+			"/login/oauth2/callback/naver",
+			
 
 	};
 	private final String[] API_USER_LIST = {
