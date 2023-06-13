@@ -79,4 +79,10 @@ public class FeedPostDAO {
 	public FeedPostDTO selectByUserNo(int userNo) {
 		return mybatis.selectOne("FeedPost.selectByUserNo",userNo);
 	}
+
+	public List<FeedPostDTO> selectFeedNew() {
+		return mybatis.selectList("FeedPost.selectFeedNew");
+	}
+
+
 }

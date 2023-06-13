@@ -54,5 +54,11 @@
 	<select id="selectAllFeedPost" resultType="kh.coded.dto.FeedPostDTO">
 		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
 	</select>
+	
+	<select id="selectFeedNew" resultType="kh.coded.dto.FeedPostDTO">
+		select * from feedpost order by FeedPostId desc
+	</select>
+	
+
 
 </mapper>
