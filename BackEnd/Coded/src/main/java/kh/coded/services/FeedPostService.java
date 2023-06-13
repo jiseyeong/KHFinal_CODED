@@ -53,8 +53,8 @@ public class FeedPostService {
 		return feedpostDAO.searchByHashs(HashTag);
 	}
 	
-	public List<PostHashsDTO> seachByPostHashs(int tagId) {
-		return feedpostDAO.seachByPostHashs(tagId);
+	public List<PostHashsDTO> searchByPostHashs(int tagId) {
+		return feedpostDAO.searchByPostHashs(tagId);
 	}
 	
 	public FeedPostDTO searchByFeedPost(int feedPostId) {

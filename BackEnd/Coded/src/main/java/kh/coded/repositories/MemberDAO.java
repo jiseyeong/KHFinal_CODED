@@ -22,8 +22,8 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectMemberByUserNo",userNo);
 	}
 
-	public MemberDTO selectMemberByNickname(String userNickname) {
-		return mybatis.selectOne("Member.selectMemberByNickname",userNickname);
+	public MemberDTO selectMemberByNickName(String userNickName) {
+		return mybatis.selectOne("Member.selectMemberByNickName",userNickName);
 	}
 	
 	public MemberDTO selectMemberByKakaoToken(String token) {
