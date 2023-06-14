@@ -43,6 +43,9 @@ public class AuthenticationController {
 	private String NAVER_CLIENT_ID;
 	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
 	
+	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+	private String NAVER_CLIENT_SECRET; 
+	
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
 			@RequestParam(value="userId") String id,
@@ -178,8 +181,8 @@ public class AuthenticationController {
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
 	}
-	
-	@GetMapping(value="/login/oauth2/naver")
+
+	@GetMapping(value="/login/oauth2/naver/codeInfo")
 	public ResponseEntity<?> naverLoginInfo(){
 		Map<String, String> data = new HashMap<>();
 		data.put("client_id", NAVER_CLIENT_ID);
@@ -187,7 +190,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(data);
 	}
 	
-	@GetMapping(value="/login/oauth2/code/naver")
+	@GetMapping(value="/login/oauth2/naver")
 	public ResponseEntity<?> naverLogin(
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
@@ -203,5 +206,16 @@ public class AuthenticationController {
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping(value="/login/oauth2/naver/tokenInfo")
+	public ResponseEntity<?> naverLoginTokenInfo(
+			//@RequestParam(value="code") String code
+			){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", NAVER_CLIENT_ID);
+		data.put("client_secret", NAVER_CLIENT_SECRET);
+		data.put("redirect_uri", NAVER_REDIRECT_URI);
+		return ResponseEntity.ok().body(data);
 	}
 }
