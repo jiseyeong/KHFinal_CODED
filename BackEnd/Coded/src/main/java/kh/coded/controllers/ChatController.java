@@ -1,4 +1,4 @@
-package kh.coded.controllers.
+package kh.coded.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
