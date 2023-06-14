@@ -73,6 +73,7 @@ public class SecurityConfiguration {
 			"/auth/member",
 			"/auth/login",
 			"/auth/userNo",
+			"/auth/refresh",
 			"/auth/oauth/**",
 			"login/oauth2/kakao",
 			"/login/oauth2/code/kakao",

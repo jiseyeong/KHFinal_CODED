@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
 import rootReducer from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { CookiesProvider } from 'react-cookie'
 //import reportWebVitals from './reportWebVitals';
 
 // ReactDOM.render(
@@ -21,11 +20,9 @@ const store = createStore(rootReducer, composeWithDevTools());
 
 root.render(
   <React.StrictMode>
-    <CookiesProvider>
       <Provider store={store}>
         <App />
       </Provider>
-    </CookiesProvider>
   </React.StrictMode>,
 );
 
