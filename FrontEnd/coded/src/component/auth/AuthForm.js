@@ -1,9 +1,9 @@
 import React, { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import palette from '../../styles/palette.scss';
+import palette from '../../Styles/common.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../common/Button';
+import Button from '../../Styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/tokens';
 import cookie from 'react-cookies';

@@ -5,7 +5,7 @@ import Modal from './Modal';
 import InfiniteScroll from 'react-infinite-scroller';
 import './Main.scss';
 
-const API = 'http://10.58.0.54:8000';
+const API = 'http://';
 const LIMIT = 100;
 class Main extends Component {
   constructor() {
@@ -113,19 +113,14 @@ class Main extends Component {
               key={cards.id}
               id={cards.id}
               contentImg={cards?.contentImg}
-              productImg={cards?.productImg}
-              productName={cards?.productName}
-              price={cards?.price}
-              sale={cards?.sale}
               authorImg={cards?.authorImg}
               author={cards?.author}
               date={cards?.date}
-              tagName={cards?.tagName}
+              hashtag={cards?.hashtag}
               description={cards?.description}
               follower={cards?.follower}
               commentNum={cards?.commentNum}
-              share={cards?.share}
-              comments={cards?.comments}
+              scrap={cards?.scrap}
             />
           </div>
         </InfiniteScroll>
