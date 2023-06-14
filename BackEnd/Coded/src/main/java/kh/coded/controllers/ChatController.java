@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 
 @Controller
@@ -29,6 +30,11 @@ public class ChatController {
         String id = (String) smha.getSessionAttributes().get("loginId");
         return "abc";
     }
+    @EventListener
+    public void onConnect(SessionConnectedEvent e){
+        System.out.println("확인");
+    }
+
 
 //    @MessageMapping("/init")
 //    public void init(String message, SimpMessageHeaderAccessor smha){

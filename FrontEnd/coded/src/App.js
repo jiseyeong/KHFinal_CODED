@@ -1,16 +1,13 @@
 import React from 'react';
-import FeedList from './Component/FeedList/FeedList';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IndexPage from './IndexPage';
-import Login from './Component/Login/Login';
-import SignUp from './Component/SignUp/SignUp';
-import Profile from './Component/Profile/Profile';
-import FeedList from './Component/FeedList/FeedList';
-import PostDetail from './Component/FeedPostDetail/FeedPostDetail';
-import Search from './Component/Search/Search';
-import Ootd from './Pages/Ootd/Main/Main';
-import Weekly from './Pages/Weekly/Home/Home';
-
+import Login from './component/Login/Login';
+import SignUp from './component/SignUp/SignUp';
+import Profile from './component/Profile/Profile';
+import FeedList from './component/FeedList/FeedList';
+import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
+import Search from './component/Search/Search';
+import Ootd from './pages/ootd/Main/Main';
 import FeedListByIdWithMain from './test/FeedListByIdWithMain';
 import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
 import FeedListByNickNameWithMain from './test/FeedListByNickNameWithMain';
@@ -18,22 +15,29 @@ import FileUploadTest from './test/FileUploadTest';
 import KakaoCodeCallbackPage from './pages/auth/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/OAuthNaverCodeCallback';
+import DMPage from './pages/DM/DMPage';
+import HomePageTemplate from './pages/HomePageTemplate';
 
-class Routes extends React.Component {
+class App extends React.Component {
   render() {
     return (
-      <Router>
+      <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<IndexPage />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/feed" element={<FeedList />} />
-          <Route exact path="/post" element={<PostDetail />} />
+          <Route exact path="/post" element={<FeedPostDetail />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/ootd" element={<Ootd />} />
           <Route exact path="/FeedList" element={<FeedList />} />
           <Route exact path="/FeedList/id" element={<FeedListByIdWithMain />} />
+          <Route
+            exact
+            path="/HomePageTemplate"
+            element={<HomePageTemplate />}
+          ></Route>
           <Route
             exact
             path="/FeedList/nick"
@@ -64,8 +68,8 @@ class Routes extends React.Component {
           />
           <Route path="/DMPage" element={<DMPage />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     );
   }
 }
-export default Routes;
+export default App;

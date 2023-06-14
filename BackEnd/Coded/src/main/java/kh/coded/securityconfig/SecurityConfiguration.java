@@ -50,6 +50,7 @@ public class SecurityConfiguration {
 			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
+			"/**",
 			"/index.html",
 			"/",
 			"/images/**",

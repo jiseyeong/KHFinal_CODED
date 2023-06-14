@@ -1,10 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import palette from '../../Styles/GlobalStyles';
 import ProfileForm from './ProfileForm';
 
 const ProfileTemplateBlock = styled.div`
-  /* background: ${palette.gray}; */
   padding-top: 130px;
   display: flex;
   justify-content: center;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ModalSample from '../ModalSample';
 
 const ParentDiv = styled('div')`
@@ -43,56 +43,37 @@ const FeedInfoDiv = styled('div')`
 `;
 
 const FeedPostDetail = (props) => {
-
-  const [feedPost, setFeedPost] = useState([]);
-  const [thumbNail, setThumbnail] = useState([]);
-  const [member, setMember] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
-  const [hashTagList, setHashTagList] = useState([]);
+  const { feedpost, thumbnail, member, userProfile, hashTagList } = props;
   const [modal, setModal] = useState(false);
-
-  const {
-    feedPostList,
-    thumbNailList,
-    memberList,
-    userProfileList,
-    hashTagLists,
-  } = props;
-
-  setFeedPost([...feedPostList]);
-  setThumbnail([...thumbNailList]);
-  setUserProfile([...userProfileList]);
-  setMember([...memberList]);
-  setHashTagList([...hashTagLists]);
 
   const openModal = () => {
     if (!modal) {
-      console.log('true');
       setModal(true);
     }
   };
 
   const closeModal = () => {
     if (modal) {
-      console.log('false');
       setModal(false);
     }
   };
 
   return (
     <ParentDiv>
-      <FeedInnerLayoutDiv onClick={openModal}>
-        <FeedImageDiv>
-          <img src="/image/feedPost"></img>
-        </FeedImageDiv>
-        <FeedInfoDiv>
-          <div>{feedPost.id}</div>
-          <div>{feedPost.body}</div>
-          <div>
-            TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest
-          </div>
-        </FeedInfoDiv>
-      </FeedInnerLayoutDiv>
+      {feedPostList.map((e, i) => (
+        <FeedInnerLayoutDiv onClick={openModal}>
+          <FeedImageDiv>
+            <img src="/image/feedPost"></img>
+          </FeedImageDiv>
+          <FeedInfoDiv>
+            <div>{e.feedPostId}</div>
+            <div>{e.body}</div>
+            <div>
+              TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest
+            </div>
+          </FeedInfoDiv>
+        </FeedInnerLayoutDiv>
+      ))}
       {modal && (
         <ModalSample modal={modal} closeModal={closeModal} id={props.id} />
       )}

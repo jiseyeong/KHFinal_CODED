@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import palette from '../Styles/common';
 /* 여기서 스타일 적용하면 여러 곳에서 같은 스타일의 버튼을 사용 가능. */
 
 const StyledButton = styled.button`
@@ -12,11 +11,6 @@ const StyledButton = styled.button`
   color: white;
   outline: none;
   cursor: pointer;
-
-  /* background: ${palette.gray}; */
-  &:hover {
-    /* background: ${palette.gray}; */
-  }
 
   ${(props) =>
     props.fullWidth &&

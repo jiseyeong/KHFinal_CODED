@@ -24,8 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chatchat")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .setAllowedOrigins("*")
-                .withSockJS();
+                .setAllowedOrigins("*");
         // 접속할 Endpoint
         // registry.addEndpoint("/chat") => '/chat'으로 접속하는 endpoint 생성
         // setAllowedOrigin => 다른 http서버에서의 접근 경로 허용 여부를 지정

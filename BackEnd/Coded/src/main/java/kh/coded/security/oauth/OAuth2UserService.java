@@ -1,5 +1,6 @@
 package kh.coded.security.oauth;
 
+import kh.coded.repositories.MemberDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

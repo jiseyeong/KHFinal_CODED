@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import FeedPostInner from '../../component/feed/FeedPostInner';
+import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
@@ -50,7 +50,7 @@ const FeedListById = () => {
   return (
     <FeedPostOuter>
       {test.map((i) => (
-        <FeedPostInner key={i.id} id={i.id} body={i.body} />
+        <FeedPostDetail key={i.id} id={i.id} body={i.body} />
       ))}
     </FeedPostOuter>
   );
