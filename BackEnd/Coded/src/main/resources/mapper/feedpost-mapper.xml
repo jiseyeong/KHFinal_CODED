@@ -58,7 +58,8 @@
 	<select id="selectFeedNew" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost order by FeedPostId desc
 	</select>
-	
+
+
 
 
 </mapper>
