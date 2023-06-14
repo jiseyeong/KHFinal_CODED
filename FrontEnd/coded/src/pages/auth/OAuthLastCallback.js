@@ -4,7 +4,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../modules/tokens";
 
-function KakaoLastCallbackPage(){
+function LastCallbackPage(){
     const [searchParams, setSearchParams] = useSearchParams();
     const [message, setMessage] = useState(searchParams.get('message'))
     const dispatch = useDispatch();
@@ -28,4 +28,4 @@ function KakaoLastCallbackPage(){
     )
 }
 
-export default KakaoLastCallbackPage;
+export default LastCallbackPage;
