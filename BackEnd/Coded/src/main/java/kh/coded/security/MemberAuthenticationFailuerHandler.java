@@ -16,9 +16,9 @@ public class MemberAuthenticationFailuerHandler extends SimpleUrlAuthenticationF
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-		HttpSession session = request.getSession();
-		
-		session.setAttribute("loginErrorMessage", exception.getMessage());
+//		HttpSession session = request.getSession();
+//		
+//		session.setAttribute("loginErrorMessage", exception.getMessage());
 		setDefaultFailureUrl("/login?error=true");
 		super.onAuthenticationFailure(request, response, exception);
 	}
