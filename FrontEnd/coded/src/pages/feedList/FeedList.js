@@ -15,6 +15,7 @@ const FeedPostOuter = styled('div')`
 const FeedList = () => {
   const [user, setUser] = useState([]);
   const [test, setTest] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
   const [cpage, setCpage] = useState(1);
 
   const addFeedList = () => {
@@ -26,12 +27,17 @@ const FeedList = () => {
       },
     })
       .then((resp) => {
-        let temp = [];
-        resp.data.forEach((i) => {
-          temp = [...temp, { id: i.feedPostId, body: i.body }];
-        });
-        setTest([...test, ...temp]);
-        setCpage(cpage + 1);
+        const { list, userProfileList } = resp.data;
+        console.log(list);
+        console.log(userProfileList);
+        console.log(userProfileList[0].sysName);
+        setUserProfile([...userProfileList]);
+        // let temp = [];
+        // list.forEach((i) => {
+        //   temp = [...temp, { id: i.feedPostId, body: i.body }];
+        // });
+        // setTest([...test, ...temp]);
+        // setCpage(cpage + 1);
       })
       .catch((resp) => console.log(resp));
   };
@@ -48,8 +54,11 @@ const FeedList = () => {
 
   return (
     <FeedPostOuter>
-      {test.map((i) => (
+      {/* {test.map((i) => (
         <FeedPostInner key={i.id} id={i.id} body={i.body}></FeedPostInner>
+      ))} */}
+      {userProfile.map((i) => (
+        <img src={`/images/${i.sysName}`}></img>
       ))}
     </FeedPostOuter>
   );

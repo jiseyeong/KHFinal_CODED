@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import NavbarOotd from "../../../Component/Navbar/NavbarOotd/NavbarOotd";
-import CardList from "./CardList";
-import Modal from "./Modal";
-import InfiniteScroll from "react-infinite-scroller";
-import "./Main.scss";
+import React, { Component } from 'react';
+import NavbarOotd from '../../../Component/Navbar/NavbarOotd/NavbarOotd';
+import CardList from './CardList';
+import Modal from './Modal';
+import InfiniteScroll from 'react-infinite-scroller';
+import './Main.scss';
 
-const API = "http://10.58.0.54:8000";
+const API = 'http://10.58.0.54:8000';
 const LIMIT = 100;
 class Main extends Component {
   constructor() {
@@ -13,7 +13,7 @@ class Main extends Component {
     this.state = {
       likeBtn: false,
       cards: [],
-      getData: "",
+      getData: '',
       commentData: [],
       modalData: [],
       offSet: 0,
@@ -35,14 +35,14 @@ class Main extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener("scroll", this.infiniteScroll);
+    window.addEventListener('scroll', this.infiniteScroll);
     fetch(`${API}/ootds?offset=${this.state.offSet}&limit=${LIMIT}`)
       .then((res) => res.json())
       .then((res) =>
         this.setState({
           cards: res.ootd_list,
           offSet: this.state.offSet + LIMIT,
-        })
+        }),
       );
   }
 
@@ -79,7 +79,7 @@ class Main extends Component {
     console.log(this.state.offSet);
     const { cards, isModal, modalData, commentData, getData } = this.state;
     return (
-      <div style={{ overflow: "auto" }}>
+      <div style={{ overflow: 'auto' }}>
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadFunc}
@@ -104,7 +104,7 @@ class Main extends Component {
               <input type="text" alt="target" value="target"></input>
             </div>
           </div>
-          <div className={isModal ? "" : "displayNone"}>
+          <div className={isModal ? '' : 'displayNone'}>
             <Modal
               modalData={modalData}
               getData={this.getData}

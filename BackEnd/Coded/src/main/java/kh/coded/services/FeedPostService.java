@@ -1,7 +1,12 @@
 package kh.coded.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.*;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.repositories.PostHashsDAO;
@@ -30,6 +35,10 @@ public class FeedPostService {
 
     public List<FeedPostDTO> selectFeedList(int UserNo) {
         return feedpostDAO.selectFeedList(UserNo);
+    }
+
+    public int insertTest(FeedPostDTO dto) {
+        return feedpostDAO.insertFeedPost(dto);
     }
 
     public int insertFeedPost(FeedPostDTO dto) {
@@ -71,17 +80,26 @@ public class FeedPostService {
         return feedpostDAO.searchByFeedPost(feedPostId);
     }
 
-    public List<FeedPostDTO> selectAllFeedPost(int cpage) {
+    public Map<String, Object> selectAllFeedPost(int cpage) {
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
 
         List<FeedPostDTO> list = feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
+        List<MemberDTO> memberList = new ArrayList<>();
+        List<PhotoDTO> userProfileList = new ArrayList<>();
+
         for (FeedPostDTO feedPost : list) {
-            MemberDTO memberId = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
+            MemberDTO memberDTO = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
+            PhotoDTO photoDTO = photoDAO.selectByUserNo(memberDTO.getUserNo());
+            memberList.add(memberDTO);
+            userProfileList.add(photoDTO);
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
         }
-        return list;
+        Map<String, Object> map = new HashMap<>();
+        map.put("list",list);
+        map.put("userProfileList",userProfileList);
+        return map;
     }
 
     public FeedPostDTO selectByUserNo(int userNo) {

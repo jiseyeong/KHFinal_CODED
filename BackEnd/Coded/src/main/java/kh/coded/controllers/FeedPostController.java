@@ -1,17 +1,16 @@
 package kh.coded.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
@@ -21,6 +20,7 @@ import kh.coded.dto.PostHashsDTO;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
 import kh.coded.services.PhotoService;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -103,7 +103,6 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(feedposts);
 	}
 
-
     @GetMapping("/selectFeedNew")
     public ResponseEntity<?> selectFeedNew() {
     	List<FeedPostDTO> list = feedpostService.selectFeedNew();
@@ -124,9 +123,9 @@ public class FeedPostController {
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")
 			int cpage) {
 		System.out.println(cpage);
-		List<FeedPostDTO> list = feedpostService.selectAllFeedPost(cpage);
 
-		return ResponseEntity.ok().body(list);
+		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage);
+		return ResponseEntity.ok().body(map);
 	}
 
 	@GetMapping("/selectfeedlist/")
@@ -135,5 +134,21 @@ public class FeedPostController {
 		return "";
 	}
 
+	@PostMapping("/insertTest/")
+	public ResponseEntity<?> insertTest(
+			@RequestParam("title") String title,
+			@RequestParam("files")List<MultipartFile> files,
+			HttpServletRequest request
+			) throws IOException {
+		String realPath = request.getServletContext().getRealPath("test");
+		photoService.insertTest(realPath,files);
+		System.out.println(request.getServletContext().getRealPath("test"));
+		return ResponseEntity.ok().body("success");
+	}
 
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> exceptionHandler(Exception e){
+		e.printStackTrace();
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
 }

@@ -1,15 +1,13 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/alt-text */
-import React, { Component } from "react";
-import "../../../Styles/common.scss";
-import "../../../Styles/reset.scss";
-import "./Modal.scss";
+import React, { Component } from 'react';
+import '../../../Styles/common.scss';
+import '../../../Styles/reset.scss';
+import './Modal.scss';
 
 class Modal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      comment: "",
+      comment: '',
       comments: [],
       description: this.props.modalData?.modalData?.modalData?.description,
       res: [],
@@ -35,7 +33,7 @@ class Modal extends Component {
     }
   };
 
-  // 팔로우 기능 구현 
+  // 팔로우 기능 구현
   followBtnActive = () => {
     if (this.state.followBtn) {
       this.setState({
@@ -63,7 +61,7 @@ class Modal extends Component {
 
   handleKeyPress = (e) => {
     e.preventDefault();
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       if (!this.state.comment) {
         e.preventDefault();
       } else {
@@ -74,7 +72,7 @@ class Modal extends Component {
 
   handleComment = (e) => {
     fetch(this.API, {
-      method: "POST",
+      method: 'POST',
       // headers: {
       //   Authorization: localStorage.getItem("token"),
       // },
@@ -87,18 +85,18 @@ class Modal extends Component {
       .then((res) =>
         this.setState({
           res: res,
-        })
+        }),
       );
     const { comment, comments } = this.state;
     comments.push({ comment });
     this.setState({
-      comment: "",
+      comment: '',
     });
     this.num += 1;
   };
 
   render() {
-    console.log("id값", this.props.modalData?.modalData?.modalData?.id);
+    console.log('id값', this.props.modalData?.modalData?.modalData?.id);
     const { closeModal, id, modalData } = this.props;
     const { followBtn, comments, isLikeBtn } = this.state;
 
@@ -116,8 +114,8 @@ class Modal extends Component {
                   <div
                     className={
                       modalData?.modalData?.modalData?.contentImg?.length > 1
-                        ? "smallImages"
-                        : "displayNone"
+                        ? 'smallImages'
+                        : 'displayNone'
                     }
                   >
                     <figure className="smallImagesWrapper">
@@ -157,7 +155,7 @@ class Modal extends Component {
                     </div>
                     <div className="followBtnBox">
                       <svg
-                        className={followBtn ? "followBtnActive" : "followBtn"}
+                        className={followBtn ? 'followBtnActive' : 'followBtn'}
                         onClick={this.followBtnActive}
                         stroke="currentColor"
                         fill="currentColor"
@@ -180,7 +178,7 @@ class Modal extends Component {
                 </div>
 
                 <div className="authorPopularity">
-                  <div className={isLikeBtn ? "likeBox" : "dislikeBox"}>
+                  <div className={isLikeBtn ? 'likeBox' : 'dislikeBox'}>
                     <svg
                       className="like"
                       onClick={this.handleClickLike}
@@ -199,7 +197,7 @@ class Modal extends Component {
                       ></path>
                     </svg>
                   </div>
-                  <div className={isLikeBtn ? "likeNumBox" : "dislikeNumBox"}>
+                  <div className={isLikeBtn ? 'likeNumBox' : 'dislikeNumBox'}>
                     <span classNum="likeNum">
                       {modalData?.modalData?.modalData?.follower}
                     </span>
@@ -275,7 +273,7 @@ class Modal extends Component {
                           </div>
                         </div>
                       </div>
-                    )
+                    ),
                   )}
 
                   {comments.map((commentText) => {
@@ -287,7 +285,7 @@ class Modal extends Component {
                             width="30px"
                             height="30px"
                             src={commentText.commentAuthorImg}
-                          />{" "}
+                          />{' '}
                         </div>
                         <div className="commentCreateInfoWrapper">
                           <div className="commentCreateContentWrapper">
@@ -303,8 +301,8 @@ class Modal extends Component {
                               {commentText.commentCreatedAt}
                             </span>
                             <span className="commentCreateBtn">
-                              {" "}
-                              답글 달기{" "}
+                              {' '}
+                              답글 달기{' '}
                             </span>
                           </div>
                         </div>
