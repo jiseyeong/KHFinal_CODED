@@ -170,10 +170,10 @@ public class AuthenticationController {
 		String result = memberService.kakaoLogin(accessToken, response, auth);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
-			return ResponseEntity.accepted().body("등록되었습니다.");
+			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {
 			//badRequest - header 400
-			return ResponseEntity.accepted().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+			return ResponseEntity.accepted().body("F");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);

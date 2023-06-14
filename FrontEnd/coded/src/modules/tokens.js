@@ -19,7 +19,6 @@ function tokenReducer(state = initialState, action){
             return state;
         case SETREFRESH :
             state = {...state, refresh : action.payload};
-            console.log(state);
             return state;
         case LOGOUT :
             state = {access:"", refresh:""};
