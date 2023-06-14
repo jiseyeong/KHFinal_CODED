@@ -11,6 +11,7 @@ import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
 import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
 import IndexPage from './pages/IndexPage';
 import FileUploadTest from './pages/test/FileUploadTest';
+import DMPage from './pages/DM/DMPage';
 import KakaoCodeCallbackPage from './pages/auth/OAuthKakaoCodeCallback';
 import KakaoLastCallbackPage from './pages/auth/OAuthKakaoLastCallback';
 
@@ -28,8 +29,15 @@ function App() {
         <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />
         <Route path="/MyProfile" element={<MyProfilePage />} />
         <Route path="/FileUploadTest" element={<FileUploadTest />} />
-        <Route path="/login/oauth2/code/kakao" element={<KakaoCodeCallbackPage/>} />
-        <Route path="/login/oauth2/callback/kakao" element={<KakaoLastCallbackPage/>} />
+        <Route path="/DMPage" element={<DMPage />} />
+        <Route
+          path="/login/oauth2/code/kakao"
+          element={<KakaoCodeCallbackPage />}
+        />
+        <Route
+          path="/login/oauth2/callback/kakao"
+          element={<KakaoLastCallbackPage />}
+        />
       </Routes>
     </BrowserRouter>
   );
