@@ -140,9 +140,9 @@ public class FeedPostController {
 			@RequestParam("files")List<MultipartFile> files,
 			HttpServletRequest request
 			) throws IOException {
-		String realPath = request.getServletContext().getRealPath("test");
+		String realPath = request.getServletContext().getRealPath("images");
 		photoService.insertTest(realPath,files);
-		System.out.println(request.getServletContext().getRealPath("test"));
+		System.out.println(request.getServletContext().getRealPath("images"));
 		return ResponseEntity.ok().body("success");
 	}
 
