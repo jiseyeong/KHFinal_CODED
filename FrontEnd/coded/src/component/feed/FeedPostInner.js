@@ -43,7 +43,26 @@ const FeedInfoDiv = styled('div')`
 `;
 
 const FeedPostInner = (props) => {
+  const [feedPost, setFeedPost] = useState([]);
+  const [thumbNail, setThumbnail] = useState([]);
+  const [member, setMember] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
+  const [hashTagList, setHashTagList] = useState([]);
   const [modal, setModal] = useState(false);
+
+  const {
+    feedPostList,
+    thumbNailList,
+    memberList,
+    userProfileList,
+    hashTagLists,
+  } = props;
+
+  setFeedPost([...feedPostList]);
+  setThumbnail([...thumbNailList]);
+  setUserProfile([...userProfileList]);
+  setMember([...memberList]);
+  setHashTagList([...hashTagLists]);
 
   const openModal = () => {
     if (!modal) {
@@ -62,10 +81,12 @@ const FeedPostInner = (props) => {
   return (
     <ParentDiv>
       <FeedInnerLayoutDiv onClick={openModal}>
-        <FeedImageDiv />
+        <FeedImageDiv>
+          <img src="/image/feedPost"></img>
+        </FeedImageDiv>
         <FeedInfoDiv>
-          <div>{props.id}</div>
-          <div>{props.body}</div>
+          <div>{feedPost.id}</div>
+          <div>{feedPost.body}</div>
           <div>
             TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest
           </div>
