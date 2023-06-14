@@ -157,7 +157,7 @@ const AuthForm = ({ type }) => {
   function doKakaoLogin() {
     axios({
       method: 'get',
-      url: '/login/oauth2/kakao',
+      url: '/login/oauth2/kakao/codeInfo',
     })
       .then(function (response) {
         const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;

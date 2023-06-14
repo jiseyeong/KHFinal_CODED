@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
-import kh.coded.dto.TokensDTO;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.MemberService;
 
@@ -34,12 +33,15 @@ public class AuthenticationController {
 	@Autowired
 	private JwtProvider jwtProvider;
 	
+	//이하 리다이렉트 URI 들은 실제 서버 올리기 전엔 9999로 고쳐야 함.
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String KAKAO_CLIENT_ID;
-	private String KAKAO_REDIRECT_URI="http://localhost:9999/login/oauth2/code/kakao";
+	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	private String KAKAO_CLIENT_SECRET; 
+	private String KAKAO_REDIRECT_URI="http://localhost:3000/login/oauth2/code/kakao";
 	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
 	private String NAVER_CLIENT_ID;
-	private String NAVER_REDIRECT_URI="http://localhost:9999/login/oauth2/code/naver";
+	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
 	
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
@@ -140,28 +142,38 @@ public class AuthenticationController {
 		return result;
 	}
 	
-	@GetMapping(value="/login/oauth2/kakao")
-	public ResponseEntity<?> kakaoLoginInfo(){
+	@GetMapping(value="/login/oauth2/kakao/codeInfo")
+	public ResponseEntity<?> kakaoLoginCodeInfo(){
 		Map<String, String> data = new HashMap<>();
 		data.put("client_id", KAKAO_CLIENT_ID);
 		data.put("redirect_uri", KAKAO_REDIRECT_URI);
 		return ResponseEntity.ok().body(data);
 	}
 	
-	//이하도 마찬가지. 이건 완전히 정해진 매핑이 존재해서 일치시켜줘야 함.
-	@GetMapping(value="/login/oauth2/code/kakao")
+	@GetMapping(value="/login/oauth2/kakao/tokenInfo")
+	public ResponseEntity<?> kakaoLoginTokenInfo(
+			//@RequestParam(value="code") String code
+			){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", KAKAO_CLIENT_ID);
+		data.put("client_secret", KAKAO_CLIENT_SECRET);
+		data.put("redirect_uri", KAKAO_REDIRECT_URI);
+		return ResponseEntity.ok().body(data);
+	}
+	
+	@GetMapping(value="/login/oauth2/kakao")
 	public ResponseEntity<?> kakaoLogin(
-			@RequestParam(value="code") String code,
+			@RequestParam(value="accessToken") String accessToken,
 			HttpServletResponse response,
 			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
 		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		String result = memberService.kakaoLogin(code, response, auth);
+		String result = memberService.kakaoLogin(accessToken, response, auth);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("등록되었습니다.");
 		}else if(result.equals("F")) {
 			//badRequest - header 400
-			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+			return ResponseEntity.accepted().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);

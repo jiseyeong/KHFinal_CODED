@@ -19,11 +19,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = createStore(rootReducer, composeWithDevTools());
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode> // 개발자용 모드 같은거라는데, 2회 실행시켜서 카카오 로그인 등 제대로 안됨.
       <Provider store={store}>
         <App />
       </Provider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
