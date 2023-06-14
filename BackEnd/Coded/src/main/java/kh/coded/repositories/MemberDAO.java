@@ -53,8 +53,8 @@ public class MemberDAO {
 		return mybatis.update("Member.updatePw",map);
 	}
 	
-	public void updateKakaoToken(int userNo, Str'ing kakaoToken) {'
-		Map<String,Object> data = new HashMap<>(');'
+	public void updateKakaoToken(int userNo, String kakaoToken) {
+		Map<String,Object> data = new HashMap<>();
 		data.put("userNo", userNo);
 		data.put("kakaoToken", kakaoToken);
 		
