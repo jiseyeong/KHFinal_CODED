@@ -6,7 +6,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '../common/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/tokens';
-import { useCookies } from 'react-cookie';
+import cookie from 'react-cookies';
+import refreshTokenUse from '../../lib/RefreshTokenUse';
 
 /*
     회원가입 또는 로그인 폼
@@ -76,7 +77,7 @@ const AuthForm = ({ type }) => {
     [dispatch],
   );
 
-  const [cookies, setCookie] = useCookies(['refreshToken']);
+  //const [cookies, setCookie] = useCookies(['CodedRefreshToken']);
 
   function doRegister(e) {
     //e.preventDefault();
@@ -116,13 +117,14 @@ const AuthForm = ({ type }) => {
       timeout: 5000,
     })
       .then(function (response) {
-        onLogin(response.data.accessToken);
-        onSetRefresh(response.data.refreshToken);
-        setCookie('refreshToken', response.data.refreshToken, {
-          path: '/',
-          expire: new Date().getTime() + (7 * 24 * 60 * 60 * 1000)
-        })
-        console.log("Cookies:" + cookies.CodedRefreshToken);
+        let refreshToken = cookie.load('CodedRefreshToken');
+        console.log(refreshToken);
+        refreshToken = refreshToken.substr(
+          'Bearer '.length,
+          refreshToken.length,
+        );
+        onLogin(response.data);
+        onSetRefresh(refreshToken);
       })
       .catch(function (e) {
         console.log(e);
@@ -130,28 +132,54 @@ const AuthForm = ({ type }) => {
       });
   }
 
-  function doKakaoLogin(){
+  function doRefrshTest() {
+    axios({
+      type: 'GET',
+      url: '/auth/refresh',
+    })
+      .then(function (response) {
+        //엑세스 토큰 설정
+        onLogin(response.data);
+        let refreshToken = cookie.load('CodedRefreshToken');
+        refreshToken = refreshToken.substr(
+          'Bearer '.length,
+          refreshToken.length,
+        );
+        onSetRefresh(refreshToken);
+      })
+      .catch(function (e) {
+        console.log(e);
+        onLogout();
+        //history.go('/login');
+      });
+  }
+
+  function doKakaoLogin() {
     axios({
       method: 'get',
       url: '/login/oauth2/kakao',
-    }).then(function (response) {
-      const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;
-      window.location.href = KAKAO_AUTH_URL;
-    }).catch(function (e){
-      console.log(e);
     })
+      .then(function (response) {
+        const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;
+        window.location.href = KAKAO_AUTH_URL;
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
   }
 
-  function doNaverLogin(){
+  function doNaverLogin() {
     axios({
       method: 'get',
-      url: '/login/oauth2/naver'
-    }).then(function (response){
-      const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
-      window.location.href = NAVER_AUTH_URL;
-    }).catch(function (e){
-      console.log(e);
+      url: '/login/oauth2/naver',
     })
+      .then(function (response) {
+        const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
+        window.location.href = NAVER_AUTH_URL;
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
   }
 
   const nickNameRef = useRef(null);
@@ -198,6 +226,7 @@ const AuthForm = ({ type }) => {
         <>
           <button onClick={doKakaoLogin}>카카오 로그인</button>
           <button onClick={doNaverLogin}>네이버 로그인</button>
+          <button onClick={doRefrshTest}>리프레시 테스트</button>
         </>
       )}
       <ButtonWithMarginTop

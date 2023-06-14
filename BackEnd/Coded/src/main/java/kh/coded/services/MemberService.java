@@ -69,16 +69,16 @@ public class MemberService implements UserDetailsService {
 		//				.build();
 	}
 
-	public TokensDTO login(HttpServletResponse response, MemberDTO member) throws Exception {
+	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
 		//TokenDTO token = jwtProvider.createAllLoginToken(member);
-		//CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+		CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 
 		UserDetails authentication = this.loadUserByUsername(member.getUserId());
 		//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		return jwtProvider.createLoginTokens(member);
+		return jwtProvider.createLoginAccessToken(member);
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -86,22 +86,26 @@ public class MemberService implements UserDetailsService {
 		CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 	}
 
-	public TokensDTO refreshToken(String refreshToken) {
-		if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
-			refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
-			try {
-				MemberDTO member = this.selectByUserNo(jwtProvider.getLoginUserNo(refreshToken));
-				UserDetails authentication = this.loadUserByUsername(member.getUserId());
-				//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
-				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(auth);
-
-				//CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
-				//CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
-
-				return jwtProvider.createLoginTokens(member);
-			}catch(Exception e) {
-				return null;
+	public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
+		if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+			String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
+			if(refreshToken != null && refreshToken.startsWith("Bearer")) {
+				refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
+				try {
+					MemberDTO member = this.selectByUserNo(jwtProvider.getLoginUserNo(refreshToken));
+					UserDetails authentication = this.loadUserByUsername(member.getUserId());
+					//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
+					SecurityContextHolder.getContext().setAuthentication(auth);
+					
+					CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
+					CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					
+					return jwtProvider.createLoginAccessToken(member);
+				}catch(Exception e) {
+					e.printStackTrace();
+					return null;
+				}
 			}
 		}
 		// 쿠키(리프레시 토큰)이 없는 경우
@@ -167,7 +171,7 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.selectMemberByNaverToken(token);
 	}
 
-	public TokensDTO kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+	public String kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getKakaoAccessToken(code);
 
@@ -181,12 +185,12 @@ public class MemberService implements UserDetailsService {
 			if(auth != null) {
 				member = memberDAO.selectMemberById(auth.getName());
 				memberDAO.updateKakaoToken(member.getUserNo(), token);
-				return new TokensDTO("T", null);
+				return "T";
 			}
 		}else {
 			return this.login(response, member);
 		}
-		return new TokensDTO("F", null);
+		return "F";
 	}
 
 	private String getKakaoAccessToken(String code) throws Exception{ 
@@ -240,7 +244,7 @@ public class MemberService implements UserDetailsService {
 		return id;
 	}
 
-	public TokensDTO naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+	public String naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getNaverAccessToken(code);
 
@@ -254,12 +258,12 @@ public class MemberService implements UserDetailsService {
 			if(auth != null) {
 				member = memberDAO.selectMemberById(auth.getName());
 				memberDAO.updateNaverToken(member.getUserNo(), token);
-				return new TokensDTO("T", null);
+				return "T";
 			}
 		}else {
 			return this.login(response, member);
 		}
-		return new TokensDTO("F", null);
+		return "F";
 	}
 
 	private String getNaverAccessToken(String code) throws Exception{ 
