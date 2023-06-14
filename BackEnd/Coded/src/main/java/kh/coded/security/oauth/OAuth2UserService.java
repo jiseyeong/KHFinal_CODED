@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
-import kh.coded.repositories.MemberDAO;
+
 
 @Service
 public class OAuth2UserService extends DefaultOAuth2UserService{
