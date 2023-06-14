@@ -28,9 +28,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		// 리액트에서 참조할 image 태그의 src 요소를 지정
 		// servletContext를 통한 realPath로 파일을 저장
 		// 보안 상의 이유로 제한될 수 있으니 무조건 제약 사항을 확인
-		String realPath = servletContext.getRealPath("test");
+		String realPath = servletContext.getRealPath("images");
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:"+realPath)
+                .addResourceLocations("file:///"+realPath+"/")
                 .setCachePeriod(0);
 
         registry.addResourceHandler("/**")
