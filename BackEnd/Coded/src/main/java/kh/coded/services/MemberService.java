@@ -266,7 +266,7 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	private String getNaverAccessToken(String code) throws Exception{ 
+	public String getNaverAccessToken(String code) throws Exception{ 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
