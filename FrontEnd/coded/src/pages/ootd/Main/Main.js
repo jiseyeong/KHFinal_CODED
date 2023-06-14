@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import NavbarOotd from '../../../Component/Navbar/NavbarOotd/NavbarOotd';
-import CardList from './CardList';
+import NavbarOotd from '../../../component/Navbar/NavbarOotd/NavbarOotd';
+import CardList from './CardList.scss';
 import Modal from './Modal';
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
 import './Main.scss';
 
 const API = 'http://';

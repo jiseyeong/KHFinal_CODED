@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../../../Styles/common.scss';
-import '../../../Styles/reset.scss';
+import '../../../styles/common.scss';
+import '../../../styles/reset.scss';
 import './Modal.scss';
 
 class Modal extends Component {
@@ -31,7 +31,6 @@ class Modal extends Component {
       });
     }
   };
-
 
   followBtnActive = () => {
     if (this.state.followBtn) {

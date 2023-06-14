@@ -1,6 +1,6 @@
 import React from 'react';
-import AuthTemplate from '../../Component/auth/AuthTemplate';
-import AuthForm from '../../Component/auth/AuthForm';
+import AuthTemplate from '../../component/auth/AuthTemplate';
+import AuthForm from '../../component/auth/AuthForm';
 
 const SignUp = () => {
   return (

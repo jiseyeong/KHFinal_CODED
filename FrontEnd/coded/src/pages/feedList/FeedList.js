@@ -27,13 +27,13 @@ function FeedList({
     <FeedPostOuter>
       {feedPostList && feedPostList.length > 0 ? (
         feedPostList.map((feedpost, i) => (
-          <FeedPostInner
+          <FeedPostDetail
             feedPost={feedpost}
             thumbNail={thumbNailList[i]}
             member={memberList[i]}
             userProfile={userProfileList[i]}
             hashTagList={hashTagLists[i]}
-          ></FeedPostInner>
+          ></FeedPostDetail>
         ))
       ) : (
         <div>Loading...</div>

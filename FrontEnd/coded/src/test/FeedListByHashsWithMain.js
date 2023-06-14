@@ -1,9 +1,9 @@
 import React from 'react';
-import GlobalStyles from '../../styles/GlobalStyles';
+import GlobalStyles from '../styles/GlobalStyles';
 import { styled } from 'styled-components';
-import FeedListByHashs from '../feedList/FeedListByHashs';
-import Header from '../../component/Main/Header';
-import Footer from '../../component/Main/Footer';
+import FeedListByHashs from '../component/FeedList/FeedListByHashs';
+import NavbarOotd from '../component/Navbar/NavbarOotd/NavbarOotd';
+import Footer from '../component/Profile/Component/Footer/Footer';
 
 const Container = styled('div')`
   width: 100%;
@@ -14,7 +14,7 @@ const FeedListByHashsWithMain = () => {
   return (
     <Container>
       <GlobalStyles />
-      <Header />
+      <NavbarOotd />
       {/* FeedList대신 다른 Component로 교체 후 사용*/}
       <FeedListByHashs />
       <Footer />

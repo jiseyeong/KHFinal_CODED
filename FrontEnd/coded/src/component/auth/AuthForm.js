@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import palette from '../../Styles/common.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../../Styles/Button';
+import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/tokens';
 import cookie from 'react-cookies';
@@ -21,7 +20,6 @@ const textMap = {
 const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
-    /* color: ${palette.gray}; */
     margin-bottom: 1rem;
   }
 `;
@@ -32,13 +30,11 @@ const AuthFormBlock = styled.div`
 const StyledInput = styled.input`
   font-size: 1rem;
   border: none;
-  /* border-bottom: 1px solid ${palette.gray}; */
   padding-bottom: 0.5rem;
   outline: none;
   width: 100%;
   &:focus {
     color: $oc-teal-7;
-    /* border-bottom: 1px solid ${palette.gray}; */
   }
   & + & {
     margin-top: 1rem;
@@ -49,10 +45,8 @@ const Footer = styled.div`
   margin-top: 2rem;
   text-align: right;
   a {
-    /* color: ${palette.gray}; */
     text-decoration: underline;
     &:hover {
-      /* color: ${palette.gray}; */
     }
   }
 `;
@@ -86,7 +80,9 @@ const AuthForm = ({ type }) => {
       url: '/auth/getAddress1List',
     }).then((response) => {
       response.data.forEach((item) => {
-        setAddressList1((prev) => {return [...prev, item]});
+        setAddressList1((prev) => {
+          return [...prev, item];
+        });
       });
       updateAddressList2();
     });
@@ -96,15 +92,17 @@ const AuthForm = ({ type }) => {
     axios({
       method: 'get',
       url: '/auth/getAddress2List',
-      params:{
-        address1 : address1.current.value
-      }
-    }).then((response)=>{
+      params: {
+        address1: address1.current.value,
+      },
+    }).then((response) => {
       setAddressList2([]);
       response.data.forEach((item) => {
-        setAddressList2((prev) => {return [...prev, item]});
-      })
-    })
+        setAddressList2((prev) => {
+          return [...prev, item];
+        });
+      });
+    });
   }
 
   function doRegister(e) {
@@ -254,12 +252,12 @@ const AuthForm = ({ type }) => {
           />
           <select ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
-              return <option key={index}>{item}</option>
+              return <option key={index}>{item}</option>;
             })}
           </select>
           <select ref={address2}>
             {addressList2.map((item, index) => {
-              return <option key={index}>{item}</option>
+              return <option key={index}>{item}</option>;
             })}
           </select>
         </>

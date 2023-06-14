@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const IndexPage = () => {
   return (
     <div style={{ textAlign: 'center' }}>
-      <Link to="/Homepage">
+      <Link to="/HomepageTemplate">
         <button style={{ width: '200px', height: '100px' }}>페이지 시작</button>
       </Link>
       <br />

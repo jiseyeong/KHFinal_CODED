@@ -42,7 +42,7 @@ const FeedInfoDiv = styled('div')`
   word-wrap: break-word;
 `;
 
-const FeedPostInner = (props) => {
+const FeedPostDetail = (props) => {
   const { feedpost, thumbnail, member, userProfile, hashTagList } = props;
   const [modal, setModal] = useState(false);
 
