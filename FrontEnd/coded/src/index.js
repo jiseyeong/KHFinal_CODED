@@ -2,8 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { Provider } from 'react-redux';
+import { legacy_createStore as createStore } from 'redux';
+import rootReducer from './modules';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { CookiesProvider } from 'react-cookie'
 //import reportWebVitals from './reportWebVitals';
-
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -13,11 +17,16 @@ import App from './App';
 // );
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const store = createStore(rootReducer, composeWithDevTools());
 
 root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <CookiesProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </CookiesProvider>
+  </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
