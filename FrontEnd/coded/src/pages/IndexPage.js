@@ -34,6 +34,9 @@ const IndexPage = () => {
       <br />
       <br />
       <Link to="/FileUploadTest">파일 업로드 테스트</Link>
+      <br />
+      <br />
+      <Link to="/DMPage">DMRoom</Link>
     </div>
   );
 };

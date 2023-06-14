@@ -13,10 +13,9 @@ const FeedPostOuter = styled('div')`
 `;
 
 const FeedList = () => {
-  const [user, setUser] = useState([]);
-  const [test, setTest] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
   const [cpage, setCpage] = useState(1);
+  const [map, setMap] = useState(null);
+  const [count, setCount] = useState(0);
 
   const addFeedList = () => {
     axios({
@@ -27,26 +26,24 @@ const FeedList = () => {
       },
     })
       .then((resp) => {
-        const { list, userProfileList } = resp.data;
-        console.log(list);
-        console.log(userProfileList);
-        console.log(userProfileList[0].sysName);
-        setUserProfile([...userProfileList]);
-        // let temp = [];
-        // list.forEach((i) => {
-        //   temp = [...temp, { id: i.feedPostId, body: i.body }];
-        // });
-        // setTest([...test, ...temp]);
-        // setCpage(cpage + 1);
+        setMap(resp.data);
+        console.log(resp.data);
+
+        let temp = [];
+        list.forEach((i) => {
+          temp = [...temp, { id: i.feedPostId, body: i.body }];
+        });
+        setTest([...test, ...temp]);
+        setCpage(cpage + 1);
       })
       .catch((resp) => console.log(resp));
   };
 
-  window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      addFeedList();
-    }
-  };
+  // window.onscroll = function () {
+  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+  //     addFeedList();
+  //   }
+  // };
 
   useEffect(() => {
     addFeedList();
@@ -54,11 +51,8 @@ const FeedList = () => {
 
   return (
     <FeedPostOuter>
-      {/* {test.map((i) => (
-        <FeedPostInner key={i.id} id={i.id} body={i.body}></FeedPostInner>
-      ))} */}
-      {userProfile.map((i) => (
-        <img src={`/images/${i.sysName}`}></img>
+      {Array.from({ length: count }).map((_, i) => (
+        <FeedPostInner map={map}></FeedPostInner>
       ))}
     </FeedPostOuter>
   );

@@ -11,6 +11,7 @@ import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
 import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
 import IndexPage from './pages/IndexPage';
 import FileUploadTest from './pages/test/FileUploadTest';
+import DMPage from './pages/DM/DMPage';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />
         <Route path="/MyProfile" element={<MyProfilePage />} />
         <Route path="/FileUploadTest" element={<FileUploadTest />} />
+        <Route path="/DMPage" element={<DMPage />} />
       </Routes>
     </BrowserRouter>
   );
