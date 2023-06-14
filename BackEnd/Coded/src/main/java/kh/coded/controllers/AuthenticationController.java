@@ -93,7 +93,8 @@ public class AuthenticationController {
 		//로그인 로직 실행	
 		MemberDTO member = memberService.isValidMember(id, pw);
 		if(member != null) {
-			return ResponseEntity.ok().body(memberService.login(response, member));
+			String accessToken = memberService.login(response, member);
+			return ResponseEntity.ok().body(accessToken);
 		}
 		return ResponseEntity.badRequest().body("Login Failed");
 	}
@@ -101,11 +102,14 @@ public class AuthenticationController {
 	//여기서조차 badRequest 시 login 페이지로 넘겨주면 됨.
 	@GetMapping(value="/auth/refresh")
 	public ResponseEntity<?> jwtRefresh(
-			@RequestParam(value="refreshToken", required=false) String refreshToken
+			HttpServletRequest request,
+			HttpServletResponse response
+			//@RequestParam(value="refreshToken", required=false) String refreshToken
 			){
-		TokensDTO Tokens = memberService.refreshToken(refreshToken);
-		if(Tokens != null) {
-			return ResponseEntity.ok().body(Tokens);
+		//리프레시 토큰은 안에서 쿠키로 재발급함.
+		String accessToken = memberService.refreshToken(request, response);
+		if(accessToken != null) {
+			return ResponseEntity.ok().body(accessToken);
 		}
 		return ResponseEntity.badRequest().body("Refresh Failed. Please Login");
 	}
@@ -150,12 +154,12 @@ public class AuthenticationController {
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
 			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
-		//엑세스 토큰에 "T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		TokensDTO result = memberService.kakaoLogin(code, response, auth);
-		if(result.getAccessToken().equals("T")) {
+		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
+		String result = memberService.kakaoLogin(code, response, auth);
+		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("등록되었습니다.");
-		}else if(result.getAccessToken().equals("F")) {
+		}else if(result.equals("F")) {
 			//badRequest - header 400
 			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
 		}
@@ -177,11 +181,11 @@ public class AuthenticationController {
 			HttpServletResponse response,
 			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
 		//엑세스 토큰에 "T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		TokensDTO result = memberService.naverLogin(code, response, auth);
-		if(result.getAccessToken().equals("T")) {
+		String result = memberService.naverLogin(code, response, auth);
+		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("등록되었습니다.");
-		}else if(result.getAccessToken().equals("F")) {
+		}else if(result.equals("F")) {
 			//badRequest - header 400
 			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
 		}
