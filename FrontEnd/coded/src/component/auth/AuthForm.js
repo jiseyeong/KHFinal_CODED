@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import palette from '../../Styles/common.scss';
@@ -77,7 +77,35 @@ const AuthForm = ({ type }) => {
     [dispatch],
   );
 
-  //const [cookies, setCookie] = useCookies(['CodedRefreshToken']);
+  const [addressList1, setAddressList1] = useState([]);
+  const [addressList2, setAddressList2] = useState([]);
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: '/auth/getAddress1List',
+    }).then((response) => {
+      response.data.forEach((item) => {
+        setAddressList1((prev) => {return [...prev, item]});
+      });
+      updateAddressList2();
+    });
+  }, []);
+  function updateAddressList2() {
+    console.log(address1.current.value);
+    axios({
+      method: 'get',
+      url: '/auth/getAddress2List',
+      params:{
+        address1 : address1.current.value
+      }
+    }).then((response)=>{
+      setAddressList2([]);
+      response.data.forEach((item) => {
+        setAddressList2((prev) => {return [...prev, item]});
+      })
+    })
+  }
 
   function doRegister(e) {
     //e.preventDefault();
@@ -157,7 +185,7 @@ const AuthForm = ({ type }) => {
   function doKakaoLogin() {
     axios({
       method: 'get',
-      url: '/login/oauth2/kakao',
+      url: '/login/oauth2/kakao/codeInfo',
     })
       .then(function (response) {
         const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;
@@ -171,7 +199,7 @@ const AuthForm = ({ type }) => {
   function doNaverLogin() {
     axios({
       method: 'get',
-      url: '/login/oauth2/naver',
+      url: '/login/oauth2/naver/codeInfo',
     })
       .then(function (response) {
         const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
@@ -186,6 +214,8 @@ const AuthForm = ({ type }) => {
   const idRef = useRef(null);
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
+  const address1 = useRef(null);
+  const address2 = useRef(null);
 
   return (
     <AuthFormBlock>
@@ -214,13 +244,25 @@ const AuthForm = ({ type }) => {
         ref={pwRef}
       />
       {type === 'register' && (
-        <StyledInput
-          autoComplete="new-password"
-          name="pwConfirm"
-          placeholder="비밀번호 확인"
-          type="password"
-          ref={pwConfirmRef}
-        />
+        <>
+          <StyledInput
+            autoComplete="new-password"
+            name="pwConfirm"
+            placeholder="비밀번호 확인"
+            type="password"
+            ref={pwConfirmRef}
+          />
+          <select ref={address1} onChange={updateAddressList2}>
+            {addressList1.map((item, index) => {
+              return <option key={index}>{item}</option>
+            })}
+          </select>
+          <select ref={address2}>
+            {addressList2.map((item, index) => {
+              return <option key={index}>{item}</option>
+            })}
+          </select>
+        </>
       )}
       {type === 'login' && (
         <>

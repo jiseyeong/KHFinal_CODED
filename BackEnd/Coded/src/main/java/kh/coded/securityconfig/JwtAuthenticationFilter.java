@@ -42,6 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/static/**",
 					"/favicon.ico",
 					
+					"/",
 					"/login",
 					"/register",
 					"/auth/member",

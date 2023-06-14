@@ -171,9 +171,9 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.selectMemberByNaverToken(token);
 	}
 
-	public String kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
-		//인가 코드로 엑세스 토큰 요청.
-		String accessToken = this.getKakaoAccessToken(code);
+	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+//		//인가 코드로 엑세스 토큰 요청.
+//		String accessToken = this.getKakaoAccessToken(code);
 
 		//토큰으로 카카오 API 호출
 		Long kakaoId = this.getKakaoUserInfo(accessToken);
@@ -193,33 +193,33 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	private String getKakaoAccessToken(String code) throws Exception{ 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-		body.add("grant_type", "authorization_code");
-		body.add("client_id", KAKAO_CLIENT_ID);
-		body.add("client_secret", KAKAO_CLIENT_SECRET);
-		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/kakao");
-		body.add("code", code);
-
-		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
-		RestTemplate rt = new RestTemplate();
-		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-		rt.setErrorHandler(new DefaultResponseErrorHandler());
-		ResponseEntity<String> response = rt.exchange(
-				"https://kauth.kakao.com/oauth/token",
-				HttpMethod.POST,
-				kakaoTokenRequest,
-				String.class
-				);
-
-		String responseBody = response.getBody();
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode jsonNode = objectMapper.readTree(responseBody);
-		return jsonNode.get("access_token").asText();
-	}
+//	private String getKakaoAccessToken(String code) throws Exception{ 
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+//
+//		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//		body.add("grant_type", "authorization_code");
+//		body.add("client_id", KAKAO_CLIENT_ID);
+//		body.add("client_secret", KAKAO_CLIENT_SECRET);
+//		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/kakao");
+//		body.add("code", code);
+//
+//		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
+//		RestTemplate rt = new RestTemplate();
+//		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+//		rt.setErrorHandler(new DefaultResponseErrorHandler());
+//		ResponseEntity<String> response = rt.exchange(
+//				"https://kauth.kakao.com/oauth/token",
+//				HttpMethod.POST,
+//				kakaoTokenRequest,
+//				String.class
+//				);
+//
+//		String responseBody = response.getBody();
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		JsonNode jsonNode = objectMapper.readTree(responseBody);
+//		return jsonNode.get("access_token").asText();
+//	}
 
 	private Long getKakaoUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
@@ -266,7 +266,7 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	private String getNaverAccessToken(String code) throws Exception{ 
+	public String getNaverAccessToken(String code) throws Exception{ 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 

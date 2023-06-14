@@ -50,6 +50,7 @@ public class SecurityConfiguration {
 			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
+			"/index.html",
 			"/",
 			"/images/**",
 			"/manifest.json",
@@ -66,6 +67,9 @@ public class SecurityConfiguration {
 			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
+			"/MyProfile",
+			"/FileUploadTest",
+			"/DMPage",
 			
 			"/login",
 			"/register",
@@ -73,14 +77,19 @@ public class SecurityConfiguration {
 			"/auth/member",
 			"/auth/login",
 			"/auth/userNo",
+			"/auth/getAddress1List",
+			"/auth/getAddress2List",
 			"/auth/refresh",
 			"/auth/oauth/**",
-			"login/oauth2/kakao",
+			"/login/oauth2/kakao/codeInfo",
+			"/login/oauth2/kakao/tokenInfo",
+			"/login/oauth2/kakao",
 			"/login/oauth2/code/kakao",
 			"/login/oauth2/callback/kakao",
 			"/login/oauth2/naver",
 			"/login/oauth2/code/naver",
 			"/login/oauth2/callback/naver",
+			"/login/oauth2/naver/codeInfo"
 			
 
 	};
