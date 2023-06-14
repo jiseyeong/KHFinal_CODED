@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="Photo">
-  
-  <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
-  		select * from photo where feedpostid = ${feedpostid}
-  </select>
-  </mapper>
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Photo">
+
+    <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
+        select * from photo where feedpostid = ${feedpostid}
+    </select>
+
+    <insert id="insertTest">
+        insert into photo values (photoid_seq.nextval, #{oriName}, #{sysName}, 0, 0, ${userNo})
+    </insert>
+
+    <select id="selectByUserNo" resultType="kh.coded.dto.PhotoDTO">
+        select * from photo where userno = ${userNo}
+    </select>
+
+</mapper>
   

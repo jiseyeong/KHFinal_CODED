@@ -10,6 +10,7 @@ import FeedListByIdWithMain from './pages/test/FeedListByIdWithMain';
 import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
 import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
 import IndexPage from './pages/IndexPage';
+import FileUploadTest from './pages/test/FileUploadTest';
 
 function App() {
   return (
@@ -18,12 +19,13 @@ function App() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
         <Route path="/HomePage" element={<HomePageTemplate />} />
         <Route path="/FeedList" element={<FeedList />} />
         <Route path="/FeedList/id" element={<FeedListByIdWithMain />} />
         <Route path="/FeedList/nick" element={<FeedListByNickNameWithMain />} />
         <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />
+        <Route path="/MyProfile" element={<MyProfilePage />} />
+        <Route path="/FileUploadTest" element={<FileUploadTest />} />
       </Routes>
     </BrowserRouter>
   );

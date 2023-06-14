@@ -30,7 +30,10 @@ const IndexPage = () => {
       <Link to="/FeedList/hashs">해쉬 검색 결과(테스트)</Link>
       <br />
       <br />
-      <Link to="MyProfile">마이 프로필 페이지</Link>
+      <Link to="/MyProfile">마이 프로필 페이지</Link>
+      <br />
+      <br />
+      <Link to="/FileUploadTest">파일 업로드 테스트</Link>
     </div>
   );
 };
