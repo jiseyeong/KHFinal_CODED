@@ -42,7 +42,6 @@ function KakaoCodeCallbackPage(){
     },[]);
     return(
         <div>
-            콜백
         </div>
     )
 }

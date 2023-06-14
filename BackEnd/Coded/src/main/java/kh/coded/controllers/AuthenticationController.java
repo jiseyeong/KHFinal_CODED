@@ -43,6 +43,9 @@ public class AuthenticationController {
 	private String NAVER_CLIENT_ID;
 	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
 	
+	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+	private String NAVER_CLIENT_SECRET; 
+	
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
 			@RequestParam(value="userId") String id,
@@ -170,16 +173,16 @@ public class AuthenticationController {
 		String result = memberService.kakaoLogin(accessToken, response, auth);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
-			return ResponseEntity.accepted().body("등록되었습니다.");
+			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {
 			//badRequest - header 400
-			return ResponseEntity.accepted().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+			return ResponseEntity.accepted().body("F");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
 	}
-	
-	@GetMapping(value="/login/oauth2/naver")
+
+	@GetMapping(value="/login/oauth2/naver/codeInfo")
 	public ResponseEntity<?> naverLoginInfo(){
 		Map<String, String> data = new HashMap<>();
 		data.put("client_id", NAVER_CLIENT_ID);
@@ -187,7 +190,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(data);
 	}
 	
-	@GetMapping(value="/login/oauth2/code/naver")
+	@GetMapping(value="/login/oauth2/naver")
 	public ResponseEntity<?> naverLogin(
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
@@ -196,12 +199,24 @@ public class AuthenticationController {
 		String result = memberService.naverLogin(code, response, auth);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
-			return ResponseEntity.accepted().body("등록되었습니다.");
+			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {
 			//badRequest - header 400
-			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+			return ResponseEntity.accepted().body("F");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping(value="/login/oauth2/naver/tokenInfo")
+	public ResponseEntity<?> naverLoginTokenInfo(
+			@RequestParam(value="code") String code
+			){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", NAVER_CLIENT_ID);
+		data.put("client_secret", NAVER_CLIENT_SECRET);
+		data.put("redirect_uri", NAVER_REDIRECT_URI);
+		
+		return ResponseEntity.ok().body(data);
 	}
 }

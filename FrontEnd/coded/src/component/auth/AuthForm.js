@@ -171,7 +171,7 @@ const AuthForm = ({ type }) => {
   function doNaverLogin() {
     axios({
       method: 'get',
-      url: '/login/oauth2/naver',
+      url: '/login/oauth2/naver/codeInfo',
     })
       .then(function (response) {
         const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;

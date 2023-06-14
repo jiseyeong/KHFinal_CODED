@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
-function KakaoLastCallbackPage(){
+function NaverLastCallbackPage(){
     const [searchParams, setSearchParams] = useSearchParams();
     const [message, setMessage] = useState(searchParams.get('message'))
 
@@ -16,4 +16,4 @@ function KakaoLastCallbackPage(){
     )
 }
 
-export default KakaoLastCallbackPage;
+export default NaverLastCallbackPage;
