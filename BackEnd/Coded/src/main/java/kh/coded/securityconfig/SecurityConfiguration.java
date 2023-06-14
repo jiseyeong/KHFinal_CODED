@@ -50,6 +50,7 @@ public class SecurityConfiguration {
 			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
+			"/index.html",
 			"/",
 			"/images/**",
 			"/manifest.json",
@@ -66,6 +67,9 @@ public class SecurityConfiguration {
 			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
+			"/MyProfile",
+			"/FileUploadTest",
+			"/DMPage",
 			
 			"/login",
 			"/register",
