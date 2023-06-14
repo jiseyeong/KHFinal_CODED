@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
 import kh.coded.security.JwtProvider;
+import kh.coded.services.AddressCoordService;
 import kh.coded.services.MemberService;
 
 @RestController
@@ -32,6 +33,8 @@ public class AuthenticationController {
 	private MemberService memberService;
 	@Autowired
 	private JwtProvider jwtProvider;
+	@Autowired
+	private AddressCoordService addressCoordService;
 	
 	//이하 리다이렉트 URI 들은 실제 서버 올리기 전엔 9999로 고쳐야 함.
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -42,7 +45,6 @@ public class AuthenticationController {
 	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
 	private String NAVER_CLIENT_ID;
 	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
-	
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
 	private String NAVER_CLIENT_SECRET; 
 	
@@ -144,6 +146,20 @@ public class AuthenticationController {
 		boolean result = memberService.isMemberId(userId);
 		return result;
 	}
+	
+	@GetMapping(value="/auth/getAddress1List")
+	public ResponseEntity<?> getAddress1List(){
+		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth1());
+	}
+	
+	@GetMapping(value="/auth/getAddress2List")
+	public ResponseEntity<?> getAddress2List(
+			@RequestParam(value="address1") String address1
+			){
+		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth2(address1));
+	}
+	
+	
 	
 	@GetMapping(value="/login/oauth2/kakao/codeInfo")
 	public ResponseEntity<?> kakaoLoginCodeInfo(){
