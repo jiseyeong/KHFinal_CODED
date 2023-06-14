@@ -88,58 +88,6 @@
   
       .contentText {
         padding: 10px 10px 12px;
-  
-        .productWrapper {
-          position: relative;
-          display: flex;
-  
-          .productSale {
-            position: absolute;
-            bottom: 70%;
-            background-color: #ff6699;
-            color: white;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 3px 0 3px 0;
-            cursor: pointer;
-          }
-  
-          .productImg {
-            width: 56px;
-            height: 56px;
-            border: 0px solid #e8ebed;
-            border-radius: 6px;
-            cursor: pointer;
-          }
-  
-          .productInfo {
-            align-items: center;
-            padding-left: 8px;
-            .productName {
-              line-height: 1.3;
-              font-size: 14px;
-              font-weight: bold;
-              color: #26282b;
-              cursor: pointer;
-            }
-  
-            .priceWrapper {
-              height: 20px;
-              font-size: 13px;
-              font-weight: 700;
-              line-height: 25px;
-              .price {
-                padding-right: 4px;
-                color: #4adaaf;
-              }
-  
-              .originPrice {
-                text-decoration: line-through solid #9ea4aa;
-                color: #9ea4aa;
-              }
-            }
-          }
-        }
       }
   
       .authorWrapper {
