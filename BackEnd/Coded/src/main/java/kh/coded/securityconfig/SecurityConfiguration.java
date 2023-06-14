@@ -83,6 +83,8 @@ public class SecurityConfiguration {
 			"/login/oauth2/naver",
 			"/login/oauth2/code/naver",
 			"/login/oauth2/callback/naver",
+			"/login/oauth2/naver/tokenInfo",
+			"/login/oauth2/naver/codeInfo"
 			
 
 	};
