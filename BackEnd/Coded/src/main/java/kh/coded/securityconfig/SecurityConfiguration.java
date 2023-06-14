@@ -77,6 +77,8 @@ public class SecurityConfiguration {
 			"/auth/member",
 			"/auth/login",
 			"/auth/userNo",
+			"/auth/getAddress1List",
+			"/auth/getAddress2List",
 			"/auth/refresh",
 			"/auth/oauth/**",
 			"/login/oauth2/kakao/codeInfo",
