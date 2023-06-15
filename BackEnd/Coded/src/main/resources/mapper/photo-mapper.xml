@@ -8,5 +8,9 @@
   <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
   		select * from photo where feedpostid = ${feedpostid}
   </select>
+  
+  <select id="selectFeedlike" resultType="kh.coded.dto.PhotoDTO">
+  		select * from photo where feedpostid = ${feedpostid}
+  </select>
   </mapper>
   

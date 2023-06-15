@@ -15,4 +15,8 @@ public class PhotoDAO {
 	public PhotoDTO selectByFeedpostId(int feedPostId) {
 		return mybatis.selectOne("Photo.selectByFeedpostId",feedPostId);
 	}
+
+	public PhotoDTO selectFeedlike(int feedPostId) {
+		return mybatis.selectOne("Ptoho.selectFeedlike",feedPostId);
+	}
 }

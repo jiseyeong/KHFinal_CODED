@@ -84,4 +84,11 @@ public class FeedPostService {
 	public PhotoDTO selectByFeedpostId(int feedPostId) {
 		return photoDAO.selectByFeedpostId(feedPostId);
 	}
+
+	public List<FeedPostDTO> selectFeedlike() {
+		return feedpostDAO.selectFeedlike();
+	}
+
+	
+	
 }
