@@ -120,7 +120,11 @@ public class AuthenticationController {
 		//리프레시 토큰은 안에서 쿠키로 재발급함.
 		String accessToken = memberService.refreshToken(request, response);
 		if(accessToken != null) {
-			return ResponseEntity.ok().body(accessToken);
+			Map<String, Object> data = new HashMap<>();
+			data.put("accessToken", accessToken);
+			data.put("userNo", jwtProvider.getLoginUserNo(accessToken));
+			data.put("userId", jwtProvider.getLoiginUserID(accessToken));
+			return ResponseEntity.ok().body(data);
 		}
 		return ResponseEntity.badRequest().body("Refresh Failed. Please Login");
 	}

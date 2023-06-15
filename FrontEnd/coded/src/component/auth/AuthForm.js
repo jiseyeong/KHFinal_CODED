@@ -6,7 +6,6 @@ import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/members';
 import cookie from 'react-cookies';
-import refreshTokenUse from '../../lib/RefreshTokenUse';
 
 /*
     회원가입 또는 로그인 폼
@@ -74,6 +73,8 @@ const AuthForm = ({ type }) => {
   const [addressList2, setAddressList2] = useState([]);
   const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
   const [idDuplicateMessage, setIdDuplicateMessage] = useState(false);
+  const [isIdSaveChecked, setIdSaveChecked] = useState(!cookie.load('userId') ? true:false);
+  const [isPwView, setIsPwView] = useState(false);
 
   useEffect(() => {
     if(type=="register"){
@@ -87,6 +88,8 @@ const AuthForm = ({ type }) => {
           });
         });
       });
+    }else if(type==="login"){
+      setId(cookie.load('userId') ? cookie.load('userId'):"");
     }
   }, []);
   function updateAddressList2() {
@@ -106,18 +109,22 @@ const AuthForm = ({ type }) => {
     });
   }
 
-  function idDuplicateCheck(){
-    axios({
-      method:'get',
-      url:'/auth/isMember',
-      params:{
-        userId: idRef.current.value
-      }
-    }).then((response)=>{
-      console.log(response);
-      setIdDuplicateChecked(response.data);
-      setIdDuplicateMessage(response.data ? "중복된 아이디가 있습니다." : "중복된 아이디가 없습니다.");
-    });
+  function handleId(e){
+    setId(e.target.value);
+    if(type==="register"){
+      //아이디 중복 체크
+      axios({
+        method:'get',
+        url:'/auth/isMember',
+        params:{
+          userId: id
+        }
+      }).then((response)=>{
+        console.log(response);
+        setIdDuplicateChecked(response.data);
+        setIdDuplicateMessage(response.data ? "중복된 아이디가 있습니다." : "중복된 아이디가 없습니다.");
+      });
+    }
   }
 
   function doRegister(e) {
@@ -131,7 +138,7 @@ const AuthForm = ({ type }) => {
         method: 'post',
         url: '/auth/member',
         params: {
-          userId: idRef.current.value,
+          userId: id,
           pw: pwRef.current.value,
           userNickName: nickNameRef.current.value,
           address1 : address1.current.value,
@@ -151,11 +158,21 @@ const AuthForm = ({ type }) => {
   }
 
   function doLogin(e) {
+    if(isIdSaveChecked){
+      const expires = new Date();
+      expires.setMinutes(expires.getMinutes() + 60); // 아이디 1시간 기억
+      cookie.save('userId', id,{
+        path : "/",
+        expires
+      })
+    }else{
+      cookie.remove('userId', {path : '/'});
+    }
     axios({
       method: 'get',
       url: '/auth/login',
       params: {
-        userId: idRef.current.value,
+        userId: id,
         pw: pwRef.current.value,
       },
       timeout: 5000,
@@ -168,12 +185,15 @@ const AuthForm = ({ type }) => {
         );
         onLogin(response.data.accessToken, response.data.userId, response.data.userNo);
         onSetRefresh(refreshToken);
+        navigate("/");
       })
       .catch(function (e) {
         console.log(e);
         onLogout();
       });
   }
+
+
 
   function doRefrshTest() {
     axios({
@@ -226,7 +246,7 @@ const AuthForm = ({ type }) => {
   }
 
   const nickNameRef = useRef(null);
-  const idRef = useRef(null);
+  const [id, setId] = useState("");
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
   const address1 = useRef(null);
@@ -249,17 +269,24 @@ const AuthForm = ({ type }) => {
         autoComplete="username"
         name="userId"
         placeholder="아이디"
-        ref={idRef}
-        onChange={type==="register" ? idDuplicateCheck : null}
+        value={id}
+        onChange={handleId}
       />
       <div>{idDuplicateMessage}</div>
       <StyledInput
         autoComplete="new-password"
         name="pw"
         placeholder="비밀번호"
-        type="password"
+        type={isPwView ? "text" : "password"}
         ref={pwRef}
       />
+      {type === 'login' && (
+        <>
+          <button onClick={()=>{setIsPwView((prev) => {return !prev})}}>pw보기</button>
+          <input type="checkbox" checked={isIdSaveChecked} onChange={()=>{setIdSaveChecked((prev)=>{return !prev})}} />
+          <label>아이디 기억</label>
+        </>
+      )}
       {type === 'register' && (
         <>
           <StyledInput
