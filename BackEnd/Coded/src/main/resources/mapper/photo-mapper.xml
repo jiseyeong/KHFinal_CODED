@@ -13,8 +13,15 @@
         select * from photo where feedpostid = ${feedpostid}
     </select>
 
-    <insert id="insertTest">
-        insert into photo values (photoid_seq.nextval, #{oriName}, #{sysName}, 0, 0, ${userNo})
+    <insert id="insertPhoto">
+        <choose>
+            <when test="userNo!=0">
+                insert into photo values (photoid_seq.nextval, #{oriName}, #{sysName}, 0, 0, ${userNo})
+            </when>
+            <when test="feedPostId!=0">
+                insert into photo values (photoid_seq.nextval, #{oriName}, #{sysName}, ${feedPostId}, 0, 0)
+            </when>
+        </choose>
     </insert>
 
     <select id="selectByUserNo" resultType="kh.coded.dto.PhotoDTO">

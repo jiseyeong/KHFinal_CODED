@@ -19,8 +19,8 @@ public class PhotoDAO {
 	public PhotoDTO selectFeedlike(int feedPostId) {
 		return mybatis.selectOne("Ptoho.selectFeedlike",feedPostId);
 	}
-    public void insertTest(PhotoDTO photoDTO) {
-		mybatis.insert("Photo.insertTest",photoDTO);
+    public void insertPhoto(PhotoDTO photoDTO) {
+		mybatis.insert("Photo.insertPhoto",photoDTO);
     }
 
 	public PhotoDTO selectByUserNo(int userNo) {

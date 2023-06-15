@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 import { logout } from './modules/members';
 
 const IndexPage = () => {
-
   const dispatch = useDispatch();
-  const onLogout = useCallback(()=>dispatch(logout()),[dispatch]);
+  const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
 
   return (
     <div style={{ textAlign: 'center' }}>
