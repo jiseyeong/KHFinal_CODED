@@ -5,7 +5,9 @@ function AuthorizationAxois(url, method, param, token){
         url: url,
         method: method,
         data: param,
-        header: `Bearer ${token}`
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
     })
 }
 

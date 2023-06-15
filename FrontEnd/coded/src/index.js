@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
 import rootReducer from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import App from './App';
 //import reportWebVitals from './reportWebVitals';
 
 // ReactDOM.render(
@@ -20,9 +20,9 @@ const store = createStore(rootReducer, composeWithDevTools());
 
 root.render(
   // <React.StrictMode> // 개발자용 모드 같은거라는데, 2회 실행시켜서 카카오 로그인 등 제대로 안됨.
-      <Provider store={store}>
-        <App />
-      </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>,
   // </React.StrictMode>,
 );
 

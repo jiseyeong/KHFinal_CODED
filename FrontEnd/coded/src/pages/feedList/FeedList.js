@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import FeedPostInner from '../../component/feed/FeedPostInner';
+import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
@@ -12,10 +12,43 @@ const FeedPostOuter = styled('div')`
   flex-wrap: wrap;
 `;
 
-const FeedList = () => {
+function FeedList({
+  feedPostList,
+  thumbNailList,
+  memberList,
+  userProfileList,
+  hashTagLists,
+}) {
+  useEffect(() => {
+    console.log('데이터 설정 완료');
+  }, [feedPostList]);
+
+  return (
+    <FeedPostOuter>
+      {feedPostList && feedPostList.length > 0 ? (
+        feedPostList.map((feedpost, i) => (
+          <FeedPostDetail
+            feedPost={feedpost}
+            thumbNail={thumbNailList[i]}
+            member={memberList[i]}
+            userProfile={userProfileList[i]}
+            hashTagList={hashTagLists[i]}
+          ></FeedPostDetail>
+        ))
+      ) : (
+        <div>Loading...</div>
+      )}
+    </FeedPostOuter>
+  );
+}
+
+function MakeFeedList() {
   const [cpage, setCpage] = useState(1);
-  const [map, setMap] = useState(null);
-  const [count, setCount] = useState(0);
+  const [feedPost, setFeedPost] = useState([]);
+  const [thumbNail, setThumbnail] = useState([]);
+  const [member, setMember] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
+  const [hashTagList, setHashTagList] = useState([]);
 
   const addFeedList = () => {
     axios({
@@ -26,14 +59,21 @@ const FeedList = () => {
       },
     })
       .then((resp) => {
-        setMap(resp.data);
         console.log(resp.data);
 
-        let temp = [];
-        list.forEach((i) => {
-          temp = [...temp, { id: i.feedPostId, body: i.body }];
-        });
-        setTest([...test, ...temp]);
+        const {
+          feedPostList,
+          thumbNailList,
+          memberList,
+          userProfileList,
+          hashTagLists,
+        } = resp.data;
+
+        setFeedPost([...feedPostList]);
+        setThumbnail([...thumbNailList]);
+        setUserProfile([...userProfileList]);
+        setMember([...memberList]);
+        setHashTagList([...hashTagLists]);
         setCpage(cpage + 1);
       })
       .catch((resp) => console.log(resp));
@@ -46,17 +86,23 @@ const FeedList = () => {
   // };
 
   useEffect(() => {
+    console.log('화면에 나타남');
     addFeedList();
+    return () => {
+      console.log('화면에 사라짐');
+    };
   }, []);
 
   return (
-    <FeedPostOuter>
-      {Array.from({ length: count }).map((_, i) => (
-        <FeedPostInner map={map}></FeedPostInner>
-      ))}
-    </FeedPostOuter>
+    <FeedList
+      feedPostList={feedPost}
+      thumbNailList={thumbNail}
+      memberList={member}
+      userProfileList={userProfile}
+      hashTagLists={hashTagList}
+    />
   );
-};
+}
 
 export default FeedList;
 

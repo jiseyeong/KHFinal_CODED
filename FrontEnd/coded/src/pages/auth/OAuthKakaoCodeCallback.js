@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import usePromise from "../../lib/usePromise";
 
 function KakaoCodeCallbackPage(){
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
-    useEffect(()=>{
-        const code = searchParams.get('code');
-        console.log("Code : " + code);
-        if(code != null || code != undefined || cpde != ""){
-            axios({
+    const code = searchParams.get('code');
+
+    if(code != null || code != undefined || cpde != ""){
+        const [loading, response, error] = usePromise(()=>{
+            return axios({
                 method:"get",
                 url:"/login/oauth2/kakao/tokenInfo"
             }).then((response)=>{
@@ -38,11 +39,26 @@ function KakaoCodeCallbackPage(){
                     })
                 })
             })
+        },[]);
+        if(loading){
+            return (
+                <div>
+                    진행 중...
+                </div>
+            )
         }
-    },[]);
+        if(error){
+            return (
+                <div>
+                    에러 발생!
+                </div>
+            )
+        }
+    }else{
+        navigate("/login");
+    }
     return(
         <div>
-            콜백
         </div>
     )
 }

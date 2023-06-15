@@ -1,9 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import palette from '../../styles/palette.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../common/Button';
+import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/tokens';
 import cookie from 'react-cookies';
@@ -21,7 +20,6 @@ const textMap = {
 const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
-    /* color: ${palette.gray}; */
     margin-bottom: 1rem;
   }
 `;
@@ -32,13 +30,11 @@ const AuthFormBlock = styled.div`
 const StyledInput = styled.input`
   font-size: 1rem;
   border: none;
-  /* border-bottom: 1px solid ${palette.gray}; */
   padding-bottom: 0.5rem;
   outline: none;
   width: 100%;
   &:focus {
     color: $oc-teal-7;
-    /* border-bottom: 1px solid ${palette.gray}; */
   }
   & + & {
     margin-top: 1rem;
@@ -49,10 +45,8 @@ const Footer = styled.div`
   margin-top: 2rem;
   text-align: right;
   a {
-    /* color: ${palette.gray}; */
     text-decoration: underline;
     &:hover {
-      /* color: ${palette.gray}; */
     }
   }
 `;
@@ -77,7 +71,41 @@ const AuthForm = ({ type }) => {
     [dispatch],
   );
 
-  //const [cookies, setCookie] = useCookies(['CodedRefreshToken']);
+  const [addressList1, setAddressList1] = useState([]);
+  const [addressList2, setAddressList2] = useState([]);
+
+  useEffect(() => {
+    if(type=="register"){
+      axios({
+        method: 'get',
+        url: '/auth/getAddress1List',
+      }).then((response) => {
+        response.data.forEach((item) => {
+          setAddressList1((prev) => {
+            return [...prev, item];
+          });
+        });
+        updateAddressList2();
+      });
+    }
+  }, []);
+  function updateAddressList2() {
+    console.log(address1.current.value);
+    axios({
+      method: 'get',
+      url: '/auth/getAddress2List',
+      params: {
+        address1: address1.current.value,
+      },
+    }).then((response) => {
+      setAddressList2([]);
+      response.data.forEach((item) => {
+        setAddressList2((prev) => {
+          return [...prev, item];
+        });
+      });
+    });
+  }
 
   function doRegister(e) {
     //e.preventDefault();
@@ -92,6 +120,8 @@ const AuthForm = ({ type }) => {
         userId: idRef.current.value,
         pw: pwRef.current.value,
         userNickName: nickNameRef.current.value,
+        address1 : address1.current.value,
+        address2 : address2.current.value
       },
       timeout: 5000,
       //responseType:"json" // or "stream"
@@ -171,7 +201,7 @@ const AuthForm = ({ type }) => {
   function doNaverLogin() {
     axios({
       method: 'get',
-      url: '/login/oauth2/naver',
+      url: '/login/oauth2/naver/codeInfo',
     })
       .then(function (response) {
         const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
@@ -186,6 +216,8 @@ const AuthForm = ({ type }) => {
   const idRef = useRef(null);
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
+  const address1 = useRef(null);
+  const address2 = useRef(null);
 
   return (
     <AuthFormBlock>
@@ -214,13 +246,25 @@ const AuthForm = ({ type }) => {
         ref={pwRef}
       />
       {type === 'register' && (
-        <StyledInput
-          autoComplete="new-password"
-          name="pwConfirm"
-          placeholder="비밀번호 확인"
-          type="password"
-          ref={pwConfirmRef}
-        />
+        <>
+          <StyledInput
+            autoComplete="new-password"
+            name="pwConfirm"
+            placeholder="비밀번호 확인"
+            type="password"
+            ref={pwConfirmRef}
+          />
+          <select ref={address1} onChange={updateAddressList2}>
+            {addressList1.map((item, index) => {
+              return <option key={index}>{item}</option>;
+            })}
+          </select>
+          <select ref={address2}>
+            {addressList2.map((item, index) => {
+              return <option key={index}>{item}</option>;
+            })}
+          </select>
+        </>
       )}
       {type === 'login' && (
         <>
@@ -238,7 +282,7 @@ const AuthForm = ({ type }) => {
       </ButtonWithMarginTop>
       <Footer>
         {type === 'login' ? (
-          <Link to="/register">회원가입</Link>
+          <Link to="/signup">회원가입</Link>
         ) : (
           <Link to="/login">로그인</Link>
         )}

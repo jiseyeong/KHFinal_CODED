@@ -1,5 +1,6 @@
 package kh.coded.security.oauth;
 
+import kh.coded.repositories.MemberDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
-import kh.coded.repositories.MemberDAO;
+
 
 @Service
 public class OAuth2UserService extends DefaultOAuth2UserService{

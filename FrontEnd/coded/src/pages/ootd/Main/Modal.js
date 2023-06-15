@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../../../Styles/common.scss';
-import '../../../Styles/reset.scss';
+import '../../../styles/common.scss';
+import '../../../styles/reset.scss';
 import './Modal.scss';
 
 class Modal extends Component {
@@ -17,7 +17,6 @@ class Modal extends Component {
   }
   num = 0;
 
-  // 좋아요 기능 구현
   handleClickLike = (e) => {
     e.preventDefault();
     if (this.state.isLikeBtn === false) {
@@ -33,7 +32,6 @@ class Modal extends Component {
     }
   };
 
-  // 팔로우 기능 구현
   followBtnActive = () => {
     if (this.state.followBtn) {
       this.setState({
@@ -57,7 +55,7 @@ class Modal extends Component {
     });
   };
 
-  API = `http://10.58.0.54:8000/ootds/${this.props.modalData?.modalData?.modalData?.id}/comments`;
+  API = `http://   /ootds/${this.props.modalData?.modalData?.modalData?.id}/comments`;
 
   handleKeyPress = (e) => {
     e.preventDefault();
@@ -202,9 +200,9 @@ class Modal extends Component {
                       {modalData?.modalData?.modalData?.follower}
                     </span>
                   </div>
-                  <div className="shareBox">
+                  <div className="scrapBox">
                     <svg
-                      className="share"
+                      className="scrap"
                       stroke="currentColor"
                       fill="none"
                       stroke-width="2"

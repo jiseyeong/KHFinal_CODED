@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
 import kh.coded.security.JwtProvider;
+import kh.coded.services.AddressCoordService;
 import kh.coded.services.MemberService;
 
 @RestController
@@ -32,6 +33,8 @@ public class AuthenticationController {
 	private MemberService memberService;
 	@Autowired
 	private JwtProvider jwtProvider;
+	@Autowired
+	private AddressCoordService addressCoordService;
 	
 	//이하 리다이렉트 URI 들은 실제 서버 올리기 전엔 9999로 고쳐야 함.
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
@@ -42,6 +45,8 @@ public class AuthenticationController {
 	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
 	private String NAVER_CLIENT_ID;
 	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
+	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+	private String NAVER_CLIENT_SECRET; 
 	
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
@@ -142,6 +147,20 @@ public class AuthenticationController {
 		return result;
 	}
 	
+	@GetMapping(value="/auth/getAddress1List")
+	public ResponseEntity<?> getAddress1List(){
+		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth1());
+	}
+	
+	@GetMapping(value="/auth/getAddress2List")
+	public ResponseEntity<?> getAddress2List(
+			@RequestParam(value="address1") String address1
+			){
+		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth2(address1));
+	}
+	
+	
+	
 	@GetMapping(value="/login/oauth2/kakao/codeInfo")
 	public ResponseEntity<?> kakaoLoginCodeInfo(){
 		Map<String, String> data = new HashMap<>();
@@ -170,16 +189,16 @@ public class AuthenticationController {
 		String result = memberService.kakaoLogin(accessToken, response, auth);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
-			return ResponseEntity.accepted().body("등록되었습니다.");
+			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {
 			//badRequest - header 400
-			return ResponseEntity.accepted().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+			return ResponseEntity.accepted().body("F");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
 	}
-	
-	@GetMapping(value="/login/oauth2/naver")
+
+	@GetMapping(value="/login/oauth2/naver/codeInfo")
 	public ResponseEntity<?> naverLoginInfo(){
 		Map<String, String> data = new HashMap<>();
 		data.put("client_id", NAVER_CLIENT_ID);
@@ -187,7 +206,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(data);
 	}
 	
-	@GetMapping(value="/login/oauth2/code/naver")
+	@GetMapping(value="/login/oauth2/naver")
 	public ResponseEntity<?> naverLogin(
 			@RequestParam(value="code") String code,
 			HttpServletResponse response,
@@ -196,12 +215,24 @@ public class AuthenticationController {
 		String result = memberService.naverLogin(code, response, auth);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
-			return ResponseEntity.accepted().body("등록되었습니다.");
+			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {
 			//badRequest - header 400
-			return ResponseEntity.badRequest().body("회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.");
+			return ResponseEntity.accepted().body("F");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping(value="/login/oauth2/naver/tokenInfo")
+	public ResponseEntity<?> naverLoginTokenInfo(
+			@RequestParam(value="code") String code
+			){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", NAVER_CLIENT_ID);
+		data.put("client_secret", NAVER_CLIENT_SECRET);
+		data.put("redirect_uri", NAVER_REDIRECT_URI);
+		
+		return ResponseEntity.ok().body(data);
 	}
 }

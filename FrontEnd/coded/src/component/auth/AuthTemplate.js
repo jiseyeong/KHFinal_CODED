@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import palette from '../../styles/palette.scss';
 import { Link } from 'react-router-dom';
 
 const AuthTemplateBlock = styled.div`
@@ -9,7 +8,6 @@ const AuthTemplateBlock = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  /* background-color: ${palette}; */
   display: flex;
   flex-direction: column;
   justify-content: center;
