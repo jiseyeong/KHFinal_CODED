@@ -1,31 +1,73 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import RegisterPage from './pages/auth/RegisterPage';
-import LoginPage from './pages/auth/LoginPage';
-// import MyProfilePage from './pages/user/MyProfilePage';
-import FeedList from './pages/feedList/FeedList';
-import MyProfilePage from './pages/user/MyProfile/MyProfilePage';
-import HomePageTemplate from './pages/main/HomePageTemplate';
-import FeedListByIdWithMain from './pages/test/FeedListByIdWithMain';
-import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
-import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import IndexPage from './IndexPage';
+import Login from './component/Login/Login';
+import SignUp from './component/SignUp/SignUp';
+import Profile from './component/Profile/Profile';
+import FeedList from './component/FeedList/FeedList';
+import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
+import Search from './component/Search/Search';
+import Ootd from './pages/ootd/Main/Main';
+import FeedListByIdWithMain from './test/FeedListByIdWithMain';
+import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
+import FeedListByNickNameWithMain from './test/FeedListByNickNameWithMain';
+import FileUploadTest from './test/FileUploadTest';
+import KakaoCodeCallbackPage from './pages/auth/OAuthKakaoCodeCallback';
+import LastCallbackPage from './pages/auth/OAuthLastCallback';
+import NaverCodeCallbackPage from './pages/auth/OAuthNaverCodeCallback';
+import DMPage from './pages/DM/DMPage';
+import HomePageTemplate from './pages/HomePageTemplate';
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
-        <Route path="/FeedList" element={<FeedList />} />
-        <Route path="/HomePage" element={<HomePageTemplate />} />
-        <Route path="/FeedList/id" element={<FeedListByIdWithMain />} />
-        <Route path="/FeedList/nick" element={<FeedListByNickNameWithMain />} />
-        <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />
-      </Routes>
-    </BrowserRouter>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<IndexPage />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<SignUp />} />
+          <Route
+            exact
+            path="/HomePageTemplate"
+            element={<HomePageTemplate />}
+          ></Route>
+          <Route exact path="/feed" element={<FeedList />} />
+          <Route exact path="/feed/id" element={<FeedListByIdWithMain />} />
+          <Route
+            exact
+            path="/feed/nick"
+            element={<FeedListByNickNameWithMain />}
+          />
+          <Route
+            exact
+            path="/feed/hashs"
+            element={<FeedListByHashsWithMain />}
+          />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route path="/FileUploadTest" element={<FileUploadTest />} />
+          <Route path="/DMPage" element={<DMPage />} />
+          <Route exact path="/search" element={<Search />} />
+          <Route exact path="/ootd" element={<Ootd />} />
+
+          <Route
+            path="/login/oauth2/code/kakao"
+            element={<KakaoCodeCallbackPage />}
+          />
+          <Route
+            path="/login/oauth2/callback/kakao"
+            element={<LastCallbackPage />}
+          />
+          <Route
+            path="/login/oauth2/code/naver"
+            element={<NaverCodeCallbackPage />}
+          />
+          <Route
+            path="/login/oauth2/callback/naver"
+            element={<LastCallbackPage />}
+          />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 }
-
 export default App;

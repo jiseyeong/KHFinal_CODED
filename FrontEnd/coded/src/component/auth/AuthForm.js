@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import palette from '../../styles/palette';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../common/Button';
+import Button from '../../styles/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, logout, setRefresh } from '../../modules/tokens';
+import cookie from 'react-cookies';
+import refreshTokenUse from '../../lib/RefreshTokenUse';
 
 /*
     회원가입 또는 로그인 폼
@@ -17,7 +20,6 @@ const textMap = {
 const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
-    color: ${palette.gray[8]};
     margin-bottom: 1rem;
   }
 `;
@@ -28,13 +30,11 @@ const AuthFormBlock = styled.div`
 const StyledInput = styled.input`
   font-size: 1rem;
   border: none;
-  border-bottom: 1px solid ${palette.gray[5]};
   padding-bottom: 0.5rem;
   outline: none;
   width: 100%;
   &:focus {
     color: $oc-teal-7;
-    border-bottom: 1px solid ${palette.gray[7]};
   }
   & + & {
     margin-top: 1rem;
@@ -45,10 +45,8 @@ const Footer = styled.div`
   margin-top: 2rem;
   text-align: right;
   a {
-    color: ${palette.gray[6]};
     text-decoration: underline;
     &:hover {
-      color: ${palette.gray[9]};
     }
   }
 `;
@@ -60,6 +58,54 @@ const ButtonWithMarginTop = styled(Button)`
 const AuthForm = ({ type }) => {
   const text = textMap[type];
   const navigate = useNavigate();
+
+  //const access = useSelector((state) => state.token.access);
+  const dispatch = useDispatch();
+  const onLogin = useCallback(
+    (accessToken) => dispatch(login(accessToken)),
+    [dispatch],
+  );
+  const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
+  const onSetRefresh = useCallback(
+    (refreshToken) => dispatch(setRefresh(refreshToken)),
+    [dispatch],
+  );
+
+  const [addressList1, setAddressList1] = useState([]);
+  const [addressList2, setAddressList2] = useState([]);
+
+  useEffect(() => {
+    if(type=="register"){
+      axios({
+        method: 'get',
+        url: '/auth/getAddress1List',
+      }).then((response) => {
+        response.data.forEach((item) => {
+          setAddressList1((prev) => {
+            return [...prev, item];
+          });
+        });
+        updateAddressList2();
+      });
+    }
+  }, []);
+  function updateAddressList2() {
+    console.log(address1.current.value);
+    axios({
+      method: 'get',
+      url: '/auth/getAddress2List',
+      params: {
+        address1: address1.current.value,
+      },
+    }).then((response) => {
+      setAddressList2([]);
+      response.data.forEach((item) => {
+        setAddressList2((prev) => {
+          return [...prev, item];
+        });
+      });
+    });
+  }
 
   function doRegister(e) {
     //e.preventDefault();
@@ -74,6 +120,8 @@ const AuthForm = ({ type }) => {
         userId: idRef.current.value,
         pw: pwRef.current.value,
         userNickName: nickNameRef.current.value,
+        address1 : address1.current.value,
+        address2 : address2.current.value
       },
       timeout: 5000,
       //responseType:"json" // or "stream"
@@ -89,39 +137,94 @@ const AuthForm = ({ type }) => {
   }
 
   function doLogin(e) {
-    axios.post('/auth/login', null, {
+    axios({
+      method: 'get',
+      url: '/auth/login',
       params: {
         userId: idRef.current.value,
         pw: pwRef.current.value,
       },
-    });
-    // axios({
-    //   method: 'post',
-    //   url: '/auth/login',
-    //   params: {
-    //     userId: idRef.current.value,
-    //     pw: pwRef.current.value,
-    //   },
-    //   timeout: 5000
-    // })
-    // .then(function(response){
-    //   console.log(response.data);
-    // })
-    // .catch(function (error){
-    //   console.log(error);
-    // })
+      timeout: 5000,
+    })
+      .then(function (response) {
+        let refreshToken = cookie.load('CodedRefreshToken');
+        console.log(refreshToken);
+        refreshToken = refreshToken.substr(
+          'Bearer '.length,
+          refreshToken.length,
+        );
+        onLogin(response.data);
+        onSetRefresh(refreshToken);
+      })
+      .catch(function (e) {
+        console.log(e);
+        onLogout();
+      });
+  }
+
+  function doRefrshTest() {
+    axios({
+      type: 'GET',
+      url: '/auth/refresh',
+    })
+      .then(function (response) {
+        //엑세스 토큰 설정
+        onLogin(response.data);
+        let refreshToken = cookie.load('CodedRefreshToken');
+        refreshToken = refreshToken.substr(
+          'Bearer '.length,
+          refreshToken.length,
+        );
+        onSetRefresh(refreshToken);
+      })
+      .catch(function (e) {
+        console.log(e);
+        onLogout();
+        //history.go('/login');
+      });
+  }
+
+  function doKakaoLogin() {
+    axios({
+      method: 'get',
+      url: '/login/oauth2/kakao/codeInfo',
+    })
+      .then(function (response) {
+        const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;
+        window.location.href = KAKAO_AUTH_URL;
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  }
+
+  function doNaverLogin() {
+    axios({
+      method: 'get',
+      url: '/login/oauth2/naver/codeInfo',
+    })
+      .then(function (response) {
+        const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
+        window.location.href = NAVER_AUTH_URL;
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
   }
 
   const nickNameRef = useRef(null);
   const idRef = useRef(null);
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
+  const address1 = useRef(null);
+  const address2 = useRef(null);
 
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
       {type === 'register' && (
         <StyledInput
+          type="text"
           autoComplete="name"
           name="userNickName"
           placeholder="닉네임"
@@ -129,6 +232,7 @@ const AuthForm = ({ type }) => {
         />
       )}
       <StyledInput
+        type="text"
         autoComplete="username"
         name="userId"
         placeholder="아이디"
@@ -142,13 +246,32 @@ const AuthForm = ({ type }) => {
         ref={pwRef}
       />
       {type === 'register' && (
-        <StyledInput
-          autoComplete="new-password"
-          name="pwConfirm"
-          placeholder="비밀번호 확인"
-          type="password"
-          ref={pwConfirmRef}
-        />
+        <>
+          <StyledInput
+            autoComplete="new-password"
+            name="pwConfirm"
+            placeholder="비밀번호 확인"
+            type="password"
+            ref={pwConfirmRef}
+          />
+          <select ref={address1} onChange={updateAddressList2}>
+            {addressList1.map((item, index) => {
+              return <option key={index}>{item}</option>;
+            })}
+          </select>
+          <select ref={address2}>
+            {addressList2.map((item, index) => {
+              return <option key={index}>{item}</option>;
+            })}
+          </select>
+        </>
+      )}
+      {type === 'login' && (
+        <>
+          <button onClick={doKakaoLogin}>카카오 로그인</button>
+          <button onClick={doNaverLogin}>네이버 로그인</button>
+          <button onClick={doRefrshTest}>리프레시 테스트</button>
+        </>
       )}
       <ButtonWithMarginTop
         cyan={true}
@@ -159,7 +282,7 @@ const AuthForm = ({ type }) => {
       </ButtonWithMarginTop>
       <Footer>
         {type === 'login' ? (
-          <Link to="/register">회원가입</Link>
+          <Link to="/signup">회원가입</Link>
         ) : (
           <Link to="/login">로그인</Link>
         )}

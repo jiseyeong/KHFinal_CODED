@@ -42,6 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/static/**",
 					"/favicon.ico",
 					
+					"/",
 					"/login",
 					"/register",
 					"/auth/member",
@@ -99,7 +100,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
 						CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 					}
-					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 				}
 			}
 		}catch(Exception e) {

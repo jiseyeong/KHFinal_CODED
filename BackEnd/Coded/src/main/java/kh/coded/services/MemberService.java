@@ -10,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
+import kh.coded.dto.TokensDTO;
 import kh.coded.repositories.AddressCoordDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.security.JwtProvider;
@@ -71,7 +71,7 @@ public class MemberService implements UserDetailsService {
 
 	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
 		//TokenDTO token = jwtProvider.createAllLoginToken(member);
-		CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+		CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 
 		UserDetails authentication = this.loadUserByUsername(member.getUserId());
 		//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
@@ -89,7 +89,7 @@ public class MemberService implements UserDetailsService {
 	public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
 		if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
 			String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
-			if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
+			if(refreshToken != null && refreshToken.startsWith("Bearer")) {
 				refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
 				try {
 					MemberDTO member = this.selectByUserNo(jwtProvider.getLoginUserNo(refreshToken));
@@ -97,12 +97,13 @@ public class MemberService implements UserDetailsService {
 					//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
 					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(auth);
-
+					
 					CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
-					CookieUtil.addHttpOnlyCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
-
+					CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					
 					return jwtProvider.createLoginAccessToken(member);
 				}catch(Exception e) {
+					e.printStackTrace();
 					return null;
 				}
 			}
@@ -118,7 +119,7 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectByUserNo(int userNo) {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
-	
+
 	public MemberDTO selectMemberByNickName(String userNickName) {
 		return memberDAO.selectMemberByNickName(userNickName);
 	}
@@ -169,10 +170,10 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectMemberByNaverToken(String token) {
 		return memberDAO.selectMemberByNaverToken(token);
 	}
-	
-	public String kakaoLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
-		//인가 코드로 엑세스 토큰 요청.
-		String accessToken = this.getKakaoAccessToken(code);
+
+	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+//		//인가 코드로 엑세스 토큰 요청.
+//		String accessToken = this.getKakaoAccessToken(code);
 
 		//토큰으로 카카오 API 호출
 		Long kakaoId = this.getKakaoUserInfo(accessToken);
@@ -192,33 +193,33 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	private String getKakaoAccessToken(String code) throws Exception{ 
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-		body.add("grant_type", "authorization_code");
-		body.add("client_id", KAKAO_CLIENT_ID);
-		body.add("client_secret", KAKAO_CLIENT_SECRET);
-		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/kakao");
-		body.add("code", code);
-
-		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
-		RestTemplate rt = new RestTemplate();
-		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-		rt.setErrorHandler(new DefaultResponseErrorHandler());
-		ResponseEntity<String> response = rt.exchange(
-				"https://kauth.kakao.com/oauth/token",
-				HttpMethod.POST,
-				kakaoTokenRequest,
-				String.class
-				);
-
-		String responseBody = response.getBody();
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode jsonNode = objectMapper.readTree(responseBody);
-		return jsonNode.get("access_token").asText();
-	}
+//	private String getKakaoAccessToken(String code) throws Exception{ 
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+//
+//		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//		body.add("grant_type", "authorization_code");
+//		body.add("client_id", KAKAO_CLIENT_ID);
+//		body.add("client_secret", KAKAO_CLIENT_SECRET);
+//		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/kakao");
+//		body.add("code", code);
+//
+//		HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, headers);
+//		RestTemplate rt = new RestTemplate();
+//		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+//		rt.setErrorHandler(new DefaultResponseErrorHandler());
+//		ResponseEntity<String> response = rt.exchange(
+//				"https://kauth.kakao.com/oauth/token",
+//				HttpMethod.POST,
+//				kakaoTokenRequest,
+//				String.class
+//				);
+//
+//		String responseBody = response.getBody();
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		JsonNode jsonNode = objectMapper.readTree(responseBody);
+//		return jsonNode.get("access_token").asText();
+//	}
 
 	private Long getKakaoUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
@@ -242,7 +243,7 @@ public class MemberService implements UserDetailsService {
 
 		return id;
 	}
-	
+
 	public String naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getNaverAccessToken(code);
@@ -265,7 +266,7 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	private String getNaverAccessToken(String code) throws Exception{ 
+	public String getNaverAccessToken(String code) throws Exception{ 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -313,7 +314,7 @@ public class MemberService implements UserDetailsService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		System.out.println(responseBody);
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
-		
+
 		Long id = jsonNode.get("response").get("id").asLong();
 
 		return id;

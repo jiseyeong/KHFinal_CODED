@@ -50,6 +50,8 @@ public class SecurityConfiguration {
 			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
+			"/**",
+			"/index.html",
 			"/",
 			"/images/**",
 			"/manifest.json",
@@ -66,6 +68,9 @@ public class SecurityConfiguration {
 			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
+			"/MyProfile",
+			"/FileUploadTest",
+			"/DMPage",
 			
 			"/login",
 			"/register",
@@ -73,11 +78,19 @@ public class SecurityConfiguration {
 			"/auth/member",
 			"/auth/login",
 			"/auth/userNo",
+			"/auth/getAddress1List",
+			"/auth/getAddress2List",
+			"/auth/refresh",
 			"/auth/oauth/**",
+			"/login/oauth2/kakao/codeInfo",
+			"/login/oauth2/kakao/tokenInfo",
+			"/login/oauth2/kakao",
 			"/login/oauth2/code/kakao",
 			"/login/oauth2/callback/kakao",
+			"/login/oauth2/naver",
 			"/login/oauth2/code/naver",
 			"/login/oauth2/callback/naver",
+			"/login/oauth2/naver/codeInfo"
 			
 
 	};
@@ -135,26 +148,26 @@ public class SecurityConfiguration {
 			}			
 		});
 		
-		http.oauth2Login(login -> {
-			try {
-				login
-					//.authorizationEndpoint(authorize -> authorize.baseUri("/auth/ouath/authorize"))
-					//.redirectionEndpoint(redirect -> redirect.baseUri("/auth/ouath/callback/*"))
-					.authorizationEndpoint(authorize ->
-											authorize
-												.baseUri("/auth/oauth/")
-												//.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
-												)
-					.redirectionEndpoint(redirect ->
-											redirect.baseUri("/auth/oauth/**")
-											);
-//					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-//					.successHandler(oAuth2SuccessHandler);
-					//.failureHandler(oAuth2FailureHandler);
-			}catch(Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
+//		http.oauth2Login(login -> {
+//			try {
+//				login
+//					//.authorizationEndpoint(authorize -> authorize.baseUri("/auth/ouath/authorize"))
+//					//.redirectionEndpoint(redirect -> redirect.baseUri("/auth/ouath/callback/*"))
+//					.authorizationEndpoint(authorize ->
+//											authorize
+//												.baseUri("/auth/oauth/")
+//												//.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
+//												)
+//					.redirectionEndpoint(redirect ->
+//											redirect.baseUri("/auth/oauth/**")
+//											);
+////					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+////					.successHandler(oAuth2SuccessHandler);
+//					//.failureHandler(oAuth2FailureHandler);
+//			}catch(Exception e) {
+//				throw new RuntimeException(e);
+//			}
+//		});
 		
 //		http.oauth2Login(login ->{
 //		try {
