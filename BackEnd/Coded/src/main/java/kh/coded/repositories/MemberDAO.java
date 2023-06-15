@@ -35,7 +35,7 @@ public class MemberDAO {
 	}
 	
 	public boolean isMemberId(String userID) { //아이디 중복확인
-		return mybatis.selectOne("Member.isMemberId",userID);
+		return (mybatis.selectOne("Member.isMemberId",userID) != null);
 	}
 	public int insertMember(MemberDTO dto) { //회원가입
 		mybatis.insert("Member.insertMember",dto);
