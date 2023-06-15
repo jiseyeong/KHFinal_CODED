@@ -26,30 +26,29 @@ class App extends React.Component {
           <Route exact path="/" element={<IndexPage />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<SignUp />} />
-          <Route exact path="/feed" element={<FeedList />} />
-          <Route exact path="/post" element={<FeedPostDetail />} />
-          <Route exact path="/search" element={<Search />} />
-          <Route exact path="/profile" element={<Profile />} />
-          <Route exact path="/ootd" element={<Ootd />} />
-          <Route exact path="/FeedList" element={<FeedList />} />
-          <Route exact path="/FeedList/id" element={<FeedListByIdWithMain />} />
           <Route
             exact
             path="/HomePageTemplate"
             element={<HomePageTemplate />}
           ></Route>
+          <Route exact path="/feed" element={<FeedList />} />
+          <Route exact path="/feed/id" element={<FeedListByIdWithMain />} />
           <Route
             exact
-            path="/FeedList/nick"
+            path="/feed/nick"
             element={<FeedListByNickNameWithMain />}
           />
           <Route
             exact
-            path="/FeedList/hashs"
+            path="/feed/hashs"
             element={<FeedListByHashsWithMain />}
           />
-
+          <Route exact path="/profile" element={<Profile />} />
           <Route path="/FileUploadTest" element={<FileUploadTest />} />
+          <Route path="/DMPage" element={<DMPage />} />
+          <Route exact path="/search" element={<Search />} />
+          <Route exact path="/ootd" element={<Ootd />} />
+
           <Route
             path="/login/oauth2/code/kakao"
             element={<KakaoCodeCallbackPage />}
@@ -66,7 +65,6 @@ class App extends React.Component {
             path="/login/oauth2/callback/naver"
             element={<LastCallbackPage />}
           />
-          <Route path="/DMPage" element={<DMPage />} />
         </Routes>
       </BrowserRouter>
     );
