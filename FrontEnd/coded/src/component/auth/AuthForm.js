@@ -70,9 +70,10 @@ const AuthForm = ({ type }) => {
     (refreshToken) => dispatch(setRefresh(refreshToken)),
     [dispatch],
   );
-
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
+  const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
+  const [idDuplicateMessage, setIdDuplicateMessage] = useState(false);
 
   useEffect(() => {
     if(type=="register"){
@@ -85,12 +86,10 @@ const AuthForm = ({ type }) => {
             return [...prev, item];
           });
         });
-        updateAddressList2();
       });
     }
   }, []);
   function updateAddressList2() {
-    console.log(address1.current.value);
     axios({
       method: 'get',
       url: '/auth/getAddress2List',
@@ -107,33 +106,48 @@ const AuthForm = ({ type }) => {
     });
   }
 
+  function idDuplicateCheck(){
+    axios({
+      method:'get',
+      url:'/auth/isMember',
+      params:{
+        userId: idRef.current.value
+      }
+    }).then((response)=>{
+      console.log(response);
+      setIdDuplicateChecked(response.data);
+      setIdDuplicateMessage(response.data ? "중복된 아이디가 있습니다." : "중복된 아이디가 없습니다.");
+    });
+  }
+
   function doRegister(e) {
     //e.preventDefault();
 
     //또는 axios.post("/auth/join", null, {params : {~}})
     // 두번째 인자가 data긴 한데, 들어가는 방식이 Query 방식이 아님.
     //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함.
-    axios({
-      method: 'post',
-      url: '/auth/member',
-      params: {
-        userId: idRef.current.value,
-        pw: pwRef.current.value,
-        userNickName: nickNameRef.current.value,
-        address1 : address1.current.value,
-        address2 : address2.current.value
-      },
-      timeout: 5000,
-      //responseType:"json" // or "stream"
-    })
-      .then(function (response) {
-        console.log(response.data);
-        navigate('/login');
-        //return JSON.parse(response);
+    if(!idDuplicateChecked){
+      axios({
+        method: 'post',
+        url: '/auth/member',
+        params: {
+          userId: idRef.current.value,
+          pw: pwRef.current.value,
+          userNickName: nickNameRef.current.value,
+          address1 : address1.current.value,
+          address2 : address2.current.value
+        },
+        timeout: 5000,
+        //responseType:"json" // or "stream"
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+        .then(function (response) {
+          navigate('/login');
+          //return JSON.parse(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
   }
 
   function doLogin(e) {
@@ -237,7 +251,9 @@ const AuthForm = ({ type }) => {
         name="userId"
         placeholder="아이디"
         ref={idRef}
+        onChange={idDuplicateCheck}
       />
+      <div>{idDuplicateMessage}</div>
       <StyledInput
         autoComplete="new-password"
         name="pw"
