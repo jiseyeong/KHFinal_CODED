@@ -116,8 +116,21 @@ public class FeedPostController {
     	result.put("photoDTO",list2);
     	
     	return ResponseEntity.ok().body(result);
-    	
     }
+    
+    @GetMapping("/selectFeedlike")
+    public ResponseEntity<?> selectFeedlike(){
+    	List<FeedPostDTO> list = feedpostService.selectFeedlike();
+    	List<PhotoDTO> list2 = new ArrayList<>();
+    	for(FeedPostDTO e : list) {
+    		list2.add(photoService.selectFeedlike(e.getFeedPostId()));
+    	}
+    	Map<String,Object> result = new HashMap<>();
+    	result.put("FeedPostDTO",list);
+    	result.put("photoDTO", list2);
+    	return ResponseEntity.ok().body(result);
+    }
+    
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")
@@ -133,6 +146,7 @@ public class FeedPostController {
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
 		return "";
 	}
+	
 
 	@PostMapping("/insertTest/")
 	public ResponseEntity<?> insertTest(

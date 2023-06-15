@@ -84,5 +84,9 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectFeedNew");
 	}
 
+	public List<FeedPostDTO> selectFeedlike() {
+		return mybatis.selectList("FeedPost.selectFeedlike");
+	}
+
 
 }

@@ -41,4 +41,9 @@ public class PhotoService {
 			}
 		}
 	}
+
+
+	public PhotoDTO selectFeedlike(int feedPostId) {
+		return photoDAO.selectFeedlike(feedPostId);
+	}
 }
