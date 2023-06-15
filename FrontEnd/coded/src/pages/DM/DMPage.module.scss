@@ -1,15 +1,15 @@
-* {
-  box-sizing: border-box;
-}
-
-div {
-  border-collapse: collapse;
-}
-
 .chatLayout {
   width: 600px;
   height: 1000px;
   margin: auto;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  div {
+    border-collapse: collapse;
+  }
 }
 
 .chatBox {
