@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import Modal from '../../Pages/Ootd/Main/Modal';
+import Modal from '../../pages/ootd/Main/Modal';
 const ParentDiv = styled('div')`
   width: 18%;
   height: auto;
@@ -68,9 +68,7 @@ const FeedPostDetail = (props) => {
           <div>{feedPost.body}</div>
         </FeedInfoDiv>
       </FeedInnerLayoutDiv>
-      {modal && (
-        <Modal modal={modal} closeModal={closeModal} id={props.id} />
-      )}
+      {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
     </ParentDiv>
   );
 };
