@@ -75,17 +75,19 @@ const AuthForm = ({ type }) => {
   const [addressList2, setAddressList2] = useState([]);
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      url: '/auth/getAddress1List',
-    }).then((response) => {
-      response.data.forEach((item) => {
-        setAddressList1((prev) => {
-          return [...prev, item];
+    if(type=="register"){
+      axios({
+        method: 'get',
+        url: '/auth/getAddress1List',
+      }).then((response) => {
+        response.data.forEach((item) => {
+          setAddressList1((prev) => {
+            return [...prev, item];
+          });
         });
+        updateAddressList2();
       });
-      updateAddressList2();
-    });
+    }
   }, []);
   function updateAddressList2() {
     console.log(address1.current.value);
@@ -118,6 +120,8 @@ const AuthForm = ({ type }) => {
         userId: idRef.current.value,
         pw: pwRef.current.value,
         userNickName: nickNameRef.current.value,
+        address1 : address1.current.value,
+        address2 : address2.current.value
       },
       timeout: 5000,
       //responseType:"json" // or "stream"
@@ -278,7 +282,7 @@ const AuthForm = ({ type }) => {
       </ButtonWithMarginTop>
       <Footer>
         {type === 'login' ? (
-          <Link to="/register">회원가입</Link>
+          <Link to="/signup">회원가입</Link>
         ) : (
           <Link to="/login">로그인</Link>
         )}
