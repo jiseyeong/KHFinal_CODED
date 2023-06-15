@@ -1,9 +1,9 @@
 import React from 'react';
-import FeedList from '../component/FeedList/FeedList';
 import GlobalStyles from '../styles/GlobalStyles';
 import { styled } from 'styled-components';
 import Navbar from '../component/Navbar/NavbarOotd/NavbarOotd';
 import Footer from '../component/Profile/Component/Footer/Footer';
+import FeedList from '../component/FeedList/FeedList';
 
 const Container = styled('div')`
   width: 100%;
