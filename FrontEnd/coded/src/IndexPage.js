@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logout } from './modules/members';
 
 const IndexPage = () => {
+
+  const dispatch = useDispatch();
+  const onLogout = useCallback(()=>dispatch(logout()),[dispatch]);
+
   return (
     <div style={{ textAlign: 'center' }}>
       <Link to="/HomepageTemplate">
@@ -45,16 +51,7 @@ const IndexPage = () => {
       <Link to="/ootd">OOTD</Link>
       <br />
       <br />
-      <Link to="/login/oauth2/code/kakao">KakaoCodeCallbackPage</Link>
-      <br />
-      <br />
-      <Link to="/login/oauth2/code/naver">NaverCodeCallbackPage</Link>
-      <br />
-      <br />
-      <Link to="/login/oauth2/callback/kakao">LastCallbackPageKAKAO</Link>
-      <br />
-      <br />
-      <Link to="/login/oauth2/callback/naver">LastCallbackPageNaver</Link>
+      <button onClick={onLogout}>로그아웃</button>
     </div>
   );
 };
