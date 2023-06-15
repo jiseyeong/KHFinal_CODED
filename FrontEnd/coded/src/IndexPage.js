@@ -15,19 +15,19 @@ const IndexPage = () => {
       <Link to="/signup">회원가입 페이지</Link>
       <br />
       <br />
-      <Link to="/HomePage">홈페이지 양식</Link>
+      <Link to="/HomePageTemplate">홈페이지 양식</Link>
       <br />
       <br />
-      <Link to="/FeedList">단순 피드 리스트</Link>
+      <Link to="/feed">단순 피드 리스트</Link>
       <br />
       <br />
-      <Link to="/FeedList/id">아이디 검색 결과(테스트)</Link>
+      <Link to="/feed/id">아이디 검색 결과(테스트)</Link>
       <br />
       <br />
-      <Link to="/FeedList/nick">닉네임 검색 결과(테스트)</Link>
+      <Link to="/feed/nick">닉네임 검색 결과(테스트)</Link>
       <br />
       <br />
-      <Link to="/FeedList/hashs">해쉬 검색 결과(테스트)</Link>
+      <Link to="/feed/hashs">해쉬 검색 결과(테스트)</Link>
       <br />
       <br />
       <Link to="/profile">마이 프로필 페이지</Link>
@@ -37,6 +37,24 @@ const IndexPage = () => {
       <br />
       <br />
       <Link to="/DMPage">DMRoom</Link>
+      <br />
+      <br />
+      <Link to="/search">검색</Link>
+      <br />
+      <br />
+      <Link to="/ootd">OOTD</Link>
+      <br />
+      <br />
+      <Link to="/login/oauth2/code/kakao">KakaoCodeCallbackPage</Link>
+      <br />
+      <br />
+      <Link to="/login/oauth2/code/naver">NaverCodeCallbackPage</Link>
+      <br />
+      <br />
+      <Link to="/login/oauth2/callback/kakao">LastCallbackPageKAKAO</Link>
+      <br />
+      <br />
+      <Link to="/login/oauth2/callback/naver">LastCallbackPageNaver</Link>
     </div>
   );
 };
