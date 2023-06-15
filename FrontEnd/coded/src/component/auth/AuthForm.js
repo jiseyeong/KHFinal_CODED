@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, setRefresh } from '../../modules/tokens';
+import { login, logout, setRefresh } from '../../modules/members';
 import cookie from 'react-cookies';
 import refreshTokenUse from '../../lib/RefreshTokenUse';
 
@@ -62,7 +62,7 @@ const AuthForm = ({ type }) => {
   //const access = useSelector((state) => state.token.access);
   const dispatch = useDispatch();
   const onLogin = useCallback(
-    (accessToken) => dispatch(login(accessToken)),
+    (accessToken, userId, userNo) => dispatch(login(accessToken, userId, userNo)),
     [dispatch],
   );
   const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
@@ -162,12 +162,11 @@ const AuthForm = ({ type }) => {
     })
       .then(function (response) {
         let refreshToken = cookie.load('CodedRefreshToken');
-        console.log(refreshToken);
         refreshToken = refreshToken.substr(
           'Bearer '.length,
           refreshToken.length,
         );
-        onLogin(response.data);
+        onLogin(response.data.accessToken, response.data.userId, response.data.userNo);
         onSetRefresh(refreshToken);
       })
       .catch(function (e) {
@@ -251,7 +250,7 @@ const AuthForm = ({ type }) => {
         name="userId"
         placeholder="아이디"
         ref={idRef}
-        onChange={idDuplicateCheck}
+        onChange={type==="register" ? idDuplicateCheck : null}
       />
       <div>{idDuplicateMessage}</div>
       <StyledInput
@@ -282,13 +281,13 @@ const AuthForm = ({ type }) => {
           </select>
         </>
       )}
-      {type === 'login' && (
+      {/* {type === 'login' && (
         <>
           <button onClick={doKakaoLogin}>카카오 로그인</button>
           <button onClick={doNaverLogin}>네이버 로그인</button>
           <button onClick={doRefrshTest}>리프레시 테스트</button>
         </>
-      )}
+      )} */}
       <ButtonWithMarginTop
         cyan={true}
         fullWidth
