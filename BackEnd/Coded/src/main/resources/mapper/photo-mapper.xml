@@ -9,6 +9,10 @@
         select * from photo where feedpostid = ${feedpostid}
     </select>
 
+    <select id="selectFeedlike" resultType="kh.coded.dto.PhotoDTO">
+        select * from photo where feedpostid = ${feedpostid}
+    </select>
+
     <insert id="insertTest">
         insert into photo values (photoid_seq.nextval, #{oriName}, #{sysName}, 0, 0, ${userNo})
     </insert>
@@ -18,4 +22,5 @@
     </select>
 
 </mapper>
+
   

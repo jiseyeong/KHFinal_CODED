@@ -59,6 +59,10 @@
 		select * from feedpost order by FeedPostId desc
 	</select>
 
+	
+	<select id="selectFeedlike" resultType="kh.coded.dto.FeedLikeDTO">
+		select * from feedlike order by FeedlikeId desc
+	</select>
 
 
 

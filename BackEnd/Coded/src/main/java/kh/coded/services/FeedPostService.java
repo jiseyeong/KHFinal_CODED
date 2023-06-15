@@ -72,6 +72,18 @@ public class FeedPostService {
         return feedpostDAO.searchByHashs(HashTag);
     }
 
+
+	public PhotoDTO selectByFeedpostId(int feedPostId) {
+		return photoDAO.selectByFeedpostId(feedPostId);
+	}
+
+	public List<FeedPostDTO> selectFeedlike() {
+		return feedpostDAO.selectFeedlike();
+	}
+
+	
+	
+
     public List<PostHashsDTO> searchByPostHashs(int tagId) {
         return feedpostDAO.searchByPostHashs(tagId);
     }
@@ -120,7 +132,4 @@ public class FeedPostService {
         return feedpostDAO.selectFeedNew();
     }
 
-    public PhotoDTO selectByFeedpostId(int feedPostId) {
-        return photoDAO.selectByFeedpostId(feedPostId);
-    }
 }

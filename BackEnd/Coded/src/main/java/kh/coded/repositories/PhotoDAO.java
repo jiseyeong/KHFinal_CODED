@@ -16,11 +16,15 @@ public class PhotoDAO {
 		return mybatis.selectOne("Photo.selectByFeedpostId",feedPostId);
 	}
 
+	public PhotoDTO selectFeedlike(int feedPostId) {
+		return mybatis.selectOne("Ptoho.selectFeedlike",feedPostId);
+	}
     public void insertTest(PhotoDTO photoDTO) {
 		mybatis.insert("Photo.insertTest",photoDTO);
     }
 
 	public PhotoDTO selectByUserNo(int userNo) {
 		return mybatis.selectOne("Photo.selectByUserNo",userNo);
+
 	}
 }
