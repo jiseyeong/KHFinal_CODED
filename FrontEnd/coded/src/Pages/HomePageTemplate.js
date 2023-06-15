@@ -1,8 +1,8 @@
 import React from 'react';
 import GlobalStyles from '../styles/GlobalStyles';
 import { styled } from 'styled-components';
-import Navbar from '../component/Navbar/NavbarOotd/NavbarOotd';
 import Footer from '../component/Profile/Component/Footer/Footer';
+import NavbarOotd from '../component/Navbar/NavbarOotd/NavbarOotd';
 import FeedList from '../component/FeedList/FeedList';
 
 const Container = styled('div')`
@@ -14,7 +14,7 @@ const HomePageTemplate = () => {
   return (
     <Container>
       <GlobalStyles />
-      <Navbar />
+      <NavbarOotd />
       {/* FeedList대신 다른 Component로 교체 후 사용*/}
       <FeedList />
       <Footer />

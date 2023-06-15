@@ -42,7 +42,7 @@ const FeedInfoDiv = styled('div')`
 `;
 
 const FeedPostDetail = (props) => {
-  const { feedpost, thumbnail, member, userProfile, hashTagList } = props;
+  const { feedPost, thumbNail, member, userProfile, hashTagList } = props;
   const [modal, setModal] = useState(false);
 
   const openModal = () => {
@@ -59,20 +59,15 @@ const FeedPostDetail = (props) => {
 
   return (
     <ParentDiv>
-      {feedPostList.map((e, i) => (
-        <FeedInnerLayoutDiv onClick={openModal}>
-          <FeedImageDiv>
-            <img src="/image/feedPost"></img>
-          </FeedImageDiv>
-          <FeedInfoDiv>
-            <div>{e.feedPostId}</div>
-            <div>{e.body}</div>
-            <div>
-              TestTestTestTestTestTestTestTestTestTestTestTestTestTestTest
-            </div>
-          </FeedInfoDiv>
-        </FeedInnerLayoutDiv>
-      ))}
+      <FeedInnerLayoutDiv onClick={openModal}>
+        <FeedImageDiv>
+          <img src={`/image/test/`} alt="abc"></img>
+        </FeedImageDiv>
+        <FeedInfoDiv>
+          <div>{feedPost.feedPostId}</div>
+          <div>{feedPost.body}</div>
+        </FeedInfoDiv>
+      </FeedInnerLayoutDiv>
       {modal && (
         <Modal modal={modal} closeModal={closeModal} id={props.id} />
       )}

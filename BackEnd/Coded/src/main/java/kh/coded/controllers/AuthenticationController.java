@@ -100,8 +100,12 @@ public class AuthenticationController {
 		//로그인 로직 실행	
 		MemberDTO member = memberService.isValidMember(id, pw);
 		if(member != null) {
+			Map<String, Object> data = new HashMap<>();
 			String accessToken = memberService.login(response, member);
-			return ResponseEntity.ok().body(accessToken);
+			data.put("accessToken", accessToken);
+			data.put("userNo", member.getUserNo());
+			data.put("userId", id);
+			return ResponseEntity.ok().body(data);
 		}
 		return ResponseEntity.badRequest().body("Login Failed");
 	}

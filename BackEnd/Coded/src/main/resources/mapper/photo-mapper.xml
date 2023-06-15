@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="Photo">
+  
+  <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
+  		select * from photo where feedpostid = ${feedpostid}
+  </select>
+  
+  <select id="selectFeedlike" resultType="kh.coded.dto.PhotoDTO">
+  		select * from photo where feedpostid = ${feedpostid}
+  </select>
 
-<mapper namespace="Photo">
 
     <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
         select * from photo where feedpostid = ${feedpostid}
@@ -18,4 +27,5 @@
     </select>
 
 </mapper>
+
   
