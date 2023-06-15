@@ -3,7 +3,7 @@ import NavbarOotd from '../../../component/Navbar/NavbarOotd/NavbarOotd';
 import CardList from './CardList.scss';
 import Modal from './Modal';
 // import InfiniteScroll from 'react-infinite-scroller';
-import './Main.scss';
+import style from './Main.module.scss';
 
 const API = 'http://';
 const LIMIT = 100;
