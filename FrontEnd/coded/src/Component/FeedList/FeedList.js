@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
+import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
@@ -12,37 +12,7 @@ const FeedPostOuter = styled('div')`
   flex-wrap: wrap;
 `;
 
-function FeedList({
-  feedPostList,
-  thumbNailList,
-  memberList,
-  userProfileList,
-  hashTagLists,
-}) {
-  useEffect(() => {
-    console.log('데이터 설정 완료');
-  }, [feedPostList]);
-
-  return (
-    <FeedPostOuter>
-      {feedPostList && feedPostList.length > 0 ? (
-        feedPostList.map((feedpost, i) => (
-          <FeedPostInner
-            feedPost={feedpost}
-            thumbNail={thumbNailList[i]}
-            member={memberList[i]}
-            userProfile={userProfileList[i]}
-            hashTagList={hashTagLists[i]}
-          ></FeedPostInner>
-        ))
-      ) : (
-        <div>Loading...</div>
-      )}
-    </FeedPostOuter>
-  );
-}
-
-function MakeFeedList() {
+function FeedList() {
   const [cpage, setCpage] = useState(1);
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
@@ -69,21 +39,23 @@ function MakeFeedList() {
           hashTagLists,
         } = resp.data;
 
-        setFeedPost([...feedPostList]);
+        console.log({ thumbNailList });
+
+        setFeedPost(feedPostList);
         setThumbnail([...thumbNailList]);
         setUserProfile([...userProfileList]);
         setMember([...memberList]);
         setHashTagList([...hashTagLists]);
         setCpage(cpage + 1);
       })
-      .catch((resp) => console.log(resp));
+      .catch((error) => console.log(error));
   };
 
-  // window.onscroll = function () {
-  //   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-  //     addFeedList();
-  //   }
-  // };
+  window.onscroll = function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      addFeedList();
+    }
+  };
 
   useEffect(() => {
     console.log('화면에 나타남');
@@ -94,13 +66,17 @@ function MakeFeedList() {
   }, []);
 
   return (
-    <FeedList
-      feedPostList={feedPost}
-      thumbNailList={thumbNail}
-      memberList={member}
-      userProfileList={userProfile}
-      hashTagLists={hashTagList}
-    />
+    <FeedPostOuter>
+      {feedPost.map((e, i) => (
+        <FeedPostDetail
+          feedPost={e}
+          thumbNail={thumbNail[i]}
+          member={member[i]}
+          userProfile={userProfile[i]}
+          hashTagList={hashTagList[i]}
+        ></FeedPostDetail>
+      ))}
+    </FeedPostOuter>
   );
 }
 

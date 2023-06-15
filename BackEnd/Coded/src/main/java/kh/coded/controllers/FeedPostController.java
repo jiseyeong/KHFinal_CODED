@@ -146,9 +146,4 @@ public class FeedPostController {
 		return ResponseEntity.ok().body("success");
 	}
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String> exceptionHandler(Exception e){
-		e.printStackTrace();
-		return ResponseEntity.badRequest().body(e.getMessage());
-	}
 }
