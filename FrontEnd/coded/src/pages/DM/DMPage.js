@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './DMPage.module.css';
+import style from './DMPage.module.scss';
 import { Stomp } from '@stomp/stompjs';
 import { useEffect, useState } from 'react';
 
