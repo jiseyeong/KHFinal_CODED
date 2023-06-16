@@ -126,6 +126,9 @@ public class MemberService implements UserDetailsService {
 	public boolean isMemberId(String userId) {
 		return memberDAO.isMemberId(userId);
 	}
+	public boolean isMemberByEmail(String email) {
+		return memberDAO.isMemberByEmail(email);
+	}
 	public int join(MemberDTO dto) {
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMember(dto);

@@ -69,13 +69,34 @@ const AuthForm = ({ type }) => {
     (refreshToken) => dispatch(setRefresh(refreshToken)),
     [dispatch],
   );
+
+  //const [nickName, setNickName] = useState("");
+  const nickNameRef = useRef(null);
+  const [nickNameRegexMessage, setNickNameRegexMessage] = useState("");
+  const [id, setId] = useState("");
+  const idRef = useRef(null);
+  const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
+  const [idDuplicateMessage, setIdDuplicateMessage] = useState("");
+  const pwRef = useRef(null);
+  const pwConfirmRef = useRef(null);
+  //const [email, setEmail] = useState("");
+  const emailRef = useRef(null);
+  const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
+  const [emailDuplicateMessage, setEmailDuplicateMessage] = useState("");
+  const address1 = useRef(null);
+  const address2 = useRef(null);
+
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
-  const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
-  const [idDuplicateMessage, setIdDuplicateMessage] = useState(false);
+
+
   const [isIdSaveChecked, setIdSaveChecked] = useState(!cookie.load('userId') ? true:false);
   const [isPwView, setIsPwView] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const regexId= /^[a-z0-9_]{7,13}$/;
+  const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
+  const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
   useEffect(() => {
     if(searchParams.get('error')){
@@ -91,6 +112,8 @@ const AuthForm = ({ type }) => {
             return [...prev, item];
           });
         });
+      }).catch((error)=>{
+        console.log(error);
       });
     }else if(type==="login"){
       setId(cookie.load('userId') ? cookie.load('userId'):"");
@@ -110,6 +133,8 @@ const AuthForm = ({ type }) => {
           return [...prev, item];
         });
       });
+    }).catch((error)=>{
+      console.log(error);
     });
   }
 
@@ -121,30 +146,82 @@ const AuthForm = ({ type }) => {
         method:'get',
         url:'/auth/isMember',
         params:{
-          userId: id
+          userId: idRef.current.value
         }
       }).then((response)=>{
-        console.log(response);
         setIdDuplicateChecked(response.data);
-        setIdDuplicateMessage(response.data ? "중복된 아이디가 있습니다." : "중복된 아이디가 없습니다.");
+        if(!regexId.test(idRef.current.value)){
+          setIdDuplicateMessage("사용 불가능한 아이디 형식입니다.");
+        }else{
+          setIdDuplicateMessage("사용 가능합니다.");
+        }
+      }).catch((error)=>{
+        console.log(error);
       });
+    }
+  }
+  //axios setter 반응이 시원찮아서 별도로 추가.
+  useEffect(()=>{
+    if(idDuplicateChecked){
+      setIdDuplicateMessage("중복된 아이디가 있습니다.");
+    }
+  },[idDuplicateChecked])
+
+  function handleEmail(e){
+    //setEmail(e.target.value);
+    axios({
+      method:'get',
+      url:'/auth/isMemberByEmail',
+      params:{
+        email:emailRef.current.value
+      }
+    }).then((response)=>{
+      setEmailDuplicateChecked(response.data);
+      if(!regexEmail.test(emailRef.current.value)){
+        setEmailDuplicateMessage("이메일 형식을 지켜주셔야 합니다.");
+      }else{
+        setEmailDuplicateMessage("사용 가능합니다.");
+      }
+    }).catch((error)=>{
+      console.log(error);
+    });
+  }
+
+  useEffect(()=>{
+    if(emailDuplicateChecked){
+      setEmailDuplicateMessage("중복된 이메일이 있습니다.");
+    }
+  }, [emailDuplicateChecked])
+
+  function handleNickName(e){
+    if(!regexNickName.test(nickNameRef.current.value)){
+      setNickNameRegexMessage("사용할 수 없는 닉네임 형식입니다.");
+    }else{
+      setNickNameRegexMessage("사용 가능합니다.");
     }
   }
 
   function doRegister(e) {
-    //e.preventDefault();
 
-    //또는 axios.post("/auth/join", null, {params : {~}})
-    // 두번째 인자가 data긴 한데, 들어가는 방식이 Query 방식이 아님.
-    //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함.
-    if(!idDuplicateChecked){
+    if(idDuplicateChecked){
+      alert("중복된 아이디가 있습니다. 아이디를 변경해주세요.");
+    }else if(emailDuplicateChecked){
+      alert("해당 이메일의 계정이 있습니다.");
+    }else if(!regexId.test(id)){
+      alert("사용할 수 없는 아이디입니다.");
+    }else if(!regexEmail.test(emailRef.current.value)){
+      alert("사용할 수 없는 이메일입니다.");
+    }else if(!regexNickName.test(nickNameRef.current.value)){
+      alert("사용할 수 없는 닉네임입니다.");
+    }else{
       axios({
         method: 'post',
         url: '/auth/member',
         params: {
-          userId: id,
+          userId: idRef.current.value,
           pw: pwRef.current.value,
           userNickName: nickNameRef.current.value,
+          email:emailRef.current.value,
           address1 : address1.current.value,
           address2 : address2.current.value
         },
@@ -249,30 +326,29 @@ const AuthForm = ({ type }) => {
       });
   }
 
-  const nickNameRef = useRef(null);
-  const [id, setId] = useState("");
-  const pwRef = useRef(null);
-  const pwConfirmRef = useRef(null);
-  const address1 = useRef(null);
-  const address2 = useRef(null);
-
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
       {type === 'register' && (
-        <StyledInput
-          type="text"
-          autoComplete="name"
-          name="userNickName"
-          placeholder="닉네임"
-          ref={nickNameRef}
-        />
+        <>
+          <StyledInput
+            type="text"
+            autoComplete="name"
+            name="userNickName"
+            placeholder="닉네임"
+            ref={nickNameRef}
+            // value={nickName}
+            onChange={handleNickName}
+          />
+          <div>{nickNameRegexMessage}</div>
+        </>
       )}
       <StyledInput
         type="text"
         autoComplete="username"
         name="userId"
         placeholder="아이디"
+        ref={idRef}
         value={id}
         onChange={handleId}
       />
@@ -300,6 +376,16 @@ const AuthForm = ({ type }) => {
             type="password"
             ref={pwConfirmRef}
           />
+          <StyledInput
+            autoComplete='email'
+            name="e-mail"
+            placeholder='e-mail'
+            type="text"
+            //value={email}
+            ref={emailRef}
+            onChange={handleEmail}
+          />
+          <div>{emailDuplicateMessage}</div>
           <select ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
               return <option key={index}>{item}</option>;

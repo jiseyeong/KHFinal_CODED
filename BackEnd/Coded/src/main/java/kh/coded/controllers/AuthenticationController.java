@@ -1,11 +1,9 @@
 package kh.coded.controllers;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kh.coded.services.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +23,6 @@ import kh.coded.dto.MemberPrincipal;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.AddressCoordService;
 import kh.coded.services.MemberService;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 //@RequestMapping("/auth/")
@@ -57,13 +54,14 @@ public class AuthenticationController {
 			@RequestParam(value="userId") String id,
 			@RequestParam(value="pw") String pw,
 			@RequestParam(value="userNickName") String nickName,
+			@RequestParam(value="email") String email,
 			@RequestParam(value="address1", required=false, defaultValue="서울특별시") String address1, //구현하고 나면 required false 풀어야 하며, 현재는 테스트로 값을 넣어야 함.
 			@RequestParam(value="address2", required=false, defaultValue="서울") String address2
 			) {		
 		try {
-			//userNo, id, pw, nickname, bio, favBrand, Address1, Address2,  Role, NaverToken, KakaoToken
-			//MemberDTO dto = new MemberDTO(0, id, pw, nickName, null, null, address1, address2, Role.USER.getValue(), null, null, null);
-			MemberDTO dto = new MemberDTO(id, pw, nickName, address1, address2);
+			//userNo, id, pw, nickname, bio, favBrand, email, Address1, Address2,  Role, NaverToken, KakaoToken
+			//MemberDTO dto = new MemberDTO(0, id, pw, nickName, null, null, email, address1, address2, Role.USER.getValue(), null, null, null);
+			MemberDTO dto = new MemberDTO(id, pw, nickName, email, address1, address2);
 			int userNo = memberService.join(dto);
 			return ResponseEntity.ok().body(userNo);
 		}catch(Exception e) {
@@ -157,6 +155,11 @@ public class AuthenticationController {
 	public boolean isMember(@RequestParam(value="userId") String userId) {
 		boolean result = memberService.isMemberId(userId);
 		return result;
+	}
+	
+	@GetMapping(value="/auth/isMemberByEmail")
+	public boolean isMemberByEmail(@RequestParam(value="email") String email) {
+		return memberService.isMemberByEmail(email);
 	}
 	
 	@GetMapping(value="/auth/getAddress1List")

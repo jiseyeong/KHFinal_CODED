@@ -80,15 +80,16 @@ public class SecurityConfiguration {
 			"/auth/getAddress2List",
 			"/auth/refresh",
 			"/auth/oauth/**",
-			"/login/oauth2/kakao/codeInfo",
-			"/login/oauth2/kakao/tokenInfo",
-			"/login/oauth2/kakao",
-			"/login/oauth2/code/kakao",
-			"/login/oauth2/callback/kakao",
-			"/login/oauth2/naver",
-			"/login/oauth2/code/naver",
-			"/login/oauth2/callback/naver",
-			"/login/oauth2/naver/codeInfo"
+			"/auth/oauth2/**",
+//			"/login/oauth2/kakao/codeInfo",
+//			"/login/oauth2/kakao/tokenInfo",
+//			"/login/oauth2/kakao",
+//			"/login/oauth2/code/kakao",
+//			"/login/oauth2/callback/kakao",
+//			"/login/oauth2/naver",
+//			"/login/oauth2/code/naver",
+//			"/login/oauth2/callback/naver",
+//			"/login/oauth2/naver/codeInfo"
 			
 
 	};
