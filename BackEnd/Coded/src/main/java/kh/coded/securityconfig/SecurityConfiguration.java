@@ -3,7 +3,6 @@ package kh.coded.securityconfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -13,7 +12,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import kh.coded.security.CustomAccessDeniedHandler;
 import kh.coded.security.CustomAuthenticationEntryPoint;
-import kh.coded.security.MemberAuthenticationProvider;
 import kh.coded.services.MemberService;
 
 @Configuration
@@ -22,8 +20,8 @@ public class SecurityConfiguration {
 	
 //	@Autowired
 //	private OAuth2UserService oAuth2UserService;
-	@Autowired
-	private MemberAuthenticationProvider memberAuthenticationProvider;
+//	@Autowired
+//	private MemberAuthenticationProvider memberAuthenticationProvider;
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -101,10 +99,10 @@ public class SecurityConfiguration {
 			
 	};
 	
-	@Autowired
-	public void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.authenticationProvider(memberAuthenticationProvider);
-	}
+//	@Autowired
+//	public void configure(AuthenticationManagerBuilder auth) throws Exception{
+//		auth.authenticationProvider(memberAuthenticationProvider);
+//	}
 	
 	@Bean
 	public WebSecurityCustomizer configure() {

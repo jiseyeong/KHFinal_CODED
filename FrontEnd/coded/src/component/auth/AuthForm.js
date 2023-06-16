@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/members';
@@ -75,8 +75,12 @@ const AuthForm = ({ type }) => {
   const [idDuplicateMessage, setIdDuplicateMessage] = useState(false);
   const [isIdSaveChecked, setIdSaveChecked] = useState(!cookie.load('userId') ? true:false);
   const [isPwView, setIsPwView] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
+    if(searchParams.get('error')){
+      alert("로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.");
+    }
     if(type=="register"){
       axios({
         method: 'get',

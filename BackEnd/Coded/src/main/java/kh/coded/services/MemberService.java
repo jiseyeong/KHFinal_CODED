@@ -28,7 +28,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
-import kh.coded.dto.TokensDTO;
 import kh.coded.repositories.AddressCoordDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.security.JwtProvider;
@@ -71,7 +70,7 @@ public class MemberService implements UserDetailsService {
 
 	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
 		//TokenDTO token = jwtProvider.createAllLoginToken(member);
-		CookieUtil.addCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+		CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 
 		UserDetails authentication = this.loadUserByUsername(member.getUserId());
 		//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음

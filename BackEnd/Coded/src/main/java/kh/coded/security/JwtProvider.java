@@ -17,7 +17,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import kh.coded.dto.MemberDTO;
-import kh.coded.dto.TokensDTO;
 
 @Component
 public class JwtProvider {
@@ -34,13 +33,6 @@ public class JwtProvider {
 	@PostConstruct
 	protected void init() {
 		secretKey = Keys.hmacShaKeyFor(salt.getBytes(StandardCharsets.UTF_8));
-	}
-	
-	public TokensDTO createLoginTokens(MemberDTO member) {
-		return new TokensDTO(
-				this.createLoginAccessToken(member),
-				this.createLoginRefreshToken(member)
-				);
 	}
 	
 	public String createLoginAccessToken(MemberDTO member) {
