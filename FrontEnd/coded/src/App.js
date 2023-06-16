@@ -26,10 +26,7 @@ class App extends React.Component {
           <Route path="/" element={<IndexPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/HomePageTemplate"
-            element={<HomePageTemplate />}
-          ></Route>
+          <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
           <Route path="/feed" element={<FeedList />} />
           <Route path="/feed/id" element={<FeedListByIdWithMain />} />
           <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
