@@ -1,3 +1,4 @@
+import axios from "axios";
 
 const LOGIN = 'tokens/LOGIN';
 const LOGOUT = 'tokens/LOGOUT';
@@ -24,6 +25,10 @@ function tokenReducer(state = initialState, action){
             return state;
         case LOGOUT :
             state = {access:"", refresh:"", userId:"", userNo:0};
+            axios({
+                method:"get",
+                url:"/auth/logout",
+            })
             return state;
         default:
             return state;

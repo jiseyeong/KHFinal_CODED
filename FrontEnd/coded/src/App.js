@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IndexPage from './IndexPage';
-import Login from './component/Login/Login';
-import SignUp from './component/SignUp/SignUp';
+import Login from './pages/auth/Login/Login';
+import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
 import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
