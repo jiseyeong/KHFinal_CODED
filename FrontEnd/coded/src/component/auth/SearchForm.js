@@ -24,17 +24,34 @@ function SearchForm({type}){
                 email:emailRef.current.value
             }
         }).then((response)=>{
-            console.log(response);
-            setMessage(response.data);
+            setMessage("찾은 아이디는 '"+response.data+"' 입니다.");
         }).catch((error)=>{
             if(error.request.status == 400){
                 setMessage(error.response.data);
+            }else{
+                console.log(error);
             }
         })
     }
 
     function doPwSearch(){
-
+        axios({
+            method:"post",
+            url:"/auth/send-mail/pw",
+            params:{
+                email:emailRef.current.value,
+                userId:idRef.current.value,
+                userNickName:nickNameRef.current.value
+            }
+        }).then((response)=>{
+            setMessage(response.data);
+        }).catch((error)=>{
+            if(error.request.status == 400){
+                setMessage(error.response.data);
+            }else{
+                console.log(error);
+            }
+        })
     }
 
     return(
