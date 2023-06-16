@@ -318,4 +318,8 @@ public class MemberService implements UserDetailsService {
 
 		return id;
 	}
+
+    public List<MemberDTO> selectUserList() {
+		return memberDAO.selectUserList();
+    }
 }

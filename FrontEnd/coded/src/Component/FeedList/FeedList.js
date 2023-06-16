@@ -29,8 +29,6 @@ function FeedList() {
       },
     })
       .then((resp) => {
-        console.log(resp.data);
-
         const {
           feedPostList,
           thumbNailList,
@@ -39,9 +37,8 @@ function FeedList() {
           hashTagLists,
         } = resp.data;
 
-        console.log({ thumbNailList });
-
-        setFeedPost(feedPostList);
+        setFeedPost((prev) => [...prev, ...feedPostList]);
+        console.log(thumbNailList);
         setThumbnail([...thumbNailList]);
         setUserProfile([...userProfileList]);
         setMember([...memberList]);
@@ -56,6 +53,9 @@ function FeedList() {
       addFeedList();
     }
   };
+  // window.innerHeight 실제 보이는 창의 높이
+  // window.scrollY 페이지 상단에서부터 스크롤된 값
+  // document.body.offsetHeight 페이지 전체 높이
 
   useEffect(() => {
     console.log('화면에 나타남');
@@ -95,11 +95,11 @@ export default FeedList;
 // <script>
 //   var count = 2;
 
-//   window.onscroll = function() {
-//   if (( window.innerHeight + window.scrollY)>= document.body.offsetHeight ) {
-//   var toAdd = document.createElement("div");
-//   toAdd.classList.add("box")
-//   toAdd.textContent = `${++count}번째`
-//   document.querySelector('section').appendChild(toAdd);
+// window.onscroll = function () {
+//   if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+//     var toAdd = document.createElement('div');
+//     toAdd.classList.add('box');
+//     toAdd.textContent = `${++count}번째`;
+//     document.querySelector('section').appendChild(toAdd);
 //   }
-//   }
+// };

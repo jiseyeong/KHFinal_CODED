@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
@@ -142,22 +143,9 @@ public class FeedPostController {
 	}
 
 	@GetMapping("/selectfeedlist/")
-	public String selectFeedList(){
+	public ResponseEntity<?> selectFeedList(){
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
-		return "";
-	}
-	
-
-	@PostMapping("/insertTest/")
-	public ResponseEntity<?> insertTest(
-			@RequestParam("title") String title,
-			@RequestParam("files")List<MultipartFile> files,
-			HttpServletRequest request
-			) throws IOException {
-		String realPath = request.getServletContext().getRealPath("images");
-		photoService.insertTest(realPath,files);
-		System.out.println(request.getServletContext().getRealPath("images"));
-		return ResponseEntity.ok().body("success");
+		return ResponseEntity.ok().body(list);
 	}
 
 }

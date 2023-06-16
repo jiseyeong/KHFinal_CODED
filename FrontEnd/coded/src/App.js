@@ -44,7 +44,7 @@ class App extends React.Component {
           <Route path="/profile" element={<Profile />} />
           <Route path="/FileUploadTest" element={<FileUploadTest />} />
           <Route path="/DMPage" element={<DMPage />} />
-          <Route path="/search" element={<Search />} />
+          {/* <Route path="/search" element={<Search />} /> */}
           <Route path="/ootd" element={<Ootd />} />
 
           <Route

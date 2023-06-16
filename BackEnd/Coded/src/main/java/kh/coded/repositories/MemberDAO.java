@@ -1,6 +1,7 @@
 package kh.coded.repositories;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -75,4 +76,8 @@ public class MemberDAO {
 		map.put("pw", pw);
 		return mybatis.delete("Member.deleteMember",map);
 	}
+
+    public List<MemberDTO> selectUserList() {
+		return mybatis.selectList("Member.selectUserList");
+    }
 }
