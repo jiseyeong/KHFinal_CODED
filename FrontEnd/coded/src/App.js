@@ -17,6 +17,8 @@ import LastCallbackPage from './pages/auth/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/OAuthNaverCodeCallback';
 import DMPage from './pages/DM/DMPage';
 import HomePageTemplate from './pages/HomePageTemplate';
+import IdSearch from './pages/auth/Login/IdSearch';
+import PwSearch from './pages/auth/Login/PwSearch';
 
 class App extends React.Component {
   render() {
@@ -36,6 +38,8 @@ class App extends React.Component {
           <Route path="/DMPage" element={<DMPage />} />
           <Route path="/search" element={<Search />} />
           <Route path="/ootd" element={<Ootd />} />
+          <Route path="/idSearch" element={<IdSearch/>} />
+          <Route path="/pwSearch" element={<PwSearch/>} />
 
           <Route
             path="/login/oauth2/code/kakao"
