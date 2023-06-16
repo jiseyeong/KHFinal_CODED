@@ -23,31 +23,22 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<IndexPage />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<SignUp />} />
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route
-            exact
             path="/HomePageTemplate"
             element={<HomePageTemplate />}
           ></Route>
-          <Route exact path="/feed" element={<FeedList />} />
-          <Route exact path="/feed/id" element={<FeedListByIdWithMain />} />
-          <Route
-            exact
-            path="/feed/nick"
-            element={<FeedListByNickNameWithMain />}
-          />
-          <Route
-            exact
-            path="/feed/hashs"
-            element={<FeedListByHashsWithMain />}
-          />
-          <Route exact path="/profile" element={<Profile />} />
+          <Route path="/feed" element={<FeedList />} />
+          <Route path="/feed/id" element={<FeedListByIdWithMain />} />
+          <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
+          <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/FileUploadTest" element={<FileUploadTest />} />
           <Route path="/DMPage" element={<DMPage />} />
-          <Route exact path="/search" element={<Search />} />
-          <Route exact path="/ootd" element={<Ootd />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/ootd" element={<Ootd />} />
 
           <Route
             path="/login/oauth2/code/kakao"
