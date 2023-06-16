@@ -27,9 +27,9 @@ import kh.coded.services.MemberService;
 @RestController
 //@RequestMapping("/auth/")
 public class AuthenticationController {
-	
-//	@Autowired
-//	private RefreshTokenService refService;
+
+	//	@Autowired
+	//	private RefreshTokenService refService;
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -48,7 +48,7 @@ public class AuthenticationController {
 	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
 	private String NAVER_CLIENT_SECRET; 
-	
+
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
 			@RequestParam(value="userId") String id,
@@ -68,7 +68,7 @@ public class AuthenticationController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@DeleteMapping(value="/auth/member")
 	public ResponseEntity<?> deleteMember(
 			@RequestParam(value="userId") String userId,
@@ -76,14 +76,14 @@ public class AuthenticationController {
 		int result = memberService.deleteMember(userId, pw);
 		return ResponseEntity.ok().body(null);
 	}
-	
+
 	@PutMapping(value="/auth/member")
 	public ResponseEntity<?> updateMember(
 			@RequestParam(value="dto") MemberDTO dto) {
 		int result = memberService.updateMember(dto);
 		return ResponseEntity.ok().body(null);
 	}
-	
+
 	@PutMapping(value="/auth/updatePw")
 	public ResponseEntity<?> updatePw(
 			@RequestParam(value="userId") String userId,
@@ -91,7 +91,7 @@ public class AuthenticationController {
 		int result = memberService.updatePw(userId,pw);
 		return ResponseEntity.ok().body(null);
 	}
-	
+
 	@GetMapping(value="/auth/login")
 	public ResponseEntity<?> login(
 			HttpServletRequest request,
@@ -111,7 +111,7 @@ public class AuthenticationController {
 		}
 		return ResponseEntity.badRequest().body("Login Failed");
 	}
-	
+
 	//여기서조차 badRequest 시 login 페이지로 넘겨주면 됨.
 	@GetMapping(value="/auth/refresh")
 	public ResponseEntity<?> jwtRefresh(
@@ -130,7 +130,7 @@ public class AuthenticationController {
 		}
 		return ResponseEntity.badRequest().body("Refresh Failed. Please Login");
 	}
-	
+
 	@GetMapping("/auth/logout")
 	public ResponseEntity<?> logout(
 			HttpServletRequest request,
@@ -139,7 +139,7 @@ public class AuthenticationController {
 		memberService.logout(request, response);
 		return ResponseEntity.ok().body(null);
 	}
-	
+
 	@GetMapping(value = "/auth/userNo")
 	public ResponseEntity<?> getUserNo(
 			@RequestHeader(value="authorization") String authorization
@@ -156,26 +156,36 @@ public class AuthenticationController {
 		boolean result = memberService.isMemberId(userId);
 		return result;
 	}
-	
+
 	@GetMapping(value="/auth/isMemberByEmail")
 	public boolean isMemberByEmail(@RequestParam(value="email") String email) {
 		return memberService.isMemberByEmail(email);
 	}
-	
+
+	@GetMapping(value="/auth/memberIdByEmail")
+	public ResponseEntity<String> selectMemberIdByEmail(@RequestParam(value="email") String email){
+		String memberId = memberService.selectMemberIdByEmail(email);
+
+		if(memberId != null) {
+			return ResponseEntity.ok().body(memberId);			
+		}
+		return ResponseEntity.badRequest().body("해당 이메일의 아이디가 없습니다.");
+	}
+
 	@GetMapping(value="/auth/getAddress1List")
 	public ResponseEntity<?> getAddress1List(){
 		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth1());
 	}
-	
+
 	@GetMapping(value="/auth/getAddress2List")
 	public ResponseEntity<?> getAddress2List(
 			@RequestParam(value="address1") String address1
 			){
 		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth2(address1));
 	}
-	
-	
-	
+
+
+
 	@GetMapping(value="/login/oauth2/kakao/codeInfo")
 	public ResponseEntity<?> kakaoLoginCodeInfo(){
 		Map<String, String> data = new HashMap<>();
@@ -183,7 +193,7 @@ public class AuthenticationController {
 		data.put("redirect_uri", KAKAO_REDIRECT_URI);
 		return ResponseEntity.ok().body(data);
 	}
-	
+
 	@GetMapping(value="/login/oauth2/kakao/tokenInfo")
 	public ResponseEntity<?> kakaoLoginTokenInfo(
 			//@RequestParam(value="code") String code
@@ -194,7 +204,7 @@ public class AuthenticationController {
 		data.put("redirect_uri", KAKAO_REDIRECT_URI);
 		return ResponseEntity.ok().body(data);
 	}
-	
+
 	@GetMapping(value="/login/oauth2/kakao")
 	public ResponseEntity<?> kakaoLogin(
 			@RequestParam(value="accessToken") String accessToken,
@@ -220,7 +230,7 @@ public class AuthenticationController {
 		data.put("redirect_uri", NAVER_REDIRECT_URI);
 		return ResponseEntity.ok().body(data);
 	}
-	
+
 	@GetMapping(value="/login/oauth2/naver")
 	public ResponseEntity<?> naverLogin(
 			@RequestParam(value="code") String code,
@@ -238,7 +248,7 @@ public class AuthenticationController {
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
 	}
-	
+
 	@GetMapping(value="/login/oauth2/naver/tokenInfo")
 	public ResponseEntity<?> naverLoginTokenInfo(
 			@RequestParam(value="code") String code
@@ -247,7 +257,7 @@ public class AuthenticationController {
 		data.put("client_id", NAVER_CLIENT_ID);
 		data.put("client_secret", NAVER_CLIENT_SECRET);
 		data.put("redirect_uri", NAVER_REDIRECT_URI);
-		
+
 		return ResponseEntity.ok().body(data);
 	}
 

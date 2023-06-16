@@ -41,6 +41,9 @@ public class MemberDAO {
 	public boolean isMemberByEmail(String email) {
 		return (mybatis.selectOne("Member.isMemberByEmail", email) != null);
 	}
+	public String selectMemberIdByEmail(String email) {
+		return mybatis.selectOne("Member.isMemberByEmail", email);
+	}
 	public int insertMember(MemberDTO dto) { //회원가입
 		mybatis.insert("Member.insertMember",dto);
 		return dto.getUserNo();//구현하면 됨. selectKey의 ID값으로 돌려줄 것.

@@ -8,6 +8,7 @@ build/
 .settings
 application-server.properties
 application-auth.properties
+application-api.properties
 
 ### Eclipse ###
 .metadata

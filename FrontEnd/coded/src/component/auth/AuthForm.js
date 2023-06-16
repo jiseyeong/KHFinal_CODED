@@ -362,9 +362,18 @@ const AuthForm = ({ type }) => {
       />
       {type === 'login' && (
         <>
-          <button onClick={()=>{setIsPwView((prev) => {return !prev})}}>pw보기</button>
-          <input type="checkbox" checked={isIdSaveChecked} onChange={()=>{setIdSaveChecked((prev)=>{return !prev})}} />
-          <label>아이디 기억</label>
+          <div>
+            <button onClick={()=>{setIsPwView((prev) => {return !prev})}}>pw보기</button>
+          </div>
+          <div>
+            <input type="checkbox" checked={isIdSaveChecked} onChange={()=>{setIdSaveChecked((prev)=>{return !prev})}} />
+            <label>아이디 기억</label>
+          </div>
+          <div>
+            <Link to="/idSearch">아이디 찾기</Link>
+            <br/>
+            <Link to="/pwSearch">비밀번호 재발급</Link>
+          </div>
         </>
       )}
       {type === 'register' && (
@@ -398,13 +407,13 @@ const AuthForm = ({ type }) => {
           </select>
         </>
       )}
-      {/* {type === 'login' && (
+      {type === 'login' && (
         <>
           <button onClick={doKakaoLogin}>카카오 로그인</button>
           <button onClick={doNaverLogin}>네이버 로그인</button>
           <button onClick={doRefrshTest}>리프레시 테스트</button>
         </>
-      )} */}
+      )}
       <ButtonWithMarginTop
         cyan={true}
         fullWidth
