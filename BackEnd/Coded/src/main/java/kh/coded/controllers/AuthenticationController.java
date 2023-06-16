@@ -171,6 +171,21 @@ public class AuthenticationController {
 		}
 		return ResponseEntity.badRequest().body("해당 이메일의 아이디가 없습니다.");
 	}
+	
+	@PostMapping("/auth/send-mail/pw")
+	public ResponseEntity<?> sendPasswordMail(
+			@RequestParam(value="email") String toEmail,
+			@RequestParam(value="userId") String userId,
+			@RequestParam(value="userNickName") String userNickName
+			){
+		MemberDTO member = memberService.selectMemberForPwSend(userId, userNickName, toEmail);
+		if(member!=null) {
+			String subject = "[KH Coded]임시 비밀번호 발급";
+			memberService.sendMail(member, subject);			
+			return ResponseEntity.ok().body("새 비밀번호를 이메일로 보내드렸습니다.");
+		}
+		return ResponseEntity.badRequest().body("일치하지 않는 정보가 있습니다.");
+	}
 
 	@GetMapping(value="/auth/getAddress1List")
 	public ResponseEntity<?> getAddress1List(){

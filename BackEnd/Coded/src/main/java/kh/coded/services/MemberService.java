@@ -1,6 +1,7 @@
 package kh.coded.services;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
@@ -45,6 +49,10 @@ public class MemberService implements UserDetailsService {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private JwtProvider jwtProvider;
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String KAKAO_CLIENT_ID;
 	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
@@ -174,6 +182,70 @@ public class MemberService implements UserDetailsService {
 
 	public MemberDTO selectMemberByNaverToken(String token) {
 		return memberDAO.selectMemberByNaverToken(token);
+	}
+	
+	public MemberDTO selectMemberForPwSend(String userId, String userNickName, String email) {
+		return memberDAO.selectMemberForPwSend(userId, userNickName, email);
+	}
+	
+	public boolean sendMail(MemberDTO member, String subject) {
+		String authNum = this.createCode();
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		this.updatePw(member.getUserId(), authNum);
+		
+		try {
+			String html= String.format("""
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+					<body>
+						<div style="margin:100px;">
+							<h1>안녕하세요.</h1>
+							<h1>KH 종로 지점 교육원 Final 프로젝트 중 하나인 Coded 프로젝트입니다.</h1>
+							<h1>임시 비밀번호 발급 안내 드립니다.</h1>
+							<br/>
+							<div align="center" style="border:1px solid black; font-family:verdana;">
+								<h3 style="color:blue"> 임시 비밀번호입니다. </h3>
+								<div style="font-size:1.3rem"> %s </div> 
+							</div>
+							<br/>
+						</div>
+					</body>
+</html>
+					""", authNum);
+			
+			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+			mimeMessageHelper.setTo(member.getEmail());
+			mimeMessageHelper.setSubject(subject);
+			mimeMessageHelper.setText(html, true);
+			javaMailSender.send(mimeMessage);
+			
+			System.out.println("이메일 발송 성공");
+			
+			return true;
+		}catch(Exception e) {
+			System.out.println("이메일 발송 실패");
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public String createCode() {
+		Random random = new Random();
+		StringBuffer key = new StringBuffer();
+		
+		for(int i = 0; i < 8; i++) {
+			int index = random.nextInt(4);
+			
+			switch(index) {
+			case 0: key.append((char) ((int) random.nextInt(26) + 97)); break;
+			case 1: key.append((char) ((int) random.nextInt(26) + 65)); break;
+			default : key.append((random.nextInt(9)));
+			}
+		}
+		return key.toString();
 	}
 
 	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal auth) throws Exception{

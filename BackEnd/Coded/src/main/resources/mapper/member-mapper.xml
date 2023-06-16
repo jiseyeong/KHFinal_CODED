@@ -18,6 +18,9 @@
   	<select id="selectMemberByNickName" resultType="kh.coded.dto.MemberDTO">
   		select * from member where userNickname like '%'||#{userNickName}||'%'
   	</select>
+  	<select id="selectMemberForPwSend" resultType="kh.coded.dto.MemberDTO">
+  		select * from member where userId=#{userId} And userNickName=#{userNickName} And email=#{email}
+  	</select>
   	<select id="selectMemberByKakaoToken" resultType="kh.coded.dto.MemberDTO">
   		select * from Member where KakaoToken=#{kakaoToken}
   	</select>
