@@ -44,4 +44,8 @@
 	<update id="updatePw">
 		update member set pw = #{pw} where userId = #{userId}
 	</update>
+
+	<select id="selectUserList" resultType="kh.coded.dto.MemberDTO">
+		select * from member
+	</select>
   </mapper>

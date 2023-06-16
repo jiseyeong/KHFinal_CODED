@@ -132,8 +132,4 @@ public class FeedPostService {
         return feedpostDAO.selectFeedNew();
     }
 
-    public PhotoDTO selectByFeedpostId(int feedPostId) {
-        return photoDAO.selectByFeedpostId(feedPostId);
-    }
-
 }

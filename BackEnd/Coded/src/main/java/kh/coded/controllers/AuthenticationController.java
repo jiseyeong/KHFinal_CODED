@@ -1,8 +1,11 @@
 package kh.coded.controllers;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import kh.coded.services.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,7 @@ import kh.coded.dto.MemberPrincipal;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.AddressCoordService;
 import kh.coded.services.MemberService;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 //@RequestMapping("/auth/")
@@ -35,7 +39,7 @@ public class AuthenticationController {
 	private JwtProvider jwtProvider;
 	@Autowired
 	private AddressCoordService addressCoordService;
-	
+
 	//이하 리다이렉트 URI 들은 실제 서버 올리기 전엔 9999로 고쳐야 함.
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String KAKAO_CLIENT_ID;
@@ -120,7 +124,11 @@ public class AuthenticationController {
 		//리프레시 토큰은 안에서 쿠키로 재발급함.
 		String accessToken = memberService.refreshToken(request, response);
 		if(accessToken != null) {
-			return ResponseEntity.ok().body(accessToken);
+			Map<String, Object> data = new HashMap<>();
+			data.put("accessToken", accessToken);
+			data.put("userNo", jwtProvider.getLoginUserNo(accessToken));
+			data.put("userId", jwtProvider.getLoiginUserID(accessToken));
+			return ResponseEntity.ok().body(data);
 		}
 		return ResponseEntity.badRequest().body("Refresh Failed. Please Login");
 	}
@@ -239,4 +247,11 @@ public class AuthenticationController {
 		
 		return ResponseEntity.ok().body(data);
 	}
+
+	@GetMapping("/selectUserList")
+	public ResponseEntity<?> selectUserList(){
+		List<MemberDTO> userList = memberService.selectUserList();
+		return ResponseEntity.ok().body(userList);
+	}
+
 }

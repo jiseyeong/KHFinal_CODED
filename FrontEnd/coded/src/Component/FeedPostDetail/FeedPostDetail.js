@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import Modal from '../../Pages/Ootd/Main/Modal';
+import Modal from '../../pages/ootd/Main/Modal';
 const ParentDiv = styled('div')`
   width: 18%;
   height: auto;
@@ -8,6 +8,8 @@ const ParentDiv = styled('div')`
   justify-content: center;
   align-items: center;
   border: 0px;
+  /* column-fill: auto;
+  column-count: 5; */
 `;
 
 const FeedInnerLayoutDiv = styled('div')`
@@ -21,17 +23,25 @@ const FeedInnerLayoutDiv = styled('div')`
   &:hover {
     cursor: pointer;
   }
+  /* break-inside: auto; */
 `;
 
 const FeedImageDiv = styled('div')`
   border: 1px solid black;
   width: 80%;
   /* height: 60%; */
-  min-height: 200px;
-  max-height: 300px;
+  height: auto;
   margin: 10px 20px 10px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+`;
+
+const ThumbNail = styled('img')`
+  width: auto;
+  min-height: 200px;
+  max-height: 300px;
+  object-fit: cover;
 `;
 
 const FeedInfoDiv = styled('div')`
@@ -57,20 +67,29 @@ const FeedPostDetail = (props) => {
     }
   };
 
+  useEffect(() => {
+    console.log(thumbNail);
+  }, []);
+
   return (
     <ParentDiv>
       <FeedInnerLayoutDiv onClick={openModal}>
         <FeedImageDiv>
-          <img src={`/image/test/`} alt="abc"></img>
+          {thumbNail != null ? (
+            <ThumbNail
+              src={`/images/${thumbNail.sysName}`}
+              alt="abc"
+            ></ThumbNail>
+          ) : (
+            <ThumbNail></ThumbNail>
+          )}
         </FeedImageDiv>
         <FeedInfoDiv>
           <div>{feedPost.feedPostId}</div>
           <div>{feedPost.body}</div>
         </FeedInfoDiv>
       </FeedInnerLayoutDiv>
-      {modal && (
-        <Modal modal={modal} closeModal={closeModal} id={props.id} />
-      )}
+      {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
     </ParentDiv>
   );
 };

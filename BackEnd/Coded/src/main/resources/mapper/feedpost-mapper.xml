@@ -34,9 +34,8 @@
 		select * from FeedPost where userno = ${userno}
 	</select>
 	
-	<select id="selectTestFeedList"
-		resultType="kh.coded.dto.FeedPostDTO">
-		select * from FeedPost
+	<select id="selectTestFeedList" resultType="kh.coded.dto.FeedPostDTO">
+		select * from feedpost
 	</select>
 	
 	<select id="searchByHashs" resultType="kh.coded.dto.HashTagDTO"> <!-- 해시태그 있는 지 검색 -->

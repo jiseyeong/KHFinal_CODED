@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../../../styles/common.scss';
-import '../../../styles/reset.scss';
 import './Modal.scss';
 
 class Modal extends Component {
