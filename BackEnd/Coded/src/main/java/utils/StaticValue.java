@@ -5,7 +5,7 @@ public class StaticValue {
 
 	public static final int FEEDCOUNTPERSCROLL = 30;
 	
-	public static final String REFRESH_TOKEN_COOKIE_NAME = "CodedRefreshToken";
+	public static final String REFRESH_TOKEN_COOKIE_NAME = "CodedRefreshToken"; // 바꿀 경우 프론트에서 쿠키 찾는 것도 바꿔야 함.
 	
 	public final static String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "coded_oauth2_auth_request";
 	public final static String REDIRECT_URI_PARAM_COOKIE_NAME = "redirce_uri";
