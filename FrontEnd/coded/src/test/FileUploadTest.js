@@ -55,7 +55,9 @@ const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
     })
       .then((resp) => {
         console.log('완료 : ' + resp.data);
-        setUploadState('완료 : ' + files[0].name);
+        setUploadState(
+          '피드 번호 : ' + feedPostId + ' : ' + files[0].name + ' 업로드 완료',
+        );
         setFiles([]);
       })
       .catch((error) => console.log(error));
@@ -100,7 +102,7 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
   // 유저 리스트 출력
   useEffect(() => {
     axios({
-      url: '/selectUserList',
+      url: '/auth/selectUserList',
       type: 'GET',
     }).then((resp) => {
       setUserList(resp.data);
@@ -139,7 +141,9 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
       data: formData,
     })
       .then((resp) => {
-        setUploadState('완료 : ' + file.name);
+        setUploadState(
+          '유저 넘버 : ' + userNo + ' : ' + file.name + ' 업로드 완료',
+        );
         setFile([]);
       })
       .catch((error) => console.log(error));
@@ -171,7 +175,8 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
 };
 
 const FileUploadTest = () => {
-  const [uploadState, setUploadState] = useState('not');
+  const [uploadState, setUploadState] =
+    useState('이미지 파일을 업로드 해주세요');
   return (
     <div>
       <FeedPhotoUpload {...{ uploadState, setUploadState }}></FeedPhotoUpload>
