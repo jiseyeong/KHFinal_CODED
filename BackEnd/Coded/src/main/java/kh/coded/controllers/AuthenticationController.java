@@ -153,7 +153,22 @@ public class AuthenticationController {
 		if(jwtProvider.validateToken(accessToken)) {
 			return ResponseEntity.ok().body(jwtProvider.getLoginUserNo(accessToken));
 		};
-		return ResponseEntity.badRequest().body("Test Failed");
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
+	}
+	
+	@GetMapping(value = "/auth/userDTO")
+	public ResponseEntity<?> getUser(
+			@RequestHeader(value="authorization") String authorization
+			)
+	{
+		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+		if(jwtProvider.validateToken(accessToken)) {
+			MemberDTO member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
+			if(member != null) {
+				return ResponseEntity.ok().body(member);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
 	}
 
 	@GetMapping(value="/auth/isMember")

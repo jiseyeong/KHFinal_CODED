@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IndexPage from './IndexPage';
 import Login from './pages/auth/Login/Login';
@@ -20,9 +20,42 @@ import HomePageTemplate from './pages/HomePageTemplate';
 import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
 import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
+import { useDispatch } from 'react-redux';
+import { login, logout, setRefresh } from './modules/members';
+import cookie from 'react-cookies';
+import axios from 'axios';
 
-class App extends React.Component {
-  render() {
+function App(){
+
+  const dispatch = useDispatch();
+  const onLogin = useCallback(
+    (accessToken, userId, userNo) => dispatch(login(accessToken, userId, userNo)),
+    [dispatch],
+  );
+  const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
+  const onSetRefresh = useCallback(
+    (refreshToken) => dispatch(setRefresh(refreshToken)),
+    [dispatch],
+  );
+
+  useEffect(()=>{
+    axios({
+      method:'get',
+      url:'/auth/refresh'
+    }).then((response)=>{
+      let refreshToken = cookie.load('CodedRefreshToken');
+        refreshToken = refreshToken.substr(
+          'Bearer '.length,
+          refreshToken.length,
+        );
+      onLogin(response.data.accessToken, response.data.userId, response.data.userNo);
+      onSetRefresh(refreshToken);
+    }).catch((error)=>{
+      onLogout();
+      console.log(error);
+    })
+  },[]);
+
     return (
       <BrowserRouter>
         <Routes>
@@ -69,6 +102,5 @@ class App extends React.Component {
         </Routes>
       </BrowserRouter>
     );
-  }
 }
 export default App;
