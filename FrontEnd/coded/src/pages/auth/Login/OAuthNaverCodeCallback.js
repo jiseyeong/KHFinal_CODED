@@ -21,9 +21,10 @@ function NaverCodeCallbackPage() {
         },
       }).then((response) => {
         setLoading(false);
-        let url = '/login/oauth2/callback/naver?message=' + response.data;
+        let url = '/login/oauth2/callback?message=' + response.data;
         navigate(url);
       }).catch((error)=>{
+        setLoading(false);
         setError(true);
         console.log(error);
       });

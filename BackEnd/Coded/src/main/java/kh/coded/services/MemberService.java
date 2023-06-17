@@ -61,6 +61,10 @@ public class MemberService implements UserDetailsService {
 	private String NAVER_CLIENT_ID;
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
 	private String NAVER_CLIENT_SECRET; 
+	@Value("${spring.security.oauth2.client.registration.google.client-id}")
+	private String GOOGLE_CLIENT_ID;
+	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
+	private String GOOGLE_CLIENT_SECRET;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -311,7 +315,7 @@ public class MemberService implements UserDetailsService {
 		return "F";
 	}
 
-	public String getNaverAccessToken(String code) throws Exception{ 
+	private String getNaverAccessToken(String code) throws Exception{ 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -319,7 +323,7 @@ public class MemberService implements UserDetailsService {
 		body.add("grant_type", "authorization_code");
 		body.add("client_id", NAVER_CLIENT_ID);
 		body.add("client_secret", NAVER_CLIENT_SECRET);
-		body.add("redirect_uri", "http://localhost:9999/login/oauth2/code/naver");
+		body.add("redirect_uri", "http://localhost:3000/login/oauth2/code/naver");
 		body.add("code", code);
 		body.add("state","test");
 
@@ -336,7 +340,6 @@ public class MemberService implements UserDetailsService {
 
 		String responseBody = response.getBody();
 		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(responseBody);
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 		return jsonNode.get("access_token").asText();
 	}
@@ -357,10 +360,85 @@ public class MemberService implements UserDetailsService {
 
 		String responseBody = response.getBody();
 		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(responseBody);
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 
 		Long id = jsonNode.get("response").get("id").asLong();
+
+		return id;
+	}
+	
+    public String googleLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+		//인가 코드로 엑세스 토큰 요청.
+		String accessToken = this.getGoogleAccessToken(code);
+
+		//토큰으로 구글 API 호출
+		Long googleId = this.getGoogleUserInfo(accessToken);
+		String token = Long.toString(googleId);
+		MemberDTO member = this.selectMemberByNaverToken(token);
+
+		if(member == null) {
+			//등록 하려 누른 것일 것임.
+			if(auth != null) {
+				member = memberDAO.selectMemberById(auth.getName());
+				memberDAO.updateGoogleToken(member.getUserNo(), token);
+				return "T";
+			}
+		}else {
+			return this.login(response, member);
+		}
+		return "F";
+    }
+    
+    private String getGoogleAccessToken(String code) throws Exception{ 
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+		body.add("grant_type", "authorization_code");
+		body.add("client_id", GOOGLE_CLIENT_ID);
+		body.add("client_secret", GOOGLE_CLIENT_SECRET);
+		body.add("redirect_uri", "http://localhost:3000/login/oauth2/code/google");
+		body.add("code", code);
+
+		HttpEntity<MultiValueMap<String, String>> googleTokenRequest = new HttpEntity<>(body, headers);
+		RestTemplate rt = new RestTemplate();
+		rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+		rt.setErrorHandler(new DefaultResponseErrorHandler());
+		ResponseEntity<String> response = rt.exchange(
+				"https://oauth2.googleapis.com/token",
+				HttpMethod.POST,
+				googleTokenRequest,
+				String.class
+				);
+
+		String responseBody = response.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(responseBody);
+		return jsonNode.get("access_token").asText();
+    }
+    
+    private Long getGoogleUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer " + accessToken);
+		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+		body.add("access_token", accessToken);
+
+		HttpEntity<MultiValueMap<String, String>> googleUserInfoRequest = new HttpEntity<>(body, headers);
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity<String> response = rt.exchange(
+				"https://www.googleapis.com/oauth2/v2/userinfo",
+				HttpMethod.GET,
+				googleUserInfoRequest,
+				String.class
+				);
+
+		String responseBody = response.getBody();
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+		Long id = jsonNode.get("id").asLong();
 
 		return id;
 	}
@@ -368,4 +446,6 @@ public class MemberService implements UserDetailsService {
     public List<MemberDTO> selectUserList() {
 		return memberDAO.selectUserList();
     }
+    
+
 }

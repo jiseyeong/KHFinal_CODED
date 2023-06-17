@@ -89,6 +89,14 @@ public class MemberDAO {
 		mybatis.update("Member.updateNaverToken", data);
 	}
 	
+	public void updateGoogleToken(int userNo, String googleToken) {
+		Map<String,Object> data = new HashMap<>();
+		data.put("userNo", userNo);
+		data.put("googleToken", googleToken);
+		
+		mybatis.update("Member.updateGoogleToken", data);
+	}
+	
 	public int deleteMember(String userId,String pw) { //회원탈퇴
 		Map<String,String> map = new HashMap<>();
 		map.put("userId", userId);

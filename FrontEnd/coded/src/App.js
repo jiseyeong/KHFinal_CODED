@@ -80,23 +80,15 @@ function App(){
             element={<KakaoCodeCallbackPage />}
           />
           <Route
-            path="/login/oauth2/callback/kakao"
-            element={<LastCallbackPage />}
-          />
-          <Route
             path="/login/oauth2/code/naver"
             element={<NaverCodeCallbackPage />}
-          />
-          <Route
-            path="/login/oauth2/callback/naver"
-            element={<LastCallbackPage />}
           />
           <Route
             path="/login/oauth2/code/google"
             element={<GoogleCodeCallbackPage/>}
           />
           <Route
-            path="/login/oauth2/callback/google"
+            path="/login/oauth2/callback"
             element={<LastCallbackPage/>}
           />
         </Routes>
