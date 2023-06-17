@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/members';
@@ -69,14 +69,38 @@ const AuthForm = ({ type }) => {
     (refreshToken) => dispatch(setRefresh(refreshToken)),
     [dispatch],
   );
+
+  const nickNameRef = useRef(null);
+  const [nickNameRegexMessage, setNickNameRegexMessage] = useState("");
+  const [id, setId] = useState("");
+  const idRef = useRef(null);
+  const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
+  const [idDuplicateMessage, setIdDuplicateMessage] = useState("");
+  const pwRef = useRef(null);
+  const pwConfirmRef = useRef(null);
+  const [pwConfirmCheck, setPwConfirmCheck] = useState(false);
+  const emailRef = useRef(null);
+  const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
+  const [emailDuplicateMessage, setEmailDuplicateMessage] = useState("");
+  const address1 = useRef(null);
+  const address2 = useRef(null);
+  const [registerPassCheck, setRegisterPassCheck] = useState(false);
+
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
-  const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
-  const [idDuplicateMessage, setIdDuplicateMessage] = useState(false);
+
   const [isIdSaveChecked, setIdSaveChecked] = useState(!cookie.load('userId') ? true:false);
   const [isPwView, setIsPwView] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const regexId= /^[a-z0-9_]{7,13}$/;
+  const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
+  const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
   useEffect(() => {
+    if(searchParams.get('error')){
+      alert("로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.");
+    }
     if(type=="register"){
       axios({
         method: 'get',
@@ -87,6 +111,8 @@ const AuthForm = ({ type }) => {
             return [...prev, item];
           });
         });
+      }).catch((error)=>{
+        console.log(error);
       });
     }else if(type==="login"){
       setId(cookie.load('userId') ? cookie.load('userId'):"");
@@ -106,8 +132,24 @@ const AuthForm = ({ type }) => {
           return [...prev, item];
         });
       });
+    }).catch((error)=>{
+      console.log(error);
     });
   }
+
+  useEffect(()=>{
+    if(idDuplicateChecked || emailDuplicateChecked || !regexId.test(id) || !regexEmail.test(emailRef.current.value) || !regexNickName.test(nickNameRef.current.value) || pwRef.current.value !== pwConfirmRef.current.value || !address1.current.value || !address2.current.value){
+      setRegisterPassCheck(false);
+    }else{
+      setRegisterPassCheck(true);
+    }
+
+    // if(!id && idDuplicateChecked && !emailRef.current.value && emailDuplicateChecked && !regexId.test(id) && !regexEmail.test(emailRef.current.value) && !nickNameRef.current.value && !regexNickName.test(nickNameRef.current.value) && !pwConfirmCheck && !address1.current.value && !address2.current.value){
+    //   setRegisterPassCheck(false);
+    // }else{
+    //   setRegisterPassCheck(true);
+    // }
+  });
 
   function handleId(e){
     setId(e.target.value);
@@ -117,30 +159,94 @@ const AuthForm = ({ type }) => {
         method:'get',
         url:'/auth/isMember',
         params:{
-          userId: id
+          userId: idRef.current.value
         }
       }).then((response)=>{
-        console.log(response);
         setIdDuplicateChecked(response.data);
-        setIdDuplicateMessage(response.data ? "중복된 아이디가 있습니다." : "중복된 아이디가 없습니다.");
+        if(!regexId.test(idRef.current.value)){
+          setIdDuplicateMessage("사용 불가능한 아이디 형식입니다.");
+        }else{
+          setIdDuplicateMessage("사용 가능합니다.");
+        }
+      }).catch((error)=>{
+        console.log(error);
       });
+    }
+  }
+  //axios setter 반응이 시원찮아서 별도로 추가.
+  useEffect(()=>{
+    if(idDuplicateChecked){
+      setIdDuplicateMessage("중복된 아이디가 있습니다.");
+    }
+  },[idDuplicateChecked])
+
+  function handlePw(e){
+    if(pwRef.current.value === pwConfirmRef.current.value){
+      setPwConfirmCheck(true);
+    }else{
+      setPwConfirmCheck(false);
+    }
+  }
+
+  function handleEmail(e){
+    //setEmail(e.target.value);
+    axios({
+      method:'get',
+      url:'/auth/isMemberByEmail',
+      params:{
+        email:emailRef.current.value
+      }
+    }).then((response)=>{
+      setEmailDuplicateChecked(response.data);
+      if(!regexEmail.test(emailRef.current.value)){
+        setEmailDuplicateMessage("이메일 형식을 지켜주셔야 합니다.");
+      }else{
+        setEmailDuplicateMessage("사용 가능합니다.");
+      }
+    }).catch((error)=>{
+      console.log(error);
+    });
+  }
+
+  useEffect(()=>{
+    if(emailDuplicateChecked){
+      setEmailDuplicateMessage("중복된 이메일이 있습니다.");
+    }
+  }, [emailDuplicateChecked])
+
+  function handleNickName(e){
+    if(!regexNickName.test(nickNameRef.current.value)){
+      setNickNameRegexMessage("사용할 수 없는 닉네임 형식입니다.");
+    }else{
+      setNickNameRegexMessage("사용 가능합니다.");
     }
   }
 
   function doRegister(e) {
-    //e.preventDefault();
 
-    //또는 axios.post("/auth/join", null, {params : {~}})
-    // 두번째 인자가 data긴 한데, 들어가는 방식이 Query 방식이 아님.
-    //따라서 쿼리방식의 '@RequestParam'을 쓰려면 이하 또는 세번쨰 인자 써야 함.
-    if(!idDuplicateChecked){
+    if(idDuplicateChecked){
+      alert("중복된 아이디가 있습니다. 아이디를 변경해주세요.");
+    }else if(emailDuplicateChecked){
+      alert("해당 이메일의 계정이 있습니다.");
+    }else if(!regexId.test(id)){
+      alert("사용할 수 없는 아이디입니다.");
+    }else if(!regexEmail.test(emailRef.current.value)){
+      alert("사용할 수 없는 이메일입니다.");
+    }else if(!regexNickName.test(nickNameRef.current.value)){
+      alert("사용할 수 없는 닉네임입니다.");
+    }else if(pwRef.current.value !== pwConfirmRef.current.value){
+      alert("비밀번호들이 일치하지 않습니다.");
+    }else if(!address1.current.value || !address2.current.value){
+      alert("주소를 입력해주셔야 합니다.");
+    }else{
       axios({
         method: 'post',
         url: '/auth/member',
         params: {
-          userId: id,
+          userId: idRef.current.value,
           pw: pwRef.current.value,
           userNickName: nickNameRef.current.value,
+          email:emailRef.current.value,
           address1 : address1.current.value,
           address2 : address2.current.value
         },
@@ -156,7 +262,6 @@ const AuthForm = ({ type }) => {
         });
     }
   }
-
   function doLogin(e) {
     if(isIdSaveChecked){
       const expires = new Date();
@@ -192,7 +297,6 @@ const AuthForm = ({ type }) => {
         onLogout();
       });
   }
-
 
 
   function doRefrshTest() {
@@ -245,30 +349,29 @@ const AuthForm = ({ type }) => {
       });
   }
 
-  const nickNameRef = useRef(null);
-  const [id, setId] = useState("");
-  const pwRef = useRef(null);
-  const pwConfirmRef = useRef(null);
-  const address1 = useRef(null);
-  const address2 = useRef(null);
-
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
       {type === 'register' && (
-        <StyledInput
-          type="text"
-          autoComplete="name"
-          name="userNickName"
-          placeholder="닉네임"
-          ref={nickNameRef}
-        />
+        <>
+          <StyledInput
+            type="text"
+            autoComplete="name"
+            name="userNickName"
+            placeholder="닉네임"
+            ref={nickNameRef}
+            // value={nickName}
+            onChange={handleNickName}
+          />
+          <div>{nickNameRegexMessage}</div>
+        </>
       )}
       <StyledInput
         type="text"
         autoComplete="username"
         name="userId"
         placeholder="아이디"
+        ref={idRef}
         value={id}
         onChange={handleId}
       />
@@ -282,9 +385,18 @@ const AuthForm = ({ type }) => {
       />
       {type === 'login' && (
         <>
-          <button onClick={()=>{setIsPwView((prev) => {return !prev})}}>pw보기</button>
-          <input type="checkbox" checked={isIdSaveChecked} onChange={()=>{setIdSaveChecked((prev)=>{return !prev})}} />
-          <label>아이디 기억</label>
+          <div>
+            <button onClick={()=>{setIsPwView((prev) => {return !prev})}}>pw보기</button>
+          </div>
+          <div>
+            <input type="checkbox" checked={isIdSaveChecked} onChange={()=>{setIdSaveChecked((prev)=>{return !prev})}} />
+            <label>아이디 기억</label>
+          </div>
+          <div>
+            <Link to="/idSearch">아이디 찾기</Link>
+            <br/>
+            <Link to="/pwSearch">비밀번호 재발급</Link>
+          </div>
         </>
       )}
       {type === 'register' && (
@@ -295,7 +407,19 @@ const AuthForm = ({ type }) => {
             placeholder="비밀번호 확인"
             type="password"
             ref={pwConfirmRef}
+            onChange={handlePw}
           />
+          {pwConfirmCheck ? (<div>비밀번호가 일치합니다.</div>) : (<div>비밀번호가 일치하지 않습니다.</div>)}
+          <StyledInput
+            autoComplete='email'
+            name="e-mail"
+            placeholder='e-mail'
+            type="text"
+            //value={email}
+            ref={emailRef}
+            onChange={handleEmail}
+          />
+          <div>{emailDuplicateMessage}</div>
           <select ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
               return <option key={index}>{item}</option>;
@@ -308,13 +432,13 @@ const AuthForm = ({ type }) => {
           </select>
         </>
       )}
-      {/* {type === 'login' && (
+      {type === 'login' && (
         <>
           <button onClick={doKakaoLogin}>카카오 로그인</button>
           <button onClick={doNaverLogin}>네이버 로그인</button>
           <button onClick={doRefrshTest}>리프레시 테스트</button>
         </>
-      )} */}
+      )}
       <ButtonWithMarginTop
         cyan={true}
         fullWidth
@@ -322,6 +446,9 @@ const AuthForm = ({ type }) => {
       >
         {text}
       </ButtonWithMarginTop>
+      {
+        type==="register" && (registerPassCheck ? (<div>회원가입이 가능합니다.</div>):(<div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>))
+      }
       <Footer>
         {type === 'login' ? (
           <Link to="/signup">회원가입</Link>

@@ -7,7 +7,8 @@ public class MemberDTO{
 	private String pw;        //필수
 	private String userNickName="";
 	private String bio="";
-	private String hashtag="";
+	private String hashTag="";
+	private String email; //필수
 	private String address1;  //필수
 	private String address2;  //필수
 	private String role = Role.USER.getValue();
@@ -15,15 +16,17 @@ public class MemberDTO{
 	private String kakaoToken="";
 	private String googleToken="";
 	//select용
-	public MemberDTO(int userNo, String userId, String pw, String userNickName, String bio, String hashtag,
-			String address1, String address2, String role, String naverToken, String kakaoToken, String googleToken) {
+	public MemberDTO(int userNo, String userId, String pw, String userNickName, String bio, String hashTag,
+			String email, String address1, String address2, String role, String naverToken, String kakaoToken,
+			String googleToken) {
 		super();
 		this.userNo = userNo;
 		this.userId = userId;
 		this.pw = pw;
 		this.userNickName = userNickName;
 		this.bio = bio;
-		this.hashtag = hashtag;
+		this.hashTag = hashTag;
+		this.email = email;
 		this.address1 = address1;
 		this.address2 = address2;
 		this.role = role;
@@ -33,25 +36,19 @@ public class MemberDTO{
 	}
 
 	//join 용
-	public MemberDTO(String userId, String pw, String userNickName, String address1, String address2) {
+	public MemberDTO(String userId, String pw, String userNickName, String email, String address1, String address2) {
 		super();
 		this.userId = userId;
 		this.pw = pw;
 		this.userNickName = userNickName;
+		this.email = email;
 		this.address1 = address1;
 		this.address2 = address2;
 		this.role = Role.USER.getValue();
+		
+		Role.USER.getValue();
 	}
-
-	//update 용
-	public MemberDTO(String userId,String userNickName,String bio, String hashtag, String address1, String address2) {
-		this.userId = userId;
-		this.userNickName = userNickName;
-		this.bio = bio;
-		this.hashtag = hashtag;
-		this.address1 = address1;
-		this.address2 = address2;
-	}
+	
 	public MemberDTO() {
 		super();
 	}
@@ -85,12 +82,6 @@ public class MemberDTO{
 	}
 	public void setBio(String bio) {
 		this.bio = bio;
-	}
-	public String gethashtag() {
-		return hashtag;
-	}
-	public void sethashtag(String hashtag) {
-		this.hashtag = hashtag;
 	}
 	public String getAddress1() {
 		return address1;
@@ -127,6 +118,22 @@ public class MemberDTO{
 	}
 	public void setGoogleToken(String googleToken) {
 		this.googleToken = googleToken;
+	}
+
+	public String getHashTag() {
+		return hashTag;
+	}
+
+	public void setHashTag(String hashTag) {
+		this.hashTag = hashTag;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

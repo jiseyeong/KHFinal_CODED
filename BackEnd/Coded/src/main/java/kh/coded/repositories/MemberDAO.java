@@ -38,6 +38,19 @@ public class MemberDAO {
 	public boolean isMemberId(String userID) { //아이디 중복확인
 		return (mybatis.selectOne("Member.isMemberId",userID) != null);
 	}
+	public boolean isMemberByEmail(String email) {
+		return (mybatis.selectOne("Member.isMemberByEmail", email) != null);
+	}
+	public String selectMemberIdByEmail(String email) {
+		return mybatis.selectOne("Member.isMemberByEmail", email);
+	}
+	public MemberDTO selectMemberForPwSend(String userId, String userNickName, String email) {
+		Map<String, String> data = new HashMap<>();
+		data.put("userId", userId);
+		data.put("userNickName", userNickName);
+		data.put("email", email);
+		return mybatis.selectOne("Member.selectMemberForPwSend", data);
+	}
 	public int insertMember(MemberDTO dto) { //회원가입
 		mybatis.insert("Member.insertMember",dto);
 		return dto.getUserNo();//구현하면 됨. selectKey의 ID값으로 돌려줄 것.

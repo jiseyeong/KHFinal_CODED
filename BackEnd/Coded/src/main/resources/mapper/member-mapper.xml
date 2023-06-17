@@ -12,8 +12,14 @@
   	<select id="isMemberId" resultType="String">
   		select userId from member where userId = #{userId}
   	</select>
+  	<select id="isMemberByEmail" resultType="String">
+  		select userId from member where email=#{email}
+  	</select>
   	<select id="selectMemberByNickName" resultType="kh.coded.dto.MemberDTO">
   		select * from member where userNickname like '%'||#{userNickName}||'%'
+  	</select>
+  	<select id="selectMemberForPwSend" resultType="kh.coded.dto.MemberDTO">
+  		select * from member where userId=#{userId} And userNickName=#{userNickName} And email=#{email}
   	</select>
   	<select id="selectMemberByKakaoToken" resultType="kh.coded.dto.MemberDTO">
   		select * from Member where KakaoToken=#{kakaoToken}
@@ -25,8 +31,8 @@
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select userno_seq.nextval from dual
   		</selectKey>
-  			insert into member(userNo, userId, pw, userNickname, bio, hashtag, address1, address2, role, naverToken, kakaoToken, googleToken)
-  			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{hashtag},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
+  			insert into member(userNo, userId, pw, userNickname, bio, hashTag, email, address1, address2, role, naverToken, kakaoToken, googleToken)
+  			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{hashTag}, #{email},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
   	</insert>
 	<delete id="deleteMember">
 		delete member where userId = #{userId} and pw = #{pw}
