@@ -80,7 +80,7 @@ public class SecurityConfiguration {
 			"/auth/getAddress2List",
 			"/auth/refresh",
 			"/auth/oauth/**",
-			"/auth/oauth2/**",
+			"/login/oauth2/**",
 //			"/login/oauth2/kakao/codeInfo",
 //			"/login/oauth2/kakao/tokenInfo",
 //			"/login/oauth2/kakao",
@@ -190,7 +190,7 @@ public class SecurityConfiguration {
 		);
 		
 		//한 계정 당 하나의 로그인 유지만 가능하도록 하는 설정임.
-		http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));
+		//http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));
 		
 		
 		return http.build();
