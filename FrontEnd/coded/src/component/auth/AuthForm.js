@@ -70,7 +70,6 @@ const AuthForm = ({ type }) => {
     [dispatch],
   );
 
-  //const [nickName, setNickName] = useState("");
   const nickNameRef = useRef(null);
   const [nickNameRegexMessage, setNickNameRegexMessage] = useState("");
   const [id, setId] = useState("");
@@ -79,16 +78,16 @@ const AuthForm = ({ type }) => {
   const [idDuplicateMessage, setIdDuplicateMessage] = useState("");
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
-  //const [email, setEmail] = useState("");
+  const [pwConfirmCheck, setPwConfirmCheck] = useState(false);
   const emailRef = useRef(null);
   const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
   const [emailDuplicateMessage, setEmailDuplicateMessage] = useState("");
   const address1 = useRef(null);
   const address2 = useRef(null);
+  const [registerPassCheck, setRegisterPassCheck] = useState(false);
 
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
-
 
   const [isIdSaveChecked, setIdSaveChecked] = useState(!cookie.load('userId') ? true:false);
   const [isPwView, setIsPwView] = useState(false);
@@ -138,6 +137,20 @@ const AuthForm = ({ type }) => {
     });
   }
 
+  useEffect(()=>{
+    if(idDuplicateChecked || emailDuplicateChecked || !regexId.test(id) || !regexEmail.test(emailRef.current.value) || !regexNickName.test(nickNameRef.current.value) || pwRef.current.value !== pwConfirmRef.current.value || !address1.current.value || !address2.current.value){
+      setRegisterPassCheck(false);
+    }else{
+      setRegisterPassCheck(true);
+    }
+
+    // if(!id && idDuplicateChecked && !emailRef.current.value && emailDuplicateChecked && !regexId.test(id) && !regexEmail.test(emailRef.current.value) && !nickNameRef.current.value && !regexNickName.test(nickNameRef.current.value) && !pwConfirmCheck && !address1.current.value && !address2.current.value){
+    //   setRegisterPassCheck(false);
+    // }else{
+    //   setRegisterPassCheck(true);
+    // }
+  });
+
   function handleId(e){
     setId(e.target.value);
     if(type==="register"){
@@ -166,6 +179,14 @@ const AuthForm = ({ type }) => {
       setIdDuplicateMessage("중복된 아이디가 있습니다.");
     }
   },[idDuplicateChecked])
+
+  function handlePw(e){
+    if(pwRef.current.value === pwConfirmRef.current.value){
+      setPwConfirmCheck(true);
+    }else{
+      setPwConfirmCheck(false);
+    }
+  }
 
   function handleEmail(e){
     //setEmail(e.target.value);
@@ -213,6 +234,10 @@ const AuthForm = ({ type }) => {
       alert("사용할 수 없는 이메일입니다.");
     }else if(!regexNickName.test(nickNameRef.current.value)){
       alert("사용할 수 없는 닉네임입니다.");
+    }else if(pwRef.current.value !== pwConfirmRef.current.value){
+      alert("비밀번호들이 일치하지 않습니다.");
+    }else if(!address1.current.value || !address2.current.value){
+      alert("주소를 입력해주셔야 합니다.");
     }else{
       axios({
         method: 'post',
@@ -237,7 +262,6 @@ const AuthForm = ({ type }) => {
         });
     }
   }
-
   function doLogin(e) {
     if(isIdSaveChecked){
       const expires = new Date();
@@ -273,7 +297,6 @@ const AuthForm = ({ type }) => {
         onLogout();
       });
   }
-
 
 
   function doRefrshTest() {
@@ -384,7 +407,9 @@ const AuthForm = ({ type }) => {
             placeholder="비밀번호 확인"
             type="password"
             ref={pwConfirmRef}
+            onChange={handlePw}
           />
+          {pwConfirmCheck ? (<div>비밀번호가 일치합니다.</div>) : (<div>비밀번호가 일치하지 않습니다.</div>)}
           <StyledInput
             autoComplete='email'
             name="e-mail"
@@ -421,6 +446,9 @@ const AuthForm = ({ type }) => {
       >
         {text}
       </ButtonWithMarginTop>
+      {
+        type==="register" && (registerPassCheck ? (<div>회원가입이 가능합니다.</div>):(<div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>))
+      }
       <Footer>
         {type === 'login' ? (
           <Link to="/signup">회원가입</Link>
