@@ -6,9 +6,9 @@ import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 const FeedPostOuter = styled('div')`
   margin: auto;
   width: 80%;
-  border: 1px solid black;
   column-count: 5;
   column-gap: 20px;
+  padding: 10px 20px 10px;
 `;
 
 function FeedList() {
@@ -67,6 +67,7 @@ function FeedList() {
   return (
     <FeedPostOuter>
       {feedPost.map((e, i) => {
+        console.log(e.feedPostId);
         return (
           <FeedPostDetail
             key={i}

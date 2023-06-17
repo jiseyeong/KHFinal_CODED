@@ -32,28 +32,30 @@ function NavbarNonMem() {
               <img src="/images/navLogo.png" />
               // 로고 사진 이미지
             </a>
-          </div>
-          <div className="leftMenuWrapper">
-            <ul className="leftMenuList">
-              <li value="feed" className="leftMenu">
-                <span
-                  className={isOotdBorder ? 'leftMenuOotdAct' : 'leftMenuOotd'}
-                  onClick={handleClickOotd}
-                >
-                  #OOTD
-                </span>
-              </li>
-              <li value="feed" className="leftMenu">
-                <span
-                  className={
-                    isWeeklyBorder ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
-                  }
-                  onClick={handleClickWeekly}
-                >
-                  WEEKLY
-                </span>
-              </li>
-            </ul>
+            <div className="leftMenuWrapper">
+              <ul className="leftMenuList">
+                <li value="feed" className="leftMenu">
+                  <span
+                    className={
+                      isOotdBorder ? 'leftMenuOotdAct' : 'leftMenuOotd'
+                    }
+                    onClick={handleClickOotd}
+                  >
+                    #OOTD
+                  </span>
+                </li>
+                <li value="feed" className="leftMenu">
+                  <span
+                    className={
+                      isWeeklyBorder ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
+                    }
+                    onClick={handleClickWeekly}
+                  >
+                    WEEKLY
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <form className="searchBar">
