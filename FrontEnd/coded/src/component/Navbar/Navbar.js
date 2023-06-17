@@ -2,10 +2,11 @@ import React, { Component, useState } from 'react';
 import './NavbarNonMem.scss';
 import { useNavigate, withRouter } from 'react-router-dom';
 
-function NavbarNonMem(){
+function Navbar({type}){
   const [isOotdBorder, setIsOotdBorder] = useState(true);
   const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
   const [isListOotdBorder, setListOotdBorder] = useState(true);
+  const [isHomeBorder, setIsHomeBorder] = useState(true);
 
   const navigate = useNavigate();
 
@@ -46,15 +47,20 @@ function NavbarNonMem(){
             </div>
           </div>
 
-          <form className="searchBar">
-            <input
-            id="search-keyword"
-            name="keyword"
-            type="search"
-            placeholder="유저와 스타일을 검색해보세요"
-            
-             />
-          </form>
+          {
+            type!=="weekly" && (
+                <form className="searchBar">
+                    <input
+                    id="search-keyword"
+                    name="keyword"
+                    type="search"
+                    placeholder="유저와 스타일을 검색해보세요"
+                    
+                    />
+                </form>
+            )
+          }
+          
 
           <div className="rightNavBar">
             <div className="rightMenuWrapper">
@@ -65,15 +71,35 @@ function NavbarNonMem(){
           </div>
 
         </nav>
+        {type==="mem" && (
         <nav className="bottomNavBar">
             <ul className="categories">
-              <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>Hot</li>
+              <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>
+                Hot
+              </li>
               <li>New</li>
+              <li>Following</li>
+              <li>MyPick</li>
+              <li>Scrap</li>
             </ul>
-          </nav>
+        </nav>
+        )}
+        {type==="nonMem" && (
+        <nav className="bottomNavBar">
+            <ul className="categories">
+            <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>Hot</li>
+            <li>New</li>
+            </ul>
+        </nav>
+        )}
+        {type==="weekly" && (
+        <nav className="bottomNavBar">
+            <p className={isHomeBorder ? 'isHomeBorder' : ''}>User's Choice!</p>
+        </nav>
+        )}  
       </div>
     </>
   );
 }
 
-export default NavbarNonMem;
+export default Navbar;
