@@ -35,7 +35,7 @@
 	</select>
 	
 	<select id="selectTestFeedList" resultType="kh.coded.dto.FeedPostDTO">
-		select * from feedpost
+		select * from feedpost order by feedpostid desc
 	</select>
 	
 	<select id="searchByHashs" resultType="kh.coded.dto.HashTagDTO"> <!-- 해시태그 있는 지 검색 -->

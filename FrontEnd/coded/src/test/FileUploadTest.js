@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 
 const FeedPhotoUpload = () => {
   const [feedPostId, setFeedPostId] = useState(0);
@@ -26,7 +27,6 @@ const FeedPhotoUpload = () => {
     // 파일 하나를 받는 경우
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
-    alert(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -35,7 +35,6 @@ const FeedPhotoUpload = () => {
       alert('0이 아닌 값을 입력해주세요.');
       return;
     }
-    alert('a');
 
     const formData = new FormData();
     formData.append('feedPostId', feedPostId);
@@ -45,8 +44,6 @@ const FeedPhotoUpload = () => {
     files.forEach((file) => {
       formData.append('files', file);
     });
-
-    setFeedPostId(0);
 
     axios({
       method: 'post',
@@ -58,6 +55,7 @@ const FeedPhotoUpload = () => {
     })
       .then((resp) => {
         console.log('완료 : ' + resp.data);
+        setUploadState('완료 : ' + e.target.value);
       })
       .catch((resp) => console.log(resp));
   };
@@ -110,11 +108,14 @@ const UserProfileUpload = () => {
     setFeedPostId(e.target.value);
   };
 
+  const handleUserChange = (e) => {
+    setUserNo(e.target.value);
+  };
+
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+    const selectedFile = e.target.file;
     setFile(selectedFile);
     // 파일 하나를 받는 경우
-    alert(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -142,6 +143,7 @@ const UserProfileUpload = () => {
     })
       .then((resp) => {
         console.log('완료 : ' + resp.data);
+        setUploadState('완료 : ' + e.target.value);
       })
       .catch((resp) => console.log(resp));
   };
@@ -156,7 +158,7 @@ const UserProfileUpload = () => {
             type="text"
             placeholder="제목을 입력해주세요."
             value={userNo}
-            onChange={handleChange}
+            onChange={handleUserChange}
           />
           <button type="submit">전송</button>
         </p>
@@ -172,13 +174,21 @@ const UserProfileUpload = () => {
 };
 
 const FileUploadTest = () => {
+  const [uploadState, setUploadState] = useState('not');
+  useContext(Upload);
   return (
     <div>
-      <FeedPhotoUpload></FeedPhotoUpload>
-      <br />
-      <hr />
-      <br />
-      <UserProfileUpload></UserProfileUpload>
+      <Provider.Upload>
+        <FeedPhotoUpload></FeedPhotoUpload>
+        <br />
+        <hr />
+        <br />
+        <UserProfileUpload></UserProfileUpload>
+        <br />
+        <hr />
+        <br />
+        <p>{uploadState}</p>
+      </Provider.Upload>
     </div>
   );
 };
