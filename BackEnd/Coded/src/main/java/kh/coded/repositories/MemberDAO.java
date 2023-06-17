@@ -35,10 +35,16 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectMemberByNaverToken", token);
 	}
 	
-	public boolean isMemberId(String userID) { //아이디 중복확인
-		return (mybatis.selectOne("Member.isMemberId",userID) != null);
+	public boolean isMemberId(String userId) { //아이디 중복확인
+		if(userId.isBlank()) {
+			return false;
+		}
+		return (mybatis.selectOne("Member.isMemberId",userId) != null);
 	}
 	public boolean isMemberByEmail(String email) {
+		if(email.isBlank()) {
+			return false;
+		}
 		return (mybatis.selectOne("Member.isMemberByEmail", email) != null);
 	}
 	public String selectMemberIdByEmail(String email) {

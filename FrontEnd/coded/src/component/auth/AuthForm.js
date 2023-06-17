@@ -76,12 +76,14 @@ const AuthForm = ({ type }) => {
   const idRef = useRef(null);
   const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
   const [idDuplicateMessage, setIdDuplicateMessage] = useState("");
+  let idDupTimer;
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
   const [pwConfirmCheck, setPwConfirmCheck] = useState(false);
   const emailRef = useRef(null);
   const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
   const [emailDuplicateMessage, setEmailDuplicateMessage] = useState("");
+  let emailDupTimer;
   const address1 = useRef(null);
   const address2 = useRef(null);
   const [registerPassCheck, setRegisterPassCheck] = useState(false);
@@ -155,30 +157,31 @@ const AuthForm = ({ type }) => {
     setId(e.target.value);
     if(type==="register"){
       //아이디 중복 체크
-      axios({
-        method:'get',
-        url:'/auth/isMember',
-        params:{
-          userId: idRef.current.value
-        }
-      }).then((response)=>{
-        setIdDuplicateChecked(response.data);
-        if(!regexId.test(idRef.current.value)){
-          setIdDuplicateMessage("사용 불가능한 아이디 형식입니다.");
-        }else{
-          setIdDuplicateMessage("사용 가능합니다.");
-        }
-      }).catch((error)=>{
-        console.log(error);
-      });
+      if(!idDupTimer){
+        idDupTimer = setTimeout(()=>{
+          idDupTimer = null;
+          axios({
+          method:'get',
+          url:'/auth/isMember',
+          params:{
+            userId: idRef.current.value
+          }
+        }).then((response)=>{
+          setIdDuplicateChecked(response.data);
+          if(response.data){
+            setIdDuplicateMessage("중복된 아이디가 있습니다.");
+          }
+          else if(!regexId.test(idRef.current.value)){
+            setIdDuplicateMessage("사용 불가능한 아이디 형식입니다.");
+          }else{
+            setIdDuplicateMessage("사용 가능합니다.");
+          }
+        }).catch((error)=>{
+          console.log(error);
+        })}, 200);
+      }
     }
   }
-  //axios setter 반응이 시원찮아서 별도로 추가.
-  useEffect(()=>{
-    if(idDuplicateChecked){
-      setIdDuplicateMessage("중복된 아이디가 있습니다.");
-    }
-  },[idDuplicateChecked])
 
   function handlePw(e){
     if(pwRef.current.value === pwConfirmRef.current.value){
@@ -190,29 +193,30 @@ const AuthForm = ({ type }) => {
 
   function handleEmail(e){
     //setEmail(e.target.value);
-    axios({
-      method:'get',
-      url:'/auth/isMemberByEmail',
-      params:{
-        email:emailRef.current.value
-      }
-    }).then((response)=>{
-      setEmailDuplicateChecked(response.data);
-      if(!regexEmail.test(emailRef.current.value)){
-        setEmailDuplicateMessage("이메일 형식을 지켜주셔야 합니다.");
-      }else{
-        setEmailDuplicateMessage("사용 가능합니다.");
-      }
-    }).catch((error)=>{
-      console.log(error);
-    });
-  }
-
-  useEffect(()=>{
-    if(emailDuplicateChecked){
-      setEmailDuplicateMessage("중복된 이메일이 있습니다.");
+    if(!emailDupTimer){
+      emailDupTimer = setTimeout(()=>{
+        emailDupTimer = null;
+        axios({
+          method:'get',
+          url:'/auth/isMemberByEmail',
+          params:{
+            email:emailRef.current.value
+          }
+        }).then((response)=>{
+          setEmailDuplicateChecked(response.data);
+          if(response.data){
+            setEmailDuplicateMessage("중복된 이메일이 있습니다.");
+          }else if(!regexEmail.test(emailRef.current.value)){
+            setEmailDuplicateMessage("이메일 형식을 지켜주셔야 합니다.");
+          }else{
+            setEmailDuplicateMessage("사용 가능합니다.");
+          }
+        }).catch((error)=>{
+          console.log(error);
+        });
+      }, 200);
     }
-  }, [emailDuplicateChecked])
+  }
 
   function handleNickName(e){
     if(!regexNickName.test(nickNameRef.current.value)){
@@ -349,6 +353,18 @@ const AuthForm = ({ type }) => {
       });
   }
 
+  function doGoogleLogin(){
+    axios({
+      method: 'get',
+      url: '/login/oauth2/goolge/codeInfo',
+    }).then((response)=>{
+      const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id:${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type:"token&scope:https://www.googleapis.com/auth/userinfo.profile"`;
+      window.location.href = GOOGLE_AUTH_URL;
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
   return (
     <AuthFormBlock>
       <h3>{text}</h3>
@@ -436,7 +452,7 @@ const AuthForm = ({ type }) => {
         <>
           <button onClick={doKakaoLogin}>카카오 로그인</button>
           <button onClick={doNaverLogin}>네이버 로그인</button>
-          <button onClick={doRefrshTest}>리프레시 테스트</button>
+          <button onClick={doGoogleLogin}>구글 로그인</button>
         </>
       )}
       <ButtonWithMarginTop
