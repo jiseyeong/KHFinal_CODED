@@ -356,9 +356,10 @@ const AuthForm = ({ type }) => {
   function doGoogleLogin(){
     axios({
       method: 'get',
-      url: '/login/oauth2/goolge/codeInfo',
+      url: '/login/oauth2/google/codeInfo',
     }).then((response)=>{
-      const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id:${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type:"token&scope:https://www.googleapis.com/auth/userinfo.profile"`;
+      console.log(response);
+      const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
       window.location.href = GOOGLE_AUTH_URL;
     }).catch((error)=>{
       console.log(error);

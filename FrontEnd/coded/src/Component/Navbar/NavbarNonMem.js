@@ -1,37 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './NavbarNonMem.scss';
-import { withRouter } from 'react-router-dom';
+import { useNavigate, withRouter } from 'react-router-dom';
 
-class NavbarNonMem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isOotdBorder: true,
-      isWeeklyBorder: false,
-      isListOotdBorder: true,
-    }
-  }
-  handleClickOotd = (e) => {
-      this.setState({
-        isOotdBorder: true,
-        isWeeklyBorder: false,
-      })
-      this.props.history.push('/ootd');
+function NavbarNonMem(){
+  const [isOotdBorder, setIsOotdBorder] = useState(true);
+  const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
+  const [isListOotdBorder, setListOotdBorder] = useState(true);
+
+  const navigate = useNavigate();
+
+  function handleClickOotd(e){
+    setIsOotdBorder(true);
+    setIsWeeklyBorder(false);
+    navigate('/ootd');
   }
 
-  handleClickWeekly = (e) => {
-      this.setState({
-        isOotdBorder: false,
-        isWeeklyBorder: true,
-      })
-      this.props.history.push('/login');
-
+  function handleClickWeekly(e){
+    setIsOotdBorder(false);
+    setIsWeeklyBorder(true);
+    navigate('/login');
   }
 
-  render() {
-    const { isOotdBorder, isWeeklyBorder, isListOotdBorder } = this.state;
-    return (
-      <>
+  return(
+    <>
       <div className="navBarWrapper">
         <nav className="topNavBar">
           <div className="leftNavBar">
@@ -43,11 +34,11 @@ class NavbarNonMem extends Component {
               <ul className="leftMenuList">
                 <li value="feed"
                     className="leftMenu">
-                  <span  className={isOotdBorder ? "leftMenuOotdAct":"leftMenuOotd"} onClick={this.handleClickOotd}>#OOTD</span>
+                  <span  className={isOotdBorder ? "leftMenuOotdAct":"leftMenuOotd"} onClick={handleClickOotd}>#OOTD</span>
                 </li>
                 <li value="feed"
                     className="leftMenu">
-                  <span className={isWeeklyBorder ? "leftMenuWeeklyAct":"leftMenuWeekly"} onClick={this.handleClickWeekly}>WEEKLY</span>
+                  <span className={isWeeklyBorder ? "leftMenuWeeklyAct":"leftMenuWeekly"} onClick={handleClickWeekly}>WEEKLY</span>
                 </li>
               </ul>
             </div>
@@ -80,9 +71,7 @@ class NavbarNonMem extends Component {
           </nav>
       </div>
     </>
-
-    );
-  }
+  );
 }
 
-export default withRouter(NavbarNonMem);
+export default NavbarNonMem;

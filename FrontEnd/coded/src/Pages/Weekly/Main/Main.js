@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import NavbarWeekly from "../../../Component/Navbar/NavbarWeekly/NavbarWeekly";
 import CardList from './CardList.scss';
 import Modal from './Modal';
@@ -6,72 +6,59 @@ import Modal from './Modal';
 import WeeklyDate from "./Component/WeeklyDate/WeeklyDate";
 import WeatherCodi from "./Component/WeatherCodi/WeatherCodi";
 import style from "./Main.scss";
+import axios from "axios";
 
-class Main extends Component {
-  render() {
-    return (
-      <>
-        <NavbarWeekly />
-        <div className="mainContainer">
-          <WeeklyDate />
-          <WeatherCodi />
-        </div>
-      </>
-    );
-  }
-}
+// class Main extends Component {
+//   render() {
+//     return (
+//       <>
+//         <NavbarWeekly />
+//         <div className="mainContainer">
+//           <WeeklyDate />
+//           <WeatherCodi />
+//         </div>
+//       </>
+//     );
+//   }
+// }
 
-export default Main;
-
-
-
-
-
-
+// export default Main;
 
 
 const API = 'http://';
 const LIMIT = 100;
-class Main extends Component {
-  constructor() {
-    super();
-    this.state = {
-      likeBtn: false,
-      cards: [],
-      getData: '',
-      commentData: [],
-      modalData: [],
-      offSet: 0,
-      isLoading: false,
-    };
+
+function Main({isModal, infiniteScroll}){
+  const [likeBtn, setLikeBtn] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [data, setData] = useState('');
+  const [commentData, setCommentData] = useState([]);
+  const [isModal, setIsModal] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const [offSet, setOffSet] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  function openModal(data){
+    setIsModal(data);
   }
 
-  openModal = (data) => {
-    this.setState({
-      isModal: data,
-    });
-  };
-
-  closeModal = () => {
-    this.setState({
-      isModal: false,
-      modalData: [],
-    });
-  };
-
-  componentDidMount() {
-    window.addEventListener('scroll', this.infiniteScroll);
-    fetch(`${API}/ootds?offset=${this.state.offSet}&limit=${LIMIT}`)
-      .then((res) => res.json())
-      .then((res) =>
-        this.setState({
-          cards: res.ootd_list,
-          offSet: this.state.offSet + LIMIT,
-        }),
-      );
+  function closeModal(){
+    setIsModal(false);
+    setModalData([]);
   }
 
-  // loadFunc = () => {
+  useEffect(()=>{
+    window.addEventListener('scroll', infiniteScroll);
+    axios({
+      method:'get',
+      url:`${API}/ootds?offset=${offSet}&limit=${LIMIT}`,
+    }).then((response)=>{
+      setCards(response.data.ootd_list),
+      setOffSet(offSet + LIMIT);
+    })
+  },[]);
+
+  // const loadFunc = () => {
   //   fetch(`${API}/ootds?offset=${this.state.offSet}&limit=${LIMIT}`)
   //   .then((res) => res.json())
   //   .then((res) => {
@@ -82,29 +69,24 @@ class Main extends Component {
   //   })
   // }
 
-  getData = (data) => {
-    this.setState({
-      getData: data,
-    });
-  };
+  function getData(data){
+    setData(data);
+  }
 
-  modalData = () => {
-    this.setState({
-      commentData: this.state.getData,
-    });
-  };
+  function modalData(){
+    setCommentData(data);
+  }
 
-  handleModalData = (data) => {
-    this.setState({
-      modalData: data,
-    });
-  };
+  function handleModalData(data){
+    setModalData(data);
+  }
 
-  render() {
-    console.log(this.state.offSet);
-    const { cards, isModal, modalData, commentData, getData } = this.state;
-    return (
-      <div style={{ overflow: 'auto' }}>
+  useEffect(()=>{
+    console.log(offSet);
+  })
+
+  return(
+    <div style={{ overflow: 'auto' }}>
         <InfiniteScroll
           pageStart={0}
           loadMore={this.loadFunc}
@@ -150,7 +132,6 @@ class Main extends Component {
           </div>
         </InfiniteScroll>
       </div>
-    );
-  }
+  );
 }
 export default Main;
