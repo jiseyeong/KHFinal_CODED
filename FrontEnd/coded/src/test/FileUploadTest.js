@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 
-const FeedPhotoUpload = () => {
+const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
   const [feedPostId, setFeedPostId] = useState(0);
   const [files, setFiles] = useState([]);
   // 여러 파일을 받는 경우
@@ -55,9 +55,10 @@ const FeedPhotoUpload = () => {
     })
       .then((resp) => {
         console.log('완료 : ' + resp.data);
-        setUploadState('완료 : ' + e.target.value);
+        setUploadState('완료 : ' + files[0].name);
+        setFiles([]);
       })
-      .catch((resp) => console.log(resp));
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -90,12 +91,13 @@ const FeedPhotoUpload = () => {
   );
 };
 
-const UserProfileUpload = () => {
+const UserProfileUpload = ({ uploadState, setUploadState }) => {
   const [userNo, setUserNo] = useState(0);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
   // 파일 하나를 받는 경우
   const [userList, setUserList] = useState([]);
 
+  // 유저 리스트 출력
   useEffect(() => {
     axios({
       url: '/selectUserList',
@@ -104,20 +106,17 @@ const UserProfileUpload = () => {
       setUserList(resp.data);
     });
   }, []);
-  const handleChange = (e) => {
-    setFeedPostId(e.target.value);
-  };
 
   const handleUserChange = (e) => {
     setUserNo(e.target.value);
   };
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.file;
-    setFile(selectedFile);
+    setFile(e.target.files[0]);
     // 파일 하나를 받는 경우
   };
 
+  // 파일 업로드
   const handleSubmit = (e) => {
     e.preventDefault();
     if (userNo === Number(e.target.value)) {
@@ -126,26 +125,24 @@ const UserProfileUpload = () => {
     }
 
     const formData = new FormData();
+    console.log(file);
     formData.append('userNo', userNo);
-
-    formData.append('file', file);
+    formData.append('files', file);
     // 파일 하나만 넣는 경우
 
-    setUserNo(0);
-
     axios({
-      method: 'POST',
-      url: '/photo/insertPhoto/',
+      method: 'post',
+      url: '/photo/insertPhoto',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
       data: formData,
     })
       .then((resp) => {
-        console.log('완료 : ' + resp.data);
-        setUploadState('완료 : ' + e.target.value);
+        setUploadState('완료 : ' + file.name);
+        setFile([]);
       })
-      .catch((resp) => console.log(resp));
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -175,20 +172,19 @@ const UserProfileUpload = () => {
 
 const FileUploadTest = () => {
   const [uploadState, setUploadState] = useState('not');
-  useContext(Upload);
   return (
     <div>
-      <Provider.Upload>
-        <FeedPhotoUpload></FeedPhotoUpload>
-        <br />
-        <hr />
-        <br />
-        <UserProfileUpload></UserProfileUpload>
-        <br />
-        <hr />
-        <br />
-        <p>{uploadState}</p>
-      </Provider.Upload>
+      <FeedPhotoUpload {...{ uploadState, setUploadState }}></FeedPhotoUpload>
+      <br />
+      <hr />
+      <br />
+      <UserProfileUpload
+        {...{ uploadState, setUploadState }}
+      ></UserProfileUpload>
+      <br />
+      <hr />
+      <br />
+      <p>{uploadState}</p>
     </div>
   );
 };
