@@ -6,11 +6,11 @@
 <mapper namespace="Photo">
 
     <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
-        select * from photo where feedpostid = ${feedpostid}
+        select * from photo where feedpostid = ${feedPostId}
     </select>
 
     <select id="selectFeedlike" resultType="kh.coded.dto.PhotoDTO">
-        select * from photo where feedpostid = ${feedpostid}
+        select * from photo where feedpostid = ${feedPostId}
     </select>
 
     <insert id="insertPhoto">

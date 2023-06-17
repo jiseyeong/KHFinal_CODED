@@ -106,7 +106,7 @@ public class FeedPostService {
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
 
         for (FeedPostDTO feedPost : feedPostList) {
-            PhotoDTO thumbNail = photoDAO.selectByFeedpostId(feedPost.getFeedPostId());
+            PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
             MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
