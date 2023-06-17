@@ -7,9 +7,12 @@ const FeedPostOuter = styled('div')`
   margin: auto;
   width: 80%;
   border: 1px solid black;
-  display: flex;
-  justify-content: space-evenly;
   flex-wrap: wrap;
+  position: relative;
+  top: 0px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 20px;
 `;
 
 function FeedList() {
