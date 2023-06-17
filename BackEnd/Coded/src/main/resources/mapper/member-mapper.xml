@@ -10,7 +10,7 @@
   		select * from member where userNo = ${userNo}
   	</select>
   	<select id="isMemberId" resultType="String">
-  		select userId from member where userId = #{userId}
+  		select userId from member where userId=#{userId}
   	</select>
   	<select id="isMemberByEmail" resultType="String">
   		select userId from member where email=#{email}
