@@ -5,8 +5,6 @@ import Login from './pages/auth/Login/Login';
 import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
-import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
-import Search from './component/Search/Search';
 import Ootd from './pages/ootd/Main/Main';
 import FeedListByIdWithMain from './test/FeedListByIdWithMain';
 import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
@@ -37,10 +35,9 @@ class App extends React.Component {
           <Route path="/profile" element={<Profile />} />
           <Route path="/FileUploadTest" element={<FileUploadTest />} />
           <Route path="/DMPage" element={<DMPage />} />
-          <Route path="/search" element={<Search />} />
           <Route path="/ootd" element={<Ootd />} />
-          <Route path="/idSearch" element={<IdSearch/>} />
-          <Route path="/pwSearch" element={<PwSearch/>} />
+          <Route path="/idSearch" element={<IdSearch />} />
+          <Route path="/pwSearch" element={<PwSearch />} />
 
           <Route
             path="/login/oauth2/code/kakao"

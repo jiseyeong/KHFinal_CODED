@@ -52,6 +52,6 @@
 	</update>
 
 	<select id="selectUserList" resultType="kh.coded.dto.MemberDTO">
-		select * from member
+		select * from member order by userNo desc
 	</select>
   </mapper>

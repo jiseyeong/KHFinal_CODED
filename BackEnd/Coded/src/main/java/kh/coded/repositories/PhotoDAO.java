@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.PhotoDTO;
 
+import java.util.List;
+
 @Repository
 public class PhotoDAO {
 	
@@ -26,5 +28,12 @@ public class PhotoDAO {
 	public PhotoDTO selectByUserNo(int userNo) {
 		return mybatis.selectOne("Photo.selectByUserNo",userNo);
 
+	}
+	public PhotoDTO selectThumbNailByFeedPostId(int feedPostId) {
+		List<PhotoDTO> list = mybatis.selectList("Photo.selectByFeedpostId",feedPostId);
+		if(list.size()>0)
+			return list.get(0);
+		else
+			return null;
 	}
 }

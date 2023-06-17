@@ -1,58 +1,19 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from '../../pages/ootd/Main/Modal';
-const ParentDiv = styled('div')`
-  width: 18%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 0px;
-  /* column-fill: auto;
-  column-count: 5; */
-`;
-
-const FeedInnerLayoutDiv = styled('div')`
-  width: 100%;
-  height: auto;
-  margin: 10px;
-  border: 1px solid black;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  &:hover {
-    cursor: pointer;
-  }
-  /* break-inside: auto; */
-`;
-
-const FeedImageDiv = styled('div')`
-  border: 1px solid black;
-  width: 80%;
-  /* height: 60%; */
-  height: auto;
-  margin: 10px 20px 10px;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-`;
-
-const ThumbNail = styled('img')`
-  width: auto;
-  min-height: 200px;
-  max-height: 300px;
-  object-fit: cover;
-`;
-
-const FeedInfoDiv = styled('div')`
-  width: 80%;
-  height: 20%;
-  border: 1px solid black;
-  word-wrap: break-word;
-`;
+import styles from './FeedPostDetail.module.scss';
 
 const FeedPostDetail = (props) => {
-  const { feedPost, thumbNail, member, userProfile, hashTagList } = props;
+  const {
+    feedPost,
+    thumbNail,
+    member,
+    userProfile,
+    hashTagList,
+    columnHeights,
+    setColumnHeights,
+    index,
+  } = props;
   const [modal, setModal] = useState(false);
 
   const openModal = () => {
@@ -67,30 +28,67 @@ const FeedPostDetail = (props) => {
     }
   };
 
+  const myRef = useRef(null);
+
   useEffect(() => {
-    console.log(thumbNail);
-  }, []);
+    // 피드 내 정렬 설정
+    const sort = () => {
+      const columnIndex = index % 5; // 다섯 개의 컬럼 번갈아가며 배치
+      const currentColumnHeight = columnHeights[columnIndex];
+
+      myRef.current.style.marginTop = currentColumnHeight + 'px'; // 현재 컬럼의 높이만큼 marginTop 설정
+
+      const cardHeight = myRef.current.offsetHeight; // 카드의 세로 길이
+      setColumnHeights((prev) => {
+        const newArray = [...prev];
+        newArray[index] = columnHeights[columnIndex] + cardHeight;
+        return newArray;
+      });
+    };
+
+    const handleImageLoad = () => {
+      sort();
+
+      const image = myRef.current.querySelector('img');
+      image.addEventListener('load', handleImageLoad);
+
+      return () => {
+        image.removeEventListener('load', handleImageLoad);
+      };
+    };
+  }, [columnHeights]);
 
   return (
-    <ParentDiv>
-      <FeedInnerLayoutDiv onClick={openModal}>
-        <FeedImageDiv>
+    <div className={styles.feedInnerParentDiv}>
+      <div
+        className={styles.feedInnerLayoutDiv}
+        onClick={openModal}
+        ref={myRef}
+      >
+        <div className={styles.feedImageDiv}>
           {thumbNail != null ? (
-            <ThumbNail
+            <img
+              className={styles.thumbNail}
               src={`/images/${thumbNail.sysName}`}
-              alt="abc"
-            ></ThumbNail>
+            ></img>
           ) : (
-            <ThumbNail></ThumbNail>
+            <img className={styles.thumbNail} src={`/images/test.jpg`}></img>
           )}
-        </FeedImageDiv>
-        <FeedInfoDiv>
-          <div>{feedPost.feedPostId}</div>
-          <div>{feedPost.body}</div>
-        </FeedInfoDiv>
-      </FeedInnerLayoutDiv>
-      {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
-    </ParentDiv>
+        </div>
+        <div className={styles.feedInfoDiv}>
+          <div className={styles.userProfileLayout}>
+            <img className={styles.userProfile} src={`/images/test.jpg`}></img>
+          </div>
+          <div className={styles.userInfoLayout}>
+            <div>Heeesam</div>
+            <div className={styles.userHashTagLayout}>
+              {feedPost.feedPostId}#여름옷 #여름 #여름코디
+            </div>
+          </div>
+        </div>
+        {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
+      </div>
+    </div>
   );
 };
 

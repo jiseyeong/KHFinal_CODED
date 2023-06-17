@@ -1,15 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
   width: 80%;
-  border: 1px solid black;
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  column-count: 5;
+  column-gap: 20px;
+  padding: 10px 20px 10px;
 `;
 
 function FeedList() {
@@ -19,6 +18,7 @@ function FeedList() {
   const [member, setMember] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
+  const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
 
   const addFeedList = () => {
     axios({
@@ -38,11 +38,10 @@ function FeedList() {
         } = resp.data;
 
         setFeedPost((prev) => [...prev, ...feedPostList]);
-        console.log(thumbNailList);
-        setThumbnail([...thumbNailList]);
-        setUserProfile([...userProfileList]);
-        setMember([...memberList]);
-        setHashTagList([...hashTagLists]);
+        setThumbnail((prev) => [...prev, ...thumbNailList]);
+        setUserProfile((prev) => [...prev, ...userProfileList]);
+        setMember((prev) => [...prev, ...memberList]);
+        setHashTagList((prev) => [...prev, ...hashTagLists]);
         setCpage(cpage + 1);
       })
       .catch((error) => console.log(error));
@@ -67,15 +66,22 @@ function FeedList() {
 
   return (
     <FeedPostOuter>
-      {feedPost.map((e, i) => (
-        <FeedPostDetail
-          feedPost={e}
-          thumbNail={thumbNail[i]}
-          member={member[i]}
-          userProfile={userProfile[i]}
-          hashTagList={hashTagList[i]}
-        ></FeedPostDetail>
-      ))}
+      {feedPost.map((e, i) => {
+        console.log(e.feedPostId);
+        return (
+          <FeedPostDetail
+            key={i}
+            index={i}
+            columnHeights={columnHeights}
+            setColumnHeights={setColumnHeights}
+            feedPost={e}
+            thumbNail={thumbNail[i]}
+            member={member[i]}
+            userProfile={userProfile[i]}
+            hashTagList={hashTagList[i]}
+          ></FeedPostDetail>
+        );
+      })}
     </FeedPostOuter>
   );
 }

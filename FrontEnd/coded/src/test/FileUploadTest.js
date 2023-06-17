@@ -1,7 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
 
-const FeedPhotoUpload = () => {
+const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
   const [feedPostId, setFeedPostId] = useState(0);
   const [files, setFiles] = useState([]);
   // 여러 파일을 받는 경우
@@ -26,7 +27,6 @@ const FeedPhotoUpload = () => {
     // 파일 하나를 받는 경우
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
-    alert(e.target.value);
   };
 
   const handleSubmit = (e) => {
@@ -35,7 +35,6 @@ const FeedPhotoUpload = () => {
       alert('0이 아닌 값을 입력해주세요.');
       return;
     }
-    alert('a');
 
     const formData = new FormData();
     formData.append('feedPostId', feedPostId);
@@ -45,8 +44,6 @@ const FeedPhotoUpload = () => {
     files.forEach((file) => {
       formData.append('files', file);
     });
-
-    setFeedPostId(0);
 
     axios({
       method: 'post',
@@ -58,8 +55,10 @@ const FeedPhotoUpload = () => {
     })
       .then((resp) => {
         console.log('완료 : ' + resp.data);
+        setUploadState('완료 : ' + files[0].name);
+        setFiles([]);
       })
-      .catch((resp) => console.log(resp));
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -92,12 +91,13 @@ const FeedPhotoUpload = () => {
   );
 };
 
-const UserProfileUpload = () => {
+const UserProfileUpload = ({ uploadState, setUploadState }) => {
   const [userNo, setUserNo] = useState(0);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
   // 파일 하나를 받는 경우
   const [userList, setUserList] = useState([]);
 
+  // 유저 리스트 출력
   useEffect(() => {
     axios({
       url: '/selectUserList',
@@ -106,17 +106,17 @@ const UserProfileUpload = () => {
       setUserList(resp.data);
     });
   }, []);
-  const handleChange = (e) => {
-    setFeedPostId(e.target.value);
+
+  const handleUserChange = (e) => {
+    setUserNo(e.target.value);
   };
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
+    setFile(e.target.files[0]);
     // 파일 하나를 받는 경우
-    alert(e.target.value);
   };
 
+  // 파일 업로드
   const handleSubmit = (e) => {
     e.preventDefault();
     if (userNo === Number(e.target.value)) {
@@ -125,25 +125,24 @@ const UserProfileUpload = () => {
     }
 
     const formData = new FormData();
+    console.log(file);
     formData.append('userNo', userNo);
-
-    formData.append('file', file);
+    formData.append('files', file);
     // 파일 하나만 넣는 경우
 
-    setUserNo(0);
-
     axios({
-      method: 'POST',
-      url: '/photo/insertPhoto/',
+      method: 'post',
+      url: '/photo/insertPhoto',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
       data: formData,
     })
       .then((resp) => {
-        console.log('완료 : ' + resp.data);
+        setUploadState('완료 : ' + file.name);
+        setFile([]);
       })
-      .catch((resp) => console.log(resp));
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -156,7 +155,7 @@ const UserProfileUpload = () => {
             type="text"
             placeholder="제목을 입력해주세요."
             value={userNo}
-            onChange={handleChange}
+            onChange={handleUserChange}
           />
           <button type="submit">전송</button>
         </p>
@@ -172,13 +171,20 @@ const UserProfileUpload = () => {
 };
 
 const FileUploadTest = () => {
+  const [uploadState, setUploadState] = useState('not');
   return (
     <div>
-      <FeedPhotoUpload></FeedPhotoUpload>
+      <FeedPhotoUpload {...{ uploadState, setUploadState }}></FeedPhotoUpload>
       <br />
       <hr />
       <br />
-      <UserProfileUpload></UserProfileUpload>
+      <UserProfileUpload
+        {...{ uploadState, setUploadState }}
+      ></UserProfileUpload>
+      <br />
+      <hr />
+      <br />
+      <p>{uploadState}</p>
     </div>
   );
 };
