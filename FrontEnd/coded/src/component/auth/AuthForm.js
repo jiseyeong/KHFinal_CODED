@@ -140,10 +140,12 @@ const AuthForm = ({ type }) => {
   }
 
   useEffect(()=>{
-    if(idDuplicateChecked || emailDuplicateChecked || !regexId.test(id) || !regexEmail.test(emailRef.current.value) || !regexNickName.test(nickNameRef.current.value) || pwRef.current.value !== pwConfirmRef.current.value || !address1.current.value || !address2.current.value){
-      setRegisterPassCheck(false);
-    }else{
-      setRegisterPassCheck(true);
+    if(type=="register"){
+      if(idDuplicateChecked || emailDuplicateChecked || !regexId.test(id) || !regexEmail.test(emailRef.current.value) || !regexNickName.test(nickNameRef.current.value) || pwRef.current.value !== pwConfirmRef.current.value || !address1.current.value || !address2.current.value){
+        setRegisterPassCheck(false);
+      }else{
+        setRegisterPassCheck(true);
+      }
     }
 
     // if(!id && idDuplicateChecked && !emailRef.current.value && emailDuplicateChecked && !regexId.test(id) && !regexEmail.test(emailRef.current.value) && !nickNameRef.current.value && !regexNickName.test(nickNameRef.current.value) && !pwConfirmCheck && !address1.current.value && !address2.current.value){

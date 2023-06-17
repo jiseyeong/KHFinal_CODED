@@ -18,10 +18,10 @@ public class TodayWeatherDAO {
 		mybatis.insert("TodayWeather.insert", dto);
 	}
 	
-	public TodayWeatherDTO selectByAddressId(int addressId, int time) {
+	public TodayWeatherDTO selectByAddressId(int addressId, int hour) {
 		Map<String, Integer> data = new HashMap<>();
 		data.put("addressId", addressId);
-		data.put("time", time);
+		data.put("time", hour);
 		return mybatis.selectOne("TodayWeather.selectByAddressId",data);
 	}
 	
