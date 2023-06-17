@@ -45,9 +45,14 @@ public class AuthenticationController {
 	private String KAKAO_REDIRECT_URI="http://localhost:3000/login/oauth2/code/kakao";
 	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
 	private String NAVER_CLIENT_ID;
-	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
 	private String NAVER_CLIENT_SECRET; 
+	private String NAVER_REDIRECT_URI="http://localhost:3000/login/oauth2/code/naver";
+	@Value("${spring.security.oauth2.client.registration.google.client-id}")
+	private String GOOGLE_CLIENT_ID;
+	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
+	private String GOOGLE_CLIENT_SECRET;
+	private String GOOGLE_REDIRECT_URI="http://localhost:3000/login/oauth2/code/google";
 
 	@PostMapping(value="/auth/member")
 	public ResponseEntity<?> join(
@@ -275,8 +280,17 @@ public class AuthenticationController {
 
 		return ResponseEntity.ok().body(data);
 	}
+	
+	@GetMapping(value="/login/oauth2/google/codeInfo")
+	public ResponseEntity<?> googleLoginTokenInfo(){
+		Map<String, String> data = new HashMap<>();
+		data.put("client_id", GOOGLE_CLIENT_ID);
+		data.put("redirect_uri", GOOGLE_REDIRECT_URI);
+		
+		return ResponseEntity.ok().body(data);
+	}
 
-	@GetMapping("/selectUserList")
+	@GetMapping(value="/auth/selectUserList")
 	public ResponseEntity<?> selectUserList(){
 		List<MemberDTO> userList = memberService.selectUserList();
 		return ResponseEntity.ok().body(userList);

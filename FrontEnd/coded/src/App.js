@@ -17,6 +17,7 @@ import DMPage from './pages/DM/DMPage';
 import HomePageTemplate from './pages/HomePageTemplate';
 import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
+import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
 
 class App extends React.Component {
   render() {
@@ -53,6 +54,14 @@ class App extends React.Component {
           <Route
             path="/login/oauth2/callback/naver"
             element={<LastCallbackPage />}
+          />
+          <Route
+            path="/login/oauth2/code/google"
+            element={<GoogleCodeCallbackPage/>}
+          />
+          <Route
+            path="/login/oauth2/callback/google"
+            element={<LastCallbackPage/>}
           />
         </Routes>
       </BrowserRouter>
