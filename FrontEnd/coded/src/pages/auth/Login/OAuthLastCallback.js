@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { login } from '../../modules/members';
+import { login } from '../../../modules/members';
 
 function LastCallbackPage() {
   const [searchParams, setSearchParams] = useSearchParams();

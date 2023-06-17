@@ -29,6 +29,7 @@ function SearchForm({type}){
             setLoding(false);
             setMessage("찾은 아이디는 '"+response.data+"' 입니다.");
         }).catch((error)=>{
+            setLoding(false);
             if(error.request.status == 400){
                 setMessage(error.response.data);
             }else{
@@ -52,6 +53,7 @@ function SearchForm({type}){
             setLoding(false);
             setMessage(response.data);
         }).catch((error)=>{
+            setLoding(false);
             if(error.request.status == 400){
                 setMessage(error.response.data);
             }else{
