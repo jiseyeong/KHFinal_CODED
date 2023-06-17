@@ -6,7 +6,7 @@
 // import { useCallback } from "react";
 
 // function AuthFormContainer(){
-//     const access = useSelector((state)=>state.token.access);
+//     const access = useSelector((state)=>state.member.access);
 //     const dispatch = useDispatch();
 //     const onLogin = useCallback((accessToken) => dispatch(login(accessToken)), [dispatch]);
 //     const onLogout = useCallback(()=>dispatch(logout()), [dispatch]);
