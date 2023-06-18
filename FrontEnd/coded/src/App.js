@@ -24,6 +24,7 @@ import { useDispatch } from 'react-redux';
 import { login, logout, setRefresh } from './modules/members';
 import cookie from 'react-cookies';
 import axios from 'axios';
+import WeeklyPage from './pages/Weekly/Main/Weekly';
 
 function App(){
 
@@ -74,6 +75,7 @@ function App(){
           <Route path="/ootd" element={<Ootd />} />
           <Route path="/idSearch" element={<IdSearch/>} />
           <Route path="/pwSearch" element={<PwSearch/>} />
+          <Route path="/weekly" element={<WeeklyPage/>} />
 
           <Route
             path="/login/oauth2/code/kakao"
