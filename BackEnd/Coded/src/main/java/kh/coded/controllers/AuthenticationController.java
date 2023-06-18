@@ -153,7 +153,22 @@ public class AuthenticationController {
 		if(jwtProvider.validateToken(accessToken)) {
 			return ResponseEntity.ok().body(jwtProvider.getLoginUserNo(accessToken));
 		};
-		return ResponseEntity.badRequest().body("Test Failed");
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
+	}
+	
+	@GetMapping(value = "/auth/userDTO")
+	public ResponseEntity<?> getUser(
+			@RequestHeader(value="authorization") String authorization
+			)
+	{
+		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+		if(jwtProvider.validateToken(accessToken)) {
+			MemberDTO member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
+			if(member != null) {
+				return ResponseEntity.ok().body(member);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
 	}
 
 	@GetMapping(value="/auth/isMember")
@@ -262,23 +277,10 @@ public class AuthenticationController {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {
-			//badRequest - header 400
 			return ResponseEntity.accepted().body("F");
 		}
 		//ok - header 200
 		return ResponseEntity.ok().body(result);
-	}
-
-	@GetMapping(value="/login/oauth2/naver/tokenInfo")
-	public ResponseEntity<?> naverLoginTokenInfo(
-			@RequestParam(value="code") String code
-			){
-		Map<String, String> data = new HashMap<>();
-		data.put("client_id", NAVER_CLIENT_ID);
-		data.put("client_secret", NAVER_CLIENT_SECRET);
-		data.put("redirect_uri", NAVER_REDIRECT_URI);
-
-		return ResponseEntity.ok().body(data);
 	}
 	
 	@GetMapping(value="/login/oauth2/google/codeInfo")
@@ -288,6 +290,20 @@ public class AuthenticationController {
 		data.put("redirect_uri", GOOGLE_REDIRECT_URI);
 		
 		return ResponseEntity.ok().body(data);
+	}
+	
+	@GetMapping(value="/login/oauth2/google")
+	public ResponseEntity<?> googleLogin(
+			@RequestParam(value="code") String code,
+			HttpServletResponse response,
+			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
+		String result = memberService.googleLogin(code, response, auth);
+		if(result.equals("T")) {
+			return ResponseEntity.accepted().body("T");
+		}else if(result.equals("F")) {
+			return ResponseEntity.accepted().body("F");
+		}
+		return ResponseEntity.ok().body(result);
 	}
 
 	@GetMapping(value="/auth/selectUserList")

@@ -29,7 +29,7 @@ public class WeatherController {
 	public ResponseEntity<?> getTodayInfo(
 			@RequestParam(value="address1") String address1,
 			@RequestParam(value="address2") String address2,
-			@RequestParam(value="time") int time
+			@RequestParam(value="time") long time
 			){
 		Map<String, Object> data = new HashMap<>();
 		

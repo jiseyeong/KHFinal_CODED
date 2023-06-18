@@ -47,6 +47,9 @@
 	<update id="updateNaverToken">
 		update Member set NaverToken=#{naverToken} where userNo=${userNo}
 	</update>
+	<update id="updateGoogleToken">
+		update Member set GoogleToken=#{googleToken} where userNo=${userNo}
+	</update>
 	<update id="updatePw">
 		update member set pw = #{pw} where userId = #{userId}
 	</update>
