@@ -1,18 +1,21 @@
 package kh.coded.controllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.MemberDTO;
@@ -21,7 +24,6 @@ import kh.coded.dto.PostHashsDTO;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
 import kh.coded.services.PhotoService;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -146,6 +148,61 @@ public class FeedPostController {
 	public ResponseEntity<?> selectFeedList(){
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
 		return ResponseEntity.ok().body(list);
+	}
+	
+	// /feedPost/
+	@PostMapping("comment")
+	public ResponseEntity<?> insertComment(
+			@RequestParam(value="userNo") int userNo,
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="body") String body
+			){
+		return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
+	}
+	
+	@PostMapping("nestedComment")
+	public ResponseEntity<?> insertNestedComment(
+			@RequestParam(value="userNo") int userNo,
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="parentId") int parentId,
+			@RequestParam(value="body") String body,
+			@RequestParam(value="depth") int depth
+			){
+		return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
+	}
+	
+	@PutMapping("commnet")
+	public ResponseEntity<?> updateComment(
+			@RequestParam(value="feedCommentId") int commentId,
+			@RequestParam(value="body") String body
+			){
+		feedpostService.updateComment(commentId, body);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@DeleteMapping("comment")
+	public ResponseEntity<?> deleteComment(
+			@RequestParam(value="feedCommentId") int commentId
+			){
+		feedpostService.deleteComment(commentId);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@GetMapping("comment/depth0")
+	public ResponseEntity<?> selectCommentDepth0(
+			@RequestParam(value="feedPostId") int feedPostId
+			){
+		List<FeedCommentDTO> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId);
+		return ResponseEntity.ok().body(result);
+	}
+	
+	@GetMapping("comment/depthN")
+	public ResponseEntity<?> selectCommentDepth(
+			@RequestParam(value="parentId") int parentId,
+			@RequestParam(value="depth") int depth
+			){
+		List<FeedCommentDTO> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth);
+		return ResponseEntity.ok().body(result);
 	}
 
 }

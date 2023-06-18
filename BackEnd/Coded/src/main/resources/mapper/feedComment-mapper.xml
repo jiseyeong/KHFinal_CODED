@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FeedComment">
+	<insert id="insert">
+		<selectKey keyProperty="feedCommentId" resultType="int" order="BEFORE">
+			select feedCommentId_seq.nextval from dual;
+		</selectKey>
+		insert into FeedComment (FeedCommentId, UserNo, FeedPostId, ParentId, Body, WriteDate, Depth)
+		 values (${feedCommentId}, ${userNo}, ${feedPostId}, null, #{body}, sysdate, 0);
+	</insert>
+	<insert id="insertNestedComment">
+		<selectKey keyProperty="feedCommentId" resultType="int" order="BEFORE">
+			select feedCommentId_seq.nextval from dual;
+		</selectKey>
+		insert into FeedComment (FeedCommentId, UserNo, FeedPostId, ParentId, Body, WriteDate, Depth)
+		 values (${feedCommentId}, ${userNo}, ${feedPostId}, ${parentId}, #{body}, sysdate, ${depth});
+	</insert>
+	<update id="update">
+		update FeedComment
+		 set Body=#{body}
+		 where FeedCommentId = ${feedCommentId}
+	</update>
+	<delete id="delete">
+		delete from FeedComment where FeedCommentId=${feedCommentId}
+	</delete>
+	<select id="selectByFeedPostDepth0">
+		select * from FeedComment where FeedPostId=${feedPostId} and ParentId is null order by FeedCommentId asc
+	</select>
+	<select id="selectByParentIdAndDepth">
+		select * from FeedComment where ParendId=${parentId} and depth=${depth} order by FeedCommentId asc
+	</select>
+</mapper>
