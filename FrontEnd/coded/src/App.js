@@ -6,12 +6,10 @@ import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
 import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
-import Search from './component/Search/Search';
 import Ootd from './pages/ootd/Main/Main';
 import FeedListByIdWithMain from './test/FeedListByIdWithMain';
 import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
 import FeedListByNickNameWithMain from './test/FeedListByNickNameWithMain';
-import FileUploadTest from './test/FileUploadTest';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
@@ -25,12 +23,15 @@ import { login, logout, setRefresh } from './modules/Redux/members';
 import cookie from 'react-cookies';
 import axios from 'axios';
 import WeeklyPage from './pages/Weekly/Main/Weekly';
+import ImageUpload from './test/ImageUpload';
+import TestComponent from './test/TestComponent';
+import SearchLabelSelect from './test/SearchLabelSelect';
 
-function App(){
-
+function App() {
   const dispatch = useDispatch();
   const onLogin = useCallback(
-    (accessToken, userId, userNo) => dispatch(login(accessToken, userId, userNo)),
+    (accessToken, userId, userNo) =>
+      dispatch(login(accessToken, userId, userNo)),
     [dispatch],
   );
   const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
@@ -39,62 +40,68 @@ function App(){
     [dispatch],
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     axios({
-      method:'get',
-      url:'/auth/refresh'
-    }).then((response)=>{
-      let refreshToken = cookie.load('CodedRefreshToken');
+      method: 'get',
+      url: '/auth/refresh',
+    })
+      .then((response) => {
+        let refreshToken = cookie.load('CodedRefreshToken');
         refreshToken = refreshToken.substr(
           'Bearer '.length,
           refreshToken.length,
         );
-      onLogin(response.data.accessToken, response.data.userId, response.data.userNo);
-      onSetRefresh(refreshToken);
-    }).catch((error)=>{
-      onLogout();
-      console.log(error);
-    })
-  },[]);
+        onLogin(
+          response.data.accessToken,
+          response.data.userId,
+          response.data.userNo,
+        );
+        onSetRefresh(refreshToken);
+      })
+      .catch((error) => {
+        onLogout();
+        console.log(error);
+      });
+  }, []);
 
-    return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<IndexPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
-          <Route path="/feed" element={<FeedList />} />
-          <Route path="/feed/id" element={<FeedListByIdWithMain />} />
-          <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
-          <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/FileUploadTest" element={<FileUploadTest />} />
-          <Route path="/DMPage" element={<DMPage />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/ootd" element={<Ootd />} />
-          <Route path="/idSearch" element={<IdSearch/>} />
-          <Route path="/pwSearch" element={<PwSearch/>} />
-          <Route path="/weekly" element={<WeeklyPage/>} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
+        <Route path="/feed" element={<FeedList />} />
+        <Route path="/feed/id" element={<FeedListByIdWithMain />} />
+        <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
+        <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/DMPage" element={<DMPage />} />
+        <Route path="/ootd" element={<Ootd />} />
+        <Route path="/idSearch" element={<IdSearch />} />
+        <Route path="/pwSearch" element={<PwSearch />} />
+        <Route path="/weekly" element={<WeeklyPage />} />
 
-          <Route
-            path="/login/oauth2/code/kakao"
-            element={<KakaoCodeCallbackPage />}
-          />
-          <Route
-            path="/login/oauth2/code/naver"
-            element={<NaverCodeCallbackPage />}
-          />
-          <Route
-            path="/login/oauth2/code/google"
-            element={<GoogleCodeCallbackPage/>}
-          />
-          <Route
-            path="/login/oauth2/callback"
-            element={<LastCallbackPage/>}
-          />
-        </Routes>
-      </BrowserRouter>
-    );
+        <Route path="/testComponent" element={<TestComponent />} />
+        <Route path="/imageUpload" element={<ImageUpload />} />
+        <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
+
+        <Route
+          path="/login/oauth2/code/kakao"
+          element={<KakaoCodeCallbackPage />}
+        />
+        <Route
+          path="/login/oauth2/code/naver"
+          element={<NaverCodeCallbackPage />}
+        />
+        <Route
+          path="/login/oauth2/code/google"
+          element={<GoogleCodeCallbackPage />}
+        />
+        <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
+        <Route path="/"></Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 export default App;

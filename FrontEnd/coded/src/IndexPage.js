@@ -26,6 +26,21 @@ const IndexPage = () => {
       <Link to="/feed">단순 피드 리스트</Link>
       <br />
       <br />
+      <Link to="/profile">마이 프로필 페이지</Link>
+      <br />
+      <br />
+      <Link to="/DMPage">DMRoom</Link>
+      <br />
+      <br />
+      <Link to="/ootd">OOTD</Link>
+      <br />
+      <br />
+      <Link to="/weekly">Weekly</Link>
+      <br />
+      <br />
+      <Link to="/TestComponent">기능 테스트</Link>
+      <br />
+      <br />
       <Link to="/feed/id">아이디 검색 결과(테스트)</Link>
       <br />
       <br />
@@ -33,24 +48,6 @@ const IndexPage = () => {
       <br />
       <br />
       <Link to="/feed/hashs">해쉬 검색 결과(테스트)</Link>
-      <br />
-      <br />
-      <Link to="/profile">마이 프로필 페이지</Link>
-      <br />
-      <br />
-      <Link to="/FileUploadTest">파일 업로드 테스트</Link>
-      <br />
-      <br />
-      <Link to="/DMPage">DMRoom</Link>
-      <br />
-      <br />
-      <Link to="/search">검색</Link>
-      <br />
-      <br />
-      <Link to="/ootd">OOTD</Link>
-      <br />
-      <br />
-      <Link to="/weekly">Weekly</Link>
       <br />
       <br />
       <button onClick={onLogout}>로그아웃</button>

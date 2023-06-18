@@ -27,6 +27,7 @@ const FeedPostOuter = styled('div')`
   display: flex;
   justify-content: center;
   border: 0px;
+  padding: 20px;
 
   .my-masonry-grid {
     width: 100%;
@@ -46,10 +47,11 @@ function FeedList() {
   const [member, setMember] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
-  const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
+  // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
 
   const feedPostOuterRef = useRef(null);
 
+  // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
     axios({
       method: 'GET',
@@ -72,7 +74,9 @@ function FeedList() {
         setUserProfile((prev) => [...prev, ...userProfileList]);
         setMember((prev) => [...prev, ...memberList]);
         setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage(cpage + 1);
+        setCpage(() => {
+          return cpage + 1;
+        });
       })
       .catch((error) => console.log(error));
   };
@@ -87,12 +91,9 @@ function FeedList() {
   // document.body.offsetHeight 페이지 전체 높이
 
   useEffect(() => {
-    console.log('화면에 나타남');
     addFeedList();
 
-    return () => {
-      console.log('화면에 사라짐');
-    };
+    return () => {};
   }, []);
 
   return (
@@ -100,9 +101,8 @@ function FeedList() {
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
         {feedPost.map((e, i) => {
           return (
-            <div className="grid-item">
+            <div className="grid-item" key={i}>
               <FeedPostDetail
-                key={i}
                 index={i}
                 // columnHeights={columnHeights}
                 // setColumnHeights={setColumnHeights}
