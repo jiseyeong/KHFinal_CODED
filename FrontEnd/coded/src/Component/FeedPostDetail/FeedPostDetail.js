@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-// import Modal from '../../pages/ootd/Main/Modal';
+import Modal from '../../pages/ootd/Main/Modal';
 import styles from './FeedPostDetail.module.scss';
 
 const FeedPostDetail = (props) => {
@@ -16,17 +16,17 @@ const FeedPostDetail = (props) => {
   } = props;
   const [modal, setModal] = useState(false);
 
-  // const openModal = () => {
-  //   if (!modal) {
-  //     setModal(true);
-  //   }
-  // };
+  const openModal = () => {
+    if (!modal) {
+      setModal(true);
+    }
+  };
 
-  // const closeModal = () => {
-  //   if (modal) {
-  //     setModal(false);
-  //   }
-  // };
+  const closeModal = () => {
+    if (modal) {
+      setModal(false);
+    }
+  };
 
   const myRef = useRef(null);
 
@@ -51,7 +51,7 @@ const FeedPostDetail = (props) => {
     <div className={styles.feedInnerParentDiv}>
       <div
         className={styles.feedInnerLayoutDiv}
-        // onClick={openModal}
+        onClick={openModal}
         ref={myRef}
       >
         <div className={styles.feedImageDiv}>
@@ -75,7 +75,7 @@ const FeedPostDetail = (props) => {
             </div>
           </div>
         </div>
-        {/* {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />} */}
+        {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
       </div>
     </div>
   );
