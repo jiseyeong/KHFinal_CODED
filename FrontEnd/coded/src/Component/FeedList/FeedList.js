@@ -104,8 +104,8 @@ function FeedList() {
               <FeedPostDetail
                 key={i}
                 index={i}
-                columnHeights={columnHeights}
-                setColumnHeights={setColumnHeights}
+                // columnHeights={columnHeights}
+                // setColumnHeights={setColumnHeights}
                 feedPost={e}
                 thumbNail={thumbNail[i]}
                 member={member[i]}
