@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import Modal from '../../pages/ootd/Main/Modal';
+// import Modal from '../../pages/ootd/Main/Modal';
 import styles from './FeedPostDetail.module.scss';
 
 const FeedPostDetail = (props) => {
@@ -16,17 +16,17 @@ const FeedPostDetail = (props) => {
   } = props;
   const [modal, setModal] = useState(false);
 
-  const openModal = () => {
-    if (!modal) {
-      setModal(true);
-    }
-  };
+  // const openModal = () => {
+  //   if (!modal) {
+  //     setModal(true);
+  //   }
+  // };
 
-  const closeModal = () => {
-    if (modal) {
-      setModal(false);
-    }
-  };
+  // const closeModal = () => {
+  //   if (modal) {
+  //     setModal(false);
+  //   }
+  // };
 
   const myRef = useRef(null);
 
@@ -36,16 +36,14 @@ const FeedPostDetail = (props) => {
   //     const columnIndex = index % 5; // 다섯 개의 컬럼 번갈아가며 배치
   //     const currentColumnHeight = columnHeights[columnIndex];
   //     myRef.current.style.marginTop = currentColumnHeight + 'px'; // 현재 컬럼의 높이만큼 marginTop 설정
+  //     // myRef.current.style.marginLeft =
   //     const cardHeight = myRef.current.offsetHeight; // 카드의 세로 길이
   //     setColumnHeights((prev) => {
   //       const newArray = [...prev];
   //       newArray[index] = columnHeights[columnIndex] + cardHeight;
   //       return newArray;
   //     });
-  //   };
-  //   const handleImageLoad = () => {
-  //     sort();
-  //     const image = myRef.current.querySelector('img');
+
   //   };
   // }, [columnHeights]);
 
@@ -53,7 +51,7 @@ const FeedPostDetail = (props) => {
     <div className={styles.feedInnerParentDiv}>
       <div
         className={styles.feedInnerLayoutDiv}
-        onClick={openModal}
+        // onClick={openModal}
         ref={myRef}
       >
         <div className={styles.feedImageDiv}>
@@ -77,7 +75,7 @@ const FeedPostDetail = (props) => {
             </div>
           </div>
         </div>
-        {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
+        {/* {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />} */}
       </div>
     </div>
   );

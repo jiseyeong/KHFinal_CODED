@@ -4,24 +4,40 @@ import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
 
+// 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
+
+// masonry의 옵션 세팅
+const masonryOptions = {
+  // 내부 요소들 선택자 지정
+  itemSelector: '.grid-item',
+  // 열 사이 간격
+  gutter: 30,
+
+  // 출력 순서 => 가로 방향 우선
+  horizontalOrder: true,
+
+  // 요소 내 가로 사이즈 동일
+  isEqualSize: true,
+  fitWidth: true,
+};
+
 const FeedPostOuter = styled('div')`
   margin: auto;
-  width: 80%;
-  /* column-count: 5;
-  column-gap: 20px; */
-  padding: 10px 20px 10px;
-  .FeedPostDetail {
-    // FeedPostDetail 컴포넌트에 대한 스타일을 지정하세요.
-    // Masonry 스타일을 구현할 수 있습니다.
+  width: 85%;
+  display: flex;
+  justify-content: center;
+  border: 0px;
+
+  .my-masonry-grid {
+    width: 100%;
+    border: 0px;
+  }
+  .grid-item {
+    // 행 사이 간격
+    margin-bottom: 30px;
+    border: 0px;
   }
 `;
-
-const masonryOption = {
-  gutter: 16,
-  itemSelector: '.FeedPostDetail',
-  columnWidth: 200,
-  horizontalOrder: true,
-};
 
 function FeedList() {
   const [cpage, setCpage] = useState(1);
@@ -81,22 +97,22 @@ function FeedList() {
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
-      <Masonry breakpointCols={4} options={masonryOption}>
+      <Masonry className={'my-masonry-grid'} options={masonryOptions}>
         {feedPost.map((e, i) => {
-          console.log(e.feedPostId);
           return (
-            <FeedPostDetail
-              className="FeedPostDetail"
-              key={i}
-              index={i}
-              columnHeights={columnHeights}
-              setColumnHeights={setColumnHeights}
-              feedPost={e}
-              thumbNail={thumbNail[i]}
-              member={member[i]}
-              userProfile={userProfile[i]}
-              hashTagList={hashTagList[i]}
-            ></FeedPostDetail>
+            <div className="grid-item">
+              <FeedPostDetail
+                key={i}
+                index={i}
+                columnHeights={columnHeights}
+                setColumnHeights={setColumnHeights}
+                feedPost={e}
+                thumbNail={thumbNail[i]}
+                member={member[i]}
+                userProfile={userProfile[i]}
+                hashTagList={hashTagList[i]}
+              ></FeedPostDetail>
+            </div>
           );
         })}
       </Masonry>
