@@ -1,14 +1,71 @@
-import React, { useState } from 'react';
-import style from './SearchBox.scss';
+import React, { useState, useRef, useEffect } from 'react';
 import { styled } from 'styled-components';
-import SearchAutoCompleteBox from './SearchAutoCompleteBox';
+import styles from './SearchBox.module.scss';
+import axios from 'axios';
+
+const AutoSearchWrap = styled('ul')``;
+
+const AutoSearchData = styled('li')`
+  padding: 10px 8px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 4;
+  letter-spacing: 2px;
+  &:hover {
+    background-color: #edf5f5;
+    cursor: pointer;
+  }
+  position: relative;
+  img {
+    position: absolute;
+    right: 5px;
+    width: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`;
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState('');
+  const [hashTagData, setHashTagData] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const autoSearchRef = useRef();
+
+  // 검색 전 자동완성 시 보여줄 해시태그 데이터를 출력
+  useEffect(() => {
+    axios
+      .request({
+        url: '/PostHashs/selectAllPostTagNames',
+        method: 'GET',
+      })
+      .then((resp) => {
+        setHashTagData(resp.data);
+      })
+      .catch((error) => console.log(error));
+
+    // axios
+    //   .request({
+    //     url: '/auth/selectUserListWithProfile',
+    //     method: 'GET',
+    //   })
+    //   .then((resp) => {
+    //     setUserData(resp.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // const debounce = setTimeout(() => {
+    //   if (searchInput) change();
+    // }, 200);
+    // return () => {
+    //   clearTimeout(debounce);
+    // };
+  }, []);
 
   const searchboxInput = (event) => {
-    console.log(event.target.value);
     setSearchInput(event.target.value);
+    autoSearchRef.current.style.display = 'block';
   };
 
   return (
@@ -21,7 +78,14 @@ const SearchBox = () => {
         placeholder="유저와 스타일을 검색해보세요"
         onChange={searchboxInput}
       />
-      <SearchAutoCompleteBox props={searchInput} />
+      <div className={styles.autoSearchContainer} ref={autoSearchRef}>
+        <AutoSearchWrap>
+          <AutoSearchData>
+            <a href="#"></a>
+            <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
+          </AutoSearchData>
+        </AutoSearchWrap>
+      </div>
     </form>
     // </div>
   );

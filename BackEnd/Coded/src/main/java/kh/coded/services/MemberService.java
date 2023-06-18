@@ -3,6 +3,7 @@ package kh.coded.services;
 import java.util.List;
 import java.util.Random;
 
+import kh.coded.dto.MemberWithProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -446,6 +447,9 @@ public class MemberService implements UserDetailsService {
     public List<MemberDTO> selectUserList() {
 		return memberDAO.selectUserList();
     }
-    
 
+
+	public List<MemberWithProfileDTO> selectUserListWithProfile() {
+		return memberDAO.selectUserListWithProfile();
+	}
 }

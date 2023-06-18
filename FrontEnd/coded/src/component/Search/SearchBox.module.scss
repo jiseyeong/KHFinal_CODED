@@ -1,0 +1,23 @@
+.autoSearchContainer {
+  display: none;
+  z-index: 3;
+  height: 50vh;
+  width: 400px;
+  background-color: #fff;
+  position: absolute;
+  top: 45px;
+  border: 2px solid;
+  padding: 15px;
+}
+
+.searchBoxLayout {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchBox {
+  width: 50%;
+  height: 50%;
+}
