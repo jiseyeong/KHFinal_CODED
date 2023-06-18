@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { logout } from './modules/members';
+import { logout } from './modules/Redux/members';
 
 const IndexPage = () => {
   const dispatch = useDispatch();

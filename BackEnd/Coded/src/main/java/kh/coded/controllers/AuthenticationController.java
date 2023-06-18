@@ -165,6 +165,7 @@ public class AuthenticationController {
 		if(jwtProvider.validateToken(accessToken)) {
 			MemberDTO member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
 			if(member != null) {
+				member.setPw("");
 				return ResponseEntity.ok().body(member);
 			}
 		}

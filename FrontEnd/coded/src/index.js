@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
-import rootReducer from './modules';
+import rootReducer from './modules/Redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './App';
 //import reportWebVitals from './reportWebVitals';

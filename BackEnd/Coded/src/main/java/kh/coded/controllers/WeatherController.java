@@ -1,5 +1,6 @@
 package kh.coded.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,19 +50,19 @@ public class WeatherController {
 			@RequestParam(value="address1") String address1,
 			@RequestParam(value="address2") String address2
 			){
-		Map<String, Object> data = new HashMap<>();
+		List<Object> data = new ArrayList<>();
 		
 		List<WeeklyWeatherDTO> weekly = weatherService.getWeeklyWeatherList(addressCoordService.getAddressCoord(address1, address2).getAddressID());
 		String message = null;
 		
 		if(weekly != null) {
-			int index = 1;
+//			int index = 1;
 			for(WeeklyWeatherDTO week : weekly) {
 				Map<String, Object> innerData = new HashMap<>();
 				message = weatherService.getMessage(week.getMax(), week.getMin());
 				innerData.put("week", week);
 				innerData.put("message", message);
-				data.put("inner"+index++, innerData);
+				data.add(innerData);
 			}
 			return ResponseEntity.ok().body(data);
 		}

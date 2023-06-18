@@ -27,7 +27,7 @@ function Navbar({ type }) {
   const [minTemp, setMinTemp] = useState(0);
   const [maxTemp, setMaxTemp] = useState(0);
   const [recentTemp, setRecentTemp] = useState(0);
-  const accessToken = useSelector((state)=>state.member.access)
+  const accessToken = useSelector((state)=>state.member.access);
 
   const navigate = useNavigate();
 
@@ -56,14 +56,14 @@ function Navbar({ type }) {
             setRecentTemp(response.data.today.recent);
             setMinTemp(response.data.today.min);
             setMaxTemp(response.data.today.max);
-            if(response.data.today.ptyCode <= 2){
+            if(weeklyData.ptyCode == 1 || weeklyData.ptyCode == 2){
                 setWeatherIcon(weatherIcons.rain);
             }else if(response.data.today.ptyCode == 3){
                 setWeatherIcon(weatherIcons.snow);
             }else if(response.data.today.ptyCode ==4){
                 setWeatherIcon(weatherIcons.heavyRain);
             }else{
-                if(response.data.today.skyCode == 0){
+                if(response.data.today.skyCode == 1){
                     setWeatherIcon(weatherIcons.sun);
                 }else{
                     setWeatherIcon(weatherIcons.cloud);
