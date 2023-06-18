@@ -10,20 +10,24 @@ public class FeedCommentDTO {
     private int parentId;
     private String body;
     private Timestamp writeDate;
+    private int depth;
 
     public FeedCommentDTO() {
     }
+    
+    public FeedCommentDTO(int feedCommnentId, int userNo, int feedPostId, int parentId, String body,
+			Timestamp writeDate, int depth) {
+		super();
+		this.feedCommnentId = feedCommnentId;
+		this.userNo = userNo;
+		this.feedPostId = feedPostId;
+		this.parentId = parentId;
+		this.body = body;
+		this.writeDate = writeDate;
+		this.depth = depth;
+	}
 
-    public FeedCommentDTO(int feedCommnentId, int userNo, int feedPostId, int parentId, String body, Timestamp writeDate) {
-        this.feedCommnentId = feedCommnentId;
-        this.userNo = userNo;
-        this.feedPostId = feedPostId;
-        this.parentId = parentId;
-        this.body = body;
-        this.writeDate = writeDate;
-    }
-
-    public int getFeedCommnentId() {
+	public int getFeedCommnentId() {
         return feedCommnentId;
     }
 
@@ -70,4 +74,13 @@ public class FeedCommentDTO {
     public void setWriteDate(Timestamp writeDate) {
         this.writeDate = writeDate;
     }
+
+	public int getDepth() {
+		return depth;
+	}
+
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+    
 }
