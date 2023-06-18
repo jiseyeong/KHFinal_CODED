@@ -1,14 +1,42 @@
 import axios from 'axios';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
+import Masonry from 'react-masonry-component';
+
+// 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
+
+// masonry의 옵션 세팅
+const masonryOptions = {
+  // 내부 요소들 선택자 지정
+  itemSelector: '.grid-item',
+  // 열 사이 간격
+  gutter: 30,
+
+  // 출력 순서 => 가로 방향 우선
+  horizontalOrder: true,
+
+  // 요소 내 가로 사이즈 동일
+  isEqualSize: true,
+  fitWidth: true,
+};
 
 const FeedPostOuter = styled('div')`
   margin: auto;
-  width: 80%;
-  column-count: 5;
-  column-gap: 20px;
-  padding: 10px 20px 10px;
+  width: 85%;
+  display: flex;
+  justify-content: center;
+  border: 0px;
+
+  .my-masonry-grid {
+    width: 100%;
+    border: 0px;
+  }
+  .grid-item {
+    // 행 사이 간격
+    margin-bottom: 30px;
+    border: 0px;
+  }
 `;
 
 function FeedList() {
@@ -19,6 +47,8 @@ function FeedList() {
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
   const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
+
+  const feedPostOuterRef = useRef(null);
 
   const addFeedList = () => {
     axios({
@@ -59,29 +89,33 @@ function FeedList() {
   useEffect(() => {
     console.log('화면에 나타남');
     addFeedList();
+
     return () => {
       console.log('화면에 사라짐');
     };
   }, []);
 
   return (
-    <FeedPostOuter>
-      {feedPost.map((e, i) => {
-        console.log(e.feedPostId);
-        return (
-          <FeedPostDetail
-            key={i}
-            index={i}
-            columnHeights={columnHeights}
-            setColumnHeights={setColumnHeights}
-            feedPost={e}
-            thumbNail={thumbNail[i]}
-            member={member[i]}
-            userProfile={userProfile[i]}
-            hashTagList={hashTagList[i]}
-          ></FeedPostDetail>
-        );
-      })}
+    <FeedPostOuter ref={feedPostOuterRef}>
+      <Masonry className={'my-masonry-grid'} options={masonryOptions}>
+        {feedPost.map((e, i) => {
+          return (
+            <div className="grid-item">
+              <FeedPostDetail
+                key={i}
+                index={i}
+                columnHeights={columnHeights}
+                setColumnHeights={setColumnHeights}
+                feedPost={e}
+                thumbNail={thumbNail[i]}
+                member={member[i]}
+                userProfile={userProfile[i]}
+                hashTagList={hashTagList[i]}
+              ></FeedPostDetail>
+            </div>
+          );
+        })}
+      </Masonry>
     </FeedPostOuter>
   );
 }

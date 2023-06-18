@@ -1,92 +1,100 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from 'react';
 // import "../styles/common.scss";
 // import "../styles/reset.scss";
-import "./Modal.scss";
+import './Modal.scss';
 //import Image from "../image/326548_bookmark_icon.png";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
-function Modal({modalData, data, setData, closeModal, id}){
-  const [comment, setComment] = useState("");
+function Modal({ modalData, data, setData, closeModal, id }) {
+  const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
-  const [description, setDescription] = useState(modalData?.modalData?.modalData?.description); // 그냥 modalData?.description으로 바꿔볼 것.
+  const [description, setDescription] = useState(
+    modalData?.modalData?.modalData?.description,
+  ); // 그냥 modalData?.description으로 바꿔볼 것.
   const [res, setRes] = useState([]);
   const [isLikeBtn, setIsLikeBtn] = useState(false);
-  const [follower, setFollower] = useState(modalData?.modalData?.modalData?.follower); // 그냥 modalData?.follower로 바꿔볼 것.
+  const [follower, setFollower] = useState(
+    modalData?.modalData?.modalData?.follower,
+  ); // 그냥 modalData?.follower로 바꿔볼 것.
   const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
-  
+
   let num = 0;
 
-  function handleClickLike(e){
+  function handleClickLike(e) {
     e.preventDefault();
-    if(!isLikeBtn){
+    if (!isLikeBtn) {
       setIsLikeBtn(true);
       setFollower(modalData?.modalData?.modalData?.follower + 1); //modalData?.follower + 1 로 고쳐봐도 될 것.
-    }else{
+    } else {
       setIsLikeBtn(false);
       setFollower(modalData?.modalData?.modalData?.follower - 1);
     }
   }
 
-  function handleRepleLike(e){
-    if(!isLikeBtn){
+  function handleRepleLike(e) {
+    if (!isLikeBtn) {
       setIsLikeBtn(true);
-    }else{
+    } else {
       setIsLikeBtn(false);
     }
   }
 
-  function followBtnActive(){
-    if(isFollowBtn){
+  function followBtnActive() {
+    if (isFollowBtn) {
       setIsFollowBtn(false);
-    }else{
+    } else {
       setIsFollowBtn(true);
     }
   }
 
-  function getData(e){
+  function getData(e) {
     e.preventDefault();
     setComment(e.target.value);
     setData(e.target.value);
   }
 
-  function handleKeyPress(e){
+  function handleKeyPress(e) {
     e.preventDefault();
-    if(e.key === "Enter"){
-      if(!comment){
+    if (e.key === 'Enter') {
+      if (!comment) {
         e.preventDefault();
-      }else{
+      } else {
         // handleComment();
       }
     }
   }
 
   // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
-  function handleComment(e){
+  function handleComment(e) {
     axios({
-      method:'post',
-      url:API,
-      headers:{
-        Authorization: "Bearer " + accessToken
+      method: 'post',
+      url: API,
+      headers: {
+        Authorization: 'Bearer ' + accessToken,
       },
-      params:{
+      params: {
         content: comment,
-        user_id: modalData?.modalData?.modalData?.id
+        user_id: modalData?.modalData?.modalData?.id,
       },
-    }).then((response)=>{
-      setRes(response.data);
-    }).catch((error)=>{
-      console.log(error);
     })
-    setComments((prev)=>{return [...prev, comment]});
+      .then((response) => {
+        setRes(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setComments((prev) => {
+      return [...prev, comment];
+    });
     setComment('');
-    num+=1;
+    num += 1;
   }
 
-  useEffect(()=>{
-    console.log("id값", modalData?.modalData?.modalData?.id);
-  })
+  useEffect(() => {
+    console.log('id값', modalData?.modalData?.modalData?.id);
+  });
 
   return (
     <div className="wrapper">
@@ -102,13 +110,11 @@ function Modal({modalData, data, setData, closeModal, id}){
                 <div
                   className={
                     modalData?.modalData?.modalData?.contentImg?.length > 1
-                      ? "smallImages"
-                      : "displayNone"
+                      ? 'smallImages'
+                      : 'displayNone'
                   }
                 >
-                  <div>
-                    
-                  </div>
+                  <div></div>
                   {/* <figure className="smallImagesWrapper">
                     <img
                       className="smallImage"
@@ -124,58 +130,57 @@ function Modal({modalData, data, setData, closeModal, id}){
                 </div>
               </div>
               <div className="information">
-                      <div className="commentData">
-                        <div className="commentUserImgWrapper">
-                          <img
-                            className="commentUserImg"
-                            src={modalData?.modalData?.modalData?.authorImg}
-                            width="40"
-                            height="40"
-                          />
-                        </div>
-                        <div className="authorInfomation">
-                          <div className="author">
-                            sungha123
-                            {modalData?.modalData?.modalData?.author}
-                          </div>
-                          <div className="introduction">
-                            김성하
-                            {modalData?.modalData?.modalData?.introdution}
-                          </div>
-                        </div>
-                        <div className="followBtnBox">
-                          <svg
-                            className={
-                              isFollowBtn ? "followBtnActive" : "followBtn"
-                            }
-                            onClick={followBtnActive}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            stroke="currentColor"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                          >
-                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                            <path
-                              fill-rule="evenodd"
-                              d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                      <hr className="hrTag"></hr>
-                      <div className="authorDescription">
-                        <span>데일리룩 #OOTD #청바지 #셔츠
-                          {modalData?.modalData?.modalData?.description}
-                        </span>
-                      </div>
+                <div className="commentData">
+                  <div className="commentUserImgWrapper">
+                    <img
+                      className="commentUserImg"
+                      src={modalData?.modalData?.modalData?.authorImg}
+                      width="40"
+                      height="40"
+                    />
+                  </div>
+                  <div className="authorInfomation">
+                    <div className="author">
+                      sungha123
+                      {modalData?.modalData?.modalData?.author}
                     </div>
+                    <div className="introduction">
+                      김성하
+                      {modalData?.modalData?.modalData?.introdution}
+                    </div>
+                  </div>
+                  <div className="followBtnBox">
+                    <svg
+                      className={isFollowBtn ? 'followBtnActive' : 'followBtn'}
+                      onClick={followBtnActive}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      stroke="currentColor"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <hr className="hrTag"></hr>
+                <div className="authorDescription">
+                  <span>
+                    데일리룩 #OOTD #청바지 #셔츠
+                    {modalData?.modalData?.modalData?.description}
+                  </span>
+                </div>
+              </div>
             </div>
 
             <div className="rightWrapper">
               <div className="authorPopularity">
-                <div className={isLikeBtn ? "likeBox" : "dislikeBox"}>
+                <div className={isLikeBtn ? 'likeBox' : 'dislikeBox'}>
                   <svg
                     className="like"
                     onClick={handleClickLike}
@@ -195,7 +200,9 @@ function Modal({modalData, data, setData, closeModal, id}){
                   </svg>
                 </div>
                 <div className="likeNumBox">
-                  <span classNum="likeNum"> 100
+                  <span classNum="likeNum">
+                    {' '}
+                    100
                     {modalData?.modalData?.modalData?.follower}
                   </span>
                 </div>
@@ -264,7 +271,7 @@ function Modal({modalData, data, setData, closeModal, id}){
                         </div>
                       </div>
                     </div>
-                  )
+                  ),
                 )}
 
                 {comments.map((commentText) => {
@@ -276,7 +283,7 @@ function Modal({modalData, data, setData, closeModal, id}){
                           width="30px"
                           height="30px"
                           src={commentText.commentAuthorImg}
-                        />{" "}
+                        />{' '}
                       </div>
                       <div className="commentCreateInfoWrapper">
                         <div className="commentCreateContentWrapper">
@@ -291,10 +298,7 @@ function Modal({modalData, data, setData, closeModal, id}){
                           <span className="commentCreateDate">
                             {commentText.commentCreatedAt}
                           </span>
-                          <span className="commentCreateBtn">
-                            {" "}
-                            답글 달기{" "}
-                          </span>
+                          <span className="commentCreateBtn"> 답글 달기 </span>
                         </div>
                       </div>
                     </div>
@@ -311,32 +315,34 @@ function Modal({modalData, data, setData, closeModal, id}){
                   />
                 </form>
                 <div className="reple">
-                <div className="repleBox1">
-                <div className="repleProfile"><img></img></div>
-                <div className="repleContents">
-                <div className="repleNickname">한유 @hanyu3677</div>
-                <div className="repleWrite">데일리룩 잘 봤습니다</div>
-                </div>
-                <div className="repleLike">
-                <svg
-                    className="like"
-                    onClick={handleRepleLike}
-                    stroke="currentColor"
-                    fill="currentColor"
-                    stroke-width="0"
-                    viewBox="0 0 16 16"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </div>
-                </div>
+                  <div className="repleBox1">
+                    <div className="repleProfile">
+                      <img></img>
+                    </div>
+                    <div className="repleContents">
+                      <div className="repleNickname">한유 @hanyu3677</div>
+                      <div className="repleWrite">데일리룩 잘 봤습니다</div>
+                    </div>
+                    <div className="repleLike">
+                      <svg
+                        className="like"
+                        onClick={handleRepleLike}
+                        stroke="currentColor"
+                        fill="currentColor"
+                        stroke-width="0"
+                        viewBox="0 0 16 16"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                          clip-rule="evenodd"
+                        ></path>
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
