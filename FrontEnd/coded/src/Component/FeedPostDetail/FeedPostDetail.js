@@ -30,33 +30,24 @@ const FeedPostDetail = (props) => {
 
   const myRef = useRef(null);
 
-  useEffect(() => {
-    // 피드 내 정렬 설정
-    const sort = () => {
-      const columnIndex = index % 5; // 다섯 개의 컬럼 번갈아가며 배치
-      const currentColumnHeight = columnHeights[columnIndex];
-
-      myRef.current.style.marginTop = currentColumnHeight + 'px'; // 현재 컬럼의 높이만큼 marginTop 설정
-
-      const cardHeight = myRef.current.offsetHeight; // 카드의 세로 길이
-      setColumnHeights((prev) => {
-        const newArray = [...prev];
-        newArray[index] = columnHeights[columnIndex] + cardHeight;
-        return newArray;
-      });
-    };
-
-    const handleImageLoad = () => {
-      sort();
-
-      const image = myRef.current.querySelector('img');
-      image.addEventListener('load', handleImageLoad);
-
-      return () => {
-        image.removeEventListener('load', handleImageLoad);
-      };
-    };
-  }, [columnHeights]);
+  // useEffect(() => {
+  //   // 피드 내 정렬 설정
+  //   const sort = () => {
+  //     const columnIndex = index % 5; // 다섯 개의 컬럼 번갈아가며 배치
+  //     const currentColumnHeight = columnHeights[columnIndex];
+  //     myRef.current.style.marginTop = currentColumnHeight + 'px'; // 현재 컬럼의 높이만큼 marginTop 설정
+  //     const cardHeight = myRef.current.offsetHeight; // 카드의 세로 길이
+  //     setColumnHeights((prev) => {
+  //       const newArray = [...prev];
+  //       newArray[index] = columnHeights[columnIndex] + cardHeight;
+  //       return newArray;
+  //     });
+  //   };
+  //   const handleImageLoad = () => {
+  //     sort();
+  //     const image = myRef.current.querySelector('img');
+  //   };
+  // }, [columnHeights]);
 
   return (
     <div className={styles.feedInnerParentDiv}>

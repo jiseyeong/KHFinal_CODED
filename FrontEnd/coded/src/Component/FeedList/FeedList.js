@@ -1,15 +1,27 @@
 import axios from 'axios';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
+import Masonry from 'react-masonry-component';
 
 const FeedPostOuter = styled('div')`
   margin: auto;
   width: 80%;
-  column-count: 5;
-  column-gap: 20px;
+  /* column-count: 5;
+  column-gap: 20px; */
   padding: 10px 20px 10px;
+  .FeedPostDetail {
+    // FeedPostDetail 컴포넌트에 대한 스타일을 지정하세요.
+    // Masonry 스타일을 구현할 수 있습니다.
+  }
 `;
+
+const masonryOption = {
+  gutter: 16,
+  itemSelector: '.FeedPostDetail',
+  columnWidth: 200,
+  horizontalOrder: true,
+};
 
 function FeedList() {
   const [cpage, setCpage] = useState(1);
@@ -19,6 +31,8 @@ function FeedList() {
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
   const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
+
+  const feedPostOuterRef = useRef(null);
 
   const addFeedList = () => {
     axios({
@@ -59,29 +73,33 @@ function FeedList() {
   useEffect(() => {
     console.log('화면에 나타남');
     addFeedList();
+
     return () => {
       console.log('화면에 사라짐');
     };
   }, []);
 
   return (
-    <FeedPostOuter>
-      {feedPost.map((e, i) => {
-        console.log(e.feedPostId);
-        return (
-          <FeedPostDetail
-            key={i}
-            index={i}
-            columnHeights={columnHeights}
-            setColumnHeights={setColumnHeights}
-            feedPost={e}
-            thumbNail={thumbNail[i]}
-            member={member[i]}
-            userProfile={userProfile[i]}
-            hashTagList={hashTagList[i]}
-          ></FeedPostDetail>
-        );
-      })}
+    <FeedPostOuter ref={feedPostOuterRef}>
+      <Masonry breakpointCols={4} options={masonryOption}>
+        {feedPost.map((e, i) => {
+          console.log(e.feedPostId);
+          return (
+            <FeedPostDetail
+              className="FeedPostDetail"
+              key={i}
+              index={i}
+              columnHeights={columnHeights}
+              setColumnHeights={setColumnHeights}
+              feedPost={e}
+              thumbNail={thumbNail[i]}
+              member={member[i]}
+              userProfile={userProfile[i]}
+              hashTagList={hashTagList[i]}
+            ></FeedPostDetail>
+          );
+        })}
+      </Masonry>
     </FeedPostOuter>
   );
 }

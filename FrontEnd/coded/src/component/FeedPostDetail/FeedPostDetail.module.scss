@@ -1,15 +1,16 @@
 .feedInnerParentDiv {
   width: 100%;
-  display: flex;
+  display: inline-block;
+  break-inside: avoid;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-bottom: 20px;
   border: 1px solid silver;
   border-radius: 5px;
 
   .feedInnerLayoutDiv {
     break-inside: avoid;
-    width: 80%;
+    width: 100%;
     height: auto;
     flex-wrap: wrap;
     display: flex;
