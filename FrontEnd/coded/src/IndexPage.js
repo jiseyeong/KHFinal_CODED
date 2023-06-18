@@ -50,6 +50,9 @@ const IndexPage = () => {
       <Link to="/ootd">OOTD</Link>
       <br />
       <br />
+      <Link to="/weekly">Weekly</Link>
+      <br />
+      <br />
       <button onClick={onLogout}>로그아웃</button>
     </div>
   );
