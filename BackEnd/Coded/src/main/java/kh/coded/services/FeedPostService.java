@@ -5,16 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import kh.coded.dto.*;
-import kh.coded.repositories.MemberDAO;
-import kh.coded.repositories.PostHashsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.coded.dto.FeedCommentDTO;
+import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
+import kh.coded.dto.MemberDTO;
+import kh.coded.dto.PhotoDTO;
+import kh.coded.dto.PostHashsDTO;
+import kh.coded.dto.PostHashsWithHashTagDTO;
+import kh.coded.repositories.FeedCommentDAO;
 import kh.coded.repositories.FeedPostDAO;
+import kh.coded.repositories.MemberDAO;
 import kh.coded.repositories.PhotoDAO;
+import kh.coded.repositories.PostHashsDAO;
 import utils.StaticValue;
 
 @Service
@@ -31,6 +36,9 @@ public class FeedPostService {
 
     @Autowired
     private PhotoDAO photoDAO;
+    
+    @Autowired
+    private FeedCommentDAO commentDAO;
 
 
     public List<FeedPostDTO> selectFeedList(int UserNo) {
@@ -131,5 +139,24 @@ public class FeedPostService {
     public List<FeedPostDTO> selectFeedNew() {
         return feedpostDAO.selectFeedNew();
     }
-
+    
+    
+    public int insertComment(FeedCommentDTO dto) {
+    	return commentDAO.insert(dto);
+    }
+    public int insertNestedComment(FeedCommentDTO dto) {
+    	return commentDAO.insertNestedComment(dto);
+    }
+    public void updateComment(int feedCommentId, String body) {
+    	commentDAO.update(feedCommentId, body);
+    }
+    public void deleteComment(int feedCommentId) {
+    	commentDAO.delete(feedCommentId);
+    }
+    public List<FeedCommentDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
+    	return commentDAO.selectByFeedPostDepth0(feedPostId);
+    }
+    public List<FeedCommentDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
+    	return commentDAO.selectByParentIdAndDepth(parentId, depth);
+    }
 }
