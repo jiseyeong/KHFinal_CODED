@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, setRefresh } from '../../modules/members';
+import { login, logout, setRefresh } from '../../modules/Redux/members';
 import cookie from 'react-cookies';
 
 /*

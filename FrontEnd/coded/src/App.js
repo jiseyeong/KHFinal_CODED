@@ -21,7 +21,7 @@ import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
 import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
 import { useDispatch } from 'react-redux';
-import { login, logout, setRefresh } from './modules/members';
+import { login, logout, setRefresh } from './modules/Redux/members';
 import cookie from 'react-cookies';
 import axios from 'axios';
 import WeeklyPage from './pages/Weekly/Main/Weekly';
