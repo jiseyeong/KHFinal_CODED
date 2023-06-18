@@ -8,4 +8,8 @@
         select * from postHashs join hashtag using (tagid) where feedPostId = ${feedPostId}
     </select>
 
+    <select id="selectAllPostTagNames" resultType="kh.coded.dto.PostHashsWithHashTagDTO">
+        select * from hashtag
+    </select>
+
 </mapper>

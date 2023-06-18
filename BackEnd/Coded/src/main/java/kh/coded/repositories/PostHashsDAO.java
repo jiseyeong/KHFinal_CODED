@@ -1,5 +1,6 @@
 package kh.coded.repositories;
 
+import kh.coded.dto.PostHashsDTO;
 import kh.coded.dto.PostHashsWithHashTagDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +16,9 @@ public class PostHashsDAO {
 
     public List<PostHashsWithHashTagDTO> selectAllTagIdByFeedPostId(int feedPostId){
         return mybatis.selectList("PostHashs.selectAllTagIdByFeedPostId",feedPostId);
+    }
+
+    public List<PostHashsWithHashTagDTO> selectAllPostTagNames() {
+        return mybatis.selectList("PostHashs.selectAllPostTagNames");
     }
 }
