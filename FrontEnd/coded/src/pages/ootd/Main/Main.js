@@ -1,88 +1,87 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import NavbarOotd from '../../../component/Navbar/NavbarOotd/NavbarOotd';
 import CardList from './CardList.scss';
 import Modal from './Modal';
 // import InfiniteScroll from 'react-infinite-scroller';
 import style from './Main.module.scss';
+import axios from 'axios';
 
 const API = 'http://';
 const LIMIT = 100;
-class Main extends Component {
-  constructor() {
-    super();
-    this.state = {
-      likeBtn: false,
-      cards: [],
-      getData: '',
-      commentData: [],
-      modalData: [],
-      offSet: 0,
-      isLoading: false,
-    };
+
+function Main({infiniteScroll}){
+  const [isLikeBtn, setIsLikeBtn] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [data, setData] = useState('');
+  const [commentData, setCommentData] = useState([]);
+  const [modalData, setModalData] = useState([]);
+  const [offSet, setOffSet] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+
+  function openModal(data){
+    setIsModal(data);
   }
 
-  openModal = (data) => {
-    this.setState({
-      isModal: data,
-    });
-  };
-
-  closeModal = () => {
-    this.setState({
-      isModal: false,
-      modalData: [],
-    });
-  };
-
-  componentDidMount() {
-    window.addEventListener('scroll', this.infiniteScroll);
-    fetch(`${API}/ootds?offset=${this.state.offSet}&limit=${LIMIT}`)
-      .then((res) => res.json())
-      .then((res) =>
-        this.setState({
-          cards: res.ootd_list,
-          offSet: this.state.offSet + LIMIT,
-        }),
-      );
+  function closeModal(){
+    setIsModal(false);
+    setModalData([]);
   }
 
-  // loadFunc = () => {
-  //   fetch(`${API}/ootds?offset=${this.state.offSet}&limit=${LIMIT}`)
-  //   .then((res) => res.json())
-  //   .then((res) => {
-  //     this.setState({
-  //     cards: [...this.state.cards, ...res.ootd_list],
-  //     offSet: this.state.offSet + LIMIT,
-  //   });
+  useEffect(()=>{
+    window.addEventListener('scroll', infiniteScroll);
+    axios({
+      method:'get',
+      url:`${API}/ootds`,
+      params:{
+        offset:offSet,
+        limit:LIMIT
+      }
+    }).then((response)=>{
+      setCards(response.data.ootd_list);
+      setOffSet(offSet + LIMIT);
+    }).catch((error)=>{
+      console.log(error);
+    })
+  },[]);
+
+  // function loadFunc(){
+  //   axios({
+  //     method:'get',
+  //     url:`${API}/ootds`,
+  //     params:{
+  //       offset:offSet,
+  //       limit:LIMIT
+  //     }
+  //   }).then((response)=>{
+  //     setCards((prev)=>{return [...prev, ...response.ootd_list]});
+  //     setOffSet(offSet + LIMIT);
+  //   }).catch((error)=>{
+  //     console.log(error);
   //   })
   // }
 
-  getData = (data) => {
-    this.setState({
-      getData: data,
-    });
-  };
+  function getData(data){
+    setData(data);
+  }
 
-  modalData = () => {
-    this.setState({
-      commentData: this.state.getData,
-    });
-  };
+  function modalData_func(){
+    setCommentData(data);
+  }
 
-  handleModalData = (data) => {
-    this.setState({
-      modalData: data,
-    });
-  };
+  function handleModalData(data){
+    setModalData(data);
+  }
 
-  render() {
-    console.log(this.state.offSet);
-    const { cards, isModal, modalData, commentData, getData } = this.state;
-    return (
-      <div style={{ overflow: 'auto' }}>
+  useEffect(()=>{
+    console.log(offSet);
+  });
+
+  return(
+    <div style={{ overflow: 'auto' }}>
         <InfiniteScroll
           pageStart={0}
-          loadMore={this.loadFunc}
+          loadMore={loadFunc}
           hasMore={true || false}
           loader={<div className="loader" key={0} />}
           useWindow={false}
@@ -93,10 +92,10 @@ class Main extends Component {
               key={cards.id}
               commentData={commentData}
               getModalInputComment={getData}
-              isModal={this.openModal}
-              modalData={this.handleModalData}
+              isModal={openModal}
+              modalData={handleModalData}
               cardsData={cards}
-              handleClickLike={this.handleClickLike}
+              handleClickLike={handleClickLike}
             />
           </div>
           <div>
@@ -106,10 +105,10 @@ class Main extends Component {
           </div>
           <div className={isModal ? '' : 'displayNone'}>
             <Modal
-              modalData={modalData}
-              getData={this.getData}
-              commentData={this.commetData}
-              closeModal={this.closeModal}
+              modalData={modalData_func}
+              data={getData}
+              commentData={commetData}
+              closeModal={closeModal}
               key={cards.id}
               id={cards.id}
               contentImg={cards?.contentImg}
@@ -125,7 +124,6 @@ class Main extends Component {
           </div>
         </InfiniteScroll>
       </div>
-    );
-  }
+  );
 }
 export default Main;
