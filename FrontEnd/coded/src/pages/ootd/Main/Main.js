@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import NavbarOotd from '../../../component/Navbar/NavbarOotd/NavbarOotd';
-import CardList from './CardList.scss';
+// import CardList from './CardList.scss';
 import Modal from './Modal';
 // import InfiniteScroll from 'react-infinite-scroller';
 import style from './Main.module.scss';
@@ -9,7 +9,7 @@ import axios from 'axios';
 const API = 'http://';
 const LIMIT = 100;
 
-function Main({infiniteScroll}){
+function Main({InfiniteScroll, handleClickLike}){
   const [isLikeBtn, setIsLikeBtn] = useState(false);
   const [cards, setCards] = useState([]);
   const [data, setData] = useState('');
@@ -28,22 +28,22 @@ function Main({infiniteScroll}){
     setModalData([]);
   }
 
-  useEffect(()=>{
-    window.addEventListener('scroll', infiniteScroll);
-    axios({
-      method:'get',
-      url:`${API}/ootds`,
-      params:{
-        offset:offSet,
-        limit:LIMIT
-      }
-    }).then((response)=>{
-      setCards(response.data.ootd_list);
-      setOffSet(offSet + LIMIT);
-    }).catch((error)=>{
-      console.log(error);
-    })
-  },[]);
+  // useEffect(()=>{
+  //   window.addEventListener('scroll', infiniteScroll);
+  //   axios({
+  //     method:'get',
+  //     url:`${API}/ootds`,
+  //     params:{
+  //       offset:offSet,
+  //       limit:LIMIT
+  //     }
+  //   }).then((response)=>{
+  //     setCards(response.data.ootd_list);
+  //     setOffSet(offSet + LIMIT);
+  //   }).catch((error)=>{
+  //     console.log(error);
+  //   })
+  // },[]);
 
   // function loadFunc(){
   //   axios({
@@ -79,24 +79,24 @@ function Main({infiniteScroll}){
 
   return(
     <div style={{ overflow: 'auto' }}>
-        <InfiniteScroll
+        {/* <InfiniteScroll
           pageStart={0}
           loadMore={loadFunc}
           hasMore={true || false}
           loader={<div className="loader" key={0} />}
           useWindow={false}
-        >
+        > */}
           <NavbarOotd />
           <div className="mainWrapper">
-            <CardList
+            {/* <CardList
               key={cards.id}
               commentData={commentData}
               getModalInputComment={getData}
               isModal={openModal}
               modalData={handleModalData}
               cardsData={cards}
-              handleClickLike={handleClickLike}
-            />
+              handleClickLike={handleClickLike ? handleClickLike:()=>{}}
+            /> */}
           </div>
           <div>
             <div className="infiniteScrollTarget">
@@ -107,7 +107,7 @@ function Main({infiniteScroll}){
             <Modal
               modalData={modalData_func}
               data={getData}
-              commentData={commetData}
+              commentData={commentData}
               closeModal={closeModal}
               key={cards.id}
               id={cards.id}
@@ -122,7 +122,7 @@ function Main({infiniteScroll}){
               scrap={cards?.scrap}
             />
           </div>
-        </InfiniteScroll>
+        {/* </InfiniteScroll> */}
       </div>
   );
 }

@@ -63,26 +63,26 @@ function Modal({modalData, data, setData, closeModal, id}){
   }
 
   // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
-  // function handleComment(e){
-  //   axios({
-  //     method:'post',
-  //     url:API,
-  //     headers:{
-  //       Authorization: "Bearer " + accessToken
-  //     },
-  //     params:{
-  //       content: comment,
-  //       user_id: modalData?.modalData?.modalData?.id
-  //     },
-  //   }).then((response)=>{
-  //     setRes(response.data);
-  //   }).catch((error)=>{
-  //     console.log(error);
-  //   })
-  //   setComments((prev)=>{return [...prev, comment]});
-  //   setComment('');
-  //   num+=1;
-  // }
+  function handleComment(e){
+    axios({
+      method:'post',
+      url:API,
+      headers:{
+        Authorization: "Bearer " + accessToken
+      },
+      params:{
+        content: comment,
+        user_id: modalData?.modalData?.modalData?.id
+      },
+    }).then((response)=>{
+      setRes(response.data);
+    }).catch((error)=>{
+      console.log(error);
+    })
+    setComments((prev)=>{return [...prev, comment]});
+    setComment('');
+    num+=1;
+  }
 
   useEffect(()=>{
     console.log("id값", modalData?.modalData?.modalData?.id);
