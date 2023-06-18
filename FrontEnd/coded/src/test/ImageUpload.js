@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 
-const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
+const ImageUpload = ({ uploadState, setUploadState }) => {
   const [feedPostId, setFeedPostId] = useState(0);
   const [files, setFiles] = useState([]);
   // 여러 파일을 받는 경우
@@ -194,4 +194,4 @@ const FileUploadTest = () => {
   );
 };
 
-export default FileUploadTest;
+export default ImageUpload;
