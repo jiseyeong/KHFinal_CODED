@@ -5,7 +5,6 @@ import Login from './pages/auth/Login/Login';
 import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
-import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
 import Ootd from './pages/ootd/Main/Main';
 import FeedListByIdWithMain from './test/FeedListByIdWithMain';
 import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';

@@ -98,4 +98,11 @@ public class FeedPostDAO {
 	}
 
 
+    public List<FeedPostDTO> selectSearchFeedList(int startFeedNum, int endFeedNum, String keyword) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		map.put("keyword",keyword);
+		return mybatis.selectList("FeedPost.selectSearchFeedList",map);
+    }
 }

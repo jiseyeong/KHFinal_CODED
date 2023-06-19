@@ -72,6 +72,10 @@
 		order by writeTempDiff asc, writeTempRangeDiff asc
 	</select>
 
+	<select id="selectSearchFeedList">
+		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
+	</select>
+
 
 
 </mapper>

@@ -7,13 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -133,7 +127,8 @@ public class FeedPostController {
     	result.put("photoDTO", list2);
     	return ResponseEntity.ok().body(result);
     }
-    
+
+	// 피드 리스트 전체 뽑기
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")
@@ -144,6 +139,18 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(map);
 	}
 
+	// 검색을 통한 피드 리스트 뽑기
+	@GetMapping("/selectAllFeedPost/{keyword}")
+	public ResponseEntity<?> selectSearchFeedList(
+			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
+			@PathVariable("keyword") String keyword) {
+		System.out.println(cpage);
+
+		Map<String, Object> map = feedpostService.selectSearchFeedList(cpage,keyword);
+		return ResponseEntity.ok().body(map);
+	}
+
+	// 단순한 피드 내용들 뽑기
 	@GetMapping("/selectfeedlist/")
 	public ResponseEntity<?> selectFeedList(){
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
