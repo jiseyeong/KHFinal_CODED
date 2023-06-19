@@ -4,38 +4,63 @@ import { Stomp } from '@stomp/stompjs';
 import { useEffect, useState } from 'react';
 
 const DMPage = () => {
-  useEffect(() => {
-    const socket = new WebSocket('ws://192.168.50.221:9999/chatchat');
-    const stompClient = Stomp.over(socket);
 
-    stompClient.connect(
-      {},
-      function () {
-        console.log('연결 성공');
-        stompClient.subscribe('/topic/dialog', function (message) {
-          console.log('일반 메세지'); // message
+  var stompClient = null;
+
+function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    if (connected) {
+        $("#conversation").show();
+    }
+    else {
+        $("#conversation").hide();
+    }
+    $("#greetings").html("");
+}
+
+function connect() {
+    var socket = new SockJS('ws://192.168.0.38:9999/chat');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/chat/DM', function (greeting) {
+            showGreeting(JSON.parse(greeting.body).content);
         });
-      },
-      function (error) {
-        console.log('연결 실패');
-      },
-    );
-  }, []);
+    });
+    
+    displayStompObject();
+}
 
-  return (
-    <div className={style.chatLayout}>
-      <div className={style.chatBox}>
-        <div className={style.messageArea}></div>
-        <div className={style.inputArea}>
-          <input
-            type="text"
-            className={style.chat}
-            placeholder="메세지를 입력해주세요"
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+    }
+    setConnected(false);
+    console.log("Disconnected");
+}
+
+function showGreeting(message) {
+    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+}
+
+function sendName() {
+ stompClient.send("/pub/send", {}, JSON.stringify({
+  'name' : $("#name").val()
+ }));
+}
+
+
+$(function () {
+    $("form").on('submit', function (e) {
+        e.preventDefault();
+    });
+    $( "#connect" ).click(function() { connect(); });
+    $( "#disconnect" ).click(function() { disconnect(); });
+    $( "#send" ).click(function() { sendName(); });
+});
+
+}
 
 export default DMPage;

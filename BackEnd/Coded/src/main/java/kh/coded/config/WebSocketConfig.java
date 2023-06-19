@@ -11,23 +11,24 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+	
+	@Override
+	public void registerStompEndpoints(StompEndpointRegistry registry) {
+		registry.addEndpoint("/chat")
+		.addInterceptors(new HttpSessionHandshakeInterceptor())
+		.setAllowedOrigins("*")
+		.withSockJS();
+		// 채팅의 엔드포인트는 chat으로 클라이언트가 웹소켓 연결할떄 사용
+	}
+	
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/topic");
-        // 구독할 수 있는 Channel(EndPoint) url의 prefix [ Server => Client ]
-        registry.setApplicationDestinationPrefixes("/app");
-        // 클라이언트가 메세지를 보낼 때 사용할 url의 prefix [ Client = > Server ]
-        // => 구독 채널 prefix
+        registry.enableSimpleBroker("/sub");
+        registry.setApplicationDestinationPrefixes("/pub");
+        // pub가 붙어있으면 브로커로 보내짐 /sub가 붙는 경우 
+        //messageBroker가 잡아서 해당 채팅방을 구독하고 있는 클라이언트에게 메시지를 전달해줌
+        
     }
 
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chatchat")
-                .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .setAllowedOrigins("*");
-        // 접속할 Endpoint
-        // registry.addEndpoint("/chat") => '/chat'으로 접속하는 endpoint 생성
-        // setAllowedOrigin => 다른 http서버에서의 접근 경로 허용 여부를 지정
-    }
 }
 

@@ -2,14 +2,14 @@ package kh.coded.dto;
 
 public class DMRoomDTO {
     private int roomId;
-    private String name;
+    
 
     public DMRoomDTO() {
     }
 
     public DMRoomDTO(int roomId, String name) {
         this.roomId = roomId;
-        this.name = name;
+        
     }
 
     public int getRoomId() {
@@ -20,11 +20,5 @@ public class DMRoomDTO {
         this.roomId = roomId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+   
 }
