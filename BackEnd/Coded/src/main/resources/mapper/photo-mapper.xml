@@ -8,11 +8,6 @@
     <select id="selectByFeedpostId" resultType="kh.coded.dto.PhotoDTO">
         select * from photo where feedpostid = ${feedPostId}
     </select>
-
-    <select id="selectFeedlike" resultType="kh.coded.dto.PhotoDTO">
-        select * from photo where feedpostid = ${feedPostId}
-    </select>
-
     <insert id="insertPhoto">
         <choose>
             <when test="userNo!=0">

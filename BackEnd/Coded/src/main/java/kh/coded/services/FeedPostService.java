@@ -40,11 +40,7 @@ public class FeedPostService {
     @Autowired
     private FeedCommentDAO commentDAO;
 
-
-    public List<FeedPostDTO> selectFeedList(int UserNo) {
-        return feedpostDAO.selectFeedList(UserNo);
-    }
-
+    
     public int insertTest(FeedPostDTO dto) {
         return feedpostDAO.insertFeedPost(dto);
     }
@@ -72,6 +68,10 @@ public class FeedPostService {
         return feedpostDAO.insertHashTag(HashTag);
     }
 
+    public List<FeedPostDTO> selectFeedList(int UserNo) {
+        return feedpostDAO.selectFeedList(UserNo);
+    }
+    
     public List<FeedPostDTO> selectTestFeedList() {
         return feedpostDAO.selectTestFeedList();
     }
@@ -81,16 +81,13 @@ public class FeedPostService {
     }
 
 
-	public PhotoDTO selectByFeedpostId(int feedPostId) {
-		return photoDAO.selectByFeedpostId(feedPostId);
+	public FeedPostDTO selectByFeedpostId(int feedPostId) {
+		return feedpostDAO.searchByFeedPost(feedPostId);
 	}
 
 	public List<FeedPostDTO> selectFeedlike() {
 		return feedpostDAO.selectFeedlike();
 	}
-
-	
-	
 
     public List<PostHashsDTO> searchByPostHashs(int tagId) {
         return feedpostDAO.searchByPostHashs(tagId);
@@ -116,6 +113,7 @@ public class FeedPostService {
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
             MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
+            userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
@@ -140,6 +138,36 @@ public class FeedPostService {
         return feedpostDAO.selectFeedNew();
     }
     
+    public Map<String, Object> selectWeeklyFeed(int currentTemp, int currentTempRange, int cpage){
+    	int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+    	int endFeedNum = cpage * feedCountPerPage;
+    	int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+    	
+    	List<FeedPostDTO> feedPostList = feedpostDAO.selectWeeklyFeed(currentTemp, currentTempRange, startFeedNum, endFeedNum);
+    	List<MemberDTO> memberList = new ArrayList<>();
+    	List<PhotoDTO> userProfileList = new ArrayList<>();
+    	List<PhotoDTO> thumbnailList = new ArrayList<>();
+    	List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
+    	
+    	for (FeedPostDTO feedPost : feedPostList) {
+    		PhotoDTO thumbnail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
+    		MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
+    		userInfo.setPw("");
+    		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
+    		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
+    		thumbnailList.add(thumbnail);
+    		memberList.add(userInfo);
+    		userProfileList.add(userProfile);
+    		hashTagLists.add(hashTagList);
+    	}
+    	Map<String, Object> data = new HashMap<>();
+    	data.put("feedPostList", feedPostList);
+    	data.put("thumbNailList", thumbnailList);
+    	data.put("memberList", memberList);
+    	data.put("userProfileList", userProfileList);
+    	data.put("hashTagLists", hashTagLists);
+    	return data;
+    }
     
     public int insertComment(FeedCommentDTO dto) {
     	return commentDAO.insert(dto);

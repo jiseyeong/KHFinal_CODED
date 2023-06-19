@@ -126,7 +126,7 @@ public class FeedPostController {
     	List<FeedPostDTO> list = feedpostService.selectFeedlike();
     	List<PhotoDTO> list2 = new ArrayList<>();
     	for(FeedPostDTO e : list) {
-    		list2.add(photoService.selectFeedlike(e.getFeedPostId()));
+    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
     	}
     	Map<String,Object> result = new HashMap<>();
     	result.put("FeedPostDTO",list);
@@ -150,6 +150,30 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping("/weeklyFeed")
+	public ResponseEntity<?> selectWeeklyFeed(
+			@RequestParam(value="currentTemp") int currentTemp,
+			@RequestParam(value="currentTempRange") int currentTempRange,
+			@RequestParam(value="cpage", required = false, defaultValue = "1") int cpage
+			){
+		Map<String, Object> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
+		return ResponseEntity.ok().body(data);
+	}
+	
+	@GetMapping("/selectfeeddetail") //피드 상세
+	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId) {
+		FeedPostDTO feedPost = feedpostService.searchByFeedPost(feedPostId); // 글 정보
+		List<PhotoDTO> photoList = photoService.selectByFeedpostId(feedPostId); // 사진
+		MemberDTO writeMember = memberService.selectByUserNo(feedPost.getUserNo()); // 멤버정보
+		
+		Map<String,Object> data = new HashMap<>();
+		data.put("feedPost", feedPost);
+		data.put("photoList", photoList);
+		data.put("writeMember", writeMember);
+		
+		return ResponseEntity.ok().body(data);
+				
+	}
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(

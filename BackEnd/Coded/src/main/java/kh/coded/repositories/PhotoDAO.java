@@ -14,8 +14,8 @@ public class PhotoDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-	public PhotoDTO selectByFeedpostId(int feedPostId) {
-		return mybatis.selectOne("Photo.selectByFeedpostId",feedPostId);
+	public List<PhotoDTO> selectByFeedpostId(int feedPostId) {
+		return mybatis.selectList("Photo.selectByFeedpostId",feedPostId);
 	}
 
 	public PhotoDTO selectFeedlike(int feedPostId) {

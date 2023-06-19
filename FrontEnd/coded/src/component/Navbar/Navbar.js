@@ -74,7 +74,10 @@ function Navbar({ type }) {
           setRecentTemp(response.data.today.recent);
           setMinTemp(response.data.today.min);
           setMaxTemp(response.data.today.max);
-          if (weeklyData.ptyCode == 1 || weeklyData.ptyCode == 2) {
+          if (
+            response.data.today.ptyCode == 1 ||
+            response.data.today.ptyCode == 2
+          ) {
             setWeatherIcon(weatherIcons.rain);
           } else if (response.data.today.ptyCode == 3) {
             setWeatherIcon(weatherIcons.snow);

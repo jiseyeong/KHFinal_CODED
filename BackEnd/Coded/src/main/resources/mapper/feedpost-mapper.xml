@@ -62,6 +62,15 @@
 	<select id="selectFeedlike" resultType="kh.coded.dto.FeedLikeDTO">
 		select * from feedlike order by FeedlikeId desc
 	</select>
+	
+	<select id="selectPagingWeatherDiff" resultType="kh.coded.dto.FeedPostDTO">
+		select f.*,
+		 (select ABS(f.writeTemp - ${targetTemp}) from dual) as writeTempDiff,
+		 (select ABS(f.writeTempRange - ${targetTempRange}) from dual) as writeTempRangeDiff
+		from (select feedpost.*, row_number() over(order by FeedPostId desc) rn from feedpost) f
+		where rn between ${startFeedNum} and ${endFeedNum}
+		order by writeTempDiff asc, writeTempRangeDiff asc
+	</select>
 
 
 
