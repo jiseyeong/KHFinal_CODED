@@ -14,8 +14,8 @@ const UserList = ({ userId, userNickName, sysName }) => {
             onError="this.src='/images/test.jpg'"
           ></img>
         </div>
-        <div className={styles.userMiddleSide1}>{userId}</div>
-        <div className={styles.userMiddleSide2}>{userNickName}</div>
+        <div className={styles.userMiddleSide1}>{userNickName}</div>
+        <div className={styles.userMiddleSide2}>{userId}</div>
         <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
         </div>
@@ -130,7 +130,7 @@ const SearchBox = () => {
 
     setCompletedData(temp);
     // const debounce = setTimeout(() => {
-    //   if (searchInput) change();
+    //   if (completedData) change();
     // }, 200);
     // return () => {
     //   clearTimeout(debounce);
