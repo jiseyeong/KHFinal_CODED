@@ -81,20 +81,14 @@ public class SecurityConfiguration {
 			"/auth/refresh",
 			"/auth/oauth/**",
 			"/login/oauth2/**",
-//			"/login/oauth2/kakao/codeInfo",
-//			"/login/oauth2/kakao/tokenInfo",
-//			"/login/oauth2/kakao",
-//			"/login/oauth2/code/kakao",
-//			"/login/oauth2/callback/kakao",
-//			"/login/oauth2/naver",
-//			"/login/oauth2/code/naver",
-//			"/login/oauth2/callback/naver",
-//			"/login/oauth2/naver/codeInfo"
+			
+			"/feedPost/comment/**", //얘들은 단순 select임.
 			
 
 	};
 	private final String[] API_USER_LIST = {
-			"/test/"
+			"/weather/**",
+			"/feedPost/comment"
 	};
 	private final String[] API_ADMIN_LIST = {
 			
