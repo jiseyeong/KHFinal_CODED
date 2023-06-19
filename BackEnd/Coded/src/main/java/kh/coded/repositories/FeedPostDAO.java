@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.FeedPostDTO;
-import kh.coded.dto.FeedPostWeeklyDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
