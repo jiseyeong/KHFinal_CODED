@@ -4,14 +4,18 @@ import styles from './SearchBox.module.scss';
 import axios from 'axios';
 
 // UserList Li
-const UserList = () => {
+const UserList = ({ userId, userNickName, sysName }) => {
   return (
     <li className={styles.userList}>
       <a href="#">
         <div className={styles.userLeftSide}>
-          <img src="/images/test.jpg"></img>
+          <img
+            src={`/images/${sysName}`}
+            onError="this.src='/images/test.jpg'"
+          ></img>
         </div>
-        <div className={styles.userMiddleSide}>sdfsdf</div>
+        <div className={styles.userMiddleSide1}>{userId}</div>
+        <div className={styles.userMiddleSide2}>{userNickName}</div>
         <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
         </div>
@@ -21,15 +25,17 @@ const UserList = () => {
 };
 
 // HashTagList Li
-const HashTagList = () => {
+const HashTagList = ({ hashTag }) => {
   return (
     <li className={styles.hashTagList}>
       <a href="#">
         <div className={styles.userLeftSide}>
+          {/* 해시태그 아이콘 등록해주세요 */}
           <img src="" alt="해시태그 아이콘"></img>
         </div>
-        <div className={styles.userMiddleSide}>sdfsdf</div>
+        <div className={styles.userMiddleSide}>{hashTag}</div>
         <div className={styles.userRightSide}>
+          {/* 다른 기타 아이콘(화살표 아이콘?? 등)넣어주세요 */}
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
         </div>
       </a>
@@ -40,8 +46,12 @@ const HashTagList = () => {
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchData, setSearchData] = useState([]);
-  const autoSearchRef = useRef();
   const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
+  const [completedData, setCompletedData] = useState([]);
+  const autoSearchRef = useRef();
+
+  // 검색 자동완성 출력 개수
+  const [searchCount, setSearchCount] = useState(5);
 
   // 검색 전 자동완성 시 보여줄 해시태그 데이터를 가져옴
   useEffect(() => {
@@ -72,9 +82,8 @@ const SearchBox = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  // 검색 자동완성 바깥 범위 (body) 클릭 시 자동완성 폼 사라짐`
   useEffect(() => {
-    console.log(searchData);
-
     const handleCheck = (e) => {
       if (autoSearchRef.current && !autoSearchRef.current.contains(e.target)) {
         setIsAutoCompleteOpen(false);
@@ -90,7 +99,36 @@ const SearchBox = () => {
   // 검색 입력 시
   const searchboxInput = (e) => {
     setIsAutoCompleteOpen(true);
-    setSearchInput(e.target.value);
+
+    let input = e.target.value;
+
+    const temp = [];
+    searchData.forEach((item, index) => {
+      if (temp.length == searchCount) {
+        return;
+      }
+      if (item.userId !== undefined) {
+        if (
+          item.userId.indexOf(input) !== -1 ||
+          item.userNickName.indexOf(input) !== -1
+        ) {
+          temp.push(item);
+        }
+      }
+    });
+
+    searchData.forEach((item, index) => {
+      if (temp.length == searchCount) {
+        return;
+      }
+      if (item.tagId !== undefined) {
+        if (item.hashTag.indexOf(input) !== -1) {
+          temp.push(item);
+        }
+      }
+    });
+
+    setCompletedData(temp);
     // const debounce = setTimeout(() => {
     //   if (searchInput) change();
     // }, 200);
@@ -98,6 +136,10 @@ const SearchBox = () => {
     //   clearTimeout(debounce);
     // };
   };
+
+  useEffect(() => {
+    console.log(completedData);
+  }, [completedData]);
 
   return (
     // <div className={style.searchBoxLayout}>
@@ -113,8 +155,17 @@ const SearchBox = () => {
       {isAutoCompleteOpen && (
         <div className={styles.autoSearchContainer} ref={autoSearchRef}>
           <div className={styles.autoSearchWrap}>
-            <UserList />
-            <HashTagList />
+            {completedData.map((i) => {
+              return i.userId !== undefined ? (
+                <UserList
+                  userId={i.userId}
+                  userNickName={i.userNickName}
+                  sysName={i.sysName}
+                />
+              ) : (
+                <HashTagList hashTag={i.hashTag} />
+              );
+            })}
           </div>
         </div>
       )}

@@ -19,9 +19,7 @@ public class HashTagController {
 
     @GetMapping("selectAllPostTagNames")
     public ResponseEntity<?> selectAllHashTags(){
-        System.out.println("test");
         List<PostHashsWithHashTagDTO> hashTagNameList =  postHashsService.selectAllPostTagNames();
-        System.out.println(hashTagNameList);
         return ResponseEntity.ok().body(hashTagNameList);
     }
 }
