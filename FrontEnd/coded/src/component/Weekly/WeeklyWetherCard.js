@@ -33,9 +33,10 @@ const weatherIcons = {
 
 function WeeklyWetherCard({ weeklyData, weatherMessage }) {
   const [weatherIcon, setWeatherIcon] = useState('');
-  const {setMaxTemp} = useContext(FeedMaxTempContext);
+  const {setMaxTemp, setTempRange} = useContext(FeedMaxTempContext);
 
   useEffect(() => {
+    setTempRange(weeklyData.max - weeklyData.min);
     if (weeklyData.ptyCode == 1 || weeklyData.ptyCode == 2) {
       setWeatherIcon(weatherIcons.rain);
     } else if (weeklyData.ptyCode == 3) {
