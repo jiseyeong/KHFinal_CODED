@@ -40,11 +40,7 @@ public class FeedPostService {
     @Autowired
     private FeedCommentDAO commentDAO;
 
-
-    public List<FeedPostDTO> selectFeedList(int UserNo) {
-        return feedpostDAO.selectFeedList(UserNo);
-    }
-
+    
     public int insertTest(FeedPostDTO dto) {
         return feedpostDAO.insertFeedPost(dto);
     }
@@ -72,6 +68,10 @@ public class FeedPostService {
         return feedpostDAO.insertHashTag(HashTag);
     }
 
+    public List<FeedPostDTO> selectFeedList(int UserNo) {
+        return feedpostDAO.selectFeedList(UserNo);
+    }
+    
     public List<FeedPostDTO> selectTestFeedList() {
         return feedpostDAO.selectTestFeedList();
     }
@@ -81,16 +81,13 @@ public class FeedPostService {
     }
 
 
-	public PhotoDTO selectByFeedpostId(int feedPostId) {
-		return photoDAO.selectByFeedpostId(feedPostId);
+	public FeedPostDTO selectByFeedpostId(int feedPostId) {
+		return feedpostDAO.searchByFeedPost(feedPostId);
 	}
 
 	public List<FeedPostDTO> selectFeedlike() {
 		return feedpostDAO.selectFeedlike();
 	}
-
-
-
 
     public List<PostHashsDTO> searchByPostHashs(int tagId) {
         return feedpostDAO.searchByPostHashs(tagId);
