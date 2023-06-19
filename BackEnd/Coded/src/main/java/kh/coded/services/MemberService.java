@@ -209,11 +209,11 @@ public class MemberService implements UserDetailsService {
 						<div style="margin:100px;">
 							<h1>안녕하세요.</h1>
 							<h1>KH 종로 지점 교육원 Final 프로젝트 중 하나인 Coded 프로젝트입니다.</h1>
-							<h1>임시 비밀번호 발급 안내 드립니다.</h1>
+							<h1>임시 새 비밀번호 발급 안내 드립니다.</h1>
 							<br/>
 							<div align="center" style="border:1px solid black; font-family:verdana;">
-								<h3 style="color:blue"> 임시 비밀번호입니다. </h3>
-								<div style="font-size:1.3rem"> %s </div> 
+								<h3 style="color:blue"> 임시 새 비밀번호입니다. </h3>
+								<div style="font-size:1.3em"> %s </div> 
 							</div>
 							<br/>
 						</div>

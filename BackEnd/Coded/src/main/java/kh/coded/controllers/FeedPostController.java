@@ -150,7 +150,7 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(list);
 	}
 	
-	// /feedPost/
+	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(
 			@RequestParam(value="userNo") int userNo,
