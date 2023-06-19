@@ -1,13 +1,52 @@
-.autoSearchContainer {
-  display: none;
-  z-index: 3;
-  height: 50vh;
-  width: 400px;
-  background-color: #fff;
-  position: absolute;
-  top: 45px;
-  border: 2px solid;
-  padding: 15px;
+.searchBar {
+  margin: 0 auto;
+  transform: translateX(-26%);
+  width: 30%;
+  height: 40px;
+  z-index: 102;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  line-height: 1.43;
+  color: rgb(27, 29, 31);
+  background-color: rgb(247, 248, 249);
+  border-radius: 22px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(232, 235, 237);
+  border-image: initial;
+  transition: background-color 0.25s ease-in-out 0s, color 0.25s 0s;
+
+  input {
+    justify-content: center;
+    appearance: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: color 0.25s ease-in-out 0s;
+    outline: none;
+    border: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.4px;
+    line-height: 1.43;
+    color: #26282b;
+    font-family: 'Helvetica', 'Arial', 'Apple SD Gothic Neo', 'Nanum Gothic',
+      'Malgun Gothic', 'DotumChe', 'Dotum', sans-serif;
+  }
+
+  .autoSearchContainer {
+    display: none;
+    z-index: 3;
+    height: 50vh;
+    width: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 45px;
+    border: 2px solid;
+    border-color: rgb(232, 235, 237);
+    padding: 15px;
+  }
 }
 
 .searchBoxLayout {

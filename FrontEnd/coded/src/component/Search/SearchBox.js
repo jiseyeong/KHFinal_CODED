@@ -34,33 +34,34 @@ const SearchBox = () => {
 
   // 검색 전 자동완성 시 보여줄 해시태그 데이터를 출력
   useEffect(() => {
-    axios
-      .request({
-        url: '/PostHashs/selectAllPostTagNames',
-        method: 'GET',
-      })
+    axios({
+      url: '/PostHashs/selectAllPostTagNames',
+      method: 'get',
+    })
       .then((resp) => {
+        console.log(resp.data);
         setHashTagData(resp.data);
       })
       .catch((error) => console.log(error));
 
-    // axios
-    //   .request({
-    //     url: '/auth/selectUserListWithProfile',
-    //     method: 'GET',
-    //   })
-    //   .then((resp) => {
-    //     setUserData(resp.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // const debounce = setTimeout(() => {
-    //   if (searchInput) change();
-    // }, 200);
-    // return () => {
-    //   clearTimeout(debounce);
-    // };
+    axios
+      .request({
+        url: '/auth/selectUserListWithProfile',
+        method: 'GET',
+      })
+      .then((resp) => {
+        console.log(resp.data);
+        setUserData(resp.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    const debounce = setTimeout(() => {
+      if (searchInput) change();
+    }, 200);
+    return () => {
+      clearTimeout(debounce);
+    };
   }, []);
 
   const searchboxInput = (event) => {
@@ -70,7 +71,7 @@ const SearchBox = () => {
 
   return (
     // <div className={style.searchBoxLayout}>
-    <form className="searchBar">
+    <form className={styles.searchBar}>
       <input
         id="search-keyword"
         name="keyword"
