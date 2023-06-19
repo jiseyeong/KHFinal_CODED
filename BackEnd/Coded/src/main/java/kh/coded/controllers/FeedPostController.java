@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
-import kh.coded.dto.FeedPostWeeklyDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
