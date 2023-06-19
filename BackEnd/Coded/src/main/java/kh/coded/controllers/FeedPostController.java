@@ -150,6 +150,16 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping("/weeklyFeed")
+	public ResponseEntity<?> selectWeeklyFeed(
+			@RequestParam(value="currentTemp") int currentTemp,
+			@RequestParam(value="currentTempRange") int currentTempRange,
+			@RequestParam(value="cpage", required = false, defaultValue = "1") int cpage
+			){
+		Map<String, Object> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
+		return ResponseEntity.ok().body(data);
+	}
+	
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(
