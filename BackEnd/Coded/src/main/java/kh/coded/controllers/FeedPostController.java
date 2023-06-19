@@ -106,7 +106,7 @@ public class FeedPostController {
     	List<PhotoDTO> list2 = new ArrayList<>();
     	
     	for(FeedPostDTO e : list) {
-    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
+    		list2.add((PhotoDTO) photoService.selectByFeedpostId(e.getFeedPostId()));
     	}
     	Map<String,Object> result = new HashMap<>();
     	result.put("feedpostDTO", list);
@@ -120,7 +120,7 @@ public class FeedPostController {
     	List<FeedPostDTO> list = feedpostService.selectFeedlike();
     	List<PhotoDTO> list2 = new ArrayList<>();
     	for(FeedPostDTO e : list) {
-    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
+    		list2.add((PhotoDTO) photoService.selectByFeedpostId(e.getFeedPostId()));
     	}
     	Map<String,Object> result = new HashMap<>();
     	result.put("FeedPostDTO",list);
@@ -139,14 +139,14 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(map);
 	}
 
-	// 검색을 통한 피드 리스트 뽑기
-	@GetMapping("/selectAllFeedPost/{keyword}")
-	public ResponseEntity<?> selectSearchFeedList(
+	// 해시태그 검색을 통한 피드 리스트 뽑기
+	@GetMapping("/selectSearchHashFeedList/{keyword}")
+	public ResponseEntity<?> selectSearchFeedListByHashs(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
 			@PathVariable("keyword") String keyword) {
 		System.out.println(cpage);
 
-		Map<String, Object> map = feedpostService.selectSearchFeedList(cpage,keyword);
+		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,keyword);
 		return ResponseEntity.ok().body(map);
 	}
 

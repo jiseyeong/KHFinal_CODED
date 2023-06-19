@@ -191,14 +191,14 @@ public class FeedPostService {
     	return data;
     }
 
-    public Map<String, Object> selectSearchFeedList(int cpage, String keyword) {
+    public Map<String, Object> selectSearchFeedListByHashs(int cpage, String keyword) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
 
-        List<FeedPostDTO> feedPostList = feedpostDAO.selectSearchFeedList(startFeedNum, endFeedNum, keyword);
+        List<FeedPostDTO> feedPostList = feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
         List<MemberDTO> memberList = new ArrayList<>();
         List<PhotoDTO> userProfileList = new ArrayList<>();
         List<PhotoDTO> thumbNailList = new ArrayList<>();

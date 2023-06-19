@@ -97,12 +97,11 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
 	}
 
-
-    public List<FeedPostDTO> selectSearchFeedList(int startFeedNum, int endFeedNum, String keyword) {
+	public List<FeedPostDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);
 		map.put("keyword",keyword);
-		return mybatis.selectList("FeedPost.selectSearchFeedList",map);
-    }
+		return mybatis.selectList("FeedPost.selectSearchFeedListByHashs",map);
+	}
 }
