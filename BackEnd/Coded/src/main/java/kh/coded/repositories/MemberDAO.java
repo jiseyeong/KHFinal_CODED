@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kh.coded.dto.MemberWithProfileDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -107,4 +108,8 @@ public class MemberDAO {
     public List<MemberDTO> selectUserList() {
 		return mybatis.selectList("Member.selectUserList");
     }
+
+	public List<MemberWithProfileDTO> selectUserListWithProfile() {
+		return mybatis.selectList("Member.selectUserListWithProfile");
+	}
 }

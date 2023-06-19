@@ -26,6 +26,7 @@ import WeeklyPage from './pages/Weekly/Main/Weekly';
 import ImageUpload from './test/ImageUpload';
 import TestComponent from './test/TestComponent';
 import SearchLabelSelect from './test/SearchLabelSelect';
+import SearchBox from './component/Search/SearchBox';
 
 function App() {
   const dispatch = useDispatch();
@@ -85,6 +86,7 @@ function App() {
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
+        <Route path="searchBox" element={<SearchBox />} />
 
         <Route
           path="/login/oauth2/code/kakao"

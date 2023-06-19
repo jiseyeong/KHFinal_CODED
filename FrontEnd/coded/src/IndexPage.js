@@ -41,6 +41,9 @@ const IndexPage = () => {
       <Link to="/TestComponent">기능 테스트</Link>
       <br />
       <br />
+      <Link to="/searchBox">검색 테스트</Link>
+      <br />
+      <br />
       <Link to="/feed/id">아이디 검색 결과(테스트)</Link>
       <br />
       <br />

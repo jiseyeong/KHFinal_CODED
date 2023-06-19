@@ -1,0 +1,141 @@
+.searchBar {
+  margin: 0 auto;
+  transform: translateX(-26%);
+  width: 30%;
+  height: 40px;
+  z-index: 102;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  line-height: 1.43;
+  color: rgb(27, 29, 31);
+  background-color: rgb(247, 248, 249);
+  border-radius: 22px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(232, 235, 237);
+  border-image: initial;
+  transition: background-color 0.25s ease-in-out 0s, color 0.25s 0s;
+
+  input {
+    justify-content: center;
+    appearance: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: color 0.25s ease-in-out 0s;
+    outline: none;
+    border: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.4px;
+    line-height: 1.43;
+    color: #26282b;
+    font-family: 'Helvetica', 'Arial', 'Apple SD Gothic Neo', 'Nanum Gothic',
+      'Malgun Gothic', 'DotumChe', 'Dotum', sans-serif;
+  }
+
+  .autoSearchContainer {
+    z-index: 3;
+    height: 40vh;
+    width: 100%;
+    background-color: #fff;
+    position: absolute;
+    top: 45px;
+    border: 2px solid;
+    border-color: rgb(232, 235, 237);
+    padding: 15px;
+  }
+}
+
+.autoSearchWrap {
+  // userList와 hashTagList
+  li {
+    width: 100%;
+    height: 50px;
+    list-style: none;
+    padding: 6px 6px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 4;
+    letter-spacing: 2px;
+    &:hover {
+      background-color: #edf5f5;
+      cursor: pointer;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      div {
+        height: 100%;
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .userLeftSide {
+        width: 10%;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      // 단일 사용 시
+      .userMiddleSide {
+        width: 80%;
+        padding-left: 20px;
+        justify-content: left;
+      }
+      // 여러개 나누어 사용 시
+      .userMiddleSide1 {
+        width: 50%;
+        padding-left: 20px;
+        justify-content: left;
+      }
+      .userMiddleSide2 {
+        width: 30%;
+        padding-left: 20px;
+        justify-content: left;
+      }
+
+      .userRightSide {
+        width: 10%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.searchOutLayer {
+  // position: absolute;
+  z-index: 1500;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+// .searchBoxLayout {
+//   width: 60%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .searchBox {
+//   width: 50%;
+//   height: 50%;
+// }

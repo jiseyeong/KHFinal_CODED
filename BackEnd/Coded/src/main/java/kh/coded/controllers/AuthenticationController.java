@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kh.coded.dto.MemberWithProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -320,10 +321,16 @@ public class AuthenticationController {
 		return ResponseEntity.ok().body(result);
 	}
 
-	@GetMapping(value="/auth/selectUserList")
+	// 테스트 용도 (피드 작성 폼 구성 시 삭제 예정)
+ 	@GetMapping(value="/auth/selectUserList")
 	public ResponseEntity<?> selectUserList(){
 		List<MemberDTO> userList = memberService.selectUserList();
 		return ResponseEntity.ok().body(userList);
 	}
 
+	@GetMapping(value="/auth/selectUserListWithProfile")
+	public ResponseEntity<?> selectUserListWithProfile(){
+		List<MemberWithProfileDTO> userList = memberService.selectUserListWithProfile();
+		return ResponseEntity.ok().body(userList);
+	}
 }
