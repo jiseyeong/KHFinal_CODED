@@ -202,7 +202,7 @@ public class AuthenticationController {
 			){
 		MemberDTO member = memberService.selectMemberForPwSend(userId, userNickName, toEmail);
 		if(member!=null) {
-			String subject = "[KH Coded]임시 비밀번호 발급";
+			String subject = "[KH Coded]임시 새 비밀번호 발급";
 			memberService.sendMail(member, subject);			
 			return ResponseEntity.ok().body("새 비밀번호를 이메일로 보내드렸습니다.");
 		}
@@ -219,6 +219,19 @@ public class AuthenticationController {
 			@RequestParam(value="address1") String address1
 			){
 		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth2(address1));
+	}
+	
+	@GetMapping(value="/auth/getUserNamesByUserNo")
+	public ResponseEntity<?> getIdByUserNo(
+			@RequestParam(value="userNo") int userNo
+			){
+		Map<String, String> data = new HashMap<>();
+		MemberDTO member = memberService.selectByUserNo(userNo);
+		String userId = member.getUserId();
+		String userNickName = member.getUserNickName();
+		data.put("userId", userId);
+		data.put("userNickName", userNickName);
+		return ResponseEntity.ok().body(data);
 	}
 
 
