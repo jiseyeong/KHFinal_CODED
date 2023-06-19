@@ -18,9 +18,6 @@ public class PhotoDAO {
 		return mybatis.selectList("Photo.selectByFeedpostId",feedPostId);
 	}
 
-	public PhotoDTO selectFeedThumnail(int feedPostId) {
-		return mybatis.selectOne("Photo.selectFeedThumnail",feedPostId);
-	}
 	public PhotoDTO selectFeedlike(int feedPostId) {
 		return mybatis.selectOne("Ptoho.selectFeedlike",feedPostId);
 	}

@@ -112,7 +112,7 @@ public class FeedPostController {
     	List<PhotoDTO> list2 = new ArrayList<>();
     	
     	for(FeedPostDTO e : list) {
-    		list2.add(photoService.selectFeedThumnail(e.getFeedPostId()));
+    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
     	}
     	Map<String,Object> result = new HashMap<>();
     	result.put("feedpostDTO", list);
@@ -126,7 +126,7 @@ public class FeedPostController {
     	List<FeedPostDTO> list = feedpostService.selectFeedlike();
     	List<PhotoDTO> list2 = new ArrayList<>();
     	for(FeedPostDTO e : list) {
-    		list2.add(photoService.selectFeedThumnail(e.getFeedPostId()));
+    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
     	}
     	Map<String,Object> result = new HashMap<>();
     	result.put("FeedPostDTO",list);
