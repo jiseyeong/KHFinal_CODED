@@ -169,14 +169,7 @@ public class FeedPostController {
 	
 	@GetMapping("/selectfeeddetail") //피드 상세
 	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId) {
-		FeedPostDTO feedPost = feedpostService.searchByFeedPost(feedPostId); // 글 정보
-		List<PhotoDTO> photoList = photoService.selectByFeedpostId(feedPostId); // 사진
-		MemberDTO writeMember = memberService.selectByUserNo(feedPost.getUserNo()); // 멤버정보
-		
-		Map<String,Object> data = new HashMap<>();
-		data.put("feedPost", feedPost);
-		data.put("photoList", photoList);
-		data.put("writeMember", writeMember);
+		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId);
 		
 		return ResponseEntity.ok().body(data);
 				
