@@ -1,31 +1,109 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import RegisterPage from './pages/auth/RegisterPage';
-import LoginPage from './pages/auth/LoginPage';
-// import MyProfilePage from './pages/user/MyProfilePage';
-import FeedList from './pages/feedList/FeedList';
-import MyProfilePage from './pages/user/MyProfile/MyProfilePage';
-import HomePageTemplate from './pages/main/HomePageTemplate';
-import FeedListByIdWithMain from './pages/test/FeedListByIdWithMain';
-import FeedListByHashsWithMain from './pages/test/FeedListByHashsWithMain';
-import FeedListByNickNameWithMain from './pages/test/FeedListByNickNameWithMain';
+import React, { useCallback, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import IndexPage from './IndexPage';
+import Login from './pages/auth/Login/Login';
+import SignUp from './pages/auth/SignUp/SignUp';
+import Profile from './component/Profile/Profile';
+import FeedList from './component/FeedList/FeedList';
+import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
+import Ootd from './pages/ootd/Main/Main';
+import FeedListByIdWithMain from './test/FeedListByIdWithMain';
+import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
+import FeedListByNickNameWithMain from './test/FeedListByNickNameWithMain';
+import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
+import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
+import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
+import DMPage from './pages/DM/DMPage';
+import HomePageTemplate from './pages/HomePageTemplate';
+import IdSearch from './pages/auth/Login/IdSearch';
+import PwSearch from './pages/auth/Login/PwSearch';
+import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
+import { useDispatch } from 'react-redux';
+import { login, logout, setRefresh } from './modules/Redux/members';
+import cookie from 'react-cookies';
+import axios from 'axios';
+import WeeklyPage from './pages/Weekly/Main/Weekly';
+import ImageUpload from './test/ImageUpload';
+import TestComponent from './test/TestComponent';
+import SearchLabelSelect from './test/SearchLabelSelect';
+import SearchBox from './component/Search/SearchBox';
 
 function App() {
+  const dispatch = useDispatch();
+  const onLogin = useCallback(
+    (accessToken, userId, userNo) =>
+      dispatch(login(accessToken, userId, userNo)),
+    [dispatch],
+  );
+  const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
+  const onSetRefresh = useCallback(
+    (refreshToken) => dispatch(setRefresh(refreshToken)),
+    [dispatch],
+  );
+
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: '/auth/refresh',
+    })
+      .then((response) => {
+        let refreshToken = cookie.load('CodedRefreshToken');
+        refreshToken = refreshToken.substr(
+          'Bearer '.length,
+          refreshToken.length,
+        );
+        onLogin(
+          response.data.accessToken,
+          response.data.userId,
+          response.data.userNo,
+        );
+        onSetRefresh(refreshToken);
+      })
+      .catch((error) => {
+        onLogout();
+        console.log(error);
+      });
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        {/* <Route path="/myprofile" element={<MyProfilePage />} /> */}
-        <Route path="/FeedList" element={<FeedList />} />
-        <Route path="/HomePage" element={<HomePageTemplate />} />
-        <Route path="/FeedList/id" element={<FeedListByIdWithMain />} />
-        <Route path="/FeedList/nick" element={<FeedListByNickNameWithMain />} />
-        <Route path="/FeedList/hashs" element={<FeedListByHashsWithMain />} />
+        <Route path="/" element={<IndexPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
+        <Route path="/feed" element={<FeedList />} />
+        <Route path="/feed/id" element={<FeedListByIdWithMain />} />
+        <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
+        <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/DMPage" element={<DMPage />} />
+        <Route path="/ootd" element={<Ootd />} />
+        <Route path="/idSearch" element={<IdSearch />} />
+        <Route path="/pwSearch" element={<PwSearch />} />
+        <Route path="/weekly" element={<WeeklyPage />} />
+
+        <Route path="/testComponent" element={<TestComponent />} />
+        <Route path="/imageUpload" element={<ImageUpload />} />
+        <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
+        <Route path="searchBox" element={<SearchBox />} />
+
+        <Route
+          path="/login/oauth2/code/kakao"
+          element={<KakaoCodeCallbackPage />}
+        />
+        <Route
+          path="/login/oauth2/code/naver"
+          element={<NaverCodeCallbackPage />}
+        />
+        <Route
+          path="/login/oauth2/code/google"
+          element={<GoogleCodeCallbackPage />}
+        />
+        <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
+        <Route path="/"></Route>
       </Routes>
     </BrowserRouter>
   );
 }
-
 export default App;

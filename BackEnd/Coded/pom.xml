@@ -110,11 +110,19 @@
 		    <version>1.2</version>
 		</dependency>
 
-
-
+		<!-- STOMP WebSocket -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>stomp-websocket</artifactId>
+			<version>2.3.4</version>
+		</dependency>
 		
-
-
+		<!-- Java Mail -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		    <version>3.1.0</version>
+		</dependency>
 
 		
 	</dependencies>

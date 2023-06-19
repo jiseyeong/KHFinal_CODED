@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
@@ -42,13 +40,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/static/**",
 					"/favicon.ico",
 					
+					"/",
 					"/login",
 					"/register",
 					"/auth/member",
 					"/auth/login",
+					"/auth/logout",
 					"/auth/oauth/**",
-					"/login/oauth2/code/kakao",
-					"/login/oauth2/callback/kakao"
+					"/login/oauth2/**",
+					"/auth/refresh",
+					"/auth/isMember",
+					"/auth/isMemberByEmail",
+					"/auth/send-mail/pw",
+					"/auth/getAddress1List",
+					"/auth/getAddress2List"
 					));
 
 	@Override
@@ -71,14 +76,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 		if(accessToken != null && accessToken.startsWith("Bearer ")) {
 			accessToken = accessToken.substring("Bearer ".length(), accessToken.length());
-			System.out.println(accessToken);
-			try {
-				member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
-			}catch(Exception e) {
-				e.printStackTrace();
+			if(jwtProvider.validateToken(accessToken)) {
+				try {
+					member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
+				}catch(Exception e) {
+					e.printStackTrace();
+				}				
+			}else {
+				System.out.println("JWT 토큰이 유효하지 않습니다.");
 			}
 		}else {
 			System.out.println("JWT 토큰이 Bearer String 으로 시작하지 않습니다.");
+			
 		}
 
 		if(member != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -99,7 +108,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
 						CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 					}
-					CookieUtil.addHttpOnlyCookie(response, "CodedRefreshToken", "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
 				}
 			}
 		}catch(Exception e) {

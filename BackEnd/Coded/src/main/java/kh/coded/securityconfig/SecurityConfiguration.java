@@ -3,7 +3,6 @@ package kh.coded.securityconfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -13,19 +12,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import kh.coded.security.CustomAccessDeniedHandler;
 import kh.coded.security.CustomAuthenticationEntryPoint;
-import kh.coded.security.MemberAuthenticationProvider;
-import kh.coded.security.oauth.OAuth2SuccessHandler;
-import kh.coded.security.oauth.OAuth2UserService;
 import kh.coded.services.MemberService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 	
-	@Autowired
-	private OAuth2UserService oAuth2UserService;
-	@Autowired
-	private MemberAuthenticationProvider memberAuthenticationProvider;
+//	@Autowired
+//	private OAuth2UserService oAuth2UserService;
+//	@Autowired
+//	private MemberAuthenticationProvider memberAuthenticationProvider;
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -34,8 +30,8 @@ public class SecurityConfiguration {
 	private CustomAccessDeniedHandler customAccessDeniedHandler;
 	//@Autowired
 	//private OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
-	@Autowired
-	private OAuth2SuccessHandler oAuth2SuccessHandler;
+//	@Autowired
+//	private OAuth2SuccessHandler oAuth2SuccessHandler;
 	//@Autowired
 	//private OAuth2FailureHandler oAuth2FailureHandler;
 	@Autowired
@@ -52,6 +48,8 @@ public class SecurityConfiguration {
 			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
+			"/**",
+			"/index.html",
 			"/",
 			"/images/**",
 			"/manifest.json",
@@ -68,6 +66,9 @@ public class SecurityConfiguration {
 			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
+			"/MyProfile",
+			"/FileUploadTest",
+			"/DMPage",
 			
 			"/login",
 			"/register",
@@ -75,22 +76,28 @@ public class SecurityConfiguration {
 			"/auth/member",
 			"/auth/login",
 			"/auth/userNo",
+			"/auth/getAddress1List",
+			"/auth/getAddress2List",
+			"/auth/refresh",
 			"/auth/oauth/**",
-			"/login/oauth2/code/kakao",
-			"/login/oauth2/callback/kakao",
+			"/login/oauth2/**",
+			
+			"/feedPost/comment/**", //얘들은 단순 select임.
+			
 
 	};
 	private final String[] API_USER_LIST = {
-			"/test/"
+			"/weather/**",
+			"/feedPost/comment"
 	};
 	private final String[] API_ADMIN_LIST = {
 			
 	};
 	
-	@Autowired
-	public void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.authenticationProvider(memberAuthenticationProvider);
-	}
+//	@Autowired
+//	public void configure(AuthenticationManagerBuilder auth) throws Exception{
+//		auth.authenticationProvider(memberAuthenticationProvider);
+//	}
 	
 	@Bean
 	public WebSecurityCustomizer configure() {
@@ -134,26 +141,26 @@ public class SecurityConfiguration {
 			}			
 		});
 		
-		http.oauth2Login(login -> {
-			try {
-				login
-					//.authorizationEndpoint(authorize -> authorize.baseUri("/auth/ouath/authorize"))
-					//.redirectionEndpoint(redirect -> redirect.baseUri("/auth/ouath/callback/*"))
-					.authorizationEndpoint(authorize ->
-											authorize
-												.baseUri("/auth/oauth/")
-												//.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
-												)
-					.redirectionEndpoint(redirect ->
-											redirect.baseUri("/auth/oauth/**")
-											)
-					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
-					.successHandler(oAuth2SuccessHandler);
-					//.failureHandler(oAuth2FailureHandler);
-			}catch(Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
+//		http.oauth2Login(login -> {
+//			try {
+//				login
+//					//.authorizationEndpoint(authorize -> authorize.baseUri("/auth/ouath/authorize"))
+//					//.redirectionEndpoint(redirect -> redirect.baseUri("/auth/ouath/callback/*"))
+//					.authorizationEndpoint(authorize ->
+//											authorize
+//												.baseUri("/auth/oauth/")
+//												//.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository)
+//												)
+//					.redirectionEndpoint(redirect ->
+//											redirect.baseUri("/auth/oauth/**")
+//											);
+////					.userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+////					.successHandler(oAuth2SuccessHandler);
+//					//.failureHandler(oAuth2FailureHandler);
+//			}catch(Exception e) {
+//				throw new RuntimeException(e);
+//			}
+//		});
 		
 //		http.oauth2Login(login ->{
 //		try {
@@ -177,7 +184,7 @@ public class SecurityConfiguration {
 		);
 		
 		//한 계정 당 하나의 로그인 유지만 가능하도록 하는 설정임.
-		http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));
+		//http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));
 		
 		
 		return http.build();

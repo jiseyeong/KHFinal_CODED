@@ -79,4 +79,23 @@ public class FeedPostDAO {
 	public FeedPostDTO selectByUserNo(int userNo) {
 		return mybatis.selectOne("FeedPost.selectByUserNo",userNo);
 	}
+
+	public List<FeedPostDTO> selectFeedNew() {
+		return mybatis.selectList("FeedPost.selectFeedNew");
+	}
+
+	public List<FeedPostDTO> selectFeedlike() {
+		return mybatis.selectList("FeedPost.selectFeedlike");
+	}
+	
+	public List<FeedPostDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("targetTemp", targetTemp);
+		data.put("targetTempRange", targetTempRange);
+		data.put("startFeedNum",startFeedNum);
+		data.put("endFeedNum",endFeedNum);
+		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
+	}
+
+
 }

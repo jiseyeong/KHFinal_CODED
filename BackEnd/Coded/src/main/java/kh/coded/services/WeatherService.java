@@ -22,8 +22,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.nimbusds.jose.shaded.gson.JsonObject;
-
 import kh.coded.dto.AddressCoordDTO;
 import kh.coded.dto.TodayWeatherDTO;
 import kh.coded.dto.WeeklyWeatherDTO;
@@ -82,8 +80,11 @@ public class WeatherService {
 		return tempMessageDAO.selectMessageByCondition(condition, rangeCondition);
 	}
 
-	public TodayWeatherDTO getTodayWeather(int addressId, int time) {
-		return todayWeatherDAO.selectByAddressId(addressId, time);
+	public TodayWeatherDTO getTodayWeather(int addressId, long time) {
+		Calendar calandar = Calendar.getInstance();
+		calandar.setTimeInMillis(time);
+		int hour = calandar.get(Calendar.HOUR_OF_DAY);
+		return todayWeatherDAO.selectByAddressId(addressId, hour);
 	}
 
 	public WeeklyWeatherDTO getWeeklyWeather(int addressId, int dDay) {
@@ -147,7 +148,7 @@ public class WeatherService {
 			for(AddressCoordDTO coord : coordList) {						
 				UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst")
 						.queryParam("serviceKey", weatherShortAPIKey)
-						.queryParam("numOfRows", 900)
+						.queryParam("numOfRows", 1200)
 						.queryParam("pageNo", 1)
 						.queryParam("base_date", day)
 						.queryParam("base_time", "0200")

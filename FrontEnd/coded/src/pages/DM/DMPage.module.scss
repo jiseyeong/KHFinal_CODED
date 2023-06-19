@@ -1,0 +1,68 @@
+.chatLayout {
+  width: 600px;
+  height: 1000px;
+  margin: auto;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  div {
+    border-collapse: collapse;
+  }
+}
+
+.chatBox {
+  border: 1px solid black;
+  width: 400px;
+  height: 600px;
+  position: relative;
+  margin: auto;
+  display: table;
+}
+
+.chatBox > div {
+  width: 100%;
+}
+
+.messageArea {
+  height: 92%;
+  overflow-y: scroll;
+}
+
+.inputArea {
+  border: 1px solid black;
+  height: 8%;
+  position: absolute;
+  bottom: 0;
+}
+
+.messageLayout {
+  width: 100%;
+}
+
+.messageBox {
+  margin: 10px;
+  padding: 5px;
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 5px;
+  max-width: 250px;
+  max-height: 400px;
+}
+
+.messageBoxAlert {
+  width: 100%;
+  height: 100%;
+  margin: 10px;
+  padding: 5px;
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.chat {
+  width: 100%;
+  height: 100%;
+}
