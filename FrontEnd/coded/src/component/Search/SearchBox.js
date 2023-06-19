@@ -3,70 +3,100 @@ import { styled } from 'styled-components';
 import styles from './SearchBox.module.scss';
 import axios from 'axios';
 
-const AutoSearchWrap = styled('ul')``;
+// UserList Li
+const UserList = () => {
+  return (
+    <li className={styles.userList}>
+      <a href="#">
+        <div className={styles.userLeftSide}>
+          <img src="/images/test.jpg"></img>
+        </div>
+        <div className={styles.userMiddleSide}>sdfsdf</div>
+        <div className={styles.userRightSide}>
+          <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
+        </div>
+      </a>
+    </li>
+  );
+};
 
-const AutoSearchData = styled('li')`
-  padding: 10px 8px;
-  width: 100%;
-  font-size: 14px;
-  font-weight: bold;
-  z-index: 4;
-  letter-spacing: 2px;
-  &:hover {
-    background-color: #edf5f5;
-    cursor: pointer;
-  }
-  position: relative;
-  img {
-    position: absolute;
-    right: 5px;
-    width: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`;
+// HashTagList Li
+const HashTagList = () => {
+  return (
+    <li className={styles.hashTagList}>
+      <a href="#">
+        <div className={styles.userLeftSide}>
+          <img src="" alt="해시태그 아이콘"></img>
+        </div>
+        <div className={styles.userMiddleSide}>sdfsdf</div>
+        <div className={styles.userRightSide}>
+          <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
+        </div>
+      </a>
+    </li>
+  );
+};
 
 const SearchBox = () => {
   const [searchInput, setSearchInput] = useState('');
-  const [hashTagData, setHashTagData] = useState([]);
-  const [userData, setUserData] = useState([]);
+  const [searchData, setSearchData] = useState([]);
   const autoSearchRef = useRef();
+  const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
 
-  // 검색 전 자동완성 시 보여줄 해시태그 데이터를 출력
+  // 검색 전 자동완성 시 보여줄 해시태그 데이터를 가져옴
   useEffect(() => {
-    axios({
-      url: '/PostHashs/selectAllPostTagNames',
-      method: 'get',
-    })
-      .then((resp) => {
-        console.log(resp.data);
-        setHashTagData(resp.data);
-      })
-      .catch((error) => console.log(error));
-
     axios
       .request({
         url: '/auth/selectUserListWithProfile',
         method: 'GET',
       })
       .then((resp) => {
-        console.log(resp.data);
-        setUserData(resp.data);
+        setSearchData(() => {
+          return resp.data;
+        });
       })
       .catch((error) => {
         console.log(error);
       });
-    const debounce = setTimeout(() => {
-      if (searchInput) change();
-    }, 200);
+
+    axios
+      .request({
+        url: '/PostHashs/selectAllPostTagNames',
+        method: 'GET',
+      })
+      .then((resp) => {
+        setSearchData((prev) => {
+          return [...prev, ...resp.data];
+        });
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    console.log(searchData);
+
+    const handleCheck = (e) => {
+      if (autoSearchRef.current && !autoSearchRef.current.contains(e.target)) {
+        setIsAutoCompleteOpen(false);
+      }
+    };
+    document.body.addEventListener('click', handleCheck);
+
     return () => {
-      clearTimeout(debounce);
+      document.body.removeEventListener('click', handleCheck);
     };
   }, []);
 
-  const searchboxInput = (event) => {
-    setSearchInput(event.target.value);
-    autoSearchRef.current.style.display = 'block';
+  // 검색 입력 시
+  const searchboxInput = (e) => {
+    setIsAutoCompleteOpen(true);
+    setSearchInput(e.target.value);
+    // const debounce = setTimeout(() => {
+    //   if (searchInput) change();
+    // }, 200);
+    // return () => {
+    //   clearTimeout(debounce);
+    // };
   };
 
   return (
@@ -77,16 +107,17 @@ const SearchBox = () => {
         name="keyword"
         type="search"
         placeholder="유저와 스타일을 검색해보세요"
+        autoComplete="off"
         onChange={searchboxInput}
       />
-      <div className={styles.autoSearchContainer} ref={autoSearchRef}>
-        <AutoSearchWrap>
-          <AutoSearchData>
-            <a href="#"></a>
-            <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
-          </AutoSearchData>
-        </AutoSearchWrap>
-      </div>
+      {isAutoCompleteOpen && (
+        <div className={styles.autoSearchContainer} ref={autoSearchRef}>
+          <div className={styles.autoSearchWrap}>
+            <UserList />
+            <HashTagList />
+          </div>
+        </div>
+      )}
     </form>
     // </div>
   );

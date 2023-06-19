@@ -36,9 +36,8 @@
   }
 
   .autoSearchContainer {
-    display: none;
     z-index: 3;
-    height: 50vh;
+    height: 40vh;
     width: 100%;
     background-color: #fff;
     position: absolute;
@@ -49,14 +48,82 @@
   }
 }
 
-.searchBoxLayout {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.autoSearchWrap {
+  // userList와 hashTagList
+  li {
+    width: 100%;
+    height: 50px;
+    list-style: none;
+    padding: 6px 6px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 4;
+    letter-spacing: 2px;
+    &:hover {
+      background-color: #edf5f5;
+      cursor: pointer;
+    }
+
+    a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      div {
+        height: 100%;
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .userLeftSide {
+        width: 10%;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .userMiddleSide {
+        width: 80%;
+        padding-left: 20px;
+        justify-content: left;
+      }
+
+      .userRightSide {
+        width: 10%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
 }
 
-.searchBox {
-  width: 50%;
-  height: 50%;
+.searchOutLayer {
+  // position: absolute;
+  z-index: 1500;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
+
+// .searchBoxLayout {
+//   width: 60%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .searchBox {
+//   width: 50%;
+//   height: 50%;
+// }
