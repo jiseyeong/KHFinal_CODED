@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.FeedPostWeeklyDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
@@ -86,6 +87,15 @@ public class FeedPostDAO {
 
 	public List<FeedPostDTO> selectFeedlike() {
 		return mybatis.selectList("FeedPost.selectFeedlike");
+	}
+	
+	public List<FeedPostDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("targetTemp", targetTemp);
+		data.put("targetTempRange", targetTempRange);
+		data.put("startFeedNum",startFeedNum);
+		data.put("endFeedNum",endFeedNum);
+		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
 	}
 
 

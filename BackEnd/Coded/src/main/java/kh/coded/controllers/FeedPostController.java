@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.FeedPostWeeklyDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
@@ -148,6 +149,16 @@ public class FeedPostController {
 	public ResponseEntity<?> selectFeedList(){
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
 		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping("/weeklyFeed")
+	public ResponseEntity<?> selectWeeklyFeed(
+			@RequestParam(value="currentTemp") int currentTemp,
+			@RequestParam(value="currentTempRange") int currentTempRange,
+			@RequestParam(value="cpage", required = false, defaultValue = "1") int cpage
+			){
+		Map<String, Object> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
+		return ResponseEntity.ok().body(data);
 	}
 	
 	// /feedpost/
