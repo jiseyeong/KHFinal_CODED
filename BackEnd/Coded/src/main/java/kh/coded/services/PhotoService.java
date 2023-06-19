@@ -24,9 +24,6 @@ public class PhotoService {
 		return photoDAO.selectByFeedpostId(feedPostId);
 
 	}
-	public PhotoDTO selectFeedThumnail(int feedPostId) {
-		return photoDAO.selectFeedThumnail(feedPostId);
-	}
 	public PhotoDTO selectFeedlike(int feedPostId) {
 		return photoDAO.selectFeedlike(feedPostId);
 	}
