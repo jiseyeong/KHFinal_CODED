@@ -21,4 +21,5 @@ public class PostHashsDAO {
     public List<PostHashsWithHashTagDTO> selectAllPostTagNames() {
         return mybatis.selectList("PostHashs.selectAllPostTagNames");
     }
+
 }

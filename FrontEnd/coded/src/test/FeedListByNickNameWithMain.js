@@ -14,10 +14,8 @@ const FeedListByNickNameWithMain = () => {
   return (
     <Container>
       <GlobalStyles />
-      <NavbarOotd />
       {/* FeedList대신 다른 Component로 교체 후 사용*/}
       <FeedListByNickName />
-      <Footer />
     </Container>
   );
 };
