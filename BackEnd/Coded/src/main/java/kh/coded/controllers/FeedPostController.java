@@ -122,6 +122,17 @@ public class FeedPostController {
 		
 		return ResponseEntity.ok().body(null);
 	}
+
+	@PostMapping("/insertFeedLike") //피드 좋아요 입력
+	public ResponseEntity<?> insertFeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
+		return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+	}
+	
+	@DeleteMapping("/deleteFeedLike") //피드 좋아요 삭제
+	public ResponseEntity<?> deleteFeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
+		feedpostService.deleteFeedLike(userNo, feedPostId);
+		return ResponseEntity.ok().body(null);
+	}
 	
 	// /feedpost/
 	@PostMapping("comment")
