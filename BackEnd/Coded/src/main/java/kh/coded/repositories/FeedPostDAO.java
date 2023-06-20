@@ -96,6 +96,14 @@ public class FeedPostDAO {
 		data.put("endFeedNum",endFeedNum);
 		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
 	}
+
+	public List<FeedPostDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		map.put("keyword",keyword);
+		return mybatis.selectList("FeedPost.selectSearchFeedListByHashs",map);
+	}
 	
 	public int updateFeedPost(int feedPostId,String body) { //글 수정
 		Map<String,Object> data = new HashMap<>();
