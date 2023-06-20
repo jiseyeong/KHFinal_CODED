@@ -1,82 +1,46 @@
-import { useRef, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import * as StompJs from '@stomp/stompjs';
-import instance from '../../utils/axiosConfig';
+import axios from 'axios';
+import React, { useState } from 'react';
+import SockJsClient from 'react-stomp';
+import { useSelector } from 'react-redux';
 
-function CreateReadChat() {
-  const [chatList, setChatList] = useState([]);
-  const [chat, setChat] = useState('');
+const SOCKET_URL = 'http://192.168.50.218:9999/ws-message';
 
-  const { apply_id } = useParams();
-  const client = useRef({});
+const App = () => {
+  const [message, setMessage] = useState('You server message here.');
+  const accessToken = useSelector((state) => state.member.access);
 
-  const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: 'ws://192.168.50.218:9999/ws',
-      onConnect: () => {
-        console.log('success');
-        subscribe();
-      },
-      connectHeaders: {
-        Authorization: window.localStorage.getItem('authorization'),
-        //STOMP를 사용해 연결요청시 커스텀헤더에 JWT를 실어보냄
-      },
-    });
-    client.current.activate();
-  };
+  // axios({
+  //   method: 'get',
+  //   url: '/auth/userDTO',
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //   }
+  // })
 
-  const publish = (chat) => {
-    if (!client.current.connected) return;
 
-    client.current.publish({
-      destination: '/pub/chat',
-      body: JSON.stringify({
-        applyId: apply_id,
-        chat: chat,
-      }),
-    });
+  let onConnected = () => {
+    console.log("Connected!!")
+  }
 
-    setChat('');
-  };
-
-  const subscribe = () => {
-    client.current.subscribe('/sub/chat/' + apply_id, (body) => {
-      const json_body = JSON.parse(body.body);
-      setChatList((_chat_list) => [
-        ..._chat_list, json_body
-      ]);
-    });
-  };
-
-  const disconnect = () => {
-    client.current.deactivate();
-  };
-
-  const handleChange = (event) => { // 채팅 입력 시 state에 값 설정
-    setChat(event.target.value);
-  };
-
-  const handleSubmit = (event, chat) => { // 보내기 버튼 눌렀을 때 publish
-    event.preventDefault();
-
-    publish(chat);
-  };
-  
-  useEffect(() => {
-    connect();
-
-    return () => disconnect();
-  }, []);
+  let onMessageReceived = (msg) => {
+    setMessage(msg.message);
+  }
 
   return (
     <div>
-      <div className={'chat-list'}>{chatList}</div>
-      <form onSubmit={(event) => handleSubmit(event, chat)}>
-        <div>
-          <input type={'text'} name={'chatInput'} onChange={handleChange} value={chat} />
-        </div>
-        <input type={'submit'} value={'의견 보내기'} />
-      </form>
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={['/topic/message']}
+        onConnect={onConnected}
+        onDisconnect={console.log("Disconnected!")}
+        onMessage={msg => onMessageReceived(msg)}
+        debug={false}
+      />
+
+
+      <div>{message}</div>
     </div>
   );
 }
+
+export default App;
