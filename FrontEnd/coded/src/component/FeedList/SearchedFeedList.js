@@ -52,10 +52,10 @@ function SearchedFeedList() {
   const feedPostOuterRef = useRef(null);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addFeedList = () => {
+  const addFeedList = ({ keyword }) => {
     axios({
       method: 'GET',
-      url: '/feedpost/selectAllFeedPost/',
+      url: '/feedpost/selectSearchHashFeedList/' + keyword,
       params: {
         cpage: cpage,
       },

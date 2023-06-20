@@ -128,6 +128,7 @@ const SearchBox = () => {
       }
     });
 
+    setSearchInput(input);
     setCompletedData(temp);
     // const debounce = setTimeout(() => {
     //   if (completedData) change();
@@ -141,13 +142,22 @@ const SearchBox = () => {
     console.log(completedData);
   }, [completedData]);
 
+  const searchHashList = (event) => {
+    // event.preventDefault();
+  };
+
   return (
     // <div className={style.searchBoxLayout}>
-    <form className={styles.searchBar}>
+    <form
+      className={styles.searchBar}
+      onSubmit={searchHashList}
+      action="/feed/search/"
+    >
       <input
         id="search-keyword"
         name="keyword"
         type="search"
+        value={searchInput}
         placeholder="유저와 스타일을 검색해보세요"
         autoComplete="off"
         onChange={searchboxInput}

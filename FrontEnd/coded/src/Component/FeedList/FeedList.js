@@ -50,7 +50,6 @@ function FeedList() {
   const [hashTagList, setHashTagList] = useState([]);
   const [loading, setLoading] = useState(true);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
-
   const feedPostOuterRef = useRef(null);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
@@ -78,6 +77,7 @@ function FeedList() {
         setMember((prev) => [...prev, ...memberList]);
         setHashTagList((prev) => [...prev, ...hashTagLists]);
         setCpage(cpage + 1);
+
         // setLoading(true);
       })
       .catch((error) => {

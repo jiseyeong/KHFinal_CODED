@@ -99,7 +99,6 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
-        <Route path="/"></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
