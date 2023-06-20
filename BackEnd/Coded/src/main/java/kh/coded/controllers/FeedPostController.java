@@ -124,7 +124,7 @@ public class FeedPostController {
     
     @GetMapping("/selectFeedlike")
     public ResponseEntity<?> selectFeedlike(){
-    	List<FeedPostDTO> list = feedpostService.selectFeedlike();
+    	List<FeedPostDTO> list = feedpostService.selectFeedByLike();
     	List<PhotoDTO> list2 = new ArrayList<>();
     	for(FeedPostDTO e : list) {
     		list2.add((PhotoDTO) photoService.selectByFeedpostId(e.getFeedPostId()));
