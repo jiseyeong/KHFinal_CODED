@@ -57,9 +57,7 @@
 	<select id="selectFeedNew" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost order by FeedPostId desc
 	</select>
-
-	
-	<select id="selectFeedlike" resultType="kh.coded.dto.FeedLikeDTO">
+	<select id="selectFeedBylike" resultType="kh.coded.dto.FeedLikeDTO">
 		select * from feedlike order by FeedlikeId desc
 	</select>
 	
@@ -72,6 +70,14 @@
 		order by writeTempDiff asc, writeTempRangeDiff asc
 	</select>
 
-
+	<select id="selectSearchFeedListByHashs" resultType="kh.coded.dto.FeedPostDTO">
+		select * from (select * from (select distinct feedpostid, ROW_NUMBER() OVER (ORDER BY feedpostid desc) rn from hashtag join posthashs using (tagid) where hashtag like '%'||#{keyword}||'%' ) where rn between ${startFeedNum} and ${endFeedNum} order by rn asc) join feedpost using (feedpostid);
+	</select>
+	<update id="updateFeedPost">
+		update feedpost set body = #{body} where feedpostid = ${feedpostid}
+	</update>
+	<delete id="deleteFeedPost">
+		delete feedpost where feedpostid = ${feedpostid}
+	</delete>
 
 </mapper>

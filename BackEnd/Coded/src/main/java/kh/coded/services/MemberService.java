@@ -132,7 +132,7 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.selectMemberByUserNo(userNo);
 	}
 
-	public MemberDTO selectMemberByNickName(String userNickName) {
+	public List<MemberDTO> selectMemberByNickName(String userNickName) {
 		return memberDAO.selectMemberByNickName(userNickName);
 	}
 

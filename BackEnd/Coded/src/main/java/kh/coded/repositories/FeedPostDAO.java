@@ -84,8 +84,8 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectFeedNew");
 	}
 
-	public List<FeedPostDTO> selectFeedlike() {
-		return mybatis.selectList("FeedPost.selectFeedlike");
+	public List<FeedPostDTO> selectFeedByLike() {
+		return mybatis.selectList("FeedPost.selectFeedByLike");
 	}
 	
 	public List<FeedPostDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){
@@ -97,5 +97,23 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
 	}
 
+	public List<FeedPostDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		map.put("keyword",keyword);
+		return mybatis.selectList("FeedPost.selectSearchFeedListByHashs",map);
+	}
+	
+	public int updateFeedPost(int feedPostId,String body) { //글 수정
+		Map<String,Object> data = new HashMap<>();
+		data.put("feedPostId", feedPostId);
+		data.put("body", body);
+		return mybatis.update("FeedPost.updateFeedPost",data);
+	}
+	
+	public int deleteFeedPost(int feedPostId) { //글 삭제 
+		return mybatis.delete("FeedPost.deleteFeedPost",feedPostId);
+	}
 
 }
