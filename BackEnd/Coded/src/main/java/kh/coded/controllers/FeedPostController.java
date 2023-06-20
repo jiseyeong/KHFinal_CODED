@@ -126,7 +126,7 @@ public class FeedPostController {
     	List<FeedPostDTO> list = feedpostService.selectFeedlike();
     	List<PhotoDTO> list2 = new ArrayList<>();
     	for(FeedPostDTO e : list) {
-    		list2.add(photoService.selectFeedlike(e.getFeedPostId()));
+    		list2.add(photoService.selectByFeedpostId(e.getFeedPostId()));
     	}
     	Map<String,Object> result = new HashMap<>();
     	result.put("FeedPostDTO",list);
@@ -160,6 +160,13 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(data);
 	}
 	
+	@GetMapping("/selectfeeddetail") //피드 상세
+	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId) {
+		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId);
+		
+		return ResponseEntity.ok().body(data);
+				
+	}
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(

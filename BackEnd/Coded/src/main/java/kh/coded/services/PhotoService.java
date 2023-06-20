@@ -20,11 +20,10 @@ public class PhotoService {
 	private PhotoDAO photoDAO;	
 
 
-	public PhotoDTO selectByFeedpostId(int feedPostId) {
+	public List<PhotoDTO> selectByFeedpostId(int feedPostId) {
 		return photoDAO.selectByFeedpostId(feedPostId);
 
 	}
-
 	public PhotoDTO selectFeedlike(int feedPostId) {
 		return photoDAO.selectFeedlike(feedPostId);
 	}
