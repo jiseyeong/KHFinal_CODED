@@ -57,11 +57,22 @@ function WeeklyFeedForm(){
     
     useEffect(()=>{
         addFeedList();
-    }, [maxTemp, tempRange])
+    }, [maxTemp, tempRange]);
 
     useEffect(()=>{
         console.log(feedList);
-    }, [feedList])
+    }, [feedList]);
+
+    useEffect(()=>{
+      window.onscroll = function(){
+        if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
+            addFeedList();
+        }
+      }
+      return ()=>{
+        window.onscroll = null;
+      }
+    }, []);
 
     function addFeedList(){
         setLoading(true);
@@ -95,12 +106,6 @@ function WeeklyFeedForm(){
             setLoading(false);
             console.log(error);
         })
-    }
-
-    window.onscroll = function(){
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
-            addFeedList();
-        }
     }
 
     if(loading){
