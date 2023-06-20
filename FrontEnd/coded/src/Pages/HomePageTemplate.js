@@ -15,7 +15,7 @@ const HomePageTemplate = () => {
     <Container>
       <GlobalStyles />
       {/* mem, nonMem, weekly 의 3종 타입 존재 */}
-      <Navbar type="mem"/> 
+      {/* <Navbar type="mem"/>  */}
       {/* FeedList대신 다른 Component로 교체 후 사용*/}
       <FeedList />
       <Footer />
