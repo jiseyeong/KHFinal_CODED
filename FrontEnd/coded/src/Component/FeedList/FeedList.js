@@ -42,15 +42,18 @@ const FeedPostOuter = styled('div')`
 `;
 
 function FeedList() {
-  const [cpage, setCpage] = useState(1);
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
   const [member, setMember] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [feedLike, setFeedLike] = useState([]);
+  const [isFeedLike, setIsFeedLike] = useState([]);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
   const feedPostOuterRef = useRef(null);
+  // const [cpage, setCpage] = useState(1);
+  const cpage = useRef(1);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
@@ -59,7 +62,7 @@ function FeedList() {
       method: 'GET',
       url: '/feedpost/selectAllFeedPost/',
       params: {
-        cpage: cpage,
+        cpage: cpage.current,
       },
     })
       .then((resp) => {
@@ -69,6 +72,8 @@ function FeedList() {
           memberList,
           userProfileList,
           hashTagLists,
+          feedLikeList,
+          isFeedLikeList,
         } = resp.data;
 
         setFeedPost((prev) => [...prev, ...feedPostList]);
@@ -76,8 +81,11 @@ function FeedList() {
         setUserProfile((prev) => [...prev, ...userProfileList]);
         setMember((prev) => [...prev, ...memberList]);
         setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage(cpage + 1);
-
+        setFeedLike((prev) => [...prev, ...feedLikeList]);
+        setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
+        // setCpage((prev) => prev + 1);
+        cpage.current = cpage.current + 1;
+        console.log(cpage);
         // setLoading(true);
       })
       .catch((error) => {
@@ -119,6 +127,8 @@ function FeedList() {
                 member={member[i]}
                 userProfile={userProfile[i]}
                 hashTagList={hashTagList[i]}
+                feedLike={feedLike[i]}
+                isFeedLike={isFeedLike[i]}
               ></FeedPostDetail>
             </div>
           );

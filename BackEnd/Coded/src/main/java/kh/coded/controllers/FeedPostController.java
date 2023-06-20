@@ -70,8 +70,7 @@ public class FeedPostController {
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
-			@RequestParam(value = "userNo") int userNo) {
-		System.out.println(cpage);
+			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
 
 		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
 		return ResponseEntity.ok().body(map);
@@ -81,11 +80,11 @@ public class FeedPostController {
 	@GetMapping("/selectSearchHashFeedList/{keyword}")
 	public ResponseEntity<?> selectSearchFeedListByHashs(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
-			@PathVariable("keyword") String keyword,
-			@RequestParam(value = "userNo") int userNo){
-		System.out.println(cpage);
+			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
+			@PathVariable("keyword") String keyword){
 
-		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,keyword,userNo);
+		System.out.println("들어옴");
+		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
 

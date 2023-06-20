@@ -138,12 +138,8 @@ const SearchBox = () => {
     // };
   };
 
-  useEffect(() => {
-    console.log(completedData);
-  }, [completedData]);
-
   const searchHashList = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
   };
 
   return (

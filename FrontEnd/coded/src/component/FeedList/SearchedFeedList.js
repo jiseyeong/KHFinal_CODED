@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
+import { useParams } from 'react-router-dom';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -41,7 +42,6 @@ const FeedPostOuter = styled('div')`
 `;
 
 function SearchedFeedList() {
-  const [cpage, setCpage] = useState(1);
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
   const [member, setMember] = useState([]);
@@ -50,16 +50,28 @@ function SearchedFeedList() {
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
 
   const feedPostOuterRef = useRef(null);
+  // const [cpage, setCpage] = useState(1);
+  const cpage = useRef(1);
+  const { keyword } = useParams();
+
+  useEffect(() => {
+    console.log(keyword);
+    addFeedList();
+    return () => {
+      window.onscroll = null;
+    };
+  }, []);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addFeedList = ({ keyword }) => {
-    axios({
-      method: 'GET',
-      url: '/feedpost/selectSearchHashFeedList/' + keyword,
-      params: {
-        cpage: cpage,
-      },
-    })
+  const addFeedList = () => {
+    axios
+      .request({
+        method: 'GET',
+        url: `/feedpost/selectSearchHashFeedList/${keyword}`,
+        params: {
+          cpage: cpage.current,
+        },
+      })
       .then((resp) => {
         const {
           feedPostList,
@@ -74,9 +86,10 @@ function SearchedFeedList() {
         setUserProfile((prev) => [...prev, ...userProfileList]);
         setMember((prev) => [...prev, ...memberList]);
         setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage(() => {
-          return cpage + 1;
-        });
+        // setCpage((prev) => {
+        //   return (prev + 1);
+        // });
+        cpage.current = cpage.current + 1;
       })
       .catch((error) => console.log(error));
   };
@@ -89,12 +102,6 @@ function SearchedFeedList() {
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
   // document.body.offsetHeight 페이지 전체 높이
-
-  useEffect(() => {
-    addFeedList();
-
-    return () => {};
-  }, []);
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>

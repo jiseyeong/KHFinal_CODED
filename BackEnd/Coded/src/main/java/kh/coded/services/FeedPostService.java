@@ -105,7 +105,7 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
-            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
             boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
@@ -136,7 +136,7 @@ public class FeedPostService {
 		writeMember.setPw("");
 		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPostId); // 해시태그들
 		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo()); // 유저 프로필
-		int feedLikeCount = feedLikeDAO.seleteFeedLike(feedPostId); // 좋아요 갯수
+		int feedLikeCount = feedLikeDAO.selectFeedLike(feedPostId); // 좋아요 갯수
 		boolean isFeedLike = feedLikeDAO.isFeedLike(userNo, feedPostId);
 				
 		Map<String,Object> data = new HashMap<>();
@@ -172,7 +172,7 @@ public class FeedPostService {
     		MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
     		userInfo.setPw("");
     		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
-    		int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
+    		int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
     		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
     		thumbnailList.add(thumbnail);
     		memberList.add(userInfo);
@@ -192,7 +192,7 @@ public class FeedPostService {
     	return data;
     }
 
-    public Map<String, Object> selectSearchFeedListByHashs(int cpage, String keyword,int userNo) {
+    public Map<String, Object> selectSearchFeedListByHashs(int cpage, int userNo, String keyword) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
@@ -213,7 +213,7 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
-            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
             boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
@@ -268,7 +268,7 @@ public class FeedPostService {
     }
     
     public int selectFeedLike(int feedpostId) {
-    	return feedLikeDAO.seleteFeedLike(feedpostId);
+    	return feedLikeDAO.selectFeedLike(feedpostId);
     }
     
     public boolean isFeedLike(int userNo, int feedPostId) {
