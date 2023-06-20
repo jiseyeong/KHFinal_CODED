@@ -27,6 +27,7 @@ import ImageUpload from './test/ImageUpload';
 import TestComponent from './test/TestComponent';
 import SearchLabelSelect from './test/SearchLabelSelect';
 import SearchBox from './component/Search/SearchBox';
+import Navbar from './component/Navbar/Navbar';
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<Login />} />
