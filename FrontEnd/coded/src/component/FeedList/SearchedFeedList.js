@@ -40,7 +40,7 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function FeedList() {
+function SearchedFeedList() {
   const [cpage, setCpage] = useState(1);
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
@@ -120,7 +120,7 @@ function FeedList() {
   );
 }
 
-export default FeedList;
+export default SearchedFeedList;
 
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값

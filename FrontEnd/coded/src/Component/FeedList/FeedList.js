@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
+import LoadingBar from '../Common/LoadingBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -47,12 +48,15 @@ function FeedList() {
   const [member, setMember] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
+  const [loading, setLoading] = useState(true);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
 
   const feedPostOuterRef = useRef(null);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
+    // setLoading(false);
+    feedPostOuterRef.current.style.display = 'none';
     axios({
       method: 'GET',
       url: '/feedpost/selectAllFeedPost/',
@@ -77,8 +81,14 @@ function FeedList() {
         setCpage(() => {
           return cpage + 1;
         });
+        feedPostOuterRef.current.style.display = 'flex';
+        // setLoading(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        feedPostOuterRef.current.style.display = 'flex';
+        // setLoading(true);
+      });
   };
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
@@ -98,6 +108,7 @@ function FeedList() {
     };
   }, []);
 
+  // if (loading) {
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
@@ -120,6 +131,9 @@ function FeedList() {
       </Masonry>
     </FeedPostOuter>
   );
+  // } else {
+  //   return <LoadingBar />;
+  // }
 }
 
 export default FeedList;

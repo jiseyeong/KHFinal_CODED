@@ -27,6 +27,8 @@ import TestComponent from './test/TestComponent';
 import SearchLabelSelect from './test/SearchLabelSelect';
 import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
+import Footer from './component/Profile/Component/Footer/Footer';
+import SearchedFeedList from './component/FeedList/SearchedFeedList';
 
 function App() {
   const dispatch = useDispatch();
@@ -77,6 +79,7 @@ function App() {
         <Route path="/feed/id" element={<FeedListByIdWithMain />} />
         <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
         <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
+        <Route path="/feed/search/*" element={<SearchedFeedList />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/DMPage" element={<DMPage />} />
         <Route path="/ootd" element={<Ootd />} />
@@ -87,7 +90,7 @@ function App() {
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
-        <Route path="searchBox" element={<SearchBox />} />
+        <Route path="/searchBox" element={<SearchBox />} />
 
         <Route
           path="/login/oauth2/code/kakao"
@@ -104,6 +107,7 @@ function App() {
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
         <Route path="/"></Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
