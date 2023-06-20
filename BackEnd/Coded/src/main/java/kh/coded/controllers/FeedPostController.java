@@ -207,12 +207,6 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(null);
 	}
 	
-	@GetMapping("/selectFeedLike") //피드 좋아요 수 출력
-	public ResponseEntity<?> selectFeedLike(int feedPostId) {
-		return ResponseEntity.ok().body(feedpostService.selectFeedLike(feedPostId));
-	}
-	
-	
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(

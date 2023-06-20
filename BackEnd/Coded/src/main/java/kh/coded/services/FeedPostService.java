@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -137,13 +139,15 @@ public class FeedPostService {
     
     public Map<String, Object> selectFeedDetail(int feedPostId) { 
     	// 피드 상세페이지 출력
-    	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그
+    	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수
 		FeedPostDTO feedPost = feedpostDAO.searchByFeedPost(feedPostId); // 글 정보
 		List<PhotoDTO> photoList = photoDAO.selectByFeedpostId(feedPostId); // 사진
 		MemberDTO writeMember = memberDAO.selectMemberByUserNo(feedPost.getUserNo()); // 작성자 정보
 		writeMember.setPw("");
 		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPostId); // 해시태그들
 		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo()); // 유저 프로필
+		int feedLikeCount = feedLikeDAO.seleteFeedLike(feedPostId);
+
 		
 		Map<String,Object> data = new HashMap<>();
 		data.put("feedPost", feedPost);
@@ -151,6 +155,7 @@ public class FeedPostService {
 		data.put("writeMember", writeMember);
 		data.put("hashTagList", hashTagList);
 		data.put("userProfile", userProfile);
+		data.put("feedLikeCount", feedLikeCount);
 		
 		return data; 
     }
