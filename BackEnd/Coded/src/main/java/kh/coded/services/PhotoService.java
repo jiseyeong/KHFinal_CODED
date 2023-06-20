@@ -19,11 +19,6 @@ public class PhotoService {
 	@Autowired
 	private PhotoDAO photoDAO;	
 
-
-	public List<PhotoDTO> selectByFeedpostId(int feedPostId) {
-		return photoDAO.selectByFeedpostId(feedPostId);
-
-	}
 	public PhotoDTO selectFeedlike(int feedPostId) {
 		return photoDAO.selectFeedlike(feedPostId);
 	}

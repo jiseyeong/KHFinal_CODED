@@ -56,7 +56,6 @@ function FeedList() {
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
     // setLoading(false);
-    feedPostOuterRef.current.style.display = 'none';
     axios({
       method: 'GET',
       url: '/feedpost/selectAllFeedPost/',
@@ -78,15 +77,11 @@ function FeedList() {
         setUserProfile((prev) => [...prev, ...userProfileList]);
         setMember((prev) => [...prev, ...memberList]);
         setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage(() => {
-          return cpage + 1;
-        });
-        feedPostOuterRef.current.style.display = 'flex';
+        setCpage(cpage + 1);
         // setLoading(true);
       })
       .catch((error) => {
         console.log(error);
-        feedPostOuterRef.current.style.display = 'flex';
         // setLoading(true);
       });
   };
