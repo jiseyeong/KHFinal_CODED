@@ -24,12 +24,6 @@
 	<insert id="insertPostHashs">
 		insert into HashTag values(_seq.nextval,
 		#{feedPostId}, #{tagId})
-	</insert>
-	
-	<select id="selectByUserNo" resultType="kh.coded.dto.FeedPostDTO">
-		select * from FeedPost where userno = ${userno}
-	</select>
-	
 	<select id="selectByUserNoList" resultType="kh.coded.dto.FeedPostDTO">
 		select * from FeedPost where userno = ${userno}
 	</select>
@@ -38,29 +32,12 @@
 		select * from feedpost order by feedpostid desc
 	</select>
 	
-	<select id="searchByHashs" resultType="kh.coded.dto.HashTagDTO"> <!-- 해시태그 있는 지 검색 -->
-		select tagid from hashTag where hashTag like '%'||#{hashTag}||'%'
-	</select>
-	
-	<select id="searchByPostHashs" resultType="kh.coded.dto.PostHashsDTO"> <!-- 위에서 뽑아낸 태그아이디를 가지고 포스트 아이디를 뽑아냄 -->
-		select feedpostid from posthashs where tagid = ${tagId}	
-	</select>
-	
 	<select id="searchByFeedPost" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost where feedpostid = ${FeedPostId} <!-- 위에서 뽑아낸 포스트 아이디를 가지고 피드를 뽑아냄 -->
 	</select>
 
 	<select id="selectAllFeedPost" resultType="kh.coded.dto.FeedPostDTO">
 		select * from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) where rn between ${startFeedNum} and ${endFeedNum}
-	</select>
-	
-	<select id="selectFeedNew" resultType="kh.coded.dto.FeedPostDTO">
-		select * from feedpost order by FeedPostId desc
-	</select>
-
-	
-	<select id="selectFeedlike" resultType="kh.coded.dto.FeedLikeDTO">
-		select * from feedlike order by FeedlikeId desc
 	</select>
 	
 	<select id="selectPagingWeatherDiff" resultType="kh.coded.dto.FeedPostDTO">
@@ -72,6 +49,16 @@
 		order by writeTempDiff asc, writeTempRangeDiff asc
 	</select>
 
+	<select id="selectSearchFeedListByHashs" resultType="kh.coded.dto.FeedPostDTO">
+		select * from (select * from (select distinct feedpostid, ROW_NUMBER() OVER (ORDER BY feedpostid desc) rn from hashtag join posthashs using (tagid) where hashtag like '%'||#{keyword}||'%' ) where rn between ${startFeedNum} and ${endFeedNum} order by rn asc) join feedpost using (feedpostid);
+	</select>
 
+	<update id="updateFeedPost">
+		update feedpost set body = #{body} where feedpostid = ${feedpostid}
+	</update>
+
+	<delete id="deleteFeedPost">
+		delete feedpost where feedpostid = ${feedpostid}
+	</delete>
 
 </mapper>

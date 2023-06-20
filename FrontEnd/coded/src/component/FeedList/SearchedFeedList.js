@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import LoadingBar from '../Common/LoadingBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -41,21 +40,19 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function FeedList() {
+function SearchedFeedList() {
   const [cpage, setCpage] = useState(1);
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
   const [member, setMember] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
-  const [loading, setLoading] = useState(true);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
 
   const feedPostOuterRef = useRef(null);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
-    // setLoading(false);
     axios({
       method: 'GET',
       url: '/feedpost/selectAllFeedPost/',
@@ -77,13 +74,17 @@ function FeedList() {
         setUserProfile((prev) => [...prev, ...userProfileList]);
         setMember((prev) => [...prev, ...memberList]);
         setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage(cpage + 1);
-        // setLoading(true);
+        setCpage(() => {
+          return cpage + 1;
+        });
       })
-      .catch((error) => {
-        console.log(error);
-        // setLoading(true);
-      });
+      .catch((error) => console.log(error));
+  };
+
+  window.onscroll = function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      addFeedList();
+    }
   };
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
@@ -92,18 +93,9 @@ function FeedList() {
   useEffect(() => {
     addFeedList();
 
-    window.onscroll = function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        addFeedList();
-      }
-    };
-
-    return () => {
-      window.onscroll = null;
-    };
+    return () => {};
   }, []);
 
-  // if (loading) {
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
@@ -126,12 +118,9 @@ function FeedList() {
       </Masonry>
     </FeedPostOuter>
   );
-  // } else {
-  //   return <LoadingBar />;
-  // }
 }
 
-export default FeedList;
+export default SearchedFeedList;
 
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값

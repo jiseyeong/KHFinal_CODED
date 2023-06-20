@@ -5,11 +5,7 @@ import Login from './pages/auth/Login/Login';
 import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
-import FeedPostDetail from './component/FeedPostDetail/FeedPostDetail';
 import Ootd from './pages/ootd/Main/Main';
-import FeedListByIdWithMain from './test/FeedListByIdWithMain';
-import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
-import FeedListByNickNameWithMain from './test/FeedListByNickNameWithMain';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
@@ -28,6 +24,8 @@ import TestComponent from './test/TestComponent';
 import SearchLabelSelect from './test/SearchLabelSelect';
 import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
+import Footer from './component/Profile/Component/Footer/Footer';
+import SearchedFeedList from './component/FeedList/SearchedFeedList';
 
 function App() {
   const dispatch = useDispatch();
@@ -75,9 +73,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
         <Route path="/feed" element={<FeedList />} />
-        <Route path="/feed/id" element={<FeedListByIdWithMain />} />
-        <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
-        <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
+        <Route path="/feed/search/*" element={<SearchedFeedList />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/DMPage" element={<DMPage />} />
         <Route path="/ootd" element={<Ootd />} />
@@ -88,7 +84,7 @@ function App() {
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
-        <Route path="searchBox" element={<SearchBox />} />
+        <Route path="/searchBox" element={<SearchBox />} />
 
         <Route
           path="/login/oauth2/code/kakao"
@@ -105,6 +101,7 @@ function App() {
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
         <Route path="/"></Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

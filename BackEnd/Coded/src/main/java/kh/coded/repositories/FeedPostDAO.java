@@ -54,14 +54,8 @@ public class FeedPostDAO {
 	public int insertHashTag(String HashTag) {
 		return mybatis.insert("FeedPost.insertHashTag", HashTag);
 	}
-	public List<HashTagDTO> searchByHashs(String HashTag) { //해시태그 검색 후 태그 아이디 뽑기
-		return mybatis.selectList("FeedPost.searchByHashs",HashTag);
-	}	
-	
-	public List<PostHashsDTO> searchByPostHashs(int tagId) { //위에서 뽑아낸 태그 아이디로 포스트 아이디들 뽑기
-		return mybatis.selectList("FeedPost.searchByPostHashs",tagId);
-	}
-	
+
+
 	public FeedPostDTO searchByFeedPost(int feedPostId) { //위에서 뽑아낸 포스트 아이디로 피드 뽑기
 		return mybatis.selectOne("FeedPost.searchByFeedPost",feedPostId);
 	}
@@ -80,14 +74,6 @@ public class FeedPostDAO {
 		return mybatis.selectOne("FeedPost.selectByUserNo",userNo);
 	}
 
-	public List<FeedPostDTO> selectFeedNew() {
-		return mybatis.selectList("FeedPost.selectFeedNew");
-	}
-
-	public List<FeedPostDTO> selectFeedlike() {
-		return mybatis.selectList("FeedPost.selectFeedlike");
-	}
-	
 	public List<FeedPostDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){
 		Map<String, Integer> data = new HashMap<>();
 		data.put("targetTemp", targetTemp);
@@ -95,6 +81,14 @@ public class FeedPostDAO {
 		data.put("startFeedNum",startFeedNum);
 		data.put("endFeedNum",endFeedNum);
 		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
+	}
+
+	public List<FeedPostDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		map.put("keyword",keyword);
+		return mybatis.selectList("FeedPost.selectSearchFeedListByHashs",map);
 	}
 	
 	public int updateFeedPost(int feedPostId,String body) { //글 수정

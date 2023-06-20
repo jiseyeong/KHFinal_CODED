@@ -9,14 +9,17 @@
     "react": "^18.2.0",
     "react-cookies": "^0.1.1",
     "react-dom": "^18.2.0",
+    "react-loader-spinner": "^5.3.4",
     "react-masonry-component": "^6.3.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.3",
+    "react-stomp": "^5.1.0",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
     "sass": "^1.63.3",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^6.0.0-rc.3"
   },
   "scripts": {
