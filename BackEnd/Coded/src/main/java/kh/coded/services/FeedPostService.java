@@ -82,27 +82,6 @@ public class FeedPostService {
         return feedpostDAO.selectTestFeedList();
     }
 
-    public List<HashTagDTO> searchByHashs(String HashTag) {
-        return feedpostDAO.searchByHashs(HashTag);
-    }
-
-
-	public FeedPostDTO selectByFeedpostId(int feedPostId) {
-		return feedpostDAO.searchByFeedPost(feedPostId);
-	}
-
-	public List<FeedPostDTO> selectFeedByLike() {
-		return feedpostDAO.selectFeedByLike();
-	}
-
-    public List<PostHashsDTO> searchByPostHashs(int tagId) {
-        return feedpostDAO.searchByPostHashs(tagId);
-    }
-
-    public FeedPostDTO searchByFeedPost(int feedPostId) {
-        return feedpostDAO.searchByFeedPost(feedPostId);
-    }
-
     public Map<String, Object> selectAllFeedPost(int cpage) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
@@ -164,10 +143,6 @@ public class FeedPostService {
         return feedpostDAO.selectByUserNo(userNo);
     }
 
-    public List<FeedPostDTO> selectFeedNew() {
-        return feedpostDAO.selectFeedNew();
-    }
-    
     public Map<String, Object> selectWeeklyFeed(int currentTemp, int currentTempRange, int cpage){
     	int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
     	int endFeedNum = cpage * feedCountPerPage;
