@@ -3,7 +3,7 @@ package utils;
 public class StaticValue {
 	public static final int REFRESH_TIME = 60 * 60 * 24 * 7; // 일주일. 바꿀 경우 'jwtProvider'내부의 값도 바꿔줄 것.
 
-	public static final int FEEDCOUNTPERSCROLL = 30;
+	public static final int FEEDCOUNTPERSCROLL = 50;
 	
 	public static final String REFRESH_TOKEN_COOKIE_NAME = "CodedRefreshToken"; // 바꿀 경우 프론트에서 쿠키 찾는 것도 바꿔야 함.
 	
