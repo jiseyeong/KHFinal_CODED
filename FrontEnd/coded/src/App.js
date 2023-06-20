@@ -73,7 +73,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
         <Route path="/feed" element={<FeedList />} />
-        <Route path="/feed/search/*" element={<SearchedFeedList />} />
+        <Route path="/feed/search/:keyword" element={<SearchedFeedList />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/DMPage" element={<DMPage />} />
         <Route path="/ootd" element={<Ootd />} />
@@ -99,7 +99,6 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
-        <Route path="/"></Route>
       </Routes>
       <Footer />
     </BrowserRouter>
