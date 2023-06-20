@@ -80,12 +80,6 @@ function FeedList() {
       })
       .catch((error) => console.log(error));
   };
-
-  window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      addFeedList();
-    }
-  };
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
   // document.body.offsetHeight 페이지 전체 높이
@@ -93,7 +87,15 @@ function FeedList() {
   useEffect(() => {
     addFeedList();
 
-    return () => {};
+    window.onscroll = function () {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        addFeedList();
+      }
+    };
+
+    return () => {
+      window.onscroll = null;
+    };
   }, []);
 
   return (
