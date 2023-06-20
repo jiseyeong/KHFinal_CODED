@@ -57,8 +57,6 @@
 	<select id="selectFeedNew" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost order by FeedPostId desc
 	</select>
-
-	
 	<select id="selectFeedlike" resultType="kh.coded.dto.FeedLikeDTO">
 		select * from feedlike order by FeedlikeId desc
 	</select>
@@ -71,7 +69,11 @@
 		where rn between ${startFeedNum} and ${endFeedNum}
 		order by writeTempDiff asc, writeTempRangeDiff asc
 	</select>
-
-
+	<update id="updateFeedPost">
+		update feedpost set body = #{body} where feedpostid = ${feedpostid}
+	</update>
+	<delete id="deleteFeedPost">
+		delete feedpost where feedpostid = ${feedpostid}
+	</delete>
 
 </mapper>
