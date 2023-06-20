@@ -84,8 +84,8 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectFeedNew");
 	}
 
-	public List<FeedPostDTO> selectFeedlike() {
-		return mybatis.selectList("FeedPost.selectFeedlike");
+	public List<FeedPostDTO> selectFeedByLike() {
+		return mybatis.selectList("FeedPost.selectFeedByLike");
 	}
 	
 	public List<FeedPostDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){

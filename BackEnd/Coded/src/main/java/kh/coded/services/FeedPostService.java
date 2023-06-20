@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedCommentDTO;
@@ -17,6 +16,7 @@ import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsDTO;
 import kh.coded.dto.PostHashsWithHashTagDTO;
 import kh.coded.repositories.FeedCommentDAO;
+import kh.coded.repositories.FeedLikeDAO;
 import kh.coded.repositories.FeedPostDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.repositories.PhotoDAO;
@@ -40,6 +40,9 @@ public class FeedPostService {
     
     @Autowired
     private FeedCommentDAO commentDAO;
+    
+    @Autowired
+    private FeedLikeDAO feedLikeDAO;
 
     
     public int insertTest(FeedPostDTO dto) {
@@ -86,8 +89,8 @@ public class FeedPostService {
 		return feedpostDAO.searchByFeedPost(feedPostId);
 	}
 
-	public List<FeedPostDTO> selectFeedlike() {
-		return feedpostDAO.selectFeedlike();
+	public List<FeedPostDTO> selectFeedByLike() {
+		return feedpostDAO.selectFeedByLike();
 	}
 
     public List<PostHashsDTO> searchByPostHashs(int tagId) {
@@ -248,5 +251,17 @@ public class FeedPostService {
     }
     public List<FeedCommentDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
     	return commentDAO.selectByParentIdAndDepth(parentId, depth);
+    }
+    
+    public int insertFeedLike(int userNo,int feedPostId) {
+    	return feedLikeDAO.insertFeedLike(userNo, feedPostId);
+    }
+    
+    public int deleteFeedLike(int userNo,int feedPostId) {
+    	return feedLikeDAO.deleteFeedLike(userNo, feedPostId);
+    }
+    
+    public int selectFeedLike(int feedpostId) {
+    	return feedLikeDAO.seleteFeedLike(feedpostId);
     }
 }
