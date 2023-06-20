@@ -7,7 +7,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -205,6 +212,17 @@ public class FeedPostController {
 	public ResponseEntity<?> deleteFeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
 		feedpostService.deleteFeedLike(userNo, feedPostId);
 		return ResponseEntity.ok().body(null);
+	}
+	
+	@PostMapping("/insertFeedScrap") //피드 스크랩 입력
+	public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
+		return ResponseEntity.ok().body(feedpostService.insertFeedScrap(userNo, feedPostId));
+	}
+	
+	@DeleteMapping("/deleteFeedScrap") //피드 스크랩 삭제
+	public ResponseEntity<?> deleteFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
+		return ResponseEntity.ok().body(null);
+			
 	}
 	
 	// /feedpost/
