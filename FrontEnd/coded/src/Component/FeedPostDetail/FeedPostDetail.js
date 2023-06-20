@@ -2,17 +2,20 @@ import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
 import Modal from '../../pages/ootd/Main/Modal';
 import styles from './FeedPostDetail.module.scss';
+import { Link } from 'react-router-dom';
 
 const FeedPostDetail = (props) => {
   const {
+    index,
     feedPost,
     thumbNail,
     member,
     userProfile,
     hashTagList,
-    columnHeights,
-    setColumnHeights,
-    index,
+    feedLike,
+    isFeedLike,
+    // columnHeights,
+    // setColumnHeights,
   } = props;
   const [modal, setModal] = useState(false);
 
@@ -49,12 +52,8 @@ const FeedPostDetail = (props) => {
 
   return (
     <div className={styles.feedInnerParentDiv}>
-      <div
-        className={styles.feedInnerLayoutDiv}
-        onClick={openModal}
-        ref={myRef}
-      >
-        <div className={styles.feedImageDiv}>
+      <div className={styles.feedInnerLayoutDiv} ref={myRef}>
+        <div className={styles.feedImageDiv} onClick={openModal}>
           {thumbNail != null ? (
             <img
               className={styles.thumbNail}
@@ -69,9 +68,23 @@ const FeedPostDetail = (props) => {
             <img className={styles.userProfile} src={`/images/test.jpg`}></img>
           </div>
           <div className={styles.userInfoLayout}>
-            <div>Heeesam</div>
+            <div className={styles.userInfo}>
+              <div className={styles.userNameLayout}>{member.userNickName}</div>
+              <div className={styles.feedPostIdLayout}>
+                {feedPost.feedPostId}
+              </div>
+            </div>
             <div className={styles.userHashTagLayout}>
-              {feedPost.feedPostId}#여름옷 #여름 #여름코디
+              {hashTagList.length > 0 ? (
+                hashTagList.map((e, i) => (
+                  <span key={i}>
+                    <Link to={`/feed/search/${e.hashTag}`}>#{e.hashTag}</Link>
+                    &nbsp;&nbsp;
+                  </span>
+                ))
+              ) : (
+                <span>태그 없음</span>
+              )}
             </div>
           </div>
         </div>

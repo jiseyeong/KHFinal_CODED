@@ -1,20 +1,24 @@
 package kh.coded.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
-import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
-import kh.coded.dto.PostHashsDTO;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
 import kh.coded.services.PhotoService;
@@ -62,87 +66,13 @@ public class FeedPostController {
 		}
 	}
 
-	@GetMapping("searchById") //유저 아이디로 검색 시 유저 정보, 피드 뽑기
-	public ResponseEntity<?> selectMemberById(@RequestParam String userId) {
-		MemberDTO member = memberService.selectByID(userId);
-		List<FeedPostDTO> list = feedpostService.selectFeedList(member.getUserNo());
-		Map<String,Object> result = new HashMap<>();
-		result.put("MemberDTO", member);
-		result.put("feedlist", list);
-		
-		return ResponseEntity.ok().body(result);
-	}
-    
-    
-	@GetMapping("searchByNickname") //유저 닉네임으로 검색 시 유저 정보, 피드 뽑기
-	public ResponseEntity<?> selectMemberByNickname(@RequestParam String userNickName) {
-		System.out.println(userNickName);
-		List<MemberDTO> member = memberService.selectMemberByNickName(userNickName);
-		List<FeedPostDTO> feedList = new ArrayList<>();
-		for(MemberDTO dto1 : member) {		
-			 List<FeedPostDTO> list = feedpostService.selectFeedList(dto1.getUserNo());
-			 
-			 for(FeedPostDTO dto2 : list) {
-				 feedList.add(dto2);
-			 }
-		}
-		Map<String,Object> result = new HashMap<>();
-		result.put("MemberDTO", member);
-		result.put("feedlist", feedList);
-
-		return ResponseEntity.ok().body(result); 
-	}
-
-	@GetMapping("searchByHashs") //해쉬태그로 검색 시 피드 뽑기
-	public ResponseEntity<?> selectByHashs(@RequestParam String hashTag) {
-		List<HashTagDTO> tagId = feedpostService.searchByHashs(hashTag);
-		List<FeedPostDTO> feedposts = new ArrayList<>();
-		for(HashTagDTO hashTagDTO : tagId) {
-			List<PostHashsDTO> postHashs = feedpostService.searchByPostHashs(hashTagDTO.getTagId());
-			
-			for(PostHashsDTO dto : postHashs) {
-				feedposts.add(feedpostService.searchByFeedPost(dto.getFeedPostId()));
-			}
-		}
-		return ResponseEntity.ok().body(feedposts);
-	}
-
-    @GetMapping("/selectFeedNew")
-    public ResponseEntity<?> selectFeedNew() {
-    	List<FeedPostDTO> list = feedpostService.selectFeedNew();
-    	List<PhotoDTO> list2 = new ArrayList<>();
-    	
-    	for(FeedPostDTO e : list) {
-    		list2.add((PhotoDTO) photoService.selectByFeedpostId(e.getFeedPostId()));
-    	}
-    	Map<String,Object> result = new HashMap<>();
-    	result.put("feedpostDTO", list);
-    	result.put("photoDTO",list2);
-    	
-    	return ResponseEntity.ok().body(result);
-    }
-    
-    @GetMapping("/selectFeedlike")
-    public ResponseEntity<?> selectFeedlike(){
-    	List<FeedPostDTO> list = feedpostService.selectFeedlike();
-    	List<PhotoDTO> list2 = new ArrayList<>();
-    	for(FeedPostDTO e : list) {
-    		list2.add((PhotoDTO) photoService.selectByFeedpostId(e.getFeedPostId()));
-    	}
-    	Map<String,Object> result = new HashMap<>();
-    	result.put("FeedPostDTO",list);
-    	result.put("photoDTO", list2);
-    	return ResponseEntity.ok().body(result);
-    }
-
-	// 피드 리스트 전체 뽑기
+	// 피드 리스트 전체 뽑기 ( 기본 양식 )
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
-			@RequestParam(value = "cpage", required = false, defaultValue = "1")
-			int cpage) {
-		System.out.println(cpage);
+			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
+			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
 
-		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage);
+		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
 		return ResponseEntity.ok().body(map);
 	}
 
@@ -150,10 +80,11 @@ public class FeedPostController {
 	@GetMapping("/selectSearchHashFeedList/{keyword}")
 	public ResponseEntity<?> selectSearchFeedListByHashs(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
-			@PathVariable("keyword") String keyword) {
-		System.out.println(cpage);
+			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
+			@PathVariable("keyword") String keyword){
 
-		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,keyword);
+		System.out.println("들어옴");
+		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
 
@@ -175,8 +106,8 @@ public class FeedPostController {
 	}
 	
 	@GetMapping("/selectfeeddetail") //피드 상세
-	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId) {
-		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId);
+	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId,int userNo) {
+		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
 		
 		return ResponseEntity.ok().body(data);
 				
@@ -194,6 +125,34 @@ public class FeedPostController {
 		feedpostService.deleteFeedPost(feedPostId);
 		
 		return ResponseEntity.ok().body(null);
+	}
+
+	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 
+	public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
+		boolean result = feedpostService.isFeedLike(userNo, feedPostId);
+		if(!result) {	
+			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+		}else {
+			feedpostService.deleteFeedLike(userNo, feedPostId);
+			
+			return ResponseEntity.ok().body(null);
+		}
+	}
+	
+	@PostMapping("/insertFeedScrap") //피드 스크랩 입력 & 삭제 
+	public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
+		boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
+		if(!result) {
+			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+		}else {
+			feedpostService.deleteFeedScrap(userNo, feedPostId);	
+			return ResponseEntity.ok().body(null);
+		}
+	}
+	
+	@DeleteMapping("/deleteFeedScrap") //피드 스크랩 삭제
+	public ResponseEntity<?> deleteFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
+		return ResponseEntity.ok().body(null);		
 	}
 	
 	// /feedpost/

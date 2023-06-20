@@ -6,9 +6,6 @@ import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
 import Ootd from './pages/ootd/Main/Main';
-import FeedListByIdWithMain from './test/FeedListByIdWithMain';
-import FeedListByHashsWithMain from './test/FeedListByHashsWithMain';
-import FeedListByNickNameWithMain from './test/FeedListByNickNameWithMain';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
@@ -76,10 +73,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
         <Route path="/feed" element={<FeedList />} />
-        <Route path="/feed/id" element={<FeedListByIdWithMain />} />
-        <Route path="/feed/nick" element={<FeedListByNickNameWithMain />} />
-        <Route path="/feed/hashs" element={<FeedListByHashsWithMain />} />
-        <Route path="/feed/search/*" element={<SearchedFeedList />} />
+        <Route path="/feed/search/:keyword" element={<SearchedFeedList />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/DMPage" element={<DMPage />} />
         <Route path="/ootd" element={<Ootd />} />
@@ -105,7 +99,6 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
-        <Route path="/"></Route>
       </Routes>
       <Footer />
     </BrowserRouter>

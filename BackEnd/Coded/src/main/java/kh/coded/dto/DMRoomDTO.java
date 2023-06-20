@@ -2,29 +2,32 @@ package kh.coded.dto;
 
 public class DMRoomDTO {
     private int roomId;
-    private String name;
+    private int LastMessageId;
 
-    public DMRoomDTO() {
-    }
+    public DMRoomDTO(int roomId, int lastMessageId) {
+		super();
+		this.roomId = roomId;
+		LastMessageId = lastMessageId;
+	}
 
-    public DMRoomDTO(int roomId, String name) {
-        this.roomId = roomId;
-        this.name = name;
-    }
+	public DMRoomDTO() {
+		super();
+	}
 
-    public int getRoomId() {
-        return roomId;
-    }
+	public int getRoomId() {
+		return roomId;
+	}
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int getLastMessageId() {
+		return LastMessageId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setLastMessageId(int lastMessageId) {
+		LastMessageId = lastMessageId;
+	}
+    
 }

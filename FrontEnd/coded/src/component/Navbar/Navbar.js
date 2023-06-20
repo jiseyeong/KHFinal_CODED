@@ -4,7 +4,11 @@ import { useNavigate, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import SearchBox from '../Search/SearchBox';
-import { setMember, setNonMember, setWeekly } from '../../modules/Redux/navbarSetting';
+import {
+  setMember,
+  setNonMember,
+  setWeekly,
+} from '../../modules/Redux/navbarSetting';
 
 //font awsome
 const weatherIcons = {
@@ -48,14 +52,20 @@ function Navbar() {
   const accessToken = useSelector((state) => state.member.access);
   const navbarType = useSelector((state) => state.navbarSetting.type);
   const dispatch = useDispatch();
-  const onNavbarSetNonMem = useCallback(()=>dispatch(setNonMember()), [dispatch]);
-  const onNavbarSetMem = useCallback(()=>dispatch(setMember()), [dispatch]);
-  const onNavbarSetWeekly = useCallback(()=>dispatch(setWeekly()), [dispatch]);
+  const onNavbarSetNonMem = useCallback(
+    () => dispatch(setNonMember()),
+    [dispatch],
+  );
+  const onNavbarSetMem = useCallback(() => dispatch(setMember()), [dispatch]);
+  const onNavbarSetWeekly = useCallback(
+    () => dispatch(setWeekly()),
+    [dispatch],
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(accessToken !== ''){
+    if (accessToken !== '') {
       onNavbarSetMem();
       axios({
         method: 'get',
@@ -65,7 +75,6 @@ function Navbar() {
         },
       })
         .then((response) => {
-          console.log(response);
           axios({
             method: 'get',
             url: '/weather/today',
@@ -103,7 +112,7 @@ function Navbar() {
         .catch((error) => {
           console.log(error);
         });
-    }else{
+    } else {
       onNavbarSetNonMem();
     }
   }, [accessToken]);
@@ -113,9 +122,9 @@ function Navbar() {
     setIsOotdBorder(true);
     setIsWeeklyBorder(false);
 
-    if(accessToken !== ''){
+    if (accessToken !== '') {
       onNavbarSetMem();
-    }else{
+    } else {
       onNavbarSetNonMem();
     }
 

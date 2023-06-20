@@ -1,41 +1,46 @@
-import React from 'react';
-import style from './DMPage.module.scss';
-import { Stomp } from '@stomp/stompjs';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
+import SockJsClient from 'react-stomp';
+import { useSelector } from 'react-redux';
 
-const DMPage = () => {
-  useEffect(() => {
-    const socket = new WebSocket('ws://192.168.50.221:9999/chatchat');
-    const stompClient = Stomp.over(socket);
+const SOCKET_URL = 'http://192.168.50.218:9999/ws-message';
 
-    stompClient.connect(
-      {},
-      function () {
-        console.log('연결 성공');
-        stompClient.subscribe('/topic/dialog', function (message) {
-          console.log('일반 메세지'); // message
-        });
-      },
-      function (error) {
-        console.log('연결 실패');
-      },
-    );
-  }, []);
+const App = () => {
+  const [message, setMessage] = useState('You server message here.');
+  const accessToken = useSelector((state) => state.member.access);
+
+  // axios({
+  //   method: 'get',
+  //   url: '/auth/userDTO',
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //   }
+  // })
+
+
+  let onConnected = () => {
+    console.log("Connected!!")
+  }
+
+  let onMessageReceived = (msg) => {
+    setMessage(msg.message);
+  }
 
   return (
-    <div className={style.chatLayout}>
-      <div className={style.chatBox}>
-        <div className={style.messageArea}></div>
-        <div className={style.inputArea}>
-          <input
-            type="text"
-            className={style.chat}
-            placeholder="메세지를 입력해주세요"
-          />
-        </div>
-      </div>
+    <div>
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={['/topic/message']}
+        onConnect={onConnected}
+        onDisconnect={console.log("Disconnected!")}
+        onMessage={msg => onMessageReceived(msg)}
+        debug={false}
+      />
+
+
+      <div>{message}</div>
     </div>
   );
-};
+}
 
-export default DMPage;
+export default App;
