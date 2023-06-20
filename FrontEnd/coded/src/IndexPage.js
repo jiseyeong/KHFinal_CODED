@@ -44,15 +44,6 @@ const IndexPage = () => {
       <Link to="/searchBox">검색 테스트</Link>
       <br />
       <br />
-      <Link to="/feed/id">아이디 검색 결과(테스트)</Link>
-      <br />
-      <br />
-      <Link to="/feed/nick">닉네임 검색 결과(테스트)</Link>
-      <br />
-      <br />
-      <Link to="/feed/hashs">해쉬 검색 결과(테스트)</Link>
-      <br />
-      <br />
       <button onClick={onLogout}>로그아웃</button>
     </div>
   );
