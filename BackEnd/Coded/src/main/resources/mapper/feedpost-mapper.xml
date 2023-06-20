@@ -24,6 +24,7 @@
 	<insert id="insertPostHashs">
 		insert into HashTag values(_seq.nextval,
 		#{feedPostId}, #{tagId})
+	</insert>
 	<select id="selectByUserNoList" resultType="kh.coded.dto.FeedPostDTO">
 		select * from FeedPost where userno = ${userno}
 	</select>

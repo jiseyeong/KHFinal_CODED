@@ -8,33 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class FeedLikeDAO {
+public class FeedScrapDAO {
 
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	public int insertFeedLike(int userNo,int feedPostId) {
+	public int insertFeedScrap(int userNo,int feedPostId) {
 		Map<String,Integer> map = new HashMap<>();
 		map.put("userNo", userNo);
 		map.put("feedPostId",feedPostId);
-		return mybatis.insert("FeedLike.insertFeedLike",map);
+		return mybatis.insert("FeedScrap.insertFeedScrap",map);
 	}
 	
-	public int deleteFeedLike(int userNo,int feedPostId) {		
+	public int deleteFeedScrap(int userNo,int feedPostId) {		
 		Map<String,Integer> map = new HashMap<>();
 		map.put("userNo", userNo);
 		map.put("feedPostId",feedPostId);
-		return mybatis.delete("FeedLike.deleteFeedLike",map);
+		return mybatis.delete("FeedScrap.deleteFeedScrap",map);
 	}
 	
-	public int seleteFeedLike(int feedPostId) {
-		return mybatis.selectOne("FeedLike.seleteFeedLike",feedPostId);
-	}
-	
-	public boolean isFeedLike(int userNo, int feedPostId) {
+	public boolean isFeedScrap(int userNo,int feedPostId) {
 		Map<String,Integer> map = new HashMap<>();
 		map.put("userNo", userNo);
-		map.put("feedPostId", feedPostId);
-		return mybatis.selectOne("FeedLike.isFeedLike",map);
+		map.put("feedPostId",feedPostId);
+		return mybatis.selectOne("FeedScrap.isFeedScrap",map);
 	}
 }

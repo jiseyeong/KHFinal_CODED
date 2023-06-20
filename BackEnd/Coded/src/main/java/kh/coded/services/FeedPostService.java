@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -20,6 +18,7 @@ import kh.coded.dto.PostHashsWithHashTagDTO;
 import kh.coded.repositories.FeedCommentDAO;
 import kh.coded.repositories.FeedLikeDAO;
 import kh.coded.repositories.FeedPostDAO;
+import kh.coded.repositories.FeedScrapDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.repositories.PhotoDAO;
 import kh.coded.repositories.PostHashsDAO;
@@ -45,6 +44,9 @@ public class FeedPostService {
     
     @Autowired
     private FeedLikeDAO feedLikeDAO;
+    
+    @Autowired
+    private FeedScrapDAO feedScrapDAO;
 
     
     public int insertTest(FeedPostDTO dto) {
@@ -94,6 +96,7 @@ public class FeedPostService {
         List<PhotoDTO> userProfileList = new ArrayList<>();
         List<PhotoDTO> thumbNailList = new ArrayList<>();
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
+        List<Integer> feedLikeList = new ArrayList<>();
 
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
@@ -101,10 +104,12 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
             userProfileList.add(userProfile);
             hashTagLists.add(hashTagList);
+            feedLikeList.add(feedLike);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -118,14 +123,15 @@ public class FeedPostService {
     
     public Map<String, Object> selectFeedDetail(int feedPostId) { 
     	// 피드 상세페이지 출력
-    	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수
+    	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수, 
 		FeedPostDTO feedPost = feedpostDAO.searchByFeedPost(feedPostId); // 글 정보
 		List<PhotoDTO> photoList = photoDAO.selectByFeedpostId(feedPostId); // 사진
 		MemberDTO writeMember = memberDAO.selectMemberByUserNo(feedPost.getUserNo()); // 작성자 정보
 		writeMember.setPw("");
 		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPostId); // 해시태그들
 		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo()); // 유저 프로필
-		int feedLikeCount = feedLikeDAO.seleteFeedLike(feedPostId);
+		int feedLikeCount = feedLikeDAO.seleteFeedLike(feedPostId); // 좋아요 갯수
+		
 
 		
 		Map<String,Object> data = new HashMap<>();
@@ -153,18 +159,23 @@ public class FeedPostService {
     	List<PhotoDTO> userProfileList = new ArrayList<>();
     	List<PhotoDTO> thumbnailList = new ArrayList<>();
     	List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
-    	
+    	List<Integer> feedLikeList = new ArrayList<>();
+ 
     	for (FeedPostDTO feedPost : feedPostList) {
     		PhotoDTO thumbnail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
     		MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
     		userInfo.setPw("");
     		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
+    		int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
     		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
     		thumbnailList.add(thumbnail);
     		memberList.add(userInfo);
     		userProfileList.add(userProfile);
     		hashTagLists.add(hashTagList);
+    		feedLikeList.add(feedLike);
     	}
+    	
+    
     	Map<String, Object> data = new HashMap<>();
     	data.put("feedPostList", feedPostList);
     	data.put("thumbNailList", thumbnailList);
@@ -186,6 +197,7 @@ public class FeedPostService {
         List<PhotoDTO> userProfileList = new ArrayList<>();
         List<PhotoDTO> thumbNailList = new ArrayList<>();
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
+        List<Integer> feedLikeList = new ArrayList<>();
 
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
@@ -193,10 +205,12 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
             userProfileList.add(userProfile);
             hashTagLists.add(hashTagList);
+            feedLikeList.add(feedLike);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -243,5 +257,21 @@ public class FeedPostService {
     
     public int selectFeedLike(int feedpostId) {
     	return feedLikeDAO.seleteFeedLike(feedpostId);
+    }
+    
+    public boolean isFeedLike(int userNo, int feedPostId) {
+    	return feedLikeDAO.isFeedLike(userNo, feedPostId);
+    }
+    
+    public int insertFeedScrap(int userNo,int feedPostId) {
+    	return feedScrapDAO.insertFeedScrap(userNo, feedPostId);
+    }
+    
+    public int deleteFeedScrap(int userNo,int feedPostId) {
+    	return feedScrapDAO.deleteFeedScrap(userNo, feedPostId);
+    }
+    
+    public boolean isFeedScrap(int userNo, int feedPostId) {
+    	return feedScrapDAO.isFeedScrap(userNo, feedPostId);
     }
 }
