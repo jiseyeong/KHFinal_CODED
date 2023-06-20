@@ -36,14 +36,17 @@ const FeedListByHashs = () => {
       .catch((resp) => console.log(resp));
   };
 
-  window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      addFeedList();
-    }
-  };
-
   useEffect(() => {
     addFeedList();
+
+    window.onscroll = function () {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        addFeedList();
+      }
+    };
+    return ()=>{
+      window.onscroll = null;
+    }
   }, []);
 
   return (

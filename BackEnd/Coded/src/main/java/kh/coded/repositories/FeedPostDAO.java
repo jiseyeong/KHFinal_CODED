@@ -104,4 +104,16 @@ public class FeedPostDAO {
 		map.put("keyword",keyword);
 		return mybatis.selectList("FeedPost.selectSearchFeedListByHashs",map);
 	}
+	
+	public int updateFeedPost(int feedPostId,String body) { //글 수정
+		Map<String,Object> data = new HashMap<>();
+		data.put("feedPostId", feedPostId);
+		data.put("body", body);
+		return mybatis.update("FeedPost.updateFeedPost",data);
+	}
+	
+	public int deleteFeedPost(int feedPostId) { //글 삭제 
+		return mybatis.delete("FeedPost.deleteFeedPost",feedPostId);
+	}
+
 }

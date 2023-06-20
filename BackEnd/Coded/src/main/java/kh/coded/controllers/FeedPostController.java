@@ -77,11 +77,18 @@ public class FeedPostController {
 	@GetMapping("searchByNickname") //유저 닉네임으로 검색 시 유저 정보, 피드 뽑기
 	public ResponseEntity<?> selectMemberByNickname(@RequestParam String userNickName) {
 		System.out.println(userNickName);
-		MemberDTO member = memberService.selectMemberByNickName(userNickName);
-		List<FeedPostDTO> list = feedpostService.selectFeedList(member.getUserNo());
+		List<MemberDTO> member = memberService.selectMemberByNickName(userNickName);
+		List<FeedPostDTO> feedList = new ArrayList<>();
+		for(MemberDTO dto1 : member) {		
+			 List<FeedPostDTO> list = feedpostService.selectFeedList(dto1.getUserNo());
+			 
+			 for(FeedPostDTO dto2 : list) {
+				 feedList.add(dto2);
+			 }
+		}
 		Map<String,Object> result = new HashMap<>();
 		result.put("MemberDTO", member);
-		result.put("feedlist", list);
+		result.put("feedlist", feedList);
 
 		return ResponseEntity.ok().body(result); 
 	}
@@ -174,6 +181,21 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(data);
 				
 	}
+	
+	@PutMapping("/updateFeedPost") //피드 수정
+	public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
+		feedpostService.updateFeedPost(feedPostId, body);
+		
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@DeleteMapping("/deleteFeedPost") //피드 삭제 
+	public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
+		feedpostService.deleteFeedPost(feedPostId);
+		
+		return ResponseEntity.ok().body(null);
+	}
+	
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(

@@ -149,9 +149,9 @@ public class FeedPostService {
 		data.put("hashTagList", hashTagList);
 		data.put("userProfile", userProfile);
 		
-		return data;
+		return data; 
     }
-
+    
     public FeedPostDTO selectByUserNo(int userNo) {
         return feedpostDAO.selectByUserNo(userNo);
     }
@@ -225,6 +225,12 @@ public class FeedPostService {
         return map;
     }
     
+    public int updateFeedPost(int feedPostId,String body) {
+    	return feedpostDAO.updateFeedPost(feedPostId, body);
+    }
+    public int deleteFeedPost(int feedPostId) {
+    	return feedpostDAO.deleteFeedPost(feedPostId);
+    }
     public int insertComment(FeedCommentDTO dto) {
     	return commentDAO.insert(dto);
     }

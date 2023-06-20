@@ -1,9 +1,10 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useCallback, useEffect, useState } from 'react';
 import './NavbarNonMem.scss';
 import { useNavigate, withRouter } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import SearchBox from '../Search/SearchBox';
+import { setMember, setNonMember, setWeekly } from '../../modules/Redux/navbarSetting';
 
 //font awsome
 const weatherIcons = {
@@ -34,7 +35,7 @@ const weatherIcons = {
   ),
 };
 
-function Navbar({ type }) {
+function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
   const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
   const [isListOotdBorder, setListOotdBorder] = useState(true);
@@ -45,75 +46,95 @@ function Navbar({ type }) {
   const [maxTemp, setMaxTemp] = useState(0);
   const [recentTemp, setRecentTemp] = useState(0);
   const accessToken = useSelector((state) => state.member.access);
+  const navbarType = useSelector((state) => state.navbarSetting.type);
+  const dispatch = useDispatch();
+  const onNavbarSetNonMem = useCallback(()=>dispatch(setNonMember()), [dispatch]);
+  const onNavbarSetMem = useCallback(()=>dispatch(setMember()), [dispatch]);
+  const onNavbarSetWeekly = useCallback(()=>dispatch(setWeekly()), [dispatch]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios({
-      method: 'get',
-      url: '/auth/userDTO',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        axios({
-          method: 'get',
-          url: '/weather/today',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          params: {
-            address1: response.data.address1,
-            address2: response.data.address2,
-            time: new Date().getTime(),
-          },
-        }).then((response) => {
-          setWeatherMessage(response.data.message);
-          setRecentTemp(response.data.today.recent);
-          setMinTemp(response.data.today.min);
-          setMaxTemp(response.data.today.max);
-          if (
-            response.data.today.ptyCode == 1 ||
-            response.data.today.ptyCode == 2
-          ) {
-            setWeatherIcon(weatherIcons.rain);
-          } else if (response.data.today.ptyCode == 3) {
-            setWeatherIcon(weatherIcons.snow);
-          } else if (response.data.today.ptyCode == 4) {
-            setWeatherIcon(weatherIcons.heavyRain);
-          } else {
-            if (response.data.today.skyCode == 1) {
-              setWeatherIcon(weatherIcons.sun);
-            } else {
-              setWeatherIcon(weatherIcons.cloud);
-            }
-          }
-        });
+    if(accessToken !== ''){
+      onNavbarSetMem();
+      axios({
+        method: 'get',
+        url: '/auth/userDTO',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          console.log(response);
+          axios({
+            method: 'get',
+            url: '/weather/today',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            params: {
+              address1: response.data.address1,
+              address2: response.data.address2,
+              time: new Date().getTime(),
+            },
+          }).then((response) => {
+            setWeatherMessage(response.data.message);
+            setRecentTemp(response.data.today.recent);
+            setMinTemp(response.data.today.min);
+            setMaxTemp(response.data.today.max);
+            if (
+              response.data.today.ptyCode == 1 ||
+              response.data.today.ptyCode == 2
+            ) {
+              setWeatherIcon(weatherIcons.rain);
+            } else if (response.data.today.ptyCode == 3) {
+              setWeatherIcon(weatherIcons.snow);
+            } else if (response.data.today.ptyCode == 4) {
+              setWeatherIcon(weatherIcons.heavyRain);
+            } else {
+              if (response.data.today.skyCode == 1) {
+                setWeatherIcon(weatherIcons.sun);
+              } else {
+                setWeatherIcon(weatherIcons.cloud);
+              }
+            }
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }else{
+      onNavbarSetNonMem();
+    }
   }, [accessToken]);
 
   function handleClickOotd(e) {
     e.preventDefault();
     setIsOotdBorder(true);
     setIsWeeklyBorder(false);
-    navigate('/ootd');
+
+    if(accessToken !== ''){
+      onNavbarSetMem();
+    }else{
+      onNavbarSetNonMem();
+    }
+
+    navigate('/');
   }
 
   function handleClickWeekly(e) {
     e.preventDefault();
     setIsOotdBorder(false);
     setIsWeeklyBorder(true);
-    navigate('/login');
+
+    onNavbarSetWeekly();
+
+    navigate('/weekly');
   }
 
   return (
     <>
-      {type !== 'nonMem' && (
+      {navbarType !== 'NonMem' && (
         <div>
           <div>{weatherIcon}</div>
           <div>{recentTemp}</div>
@@ -156,7 +177,7 @@ function Navbar({ type }) {
             </div>
           </div>
 
-          {type !== 'weekly' && (
+          {navbarType !== 'Weekly' && (
             // 검색 박스 관련 js와 css는 SearchBox.js로 옮겨 넣었습니다.
             <SearchBox />
           )}
@@ -177,7 +198,7 @@ function Navbar({ type }) {
             </div>
           </div>
         </nav>
-        {type === 'mem' && (
+        {navbarType === 'Mem' && (
           <nav className="bottomNavBar">
             <ul className="categories">
               <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>
@@ -190,7 +211,7 @@ function Navbar({ type }) {
             </ul>
           </nav>
         )}
-        {type === 'nonMem' && (
+        {navbarType === 'NonMem' && (
           <nav className="bottomNavBar">
             <ul className="categories">
               <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>
@@ -200,7 +221,7 @@ function Navbar({ type }) {
             </ul>
           </nav>
         )}
-        {type === 'weekly' && (
+        {navbarType === 'Weekly' && (
           <nav className="bottomNavBar">
             <p className={isHomeBorder ? 'isHomeBorder' : ''}>User's Choice!</p>
           </nav>
