@@ -6,4 +6,8 @@
 	<select id="selectByUserNo">
 		select * from dmroomuser where userno = ${userno}
 	</select>
+	
+	<insert id="createRoomId" >
+		select DMRoom_seq.nextval from dual
+	</insert>
 </mapper>
