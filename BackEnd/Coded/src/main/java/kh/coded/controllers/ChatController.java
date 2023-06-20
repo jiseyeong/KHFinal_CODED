@@ -1,13 +1,10 @@
 package kh.coded.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.util.HtmlUtils;
 
 import kh.coded.dto.DMDTO;
 
@@ -15,7 +12,7 @@ import kh.coded.dto.DMDTO;
 public class ChatController {
 
     @Autowired
-    private SimpMessagingTemplate send;
+    private SimpMessagingTemplate simpMessagingTemplate;
 //    @SendTo("/topic/dialog")
 //    @MessageMapping("/init")
 //    public String init(String message, SimpMessageHeaderAccessor smha){
@@ -23,17 +20,9 @@ public class ChatController {
 //        return g.toJson(messages);
 //    }
 
-    @MessageMapping("/send")
-    @SendTo("/chat/DM")
-    public String greeting(String msg) throws Exception {
-        
-    	Thread.sleep(1000); // simulated delay
-        
-    	return msg;
-    }
-    @EventListener
-    public void onConnect(SessionConnectedEvent e){
-        System.out.println("확인");
+    @MessageMapping("/chat")
+    public void sendMessage(DMDTO DMdto, SimpMessageHeaderAccessor accessor) {
+        simpMessagingTemplate.convertAndSend("/sub/chat/" + DMdto.getRoomId(), DMdto);
     }
 
 }

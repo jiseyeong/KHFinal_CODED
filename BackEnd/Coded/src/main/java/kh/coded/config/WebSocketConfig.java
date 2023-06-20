@@ -13,22 +13,21 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	
 	@Override
-	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/chat")
-		.addInterceptors(new HttpSessionHandshakeInterceptor())
-		.setAllowedOrigins("*")
-		.withSockJS();
-		// 채팅의 엔드포인트는 chat으로 클라이언트가 웹소켓 연결할떄 사용
-	}
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("*")
+                .withSockJS();
+    }
+	//엔드포인트 - /ws
 	
-    @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry){
+	
+	@Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/sub");
         registry.setApplicationDestinationPrefixes("/pub");
-        // pub가 붙어있으면 브로커로 보내짐 /sub가 붙는 경우 
-        //messageBroker가 잡아서 해당 채팅방을 구독하고 있는 클라이언트에게 메시지를 전달해줌
-        
     }
+	// sub가 prefix인 클라이언트에게 메세지를 보낼 수 있도록 simplebroker 등록
+	// pub가 prefix인 메세지는 MessageMapping이 붙은 method로 바운드
 
 }
 

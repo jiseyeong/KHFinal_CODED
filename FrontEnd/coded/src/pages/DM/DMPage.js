@@ -1,66 +1,82 @@
-import React from 'react';
-import style from './DMPage.module.scss';
-import { Stomp } from '@stomp/stompjs';
-import { useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import * as StompJs from '@stomp/stompjs';
+import instance from '../../utils/axiosConfig';
 
-const DMPage = () => {
+function CreateReadChat() {
+  const [chatList, setChatList] = useState([]);
+  const [chat, setChat] = useState('');
 
-  var stompClient = null;
+  const { apply_id } = useParams();
+  const client = useRef({});
 
-function setConnected(connected) {
-    $("#connect").prop("disabled", connected);
-    $("#disconnect").prop("disabled", !connected);
-    if (connected) {
-        $("#conversation").show();
-    }
-    else {
-        $("#conversation").hide();
-    }
-    $("#greetings").html("");
-}
-
-function connect() {
-    var socket = new SockJS('ws://192.168.0.38:9999/chat');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        setConnected(true);
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/chat/DM', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
-        });
+  const connect = () => {
+    client.current = new StompJs.Client({
+      brokerURL: 'ws://192.168.50.218:9999/ws',
+      onConnect: () => {
+        console.log('success');
+        subscribe();
+      },
+      connectHeaders: {
+        Authorization: window.localStorage.getItem('authorization'),
+        //STOMP를 사용해 연결요청시 커스텀헤더에 JWT를 실어보냄
+      },
     });
-    
-    displayStompObject();
-}
+    client.current.activate();
+  };
 
-function disconnect() {
-    if (stompClient !== null) {
-        stompClient.disconnect();
-    }
-    setConnected(false);
-    console.log("Disconnected");
-}
+  const publish = (chat) => {
+    if (!client.current.connected) return;
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
-}
-
-function sendName() {
- stompClient.send("/pub/send", {}, JSON.stringify({
-  'name' : $("#name").val()
- }));
-}
-
-
-$(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
+    client.current.publish({
+      destination: '/pub/chat',
+      body: JSON.stringify({
+        applyId: apply_id,
+        chat: chat,
+      }),
     });
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { sendName(); });
-});
 
+    setChat('');
+  };
+
+  const subscribe = () => {
+    client.current.subscribe('/sub/chat/' + apply_id, (body) => {
+      const json_body = JSON.parse(body.body);
+      setChatList((_chat_list) => [
+        ..._chat_list, json_body
+      ]);
+    });
+  };
+
+  const disconnect = () => {
+    client.current.deactivate();
+  };
+
+  const handleChange = (event) => { // 채팅 입력 시 state에 값 설정
+    setChat(event.target.value);
+  };
+
+  const handleSubmit = (event, chat) => { // 보내기 버튼 눌렀을 때 publish
+    event.preventDefault();
+
+    publish(chat);
+  };
+  
+  useEffect(() => {
+    connect();
+
+    return () => disconnect();
+  }, []);
+
+  return (
+    <div>
+      <div className={'chat-list'}>{chatList}</div>
+      <form onSubmit={(event) => handleSubmit(event, chat)}>
+        <div>
+          <input type={'text'} name={'chatInput'} onChange={handleChange} value={chat} />
+        </div>
+        <input type={'submit'} value={'의견 보내기'} />
+      </form>
+    </div>
+  );
 }
-
-export default DMPage;
