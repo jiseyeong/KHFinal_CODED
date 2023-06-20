@@ -30,4 +30,11 @@ public class FeedLikeDAO {
 	public int seleteFeedLike(int feedPostId) {
 		return mybatis.selectOne("FeedLike.seleteFeedLike",feedPostId);
 	}
+	
+	public boolean isFeedLike(int userNo, int feedPostId) {
+		Map<String,Integer> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("feedPostId", feedPostId);
+		return mybatis.selectOne("FeedLike.isFeedLike",map);
+	}
 }

@@ -9,4 +9,7 @@
   	<delete id="deleteFeedScrap">
   		delete feedscrap where feedlikeid = ${feedLikeId} and userno = ${userNo}
   	</delete>
+  	<select id="isFeedScrap" resultType="boolean">
+  		select * from feedscrap where userno = ${userNo} and feedpostid = ${feedPostId}
+  	</select>
   </mapper>

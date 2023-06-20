@@ -96,6 +96,7 @@ public class FeedPostService {
         List<PhotoDTO> userProfileList = new ArrayList<>();
         List<PhotoDTO> thumbNailList = new ArrayList<>();
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
+        List<Integer> feedLikeList = new ArrayList<>();
 
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
@@ -103,10 +104,12 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
             userProfileList.add(userProfile);
             hashTagLists.add(hashTagList);
+            feedLikeList.add(feedLike);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -194,6 +197,7 @@ public class FeedPostService {
         List<PhotoDTO> userProfileList = new ArrayList<>();
         List<PhotoDTO> thumbNailList = new ArrayList<>();
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
+        List<Integer> feedLikeList = new ArrayList<>();
 
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
@@ -201,10 +205,12 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
             userProfileList.add(userProfile);
             hashTagLists.add(hashTagList);
+            feedLikeList.add(feedLike);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -253,11 +259,19 @@ public class FeedPostService {
     	return feedLikeDAO.seleteFeedLike(feedpostId);
     }
     
+    public boolean isFeedLike(int userNo, int feedPostId) {
+    	return feedLikeDAO.isFeedLike(userNo, feedPostId);
+    }
+    
     public int insertFeedScrap(int userNo,int feedPostId) {
     	return feedScrapDAO.insertFeedScrap(userNo, feedPostId);
     }
     
     public int deleteFeedScrap(int userNo,int feedPostId) {
     	return feedScrapDAO.deleteFeedScrap(userNo, feedPostId);
+    }
+    
+    public boolean isFeedScrap(int userNo, int feedPostId) {
+    	return feedScrapDAO.isFeedScrap(userNo, feedPostId);
     }
 }

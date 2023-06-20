@@ -26,4 +26,11 @@ public class FeedScrapDAO {
 		map.put("feedPostId",feedPostId);
 		return mybatis.delete("FeedScrap.deleteFeedScrap",map);
 	}
+	
+	public boolean isFeedScrap(int userNo,int feedPostId) {
+		Map<String,Integer> map = new HashMap<>();
+		map.put("userNo", userNo);
+		map.put("feedPostId",feedPostId);
+		return mybatis.selectOne("FeedScrap.isFeedScrap",map);
+	}
 }
