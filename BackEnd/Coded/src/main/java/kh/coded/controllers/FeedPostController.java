@@ -88,7 +88,7 @@ public class FeedPostController {
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
 			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
 			@PathVariable("keyword") String keyword){
-
+		System.out.println(keyword);
 		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
