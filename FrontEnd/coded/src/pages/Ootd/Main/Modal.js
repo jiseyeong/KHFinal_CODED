@@ -14,6 +14,7 @@ function Modal({ modalData, data, setData, closeModal, id }) {
   ); // 그냥 modalData?.description으로 바꿔볼 것.
   const [res, setRes] = useState([]);
   const [isLikeBtn, setIsLikeBtn] = useState(false);
+  const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
   const [follower, setFollower] = useState(
     modalData?.modalData?.modalData?.follower,
   ); // 그냥 modalData?.follower로 바꿔볼 것.
@@ -34,10 +35,10 @@ function Modal({ modalData, data, setData, closeModal, id }) {
   }
 
   function handleRepleLike(e) {
-    if (!isLikeBtn) {
-      setIsLikeBtn(true);
+    if (!isRepleLikeBtn) {
+      setIsRepleLikeBtn(true);
     } else {
-      setIsLikeBtn(false);
+      setIsRepleLikeBtn(false);
     }
   }
 
@@ -322,7 +323,7 @@ function Modal({ modalData, data, setData, closeModal, id }) {
                       <div className="repleNickname">한유 @hanyu3677</div>
                       <div className="repleWrite">데일리룩 잘 봤습니다</div>
                     </div>
-                    <div className="repleLike">
+                    <div className = {isRepleLikeBtn ? 'likeRepleBox' : 'dislikeRepleBox'}>
                       <svg
                         className="like"
                         onClick={handleRepleLike}
