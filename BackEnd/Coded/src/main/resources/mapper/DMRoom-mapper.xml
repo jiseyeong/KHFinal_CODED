@@ -8,6 +8,6 @@
 	</select>
 	
 	<insert id="createRoomId" >
-		select DMRoom_seq.nextval from dual
+		select roomid_seq.nextval from dual
 	</insert>
 </mapper>
