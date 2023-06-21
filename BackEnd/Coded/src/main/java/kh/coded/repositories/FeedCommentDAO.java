@@ -18,12 +18,12 @@ public class FeedCommentDAO {
 	
 	public int insert(FeedCommentDTO dto) {
 		mybatis.insert("FeedComment.insert", dto);
-		return dto.getFeedCommnentId();
+		return dto.getFeedCommentId();
 	}
 	
 	public int insertNestedComment(FeedCommentDTO dto) {
 		mybatis.insert("FeedComment.insertNestedComment", dto);
-		return dto.getFeedCommnentId();
+		return dto.getFeedCommentId();
 	}
 	
 	public void update(int feedCommentId, String body) {
