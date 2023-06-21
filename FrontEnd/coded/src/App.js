@@ -26,8 +26,9 @@ import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Profile/Component/Footer/Footer';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
-import FeedComment from './component/FeedPostDetail/FeedComment';
+import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
+import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
 function App() {
   const dispatch = useDispatch();
@@ -92,8 +93,9 @@ function App() {
 
         <Route
           path="/test/feedComment"
-          element={<FeedComment feedPostId={295} depth={0} parentId={0} />}
+          element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
+        <Route path="/test/FeedInsert" element={<FeedInsert />} />
 
         <Route
           path="/login/oauth2/code/kakao"

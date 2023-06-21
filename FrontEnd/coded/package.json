@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@stomp/stompjs": "^7.0.0",
+    "@toast-ui/react-editor": "^3.2.3",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-cookies": "^0.1.1",
@@ -23,8 +24,8 @@
     "styled-components": "^6.0.0-rc.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "set \"GENERATE_SOURCEMAP=false\" && react-scripts start",
+    "build": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
