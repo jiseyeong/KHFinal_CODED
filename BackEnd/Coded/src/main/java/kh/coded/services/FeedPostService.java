@@ -282,11 +282,22 @@ public class FeedPostService {
     	Map<String, Object> data = new HashMap<>();
     	List<FeedCommentDTO> commentList = commentDAO.selectByParentIdAndDepth(parentId, depth);
     	List<Boolean> isLikeList = new ArrayList<>();
+    	List<String> userIdList = new ArrayList<>();
+    	List<String> userNickNameList = new ArrayList<>();
+    	
     	for(FeedCommentDTO comment : commentList) {
     		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
+    		
+    		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
+    		String userId = member.getUserId();
+    		String userNickName = member.getUserNickName();
+    		userIdList.add(userId);
+    		userNickNameList.add(userNickName);
     	}
     	data.put("commentList", commentList);
     	data.put("isLikeList", isLikeList);
+    	data.put("userIdList", userIdList);
+    	data.put("userNickNameList", userNickNameList);
     	return data;
     }
     
