@@ -4,13 +4,14 @@ import SockJsClient from 'react-stomp';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
+
 function DMList() {
 
     const accessToken = useSelector((state) => state.member.access);
     const loginUserNo = useSelector((state) => state.member.userNo);
     const [chatList, setChatList] = useState();
 
-    const selectDMList = () => {
+    useEffect(()=>{
         axios({
             method: 'GET',
             url: '/DM/selectChatList/',
@@ -19,14 +20,12 @@ function DMList() {
             },
         })
             .then((resp) => {
-                useEffect(()=>{
-                    setChatList(resp.data)
-                },[])
+                
               
             })
             .catch((error) => console.log(error));
-    };
-
+    },[loginUserNo])
+  
     const DMListOuter = styled('div')`
     margin:auto;
     border: 1px solid black;
@@ -91,7 +90,7 @@ function DMList() {
                     <input className='search' type='text'></input>
                 </div>
                 <div className='chatList'>
-                    {chatList}
+                    
                 </div>
             </div>
         </DMListOuter>

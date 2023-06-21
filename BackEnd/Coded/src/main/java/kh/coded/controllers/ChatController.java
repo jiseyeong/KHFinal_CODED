@@ -42,8 +42,9 @@ public class ChatController {
 	// -- DM 관련 DB 작업 --
 
 	// UserNo를 통한 DMRoomDTO 데이터 얻어오기
-	@GetMapping("/selectChatList")
+	@GetMapping("selectChatList")
 	public ResponseEntity<?> selectChatList (@RequestParam(value = "userNo") int UserNo){
+		System.out.println(UserNo);
 		try {
 			List<DMRoomDTO> list = DMRoomService.selectByUserNo(UserNo);
 			return ResponseEntity.ok().body(list);
@@ -52,7 +53,7 @@ public class ChatController {
 		}
 	}
 
-	@GetMapping("/selectDMList")
+	@GetMapping("selectDMList")
 	public ResponseEntity<?> selectDMList (int RoomId){
 		try {
 			List<DMDTO> list = DMService.selectDMList(RoomId);
