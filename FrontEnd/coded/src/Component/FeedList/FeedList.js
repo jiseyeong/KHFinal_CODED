@@ -50,6 +50,7 @@ function FeedList() {
   const [loading, setLoading] = useState(true);
   const [feedLike, setFeedLike] = useState([]);
   const [isFeedLike, setIsFeedLike] = useState([]);
+  const [scrollWait, setScrollWait] = useState(true);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
   const feedPostOuterRef = useRef(null);
   // const [cpage, setCpage] = useState(1);
@@ -83,10 +84,9 @@ function FeedList() {
         setHashTagList((prev) => [...prev, ...hashTagLists]);
         setFeedLike((prev) => [...prev, ...feedLikeList]);
         setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
-        // setCpage((prev) => prev + 1);
         cpage.current = cpage.current + 1;
-        console.log(cpage);
         // setLoading(true);
+        console.log(cpage.current);
       })
       .catch((error) => {
         console.log(error);
@@ -99,10 +99,14 @@ function FeedList() {
 
   useEffect(() => {
     addFeedList();
-
     window.onscroll = function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+        scrollWait
+      ) {
+        setScrollWait((prev) => !prev);
         addFeedList();
+        setScrollWait((prev) => !prev);
       }
     };
 

@@ -5,17 +5,17 @@
 <mapper namespace="FeedComment">
 	<insert id="insert">
 		<selectKey keyProperty="feedCommentId" resultType="int" order="BEFORE">
-			select feedCommentId_seq.nextval from dual;
+			select FeedCommentId_SEQ.nextval from dual
 		</selectKey>
 		insert into FeedComment (FeedCommentId, UserNo, FeedPostId, ParentId, Body, WriteDate, Depth)
-		 values (${feedCommentId}, ${userNo}, ${feedPostId}, null, #{body}, sysdate, 0);
+		 values (${feedCommentId}, ${userNo}, ${feedPostId}, null, #{body}, sysdate, 0)
 	</insert>
 	<insert id="insertNestedComment">
 		<selectKey keyProperty="feedCommentId" resultType="int" order="BEFORE">
-			select feedCommentId_seq.nextval from dual;
+			select feedCommentId_seq.nextval from dual
 		</selectKey>
 		insert into FeedComment (FeedCommentId, UserNo, FeedPostId, ParentId, Body, WriteDate, Depth)
-		 values (${feedCommentId}, ${userNo}, ${feedPostId}, ${parentId}, #{body}, sysdate, ${depth});
+		 values (${feedCommentId}, ${userNo}, ${feedPostId}, ${parentId}, #{body}, sysdate, ${depth})
 	</insert>
 	<update id="update">
 		update FeedComment
@@ -25,10 +25,10 @@
 	<delete id="delete">
 		delete from FeedComment where FeedCommentId=${feedCommentId}
 	</delete>
-	<select id="selectByFeedPostDepth0">
+	<select id="selectByFeedPostDepth0" resultType="kh.coded.dto.FeedCommentDTO">
 		select * from FeedComment where FeedPostId=${feedPostId} and ParentId is null order by FeedCommentId asc
 	</select>
-	<select id="selectByParentIdAndDepth">
-		select * from FeedComment where ParendId=${parentId} and depth=${depth} order by FeedCommentId asc
+	<select id="selectByParentIdAndDepth" resultType="kh.coded.dto.FeedCommentDTO">
+		select * from FeedComment where ParentId=${parentId} and depth=${depth} order by FeedCommentId asc
 	</select>
 </mapper>
