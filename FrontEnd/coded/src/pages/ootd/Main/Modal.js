@@ -67,22 +67,23 @@ function Modal({ modalData, data, setData, closeModal, id }) {
     }
   }
   
-  // useEffect(()=>{
-  //     axios({
-  //       method:'post',
-  //       url:'/selectFeedDetail'
-  //     })
- 
+  useEffect(()=>{
+      axios({
+        method:'post',
+        url:'/feedpost/selectFeedDetail',
+        headers:{
+          Authorization:'Bearer '+accessToken
+      },
+      params:{
+        feedpostid:id
+     }
+      }).then((response)=>{
 
-  // },[])
+      }).catch(()=>{
 
+      })
+  },[])
 
-
-
-
-
-
-  
   // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
   function handleComment(e) {
     axios({
