@@ -37,7 +37,7 @@ public class FeedPostController {
 	@Autowired
 	private MemberService memberService;
 
-	@GetMapping(value = "feedpost")
+	@GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
 		try {
 			List<FeedPostDTO> list = feedpostService.selectFeedList(UserNo);
@@ -47,7 +47,7 @@ public class FeedPostController {
 		}
 	}
 
-	@PutMapping(value="feedpost")
+	@PutMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	public ResponseEntity<?> insertFeedPost(
 			@RequestParam(value="fdto") FeedPostDTO fdto,
 			@RequestParam(value="hdto") HashTagDTO hdto,
@@ -126,7 +126,7 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(null);
 	}
 
-	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 
+	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
 	public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
 		boolean result = feedpostService.isFeedLike(userNo, feedPostId);
 		if(!result) {	
@@ -189,19 +189,28 @@ public class FeedPostController {
 	
 	@GetMapping("comment/depth0")
 	public ResponseEntity<?> selectCommentDepth0(
-			@RequestParam(value="feedPostId") int feedPostId
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
 			){
-		List<FeedCommentDTO> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId);
-		return ResponseEntity.ok().body(result);
+		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
+		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.badRequest().body("댓글이 없습니다.");
 	}
 	
 	@GetMapping("comment/depthN")
 	public ResponseEntity<?> selectCommentDepth(
 			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="depth") int depth
+			@RequestParam(value="depth") int depth,
+			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
 			){
-		List<FeedCommentDTO> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth);
-		return ResponseEntity.ok().body(result);
+		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
+		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
+		
 	}
 
 }

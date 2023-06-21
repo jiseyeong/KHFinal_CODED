@@ -220,20 +220,6 @@ public class AuthenticationController {
 			){
 		return ResponseEntity.ok().body(addressCoordService.getAddressCoordList_depth2(address1));
 	}
-	
-	@GetMapping(value="/auth/getUserNamesByUserNo")
-	public ResponseEntity<?> getIdByUserNo(
-			@RequestParam(value="userNo") int userNo
-			){
-		Map<String, String> data = new HashMap<>();
-		MemberDTO member = memberService.selectByUserNo(userNo);
-		String userId = member.getUserId();
-		String userNickName = member.getUserNickName();
-		data.put("userId", userId);
-		data.put("userNickName", userNickName);
-		return ResponseEntity.ok().body(data);
-	}
-
 
 
 	@GetMapping(value="/login/oauth2/kakao/codeInfo")
