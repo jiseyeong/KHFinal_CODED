@@ -17,12 +17,12 @@
 	</insert>
 
 	<insert id="insertHashTag">
-		insert into HashTag values(FeedPost_seq.nextval,
+		insert into HashTag values(Hashtag_seq.nextval,
 		#{hashTag})
 	</insert>
 
 	<insert id="insertPostHashs">
-		insert into HashTag values(FeedPost_seq.nextval,
+		insert into PostHashs values(PostHashs_seq.nextval,
 		#{feedPostId}, #{tagId})
 	</insert>
 	<select id="selectByUserNoList" resultType="kh.coded.dto.FeedPostDTO">

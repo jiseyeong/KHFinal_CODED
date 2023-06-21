@@ -19,5 +19,9 @@ public class DMRoomDAO {
 		return mybatis.selectList("DMRoom.selectByUserNo",userNo);
 	}
 
+	public int createRoomId() {
+		return mybatis.insert("DMRoom.createRoomId");
+	}
+
 	
 }

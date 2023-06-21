@@ -57,9 +57,11 @@ public class FeedPostController {
 			int FeedPost = feedpostService.insertFeedPost(fdto);
 			int HashTag = feedpostService.insertHashTag(hdto.getHashTag());
 			int FeedPhoto = feedpostService.insertFeedPhoto(pdto);
+			int PostHashs = feedpostService.insertPostHashs(fdto.getUserNo(), hdto.getTagId());
 			result.put("FeedPost", FeedPost);
 			result.put("HashTag", HashTag);
 			result.put("FeedPhoto", FeedPhoto);
+			result.put("PostHashs", PostHashs);
 			return ResponseEntity.ok().body(result);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
