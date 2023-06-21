@@ -495,8 +495,14 @@
               font-weight: bold;
               margin-bottom: 7px;
             }
-            .repleLike {
+            .likeRepleBox {
               margin-left: auto;
+              svg{
+                fill:#ff5f00;
+              }
+            }
+            .dislikeRepleBox {
+              margin-left:auto; 
             }
           }
           .repleWrite {
