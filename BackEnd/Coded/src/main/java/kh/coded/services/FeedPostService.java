@@ -87,6 +87,8 @@ public class FeedPostService {
         return feedpostDAO.selectTestFeedList();
     }
 
+    
+    // 고도화 작업 요구
     public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
