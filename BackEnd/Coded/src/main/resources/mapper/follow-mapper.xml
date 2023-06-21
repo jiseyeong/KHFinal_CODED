@@ -6,25 +6,31 @@
 
 	<select id="selectFollowingList"
 		resultType="kh.coded.dto.MemberDTO">
-		select * from member where UserNo = ${ToUserId}
+		select * from member where UserNo = ${ToUserNo}
 	</select>
 
 	<select id="selectFollowerList"
 		resultType="kh.coded.dto.MemberDTO">
-		select * from member where UserNo = ${FromUserId}
+		select * from member where UserNo = ${FromUserNo}
+	</select>
+
+	<select id="isFollow" resultType="boolean">
+		select * from follow where ToUserNo = ${ToUserNo} and FromUserNo =
+		${FromUserNo}
 	</select>
 
 
 
 	<insert id="insertFollow">
-		insert into Follow values(_seq.nextval, ${ToUserId},
-		${FromUserId})
+		insert into Follow values(Follow_seq.nextval, ${ToUserNo},
+		${FromUserNo})
 	</insert>
 
 
 
 	<delete id="deleteFollow">
-		delete from Follow where ToUserId = ${ToUserId} and FromUserId = ${FromUserId}
+		delete from Follow where ToUserNo = ${ToUserNo} and
+		FromUserNo = ${FromUserNo}
 	</delete>
 
 </mapper>
