@@ -75,8 +75,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
-        <Route path="/feed" element={<FeedList />} />
-        <Route path="/feed/search/*" element={<SearchedFeedList />} />
+        <Route path="/feedList" element={<FeedList />} />
+        <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/DMPage" element={<DMPage />} />

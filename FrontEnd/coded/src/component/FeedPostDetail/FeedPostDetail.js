@@ -65,11 +65,22 @@ const FeedPostDetail = (props) => {
         </div>
         <div className={styles.feedInfoDiv}>
           <div className={styles.userProfileLayout}>
-            <img className={styles.userProfile} src={`/images/test.jpg`}></img>
+            {/* 해당 유저의 마이픽 페이지로 이동 */}
+            <Link to="#">
+              <img
+                className={styles.userProfile}
+                src={`/images/test.jpg`}
+              ></img>
+            </Link>
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
-              <div className={styles.userNameLayout}>{member.userNickName}</div>
+              {/* 해당 유저의 마이픽 페이지로 이동 */}
+              <Link to="#">
+                <span className={styles.userNameLayout}>
+                  {member.userNickName}
+                </span>
+              </Link>
               <div className={styles.feedPostIdLayout}>
                 {feedPost.feedPostId}
               </div>
@@ -77,10 +88,12 @@ const FeedPostDetail = (props) => {
             <div className={styles.userHashTagLayout}>
               {hashTagList.length > 0 ? (
                 hashTagList.map((e, i) => (
-                  <span key={i}>
-                    <Link to={`/feed/search/${e.hashTag}`}>#{e.hashTag}</Link>
-                    &nbsp;&nbsp;
-                  </span>
+                  <Link to={`/feed/search?keyword=${e.hashTag}`}>
+                    <span key={i}>
+                      #{e.hashTag}
+                      &nbsp;&nbsp;
+                    </span>
+                  </Link>
                 ))
               ) : (
                 <span>태그 없음</span>
@@ -88,7 +101,13 @@ const FeedPostDetail = (props) => {
             </div>
           </div>
         </div>
-        {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
+        {modal && (
+          <Modal
+            modal={modal}
+            closeModal={closeModal}
+            feedPostId={feedPost.feedPostId}
+          />
+        )}
       </div>
     </div>
   );
