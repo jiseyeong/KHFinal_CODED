@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
 import LoadingBar from '../Common/LoadingBar';
+import NoticeBar from './NoticeBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -119,24 +120,26 @@ function FeedList() {
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
-        {feedPost.map((e, i) => {
-          return (
-            <div className="grid-item" key={i}>
-              <FeedPostDetail
-                index={i}
-                // columnHeights={columnHeights}
-                // setColumnHeights={setColumnHeights}
-                feedPost={e}
-                thumbNail={thumbNail[i]}
-                member={member[i]}
-                userProfile={userProfile[i]}
-                hashTagList={hashTagList[i]}
-                feedLike={feedLike[i]}
-                isFeedLike={isFeedLike[i]}
-              ></FeedPostDetail>
-            </div>
-          );
-        })}
+        {feedPost.length > 0 ? (
+          feedPost.map((e, i) => {
+            return (
+              <div className="grid-item" key={i}>
+                <FeedPostDetail
+                  index={i}
+                  // columnHeights={columnHeights}
+                  // setColumnHeights={setColumnHeights}
+                  feedPost={e}
+                  thumbNail={thumbNail[i]}
+                  member={member[i]}
+                  userProfile={userProfile[i]}
+                  hashTagList={hashTagList[i]}
+                ></FeedPostDetail>
+              </div>
+            );
+          })
+        ) : (
+          <NoticeBar>표시할 내용이 없습니다.</NoticeBar>
+        )}
       </Masonry>
     </FeedPostOuter>
   );
