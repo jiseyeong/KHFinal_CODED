@@ -138,20 +138,14 @@ const SearchBox = () => {
     // };
   };
 
-  const searchHashList = (event) => {
-    event.preventDefault();
-  };
+  // const searchHashList = (event) => {
+  //   event.preventDefault();
+  // };
 
   return (
-    // <div className={style.searchBoxLayout}>
-    <form
-      className={styles.searchBar}
-      onSubmit={searchHashList}
-      action="/feed/search/"
-    >
+    <form className={styles.searchBar} action={`/feed/search/${searchInput}`}>
       <input
         id="search-keyword"
-        name="keyword"
         type="search"
         value={searchInput}
         placeholder="유저와 스타일을 검색해보세요"
@@ -176,7 +170,6 @@ const SearchBox = () => {
         </div>
       )}
     </form>
-    // </div>
   );
 };
 

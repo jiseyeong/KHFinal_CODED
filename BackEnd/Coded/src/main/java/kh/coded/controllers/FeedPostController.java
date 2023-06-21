@@ -83,12 +83,11 @@ public class FeedPostController {
 			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
 			@PathVariable("keyword") String keyword){
 
-		System.out.println("들어옴");
 		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
 
-	// 단순한 피드 내용들 뽑기
+	// 단순 피드DTO만 뽑기
 	@GetMapping("/selectfeedlist/")
 	public ResponseEntity<?> selectFeedList(){
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
@@ -148,11 +147,6 @@ public class FeedPostController {
 			feedpostService.deleteFeedScrap(userNo, feedPostId);	
 			return ResponseEntity.ok().body(null);
 		}
-	}
-	
-	@DeleteMapping("/deleteFeedScrap") //피드 스크랩 삭제
-	public ResponseEntity<?> deleteFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
-		return ResponseEntity.ok().body(null);		
 	}
 	
 	// /feedpost/
