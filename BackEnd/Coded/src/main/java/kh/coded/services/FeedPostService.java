@@ -203,7 +203,6 @@ public class FeedPostService {
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-
         List<FeedPostDTO> feedPostList = feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
         List<MemberDTO> memberList = new ArrayList<>();
         List<PhotoDTO> userProfileList = new ArrayList<>();

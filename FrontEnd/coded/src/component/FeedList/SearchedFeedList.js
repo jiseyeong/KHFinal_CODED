@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import NoneData from './NoneData';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -48,7 +49,7 @@ function SearchedFeedList() {
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
-
+  const [newSearch, setNewSearch] = useState(false);
   const feedPostOuterRef = useRef(null);
   // const [cpage, setCpage] = useState(1);
   const cpage = useRef(1);
@@ -60,10 +61,13 @@ function SearchedFeedList() {
   //   setkeywordInput();
   // }, [keywordInput]);
   useEffect(() => {
+    cpage.current = 1;
+    setNewSearch(true);
     addFeedList(keyword);
     console.log(keyword);
     window.onscroll = function () {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        setNewSearch(false);
         addFeedList(keyword);
       }
     };
@@ -83,6 +87,7 @@ function SearchedFeedList() {
         },
       })
       .then((resp) => {
+        console.log(resp.data);
         const {
           feedPostList,
           thumbNailList,
@@ -91,11 +96,21 @@ function SearchedFeedList() {
           hashTagLists,
         } = resp.data;
 
-        setFeedPost((prev) => [...prev, ...feedPostList]);
-        setThumbnail((prev) => [...prev, ...thumbNailList]);
-        setUserProfile((prev) => [...prev, ...userProfileList]);
-        setMember((prev) => [...prev, ...memberList]);
-        setHashTagList((prev) => [...prev, ...hashTagLists]);
+        // 새로 검색했을 때,
+        if (newSearch) {
+          setFeedPost(() => [...feedPostList]);
+          setThumbnail(() => [...thumbNailList]);
+          setUserProfile(() => [...userProfileList]);
+          setMember(() => [...memberList]);
+          setHashTagList(() => [...hashTagLists]);
+        } else {
+          setFeedPost((prev) => [...prev, ...feedPostList]);
+          setThumbnail((prev) => [...prev, ...thumbNailList]);
+          setUserProfile((prev) => [...prev, ...userProfileList]);
+          setMember((prev) => [...prev, ...memberList]);
+          setHashTagList((prev) => [...prev, ...hashTagLists]);
+        }
+
         // setCpage((prev) => {
         //   return (prev + 1);
         // });
@@ -112,22 +127,26 @@ function SearchedFeedList() {
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
-        {feedPost.map((e, i) => {
-          return (
-            <div className="grid-item" key={i}>
-              <FeedPostDetail
-                index={i}
-                // columnHeights={columnHeights}
-                // setColumnHeights={setColumnHeights}
-                feedPost={e}
-                thumbNail={thumbNail[i]}
-                member={member[i]}
-                userProfile={userProfile[i]}
-                hashTagList={hashTagList[i]}
-              ></FeedPostDetail>
-            </div>
-          );
-        })}
+        {feedPost.length > 0 ? (
+          feedPost.map((e, i) => {
+            return (
+              <div className="grid-item" key={i}>
+                <FeedPostDetail
+                  index={i}
+                  // columnHeights={columnHeights}
+                  // setColumnHeights={setColumnHeights}
+                  feedPost={e}
+                  thumbNail={thumbNail[i]}
+                  member={member[i]}
+                  userProfile={userProfile[i]}
+                  hashTagList={hashTagList[i]}
+                ></FeedPostDetail>
+              </div>
+            );
+          })
+        ) : (
+          <NoneData />
+        )}
       </Masonry>
     </FeedPostOuter>
   );
