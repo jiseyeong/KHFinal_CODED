@@ -30,5 +30,9 @@ public class DMRoomService {
 		return dmRoomDAO.selectByUserNo(userNo);
 	}
 	
+	public int createRoomId () {
+		return dmRoomDAO.createRoomId();
+	}
+	
 	
 }

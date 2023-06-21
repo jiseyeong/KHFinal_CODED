@@ -52,7 +52,7 @@ function SearchedFeedList() {
   const feedPostOuterRef = useRef(null);
   // const [cpage, setCpage] = useState(1);
   const cpage = useRef(1);
-  const [keywordInput, setkeywordInput] = useSearchParams();
+  const [keywordInput, setkeywordInput] = useParams();
 
   // useEffect(() => {
   //   setkeywordInput();
