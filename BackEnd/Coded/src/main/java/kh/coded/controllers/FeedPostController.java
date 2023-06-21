@@ -150,11 +150,6 @@ public class FeedPostController {
 		}
 	}
 	
-	@DeleteMapping("/deleteFeedScrap") //피드 스크랩 삭제
-	public ResponseEntity<?> deleteFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
-		return ResponseEntity.ok().body(null);		
-	}
-	
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(
