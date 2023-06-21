@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
+import kh.coded.security.JwtProvider;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
 import kh.coded.services.PhotoService;
@@ -33,9 +35,12 @@ public class FeedPostController {
 
 	@Autowired
 	private PhotoService photoService;
-	
+
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private JwtProvider jwtProvider;
 
 	@GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
@@ -95,7 +100,7 @@ public class FeedPostController {
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
 		return ResponseEntity.ok().body(list);
 	}
-	
+
 	@GetMapping("/weeklyFeed")
 	public ResponseEntity<?> selectWeeklyFeed(
 			@RequestParam(value="currentTemp") int currentTemp,
@@ -105,114 +110,120 @@ public class FeedPostController {
 		Map<String, Object> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
 		return ResponseEntity.ok().body(data);
 	}
-	
-	@GetMapping("/selectfeeddetail") //피드 상세
-	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId,int userNo) {
-		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
-		
-		return ResponseEntity.ok().body(data);
-				
-	}
-	
-	@PutMapping("/updateFeedPost") //피드 수정
-	public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
-		feedpostService.updateFeedPost(feedPostId, body);
-		
-		return ResponseEntity.ok().body(null);
-	}
-	
-	@DeleteMapping("/deleteFeedPost") //피드 삭제 
-	public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
-		feedpostService.deleteFeedPost(feedPostId);
-		
-		return ResponseEntity.ok().body(null);
-	}
 
-	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
-	public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
-		boolean result = feedpostService.isFeedLike(userNo, feedPostId);
-		if(!result) {	
-			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
-		}else {
-			feedpostService.deleteFeedLike(userNo, feedPostId);
+		@GetMapping("/selectFeedDetail") //피드 상세	
+		public ResponseEntity<?> selectFeedDetail(
+				@RequestParam int feedPostId,
+				@RequestHeader(value="authorization") String authorization) {		
+			int userNo = 0;
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				userNo = jwtProvider.getLoginUserNo(accessToken);
+			}
 			
-			return ResponseEntity.ok().body(null);
+			Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
+			return ResponseEntity.ok().body(data);
 		}
-	}
-	
-	@PostMapping("/insertFeedScrap") //피드 스크랩 입력 & 삭제 
-	public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
-		boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
-		if(!result) {
-			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
-		}else {
-			feedpostService.deleteFeedScrap(userNo, feedPostId);	
-			return ResponseEntity.ok().body(null);
-		}
-	}
-	
-	// /feedpost/
-	@PostMapping("comment")
-	public ResponseEntity<?> insertComment(
-			@RequestParam(value="userNo") int userNo,
-			@RequestParam(value="feedPostId") int feedPostId,
-			@RequestParam(value="body") String body
-			){
-		return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
-	}
-	
-	@PostMapping("nestedComment")
-	public ResponseEntity<?> insertNestedComment(
-			@RequestParam(value="userNo") int userNo,
-			@RequestParam(value="feedPostId") int feedPostId,
-			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="body") String body,
-			@RequestParam(value="depth") int depth
-			){
-		return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
-	}
-	
-	@PutMapping("commnet")
-	public ResponseEntity<?> updateComment(
-			@RequestParam(value="feedCommentId") int commentId,
-			@RequestParam(value="body") String body
-			){
-		feedpostService.updateComment(commentId, body);
-		return ResponseEntity.ok().body(null);
-	}
-	
-	@DeleteMapping("comment")
-	public ResponseEntity<?> deleteComment(
-			@RequestParam(value="feedCommentId") int commentId
-			){
-		feedpostService.deleteComment(commentId);
-		return ResponseEntity.ok().body(null);
-	}
-	
-	@GetMapping("comment/depth0")
-	public ResponseEntity<?> selectCommentDepth0(
-			@RequestParam(value="feedPostId") int feedPostId,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
-			){
-		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
-			return ResponseEntity.ok().body(result);
-		}
-		return ResponseEntity.badRequest().body("댓글이 없습니다.");
-	}
-	
-	@GetMapping("comment/depthN")
-	public ResponseEntity<?> selectCommentDepth(
-			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="depth") int depth,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
-			){
-		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
-			return ResponseEntity.ok().body(result);
-		}
-		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
-		
-	}
 
-}
+		@PutMapping("/updateFeedPost") //피드 수정
+		public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
+			feedpostService.updateFeedPost(feedPostId, body);
+
+			return ResponseEntity.ok().body(null);
+		}
+
+		@DeleteMapping("/deleteFeedPost") //피드 삭제 
+		public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
+			feedpostService.deleteFeedPost(feedPostId);
+
+			return ResponseEntity.ok().body(null);
+		}
+
+		@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
+		public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
+			boolean result = feedpostService.isFeedLike(userNo, feedPostId);
+			if(!result) {	
+				return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+			}else {
+				feedpostService.deleteFeedLike(userNo, feedPostId);
+
+				return ResponseEntity.ok().body(null);
+			}
+		}
+
+		@PostMapping("/insertFeedScrap") //피드 스크랩 입력 & 삭제 
+		public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
+			boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
+			if(!result) {
+				return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+			}else {
+				feedpostService.deleteFeedScrap(userNo, feedPostId);	
+				return ResponseEntity.ok().body(null);
+			}
+		}
+
+		// /feedpost/
+		@PostMapping("comment")
+		public ResponseEntity<?> insertComment(
+				@RequestParam(value="userNo") int userNo,
+				@RequestParam(value="feedPostId") int feedPostId,
+				@RequestParam(value="body") String body
+				){
+			return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
+		}
+
+		@PostMapping("nestedComment")
+		public ResponseEntity<?> insertNestedComment(
+				@RequestParam(value="userNo") int userNo,
+				@RequestParam(value="feedPostId") int feedPostId,
+				@RequestParam(value="parentId") int parentId,
+				@RequestParam(value="body") String body,
+				@RequestParam(value="depth") int depth
+				){
+			return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
+		}
+
+		@PutMapping("commnet")
+		public ResponseEntity<?> updateComment(
+				@RequestParam(value="feedCommentId") int commentId,
+				@RequestParam(value="body") String body
+				){
+			feedpostService.updateComment(commentId, body);
+			return ResponseEntity.ok().body(null);
+		}
+
+		@DeleteMapping("comment")
+		public ResponseEntity<?> deleteComment(
+				@RequestParam(value="feedCommentId") int commentId
+				){
+			feedpostService.deleteComment(commentId);
+			return ResponseEntity.ok().body(null);
+		}
+
+		@GetMapping("comment/depth0")
+		public ResponseEntity<?> selectCommentDepth0(
+				@RequestParam(value="feedPostId") int feedPostId,
+				@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+				){
+			Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
+			if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+				return ResponseEntity.ok().body(result);
+			}
+			return ResponseEntity.badRequest().body("댓글이 없습니다.");
+		}
+
+		@GetMapping("comment/depthN")
+		public ResponseEntity<?> selectCommentDepth(
+				@RequestParam(value="parentId") int parentId,
+				@RequestParam(value="depth") int depth,
+				@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+				){
+			Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
+			if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+				return ResponseEntity.ok().body(result);
+			}
+			return ResponseEntity.badRequest().body("대댓글이 없습니다.");
+
+		}
+
+	}
