@@ -88,7 +88,13 @@ const FeedPostDetail = (props) => {
             </div>
           </div>
         </div>
-        {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
+        {modal && (
+          <Modal
+            modal={modal}
+            closeModal={closeModal}
+            feedPostId={feedPost.feedPostId}
+          />
+        )}
       </div>
     </div>
   );
