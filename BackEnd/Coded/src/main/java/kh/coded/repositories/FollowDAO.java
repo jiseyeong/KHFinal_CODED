@@ -17,28 +17,36 @@ public class FollowDAO {
 	private SqlSessionTemplate mybatis;
 
 //	나의 팔로잉 리스트 출력
-	public List<MemberDTO> selectFollowingList(int ToUserId) {
-		return mybatis.selectList("Follow.selectFollowingList", ToUserId);
+	public List<MemberDTO> selectFollowingList(int ToUserNo) {
+		return mybatis.selectList("Follow.selectFollowingList", ToUserNo);
 	}
-	
+
 //	나의 팔로워 리스트 출력
-	public List<MemberDTO> selectFollowerList(int FromUserId) {
-		return mybatis.selectList("Follow.selectFollowerList", FromUserId);
+	public List<MemberDTO> selectFollowerList(int FromUserNo) {
+		return mybatis.selectList("Follow.selectFollowerList", FromUserNo);
+	}
+
+	// 팔로잉, 팔로워 여부
+	public boolean isFollow (int ToUserNo, int FromUserNo) {
+		Map<String, Integer> isFollow = new HashMap<>();
+		isFollow.put("ToUserNo", ToUserNo);
+		isFollow.put("FromUserNo", FromUserNo);
+		return mybatis.selectOne("Follow.isFollow", isFollow);
 	}
 
 //	팔로우 등록 - 해당 유저를 팔로우 등록
-	public int insertFollow(int ToUserId, int FromUserId) {
+	public int insertFollow(int ToUserNo, int FromUserNo) {
 		Map<String, Integer> insert = new HashMap<>();
-		insert.put("ToUserId", ToUserId);
-		insert.put("FromUserId", FromUserId);
+		insert.put("ToUserId", ToUserNo);
+		insert.put("FromUserId", FromUserNo);
 		return mybatis.insert("Follow.insertFollow", insert);
 	}
 
 //	팔로우 해제 - 해당 유저를 팔로우 해제
-	public int deleteFollow(int ToUserId, int FromUserId) {
+	public int deleteFollow(int ToUserNo, int FromUserNo) {
 		Map<String, Integer> delete = new HashMap<>();
-		delete.put("ToUserId", ToUserId);
-		delete.put("FromUserId", FromUserId);
+		delete.put("ToUserId", ToUserNo);
+		delete.put("FromUserId", FromUserNo);
 		return mybatis.delete("Follow.deleteFollow", delete);
 	}
 }

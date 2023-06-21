@@ -127,7 +127,7 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(null);
 	}
 
-	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 
+	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
 	public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
 		boolean result = feedpostService.isFeedLike(userNo, feedPostId);
 		if(!result) {	
