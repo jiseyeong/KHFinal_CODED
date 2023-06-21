@@ -1,9 +1,13 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import { Editor } from '@toast-ui/react-editor';
+import FeedCommentList from './FeedCommentList';
+import axios from 'axios';
 
 const HeartIcons = {
-    empty:<svg
+  empty: (
+    <svg
       className="like"
       stroke="currentColor"
       fill="currentColor"
@@ -11,108 +15,102 @@ const HeartIcons = {
       viewBox="0 0 16 16"
       height="1em"
       width="1em"
-      xmlns="http://www.w3.org/2000/svg">
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <path
         fillRule="evenodd"
         d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
         clipRule="evenodd"
       ></path>
-    </svg>,
-    heart:null
-}
+    </svg>
+  ),
+  heart: null,
+};
 
-function FeedComment({feedPostId, depth, parentId}){
+function FeedComment({
+  userNickName,
+  userId,
+  commentInfo,
+  isLike,
+  feedPostId,
+  depth,
+  readComments,
+}) {
+  const [onReply, setOnReply] = useState(false);
+  const editorRef = useRef(null);
+  const accessToken = useSelector((state) => state.member.access);
 
-    const [commentList, setCommentList] = useState([]);
-    const [commentLikeList, setCommentLikeList] = useState([]);
-    const [userIds, setUserIds] = useState([]);
-    const [userNickNames, setUserNickNames] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const loginUserNo = useSelector((state)=>state.member.userNo);
-    
-    useEffect(()=>{
-        setLoading(true);
-        setCommentList([]);
-        setCommentLikeList([]);
-        setUserIds([]);
-        setUserNickNames([]);
-        if(depth === 0){
-            axios({
-                method:'get',
-                url:'/feedpost/comment/depth0',
-                params:{
-                    feedPostId:feedPostId,
-                    userNo:loginUserNo
-                }
-            }).then((response)=>{
-                const {commentList, isLikeList, userIdList, userNickNameList} = response.data;
+  useEffect(() => {
+    if (editorRef.current) {
+      // editorRef.current.getInstance.removeHook('addImageBlobHook');
+      console.log(editorRef.current.getInstance());
+    }
+  }, [editorRef.current]);
 
-                setLoading(false);
-                setCommentList((prev)=>{return [...prev, ...commentList]});
-                setCommentLikeList((prev)=>{return [...prev, ...isLikeList]});
-                setUserIds((prev)=>{return [...prev, ...userIdList]});
-                setUserNickNames((prev)=>{return [...prev, ...userNickNameList]});
-            }).catch((error)=>{
-                setLoading(false);
-                if(error.request.status === 400){
-                    console.log(error.request.body);
-                }else{
-                    console.log(error);
-                }
-            })
-        }else{
-            axios({
-                method:'get',
-                url:'/feedpost/comment/depthN',
-                params:{
-                    parentId : parentId,
-                    depth : depth,
-                    userNo:loginUserNo
-                }
-            }).then((response)=>{
-                setLoading(false);
-                setCommentList((prev)=>{return [...prev, ...response.data.commentList]});
-                setCommentLikeList((prev)=>{return [...prev, ...response.data.isLikeList]});
-                setUserIds((prev)=>{return [...prev, ...response.data.userIdList]});
-                setUserNickNames((prev)=>{return [...prev, ...response.data.userNickNameList]});
-            }).catch((error)=>{
-                setLoading(false);
-                if(error.request.status === 400){
-                    console.log(error.response.data);
-                }else{
-                    console.log(error);
-                }
-            })
+  function handleOnReply() {
+    setOnReply(!onReply);
+  }
+
+  function onSubmit() {
+    axios({
+      method: 'post',
+      url: '/feedpost/nestedComment',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        feedPostId: feedPostId,
+        parentId: commentInfo.feedCommentId,
+        body: editorRef.current.getInstance().getMarkdown(),
+        depth: depth + 1,
+      },
+    })
+      .then((response) => {
+        readComments();
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log('로그인부터 진행해주서야 합니다.');
+        } else {
+          console.log(error);
         }
-    }, []);
+      });
+  }
+  return (
+    <div>
+      <div>작성자: {userNickName}</div>
+      <div>작성자 ID : {userId}</div>
+      <div>본문: {commentInfo.body}</div>
+      <div>작성일시: {commentInfo.writeDate}</div>
+      <div>좋아요: {isLike ? 'heart' : HeartIcons.empty}</div>
+      {depth < 1 &&
+        <button onClick={handleOnReply}>답글</button>
+      }
 
-    return (
-        <>
-            {commentList ?
-            (<div>
-                {commentList.map((item, index)=>{
-                    return(
-                        <div key={item.feedCommentId}>
-                            <div>작성자: {userNickNames[index]}</div>
-                            <div>작성자 ID : {userIds[index]}</div>
-                            <div>본문: {item.body}</div>
-                            <div>작성일시: {item.writeDate}</div>
-                            <div>좋아요: {commentLikeList[index] ? "heart" : HeartIcons.empty}</div>
-                            <div>
-                                {/* 답글 리스트 */}
-                                <FeedComment
-                                    feedPostId={feedPostId}
-                                    depth={depth+1}
-                                    parentId={item.feedCommentId}
-                                />
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>)
-            :null}
-        </>
-    )
+      {onReply && (
+        <div>
+          <Editor
+            ref={editorRef}
+            previewStyle="vertical"
+            height="150px"
+            initialEditType="wysiwyg"
+            language="ko-KR"
+            hideModeSwitch="true"
+            toolbarItems={[['bold', 'italic', 'strike']]}
+          />
+          <button onClick={onSubmit}>전송</button>
+        </div>
+      )}
+      <div>
+        {/* 답글 리스트 */}
+        <FeedCommentList
+          feedPostId={feedPostId}
+          depth={depth + 1}
+          parentId={commentInfo.feedCommentId}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default FeedComment;

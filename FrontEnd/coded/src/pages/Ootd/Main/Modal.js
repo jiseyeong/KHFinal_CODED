@@ -14,6 +14,7 @@ function Modal({ modalData, data, setData, closeModal, id }) {
   ); // 그냥 modalData?.description으로 바꿔볼 것.
   const [res, setRes] = useState([]);
   const [isLikeBtn, setIsLikeBtn] = useState(false);
+  const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
   const [follower, setFollower] = useState(
     modalData?.modalData?.modalData?.follower,
   ); // 그냥 modalData?.follower로 바꿔볼 것.
@@ -34,10 +35,10 @@ function Modal({ modalData, data, setData, closeModal, id }) {
   }
 
   function handleRepleLike(e) {
-    if (!isLikeBtn) {
-      setIsLikeBtn(true);
+    if (!isRepleLikeBtn) {
+      setIsRepleLikeBtn(true);
     } else {
-      setIsLikeBtn(false);
+      setIsRepleLikeBtn(false);
     }
   }
 
@@ -149,7 +150,21 @@ function Modal({ modalData, data, setData, closeModal, id }) {
                       {modalData?.modalData?.modalData?.introdution}
                     </div>
                   </div>
-                  <div className="followBtnBox">
+                  <div className="optionBox">
+                  <svg
+                    className="option"
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 512 512"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M255.8 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38zM102 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38zM410 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"></path>
+                  </svg>
+                </div>
+                  {/* <div className="followBtnBox">
                     <svg
                       className={isFollowBtn ? 'followBtnActive' : 'followBtn'}
                       onClick={followBtnActive}
@@ -166,7 +181,7 @@ function Modal({ modalData, data, setData, closeModal, id }) {
                         d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
                       />
                     </svg>
-                  </div>
+                  </div> */}
                 </div>
                 <hr className="hrTag"></hr>
                 <div className="authorDescription">
@@ -207,29 +222,14 @@ function Modal({ modalData, data, setData, closeModal, id }) {
                   </span>
                 </div>
                 <div className="scrapBox">
-                  {/* <img src={Image} className="scrapImage"></img> */}
                   <svg
                     className="scrapImage"
-                    fill="currentColor"
+                    fill="black"
                     viewBox="0 0 48 48"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path d="M34 6H14c-2.21 0-3.98 1.79-3.98 4L10 42l14-6 14 6V10c0-2.21-1.79-4-4-4zm0 30l-10-4.35L14 36V10h20v26z" />
                     <path d="M0 0h48v48H0z" fill="none" />
-                  </svg>
-                </div>
-                <div className="optionBox">
-                  <svg
-                    className="option"
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 512 512"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M255.8 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38zM102 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38zM410 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"></path>
                   </svg>
                 </div>
               </div>
@@ -323,7 +323,7 @@ function Modal({ modalData, data, setData, closeModal, id }) {
                       <div className="repleNickname">한유 @hanyu3677</div>
                       <div className="repleWrite">데일리룩 잘 봤습니다</div>
                     </div>
-                    <div className="repleLike">
+                    <div className = {isRepleLikeBtn ? 'likeRepleBox' : 'dislikeRepleBox'}>
                       <svg
                         className="like"
                         onClick={handleRepleLike}

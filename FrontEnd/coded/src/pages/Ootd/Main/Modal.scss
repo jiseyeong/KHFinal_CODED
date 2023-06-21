@@ -39,8 +39,8 @@
 
     .innerWrapper {
       display: flex;
-      width: 960px;
-      height: 680px;
+      width: 1200px;
+      height: 900px;
 
       background: #ffffff;
       color: #454c53;
@@ -50,7 +50,7 @@
       border-radius: 6px;
 
       .leftWrapper {
-        width: 600px;
+        width: 65%;
         height: 100%;
         height: 100%;
         border-right: 1px solid #e8ebed;
@@ -103,7 +103,7 @@
 
           .commentData {
             display: flex;
-            height: 30%;
+            height: 26%;
             width: 100%;
             padding: 10px;
 
@@ -137,6 +137,7 @@
               margin: 0 4px 0 0;
               // max-width: 170px;
               padding-top: 5px;
+              margin-bottom:2px;
               font-size: 14px;
               font-weight: 700;
               line-height: 18.2px;
@@ -152,43 +153,52 @@
               // max-width: 190px;
               color: #9ea4aa;
               overflow: hidden;
-              font-size: 12px;
+              font-size: 13px;
               line-height: 15.6px;
               text-decoration: none solid rgb(158, 164, 170);
               text-align: left;
               white-space: nowrap;
               word-spacing: 0px;
             }
-
-            .followBtnBox {
-              // height: 34px;
-              // width: 40px;
-              border: 1px solid silver;
-              border-radius: 6px;
-              margin: 3px 0 0 10px;
-              width: 36px;
-              margin-left: auto;
-              text-align: center;
-
-              .followBtn {
+            .optionBox {
+              @extend %borderBox;
+              border: 0px solid white;
+              margin-left:auto;
+  
+              .option {
+                width: 100%;
                 height: 70%;
-                width: 70%;
-                color: #ff5f00;
-                cursor: pointer;
-                margin-top: 5px;
-                margin-left: 2px;
-              }
-
-              .followBtnActive {
-                height: 70%;
-                width: 70%;
-                color: #ffffff;
-                background-color: #ff5f00;
-                cursor: pointer;
-                margin-top: 5px;
-                margin-left: 2px;
+                margin-top:12px;
               }
             }
+            // .followBtnBox {
+            //   border: 1px solid silver;
+            //   border-radius: 6px;
+            //   margin-top:8px;
+            //   width: 36px;
+            //   height:36px;
+            //   margin-left: auto;
+            //   text-align: center;
+
+            //   .followBtn {
+            //     height: 70%;
+            //     width: 70%;
+            //     color: #ff5f00;
+            //     cursor: pointer;
+            //     margin-top: 5px;
+            //     margin-left: 2px;
+            //   }
+
+            //   .followBtnActive {
+            //     height: 70%;
+            //     width: 70%;
+            //     color: #ffffff;
+            //     background-color: #ff5f00;
+            //     cursor: pointer;
+            //     margin-top: 5px;
+            //     margin-left: 2px;
+            //   }
+            // }
           }
 
           .hrTag {
@@ -205,7 +215,7 @@
             word-spacing: 0px;
             margin-top: 20px;
             margin-left: 20px;
-            height: 70%;
+            height: 75%;
 
             span {
               font-size: 13px;
@@ -214,12 +224,12 @@
         }
       }
       .rightWrapper {
-        width: 315px;
+        width: 35%;
         justify-content: center;
         padding: 20px 15px 15px 20px;
 
         .authorPopularity {
-          width: 315px;
+          width: 95%;
           display: flex;
           padding-top: 15px;
           padding-bottom: 15px;
@@ -276,23 +286,10 @@
               padding-top: 3px;
             }
           }
-
-          .optionBox {
-            @extend %borderBox;
-            border: 0px solid white;
-            font-size: 20px;
-            margin-left: 155px;
-
-            .option {
-              width: 83%;
-              height: 83%;
-              padding-top: 6px;
-            }
-          }
         }
 
         .commentWrapper {
-          width: 315px;
+          width:95%;
           overflow: hidden;
           max-height: 533px;
           margin-bottom: 5px;
@@ -443,7 +440,7 @@
         }
 
         .commentNum {
-          width: 315px;
+          width:100%;
           margin: 10px 0 10px 0;
           font-size: 15px;
           font-weight: 700;
@@ -454,7 +451,7 @@
         }
 
         .inputWrapper {
-          width: 315px;
+          width:100%;
           border-top: 1px solid #c9cdd2;
           font-size: 22px;
           line-height: 16px;
@@ -466,7 +463,7 @@
           margin-top: 10px;
 
           .inputReple {
-            width: 315px;
+            width:100%;
             height: 43px;
             border: 1px solid #c9cdd2;
             border-radius: 6px;
@@ -494,16 +491,22 @@
               }
             }
             .repleNickname {
-              font-size: 11px;
+              font-size: 13px;
               font-weight: bold;
               margin-bottom: 7px;
             }
-            .repleLike {
+            .likeRepleBox {
               margin-left: auto;
+              svg{
+                fill:#ff5f00;
+              }
+            }
+            .dislikeRepleBox {
+              margin-left:auto; 
             }
           }
           .repleWrite {
-            font-size: 10px;
+            font-size: 12px;
           }
         }
       }

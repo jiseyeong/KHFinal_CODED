@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
+import kh.coded.security.JwtProvider;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
 import kh.coded.services.PhotoService;
@@ -36,6 +38,8 @@ public class FeedPostController {
 	
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private JwtProvider jwtProvider;
 
 	@GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
@@ -154,22 +158,32 @@ public class FeedPostController {
 	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(
-			@RequestParam(value="userNo") int userNo,
+			@RequestHeader(value="authorization") String authorization,
 			@RequestParam(value="feedPostId") int feedPostId,
 			@RequestParam(value="body") String body
 			){
-		return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
+		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+		if(jwtProvider.validateToken(accessToken)) {
+			int userNo = jwtProvider.getLoginUserNo(accessToken);
+			return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
+		};
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 	
 	@PostMapping("nestedComment")
 	public ResponseEntity<?> insertNestedComment(
-			@RequestParam(value="userNo") int userNo,
+			@RequestHeader(value="authorization") String authorization,
 			@RequestParam(value="feedPostId") int feedPostId,
 			@RequestParam(value="parentId") int parentId,
 			@RequestParam(value="body") String body,
 			@RequestParam(value="depth") int depth
 			){
-		return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
+		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+		if(jwtProvider.validateToken(accessToken)) {
+			int userNo = jwtProvider.getLoginUserNo(accessToken);
+			return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
+		};
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 	
 	@PutMapping("commnet")
