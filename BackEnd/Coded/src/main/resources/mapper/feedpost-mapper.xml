@@ -5,24 +5,24 @@
 <mapper namespace="FeedPost">
 
 	<insert id="insertFeedPost">
-		insert into FeedPost values(_seq.nextval, ${userNo},
+		insert into FeedPost values(FeedPost_seq.nextval, ${userNo},
 		#{body}, sysdate,
 		${writeTemp}, ${writeTempRange})
 	</insert>
 	
 	<insert id="insertFeedPhoto">
-		insert into FeedPhoto values(_seq.nextval,
+		insert into FeedPhoto values(FeedPost_seq.nextval,
 		#{oriName}, #{sysname}, ${feedPostId},
 		0,0)
 	</insert>
 
 	<insert id="insertHashTag">
-		insert into HashTag values(_seq.nextval,
+		insert into HashTag values(FeedPost_seq.nextval,
 		#{hashTag})
 	</insert>
 
 	<insert id="insertPostHashs">
-		insert into HashTag values(_seq.nextval,
+		insert into HashTag values(FeedPost_seq.nextval,
 		#{feedPostId}, #{tagId})
 	</insert>
 	<select id="selectByUserNoList" resultType="kh.coded.dto.FeedPostDTO">
@@ -51,7 +51,11 @@
 	</select>
 
 	<select id="selectSearchFeedListByHashs" resultType="kh.coded.dto.FeedPostDTO">
-		select * from (select * from (select distinct feedpostid, ROW_NUMBER() OVER (ORDER BY feedpostid desc) rn from hashtag join posthashs using (tagid) where hashtag like '%'||#{keyword}||'%' ) where rn between ${startFeedNum} and ${endFeedNum} order by rn asc) join feedpost using (feedpostid);
+		select * from
+		(select feedpost.*, row_number() over (order by feedpostid desc) as rn from
+		(select * from (select distinct feedpostid from hashtag join posthashs using (tagid) where hashtag like '%'|| #{keyword} || '%')
+		join feedpost using (feedpostid)) feedpost)
+		where rn between ${startFeedNum} and ${endFeedNum}
 	</select>
 
 	<update id="updateFeedPost">

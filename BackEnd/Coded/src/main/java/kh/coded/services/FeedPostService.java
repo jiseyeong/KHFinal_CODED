@@ -10,12 +10,11 @@ import org.springframework.stereotype.Service;
 
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
-import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
-import kh.coded.dto.PostHashsDTO;
 import kh.coded.dto.PostHashsWithHashTagDTO;
 import kh.coded.repositories.FeedCommentDAO;
+import kh.coded.repositories.FeedCommentLikeDAO;
 import kh.coded.repositories.FeedLikeDAO;
 import kh.coded.repositories.FeedPostDAO;
 import kh.coded.repositories.FeedScrapDAO;
@@ -35,12 +34,16 @@ public class FeedPostService {
 
     @Autowired
     private MemberDAO memberDAO;
+    @Autowired
+    private MemberService memberService;
 
     @Autowired
     private PhotoDAO photoDAO;
     
     @Autowired
     private FeedCommentDAO commentDAO;
+    @Autowired
+    private FeedCommentLikeDAO commentLikeDAO;
     
     @Autowired
     private FeedLikeDAO feedLikeDAO;
@@ -84,6 +87,8 @@ public class FeedPostService {
         return feedpostDAO.selectTestFeedList();
     }
 
+    
+    // 고도화 작업 요구
     public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
@@ -252,11 +257,37 @@ public class FeedPostService {
     public void deleteComment(int feedCommentId) {
     	commentDAO.delete(feedCommentId);
     }
-    public List<FeedCommentDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
-    	return commentDAO.selectByFeedPostDepth0(feedPostId);
+    public Map<String, Object> selectCommentByFeedPostIdAndDepth0(int feedPostId, int userNo){
+    	Map<String, Object> data = new HashMap<>();
+    	List<FeedCommentDTO> commentList = commentDAO.selectByFeedPostDepth0(feedPostId);
+    	List<Boolean> isLikeList = new ArrayList<>();
+    	List<String> userIdList = new ArrayList<>();
+    	List<String> userNickNameList = new ArrayList<>();
+    	for(FeedCommentDTO comment : commentList) {
+    		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
+    		
+    		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
+    		String userId = member.getUserId();
+    		String userNickName = member.getUserNickName();
+    		userIdList.add(userId);
+    		userNickNameList.add(userNickName);
+    	}
+    	data.put("commentList", commentList);
+    	data.put("isLikeList", isLikeList);
+    	data.put("userIdList", userIdList);
+    	data.put("userNickNameList", userNickNameList);
+    	return data;
     }
-    public List<FeedCommentDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
-    	return commentDAO.selectByParentIdAndDepth(parentId, depth);
+    public Map<String, Object> selectCommentByParentIdAndDepth(int parentId, int depth, int userNo){
+    	Map<String, Object> data = new HashMap<>();
+    	List<FeedCommentDTO> commentList = commentDAO.selectByParentIdAndDepth(parentId, depth);
+    	List<Boolean> isLikeList = new ArrayList<>();
+    	for(FeedCommentDTO comment : commentList) {
+    		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
+    	}
+    	data.put("commentList", commentList);
+    	data.put("isLikeList", isLikeList);
+    	return data;
     }
     
     public int insertFeedLike(int userNo,int feedPostId) {

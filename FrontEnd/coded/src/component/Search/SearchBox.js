@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { styled } from 'styled-components';
 import styles from './SearchBox.module.scss';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // UserList Li
 const UserList = ({ userId, userNickName, sysName }) => {
@@ -44,11 +45,14 @@ const HashTagList = ({ hashTag }) => {
 };
 
 const SearchBox = () => {
-  const [searchInput, setSearchInput] = useState('');
   const [searchData, setSearchData] = useState([]);
   const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
   const [completedData, setCompletedData] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+
   const autoSearchRef = useRef();
+
+  const toSearch = useNavigate();
 
   // 검색 자동완성 출력 개수
   const [searchCount, setSearchCount] = useState(5);
@@ -136,22 +140,18 @@ const SearchBox = () => {
     // return () => {
     //   clearTimeout(debounce);
     // };
+    console.log(searchInput);
   };
 
   const searchHashList = (event) => {
     event.preventDefault();
+    toSearch(`/feed/search/?keyword=${searchInput}`);
   };
 
   return (
-    // <div className={style.searchBoxLayout}>
-    <form
-      className={styles.searchBar}
-      onSubmit={searchHashList}
-      action="/feed/search/"
-    >
+    <form className={styles.searchBar} onSubmit={searchHashList}>
       <input
         id="search-keyword"
-        name="keyword"
         type="search"
         value={searchInput}
         placeholder="유저와 스타일을 검색해보세요"
@@ -176,7 +176,6 @@ const SearchBox = () => {
         </div>
       )}
     </form>
-    // </div>
   );
 };
 

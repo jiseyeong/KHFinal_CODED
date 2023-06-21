@@ -14,20 +14,23 @@ public class FollowService {
 	@Autowired
 	private FollowDAO followDAO;
 	
-	
-	public List<MemberDTO> selectFollowingList(int ToUserId) {
-		return followDAO.selectFollowingList(ToUserId);
+	public boolean isFollow(int ToUserNo, int FromUserNo) {
+		return followDAO.isFollow(ToUserNo, FromUserNo);
 	}
 	
-	public List<MemberDTO> selectFollowerList(int FromUserId) {
-		return followDAO.selectFollowerList(FromUserId);
+	public List<MemberDTO> selectFollowingList(int ToUserNo) {
+		return followDAO.selectFollowingList(ToUserNo);
 	}
 	
-	public int insertFollow(int ToUserId, int FromUserId) {
-		return followDAO.insertFollow(ToUserId, FromUserId);
+	public List<MemberDTO> selectFollowerList(int FromUserNo) {
+		return followDAO.selectFollowerList(FromUserNo);
 	}
 	
-	public int deleteFollow(int ToUserId, int FromUserId) {
-		return followDAO.deleteFollow(ToUserId, FromUserId);
+	public int insertFollow(int ToUserNo, int FromUserNo) {
+		return followDAO.insertFollow(ToUserNo, FromUserNo);
+	}
+	
+	public int deleteFollow(int ToUserNo, int FromUserNo) {
+		return followDAO.deleteFollow(ToUserNo, FromUserNo);
 	}
 }
