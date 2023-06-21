@@ -195,19 +195,28 @@ public class FeedPostController {
 	
 	@GetMapping("comment/depth0")
 	public ResponseEntity<?> selectCommentDepth0(
-			@RequestParam(value="feedPostId") int feedPostId
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
 			){
-		List<FeedCommentDTO> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId);
-		return ResponseEntity.ok().body(result);
+		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
+		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.badRequest().body("댓글이 없습니다.");
 	}
 	
 	@GetMapping("comment/depthN")
 	public ResponseEntity<?> selectCommentDepth(
 			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="depth") int depth
+			@RequestParam(value="depth") int depth,
+			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
 			){
-		List<FeedCommentDTO> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth);
-		return ResponseEntity.ok().body(result);
+		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
+		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
+		
 	}
 
 }
