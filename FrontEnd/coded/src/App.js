@@ -26,6 +26,8 @@ import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Profile/Component/Footer/Footer';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
+import DMList from './pages/DM/DMList';
+
 
 function App() {
   const dispatch = useDispatch();
@@ -76,6 +78,7 @@ function App() {
         <Route path="/feed/search/:keyword" element={<SearchedFeedList />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/DMPage" element={<DMPage />} />
+        <Route path="/DMList" element={<DMList />} />
         <Route path="/ootd" element={<Ootd />} />
         <Route path="/idSearch" element={<IdSearch />} />
         <Route path="/pwSearch" element={<PwSearch />} />
