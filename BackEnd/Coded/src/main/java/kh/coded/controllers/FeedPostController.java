@@ -38,7 +38,6 @@ public class FeedPostController {
 
 	@Autowired
 	private MemberService memberService;
-	
 	@Autowired
 	private JwtProvider jwtProvider;
 
@@ -125,7 +124,7 @@ public class FeedPostController {
 			return ResponseEntity.ok().body(data);
 		}
 
-		@PutMapping("/updateFeedPost") //피드 수정
+	@PutMapping("/updateFeedPost") //피드 수정
 		public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
 			feedpostService.updateFeedPost(feedPostId, body);
 
@@ -160,70 +159,80 @@ public class FeedPostController {
 				feedpostService.deleteFeedScrap(userNo, feedPostId);	
 				return ResponseEntity.ok().body(null);
 			}
-		}
-
-		// /feedpost/
-		@PostMapping("comment")
-		public ResponseEntity<?> insertComment(
-				@RequestParam(value="userNo") int userNo,
-				@RequestParam(value="feedPostId") int feedPostId,
-				@RequestParam(value="body") String body
-				){
+		}	
+	
+	// /feedpost/
+	@PostMapping("comment")
+	public ResponseEntity<?> insertComment(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="body") String body
+			){
+		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+		if(jwtProvider.validateToken(accessToken)) {
+			int userNo = jwtProvider.getLoginUserNo(accessToken);
 			return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
-		}
-
-		@PostMapping("nestedComment")
-		public ResponseEntity<?> insertNestedComment(
-				@RequestParam(value="userNo") int userNo,
-				@RequestParam(value="feedPostId") int feedPostId,
-				@RequestParam(value="parentId") int parentId,
-				@RequestParam(value="body") String body,
-				@RequestParam(value="depth") int depth
-				){
-			return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
-		}
-
-		@PutMapping("commnet")
-		public ResponseEntity<?> updateComment(
-				@RequestParam(value="feedCommentId") int commentId,
-				@RequestParam(value="body") String body
-				){
-			feedpostService.updateComment(commentId, body);
-			return ResponseEntity.ok().body(null);
-		}
-
-		@DeleteMapping("comment")
-		public ResponseEntity<?> deleteComment(
-				@RequestParam(value="feedCommentId") int commentId
-				){
-			feedpostService.deleteComment(commentId);
-			return ResponseEntity.ok().body(null);
-		}
-
-		@GetMapping("comment/depth0")
-		public ResponseEntity<?> selectCommentDepth0(
-				@RequestParam(value="feedPostId") int feedPostId,
-				@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
-				){
-			Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
-			if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
-				return ResponseEntity.ok().body(result);
-			}
-			return ResponseEntity.badRequest().body("댓글이 없습니다.");
-		}
-
-		@GetMapping("comment/depthN")
-		public ResponseEntity<?> selectCommentDepth(
-				@RequestParam(value="parentId") int parentId,
-				@RequestParam(value="depth") int depth,
-				@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
-				){
-			Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
-			if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
-				return ResponseEntity.ok().body(result);
-			}
-			return ResponseEntity.badRequest().body("대댓글이 없습니다.");
-
-		}
-
+		};
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
+	
+	@PostMapping("nestedComment")
+	public ResponseEntity<?> insertNestedComment(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="parentId") int parentId,
+			@RequestParam(value="body") String body,
+			@RequestParam(value="depth") int depth
+			){
+		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+		if(jwtProvider.validateToken(accessToken)) {
+			int userNo = jwtProvider.getLoginUserNo(accessToken);
+			return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
+		};
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+	
+	@PutMapping("commnet")
+	public ResponseEntity<?> updateComment(
+			@RequestParam(value="feedCommentId") int commentId,
+			@RequestParam(value="body") String body
+			){
+		feedpostService.updateComment(commentId, body);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@DeleteMapping("comment")
+	public ResponseEntity<?> deleteComment(
+			@RequestParam(value="feedCommentId") int commentId
+			){
+		feedpostService.deleteComment(commentId);
+		return ResponseEntity.ok().body(null);
+	}
+	
+	@GetMapping("comment/depth0")
+	public ResponseEntity<?> selectCommentDepth0(
+			@RequestParam(value="feedPostId") int feedPostId,
+			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			){
+		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
+		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.badRequest().body("댓글이 없습니다.");
+	}
+	
+	@GetMapping("comment/depthN")
+	public ResponseEntity<?> selectCommentDepth(
+			@RequestParam(value="parentId") int parentId,
+			@RequestParam(value="depth") int depth,
+			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			){
+		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
+		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+			return ResponseEntity.ok().body(result);
+		}
+		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
+		
+	}
+
+}
