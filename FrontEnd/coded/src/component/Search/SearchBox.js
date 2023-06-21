@@ -147,7 +147,7 @@ const SearchBox = () => {
   const searchHashList = (event) => {
     event.preventDefault();
     setIsAutoCompleteOpen(false);
-    toSearch(`/feed/search?keyword=${searchInput}`);
+    toSearch(`/feedList/search?keyword=${searchInput}`);
   };
 
   return (
