@@ -37,7 +37,7 @@ public class FeedPostController {
 	@Autowired
 	private MemberService memberService;
 
-	@GetMapping(value = "feedpost")
+	@GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
 		try {
 			List<FeedPostDTO> list = feedpostService.selectFeedList(UserNo);
@@ -47,7 +47,7 @@ public class FeedPostController {
 		}
 	}
 
-	@PutMapping(value="feedpost")
+	@PutMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	public ResponseEntity<?> insertFeedPost(
 			@RequestParam(value="fdto") FeedPostDTO fdto,
 			@RequestParam(value="hdto") HashTagDTO hdto,
@@ -83,12 +83,11 @@ public class FeedPostController {
 			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
 			@PathVariable("keyword") String keyword){
 
-		System.out.println("들어옴");
 		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
 
-	// 단순한 피드 내용들 뽑기
+	// 단순 피드DTO만 뽑기
 	@GetMapping("/selectfeedlist/")
 	public ResponseEntity<?> selectFeedList(){
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
@@ -127,7 +126,7 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(null);
 	}
 
-	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 
+	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
 	public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
 		boolean result = feedpostService.isFeedLike(userNo, feedPostId);
 		if(!result) {	
@@ -148,11 +147,6 @@ public class FeedPostController {
 			feedpostService.deleteFeedScrap(userNo, feedPostId);	
 			return ResponseEntity.ok().body(null);
 		}
-	}
-	
-	@DeleteMapping("/deleteFeedScrap") //피드 스크랩 삭제
-	public ResponseEntity<?> deleteFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
-		return ResponseEntity.ok().body(null);		
 	}
 	
 	// /feedpost/
