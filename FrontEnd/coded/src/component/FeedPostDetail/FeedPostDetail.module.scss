@@ -14,15 +14,15 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    &:hover {
-      cursor: pointer;
-    }
 
     .feedImageDiv {
       width: 100%;
       display: flex;
       justify-content: center;
       overflow: hidden;
+      &:hover {
+        cursor: pointer;
+      }
 
       .thumbNail {
         width: 250px;
@@ -36,7 +36,7 @@
     .feedInfoDiv {
       width: 100%;
       height: 100px;
-      margin-top: 15px;
+      margin-top: 5px;
       word-wrap: break-word;
 
       .userProfileLayout {
@@ -59,7 +59,28 @@
         float: left;
         height: 100%;
 
+        .userInfo {
+          width: 100%;
+          height: 20%;
+
+          div {
+            float: left;
+            height: 100%;
+          }
+
+          .userNameLayout {
+            width: 70%;
+          }
+          .feedPostIdLayout {
+            width: 30%;
+            text-align: right;
+            padding-right: 10px;
+          }
+        }
+
         .userHashTagLayout {
+          width: 100%;
+          height: 80%;
         }
       }
     }

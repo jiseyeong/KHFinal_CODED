@@ -1,6 +1,5 @@
 package kh.coded.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
-import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
-import kh.coded.dto.PostHashsDTO;
 import kh.coded.services.FeedPostService;
 import kh.coded.services.MemberService;
 import kh.coded.services.PhotoService;
@@ -72,11 +69,10 @@ public class FeedPostController {
 	// 피드 리스트 전체 뽑기 ( 기본 양식 )
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
-			@RequestParam(value = "cpage", required = false, defaultValue = "1")
-			int cpage) {
-		System.out.println(cpage);
+			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
+			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
 
-		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage);
+		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
 		return ResponseEntity.ok().body(map);
 	}
 
@@ -84,10 +80,11 @@ public class FeedPostController {
 	@GetMapping("/selectSearchHashFeedList/{keyword}")
 	public ResponseEntity<?> selectSearchFeedListByHashs(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
-			@PathVariable("keyword") String keyword) {
-		System.out.println(cpage);
+			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
+			@PathVariable("keyword") String keyword){
 
-		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,keyword);
+		System.out.println("들어옴");
+		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
 
@@ -109,8 +106,8 @@ public class FeedPostController {
 	}
 	
 	@GetMapping("/selectfeeddetail") //피드 상세
-	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId) {
-		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId);
+	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId,int userNo) {
+		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
 		
 		return ResponseEntity.ok().body(data);
 				
@@ -151,11 +148,6 @@ public class FeedPostController {
 			feedpostService.deleteFeedScrap(userNo, feedPostId);	
 			return ResponseEntity.ok().body(null);
 		}
-	}
-	
-	@DeleteMapping("/deleteFeedScrap") //피드 스크랩 삭제
-	public ResponseEntity<?> deleteFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
-		return ResponseEntity.ok().body(null);		
 	}
 	
 	// /feedpost/

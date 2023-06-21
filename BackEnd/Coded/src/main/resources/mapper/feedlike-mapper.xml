@@ -10,7 +10,7 @@
   		delete feedlike where feedlikeid = ${feedLikeId} and userno = ${userNo}
   	</delete>
   	<select id="isFeedLike" resultType="boolean">
-  		select * feedlike where userno = ${userNo} and feedpostid = ${feedPostId}
+  		select * from feedlike where userno = ${userNo} and feedpostid = ${feedPostId}
   	</select>
   	<select id="selectFeedLike" resultType="int">
   		select count(*) from feedlike where feedpostid = ${feedPostId}

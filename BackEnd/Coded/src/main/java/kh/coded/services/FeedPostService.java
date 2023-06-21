@@ -84,7 +84,7 @@ public class FeedPostService {
         return feedpostDAO.selectTestFeedList();
     }
 
-    public Map<String, Object> selectAllFeedPost(int cpage) {
+    public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
@@ -96,7 +96,8 @@ public class FeedPostService {
         List<PhotoDTO> userProfileList = new ArrayList<>();
         List<PhotoDTO> thumbNailList = new ArrayList<>();
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
-        List<Integer> feedLikeList = new ArrayList<>();
+        List<Integer> feedLikeList = new ArrayList<>(); //좋아요 갯수
+        List<Boolean> isFeedLikeList = new ArrayList<>();//좋아요 여부 
 
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
@@ -104,12 +105,14 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
-            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
+            boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
             userProfileList.add(userProfile);
             hashTagLists.add(hashTagList);
             feedLikeList.add(feedLike);
+            isFeedLikeList.add(isFeedLike);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -118,10 +121,13 @@ public class FeedPostService {
         map.put("memberList",memberList);
         map.put("userProfileList",userProfileList);
         map.put("hashTagLists",hashTagLists);
+        map.put("feedLikeList", feedLikeList);
+        map.put("isFeedLikeList", isFeedLikeList);
+        
         return map;
     }
     
-    public Map<String, Object> selectFeedDetail(int feedPostId) { 
+    public Map<String, Object> selectFeedDetail(int feedPostId,int userNo) { 
     	// 피드 상세페이지 출력
     	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수, 
 		FeedPostDTO feedPost = feedpostDAO.searchByFeedPost(feedPostId); // 글 정보
@@ -130,10 +136,9 @@ public class FeedPostService {
 		writeMember.setPw("");
 		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPostId); // 해시태그들
 		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo()); // 유저 프로필
-		int feedLikeCount = feedLikeDAO.seleteFeedLike(feedPostId); // 좋아요 갯수
-		
-
-		
+		int feedLikeCount = feedLikeDAO.selectFeedLike(feedPostId); // 좋아요 갯수
+		boolean isFeedLike = feedLikeDAO.isFeedLike(userNo, feedPostId);
+				
 		Map<String,Object> data = new HashMap<>();
 		data.put("feedPost", feedPost);
 		data.put("photoList", photoList);
@@ -141,6 +146,7 @@ public class FeedPostService {
 		data.put("hashTagList", hashTagList);
 		data.put("userProfile", userProfile);
 		data.put("feedLikeCount", feedLikeCount);
+		data.put("isFeedLike", isFeedLike);
 		
 		return data; 
     }
@@ -166,7 +172,7 @@ public class FeedPostService {
     		MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
     		userInfo.setPw("");
     		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
-    		int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
+    		int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
     		List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
     		thumbnailList.add(thumbnail);
     		memberList.add(userInfo);
@@ -182,10 +188,11 @@ public class FeedPostService {
     	data.put("memberList", memberList);
     	data.put("userProfileList", userProfileList);
     	data.put("hashTagLists", hashTagLists);
+    	data.put("feedLikeList", feedLikeList);
     	return data;
     }
 
-    public Map<String, Object> selectSearchFeedListByHashs(int cpage, String keyword) {
+    public Map<String, Object> selectSearchFeedListByHashs(int cpage, int userNo, String keyword) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
@@ -198,6 +205,7 @@ public class FeedPostService {
         List<PhotoDTO> thumbNailList = new ArrayList<>();
         List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
         List<Integer> feedLikeList = new ArrayList<>();
+        List<Boolean> isFeedLikeList = new ArrayList<>();
 
         for (FeedPostDTO feedPost : feedPostList) {
             PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
@@ -205,12 +213,14 @@ public class FeedPostService {
             userInfo.setPw("");
             PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
             List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
-            int feedLike = feedLikeDAO.seleteFeedLike(feedPost.getFeedPostId());
+            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
+            boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
             thumbNailList.add(thumbNail);
             memberList.add(userInfo);
             userProfileList.add(userProfile);
             hashTagLists.add(hashTagList);
             feedLikeList.add(feedLike);
+            isFeedLikeList.add(isFeedLike);
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -219,6 +229,8 @@ public class FeedPostService {
         map.put("memberList",memberList);
         map.put("userProfileList",userProfileList);
         map.put("hashTagLists",hashTagLists);
+        map.put("feedLikeList", feedLikeList);
+        map.put("isFeedLikeList", isFeedLikeList);
         return map;
     }
     
@@ -256,7 +268,7 @@ public class FeedPostService {
     }
     
     public int selectFeedLike(int feedpostId) {
-    	return feedLikeDAO.seleteFeedLike(feedpostId);
+    	return feedLikeDAO.selectFeedLike(feedpostId);
     }
     
     public boolean isFeedLike(int userNo, int feedPostId) {
