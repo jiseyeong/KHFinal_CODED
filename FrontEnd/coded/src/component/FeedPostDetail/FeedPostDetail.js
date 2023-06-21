@@ -78,7 +78,9 @@ const FeedPostDetail = (props) => {
               {hashTagList.length > 0 ? (
                 hashTagList.map((e, i) => (
                   <span key={i}>
-                    <Link to={`/feed/search/${e.hashTag}`}>#{e.hashTag}</Link>
+                    <Link to={`/feed/search?keyword=${e.hashTag}`}>
+                      #{e.hashTag}
+                    </Link>
                     &nbsp;&nbsp;
                   </span>
                 ))
@@ -88,7 +90,13 @@ const FeedPostDetail = (props) => {
             </div>
           </div>
         </div>
-        {modal && <Modal modal={modal} closeModal={closeModal} id={props.id} />}
+        {modal && (
+          <Modal
+            modal={modal}
+            closeModal={closeModal}
+            feedPostId={feedPost.feedPostId}
+          />
+        )}
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ public class FeedPostController {
 
 	@Autowired
 	private PhotoService photoService;
-	
+
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -88,7 +88,6 @@ public class FeedPostController {
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
 			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
 			@PathVariable("keyword") String keyword){
-
 		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
 		return ResponseEntity.ok().body(map);
 	}
@@ -99,7 +98,7 @@ public class FeedPostController {
 		List<FeedPostDTO> list = feedpostService.selectTestFeedList();
 		return ResponseEntity.ok().body(list);
 	}
-	
+
 	@GetMapping("/weeklyFeed")
 	public ResponseEntity<?> selectWeeklyFeed(
 			@RequestParam(value="currentTemp") int currentTemp,
@@ -109,51 +108,57 @@ public class FeedPostController {
 		Map<String, Object> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
 		return ResponseEntity.ok().body(data);
 	}
-	
-	@GetMapping("/selectfeeddetail") //피드 상세
-	public ResponseEntity<?> selectFeedDetail(@RequestParam int feedPostId,int userNo) {
-		Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
-		
-		return ResponseEntity.ok().body(data);
-				
-	}
-	
-	@PutMapping("/updateFeedPost") //피드 수정
-	public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
-		feedpostService.updateFeedPost(feedPostId, body);
-		
-		return ResponseEntity.ok().body(null);
-	}
-	
-	@DeleteMapping("/deleteFeedPost") //피드 삭제 
-	public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
-		feedpostService.deleteFeedPost(feedPostId);
-		
-		return ResponseEntity.ok().body(null);
-	}
 
-	@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
-	public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
-		boolean result = feedpostService.isFeedLike(userNo, feedPostId);
-		if(!result) {	
-			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
-		}else {
-			feedpostService.deleteFeedLike(userNo, feedPostId);
+		@GetMapping("/selectFeedDetail") //피드 상세	
+		public ResponseEntity<?> selectFeedDetail(
+				@RequestParam int feedPostId,
+				@RequestHeader(value="authorization") String authorization) {		
+			int userNo = 0;
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				userNo = jwtProvider.getLoginUserNo(accessToken);
+			}
 			
+			Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
+			return ResponseEntity.ok().body(data);
+		}
+
+	@PutMapping("/updateFeedPost") //피드 수정
+		public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
+			feedpostService.updateFeedPost(feedPostId, body);
+
 			return ResponseEntity.ok().body(null);
 		}
-	}
-	
-	@PostMapping("/insertFeedScrap") //피드 스크랩 입력 & 삭제 
-	public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
-		boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
-		if(!result) {
-			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
-		}else {
-			feedpostService.deleteFeedScrap(userNo, feedPostId);	
+
+		@DeleteMapping("/deleteFeedPost") //피드 삭제 
+		public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
+			feedpostService.deleteFeedPost(feedPostId);
+
 			return ResponseEntity.ok().body(null);
 		}
-	}
+
+		@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
+		public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
+			boolean result = feedpostService.isFeedLike(userNo, feedPostId);
+			if(!result) {	
+				return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+			}else {
+				feedpostService.deleteFeedLike(userNo, feedPostId);
+
+				return ResponseEntity.ok().body(null);
+			}
+		}
+
+		@PostMapping("/insertFeedScrap") //피드 스크랩 입력 & 삭제 
+		public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo,@RequestParam int feedPostId) {
+			boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
+			if(!result) {
+				return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
+			}else {
+				feedpostService.deleteFeedScrap(userNo, feedPostId);	
+				return ResponseEntity.ok().body(null);
+			}
+		}	
 	
 	// /feedpost/
 	@PostMapping("comment")

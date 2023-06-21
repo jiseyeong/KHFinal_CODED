@@ -8,7 +8,7 @@ function FeedInsert() {
     content: {
       margin: 'auto',
       width: '500px',
-      height: '600px'
+      height: '600px',
     },
   };
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -17,10 +17,10 @@ function FeedInsert() {
       <button onClick={() => setModalIsOpen(true)}>글쓰기 버튼</button>
       <div>
         <Modal isOpen={modalIsOpen} style={modalStyle}>
-          <div style={{textAlign:"right"}}>
+          <div style={{ textAlign: 'right' }}>
             <button onClick={() => setModalIsOpen(false)}>글쓰기 취소</button>
           </div>
-          <br/>
+          <br />
           <div>
             <ToastUI />
           </div>
