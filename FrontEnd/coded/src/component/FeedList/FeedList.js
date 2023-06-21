@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
 import LoadingBar from '../Common/LoadingBar';
-import NoneData from './NoneData';
+import NoticeBar from './NoticeBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -138,7 +138,7 @@ function FeedList() {
             );
           })
         ) : (
-          <NoneData />
+          <NoticeBar>표시할 내용이 없습니다.</NoticeBar>
         )}
       </Masonry>
     </FeedPostOuter>

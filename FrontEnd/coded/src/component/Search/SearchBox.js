@@ -10,10 +10,11 @@ const UserList = ({ userId, userNickName, sysName }) => {
     <li className={styles.userList}>
       <a href="#">
         <div className={styles.userLeftSide}>
-          <img
-            src={`/images/${sysName}`}
-            onError="this.src='/images/test.jpg'"
-          ></img>
+          {sysName !== null ? (
+            <img src={`/images/${sysName}`}></img>
+          ) : (
+            <img className={styles.thumbNail} src={`/images/test.jpg`}></img>
+          )}
         </div>
         <div className={styles.userMiddleSide1}>{userNickName}</div>
         <div className={styles.userMiddleSide2}>{userId}</div>

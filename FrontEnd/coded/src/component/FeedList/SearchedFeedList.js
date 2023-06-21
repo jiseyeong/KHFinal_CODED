@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import NoneData from './NoneData';
+import NoticeBar from './NoticeBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -63,12 +63,12 @@ function SearchedFeedList() {
   useEffect(() => {
     cpage.current = 1;
     setNewSearch(true);
-    addFeedList(keyword);
+    addSearchedFeedList(keyword);
     console.log(keyword);
     window.onscroll = function () {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         setNewSearch(false);
-        addFeedList(keyword);
+        addSearchedFeedList(keyword);
       }
     };
     return () => {
@@ -77,7 +77,7 @@ function SearchedFeedList() {
   }, [keyword]);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addFeedList = (keyword) => {
+  const addSearchedFeedList = (keyword) => {
     axios
       .request({
         method: 'GET',
@@ -125,30 +125,33 @@ function SearchedFeedList() {
   // document.body.offsetHeight 페이지 전체 높이
 
   return (
-    <FeedPostOuter ref={feedPostOuterRef}>
-      <Masonry className={'my-masonry-grid'} options={masonryOptions}>
-        {feedPost.length > 0 ? (
-          feedPost.map((e, i) => {
-            return (
-              <div className="grid-item" key={i}>
-                <FeedPostDetail
-                  index={i}
-                  // columnHeights={columnHeights}
-                  // setColumnHeights={setColumnHeights}
-                  feedPost={e}
-                  thumbNail={thumbNail[i]}
-                  member={member[i]}
-                  userProfile={userProfile[i]}
-                  hashTagList={hashTagList[i]}
-                ></FeedPostDetail>
-              </div>
-            );
-          })
-        ) : (
-          <NoneData />
-        )}
-      </Masonry>
-    </FeedPostOuter>
+    <>
+      <NoticeBar>검색 결과 입니다.</NoticeBar>
+      <FeedPostOuter ref={feedPostOuterRef}>
+        <Masonry className={'my-masonry-grid'} options={masonryOptions}>
+          {feedPost.length > 0 ? (
+            feedPost.map((e, i) => {
+              return (
+                <div className="grid-item" key={i}>
+                  <FeedPostDetail
+                    index={i}
+                    // columnHeights={columnHeights}
+                    // setColumnHeights={setColumnHeights}
+                    feedPost={e}
+                    thumbNail={thumbNail[i]}
+                    member={member[i]}
+                    userProfile={userProfile[i]}
+                    hashTagList={hashTagList[i]}
+                  ></FeedPostDetail>
+                </div>
+              );
+            })
+          ) : (
+            <NoticeBar></NoticeBar>
+          )}
+        </Masonry>
+      </FeedPostOuter>
+    </>
   );
 }
 
