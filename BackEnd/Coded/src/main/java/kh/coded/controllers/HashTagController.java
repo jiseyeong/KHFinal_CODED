@@ -17,7 +17,7 @@ public class HashTagController {
     @Autowired
     private PostHashsService postHashsService;
 
-    @GetMapping("selectAllPostTagNames")
+    @GetMapping(value = "selectAllPostTagNames")
     public ResponseEntity<?> selectAllHashTags(){
         List<PostHashsWithHashTagDTO> hashTagNameList =  postHashsService.selectAllPostTagNames();
         return ResponseEntity.ok().body(hashTagNameList);
