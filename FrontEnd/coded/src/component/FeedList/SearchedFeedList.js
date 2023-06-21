@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -52,10 +52,12 @@ function SearchedFeedList() {
   const feedPostOuterRef = useRef(null);
   // const [cpage, setCpage] = useState(1);
   const cpage = useRef(1);
-  const { keyword } = useParams();
+  const [keywordInput, setkeywordInput] = useSearchParams();
 
+  // useEffect(() => {
+  //   setkeywordInput();
+  // }, [keywordInput]);
   useEffect(() => {
-    console.log(keyword);
     addFeedList();
     return () => {
       window.onscroll = null;
@@ -64,10 +66,13 @@ function SearchedFeedList() {
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
+    console.log(keywordInput.get('keyword'));
     axios
       .request({
         method: 'GET',
-        url: `/feedpost/selectSearchHashFeedList/${keyword}`,
+        url: `/feedpost/selectSearchHashFeedList/${keywordInput.get(
+          'keyword',
+        )}`,
         params: {
           cpage: cpage.current,
         },
