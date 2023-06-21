@@ -5,7 +5,7 @@ import Login from './pages/auth/Login/Login';
 import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
-import Ootd from './pages/ootd/Main/Main';
+import Ootd from './pages/Ootd/Main/Main';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
@@ -28,7 +28,6 @@ import Footer from './component/Profile/Component/Footer/Footer';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedComment from './component/FeedPostDetail/FeedComment';
 import DMList from './pages/DM/DMList';
-
 
 function App() {
   const dispatch = useDispatch();
@@ -91,7 +90,10 @@ function App() {
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
         <Route path="/searchBox" element={<SearchBox />} />
 
-        <Route path="/test/feedComment" element={<FeedComment feedPostId={295} depth={0} parentId={0}/>} />
+        <Route
+          path="/test/feedComment"
+          element={<FeedComment feedPostId={295} depth={0} parentId={0} />}
+        />
 
         <Route
           path="/login/oauth2/code/kakao"

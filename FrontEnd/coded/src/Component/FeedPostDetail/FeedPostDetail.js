@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import Modal from '../../pages/ootd/Main/Modal';
+import Modal from '../../pages/Ootd/Main/Modal';
 import styles from './FeedPostDetail.module.scss';
 import { Link } from 'react-router-dom';
 
