@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -52,27 +52,32 @@ function SearchedFeedList() {
   const feedPostOuterRef = useRef(null);
   // const [cpage, setCpage] = useState(1);
   const cpage = useRef(1);
-  const [keywordInput, setkeywordInput] = useParams();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const keyword = searchParams.get('keyword');
 
   // useEffect(() => {
   //   setkeywordInput();
   // }, [keywordInput]);
   useEffect(() => {
-    addFeedList();
+    addFeedList(keyword);
+    console.log(keyword);
+    window.onscroll = function () {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        addFeedList(keyword);
+      }
+    };
     return () => {
       window.onscroll = null;
     };
-  }, []);
+  }, [keyword]);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addFeedList = () => {
-    console.log(keywordInput.get('keyword'));
+  const addFeedList = (keyword) => {
     axios
       .request({
         method: 'GET',
-        url: `/feedpost/selectSearchHashFeedList/${keywordInput.get(
-          'keyword',
-        )}`,
+        url: `/feedpost/selectSearchHashFeedList/${keyword}`,
         params: {
           cpage: cpage.current,
         },
@@ -94,16 +99,12 @@ function SearchedFeedList() {
         // setCpage((prev) => {
         //   return (prev + 1);
         // });
+        console.log(feedPostList);
         cpage.current = cpage.current + 1;
       })
       .catch((error) => console.log(error));
   };
 
-  window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      addFeedList();
-    }
-  };
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
   // document.body.offsetHeight 페이지 전체 높이
