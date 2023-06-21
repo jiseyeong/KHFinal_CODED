@@ -25,7 +25,7 @@ function ToastUI() {
         initialEditType="wysiwyg" // 초기 입력모드 설정(디폴트 markdown)
         hideModeSwitch={true}
         toolbarItems={false}
-      ></Editor>
+      />
       <br/>
 
 
