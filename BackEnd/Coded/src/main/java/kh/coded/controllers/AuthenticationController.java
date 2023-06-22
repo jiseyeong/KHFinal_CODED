@@ -355,6 +355,51 @@ public class AuthenticationController {
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
 	}
+	
+	@GetMapping(value="/auth/kakaoToken")
+	public ResponseEntity<?> getKakaoToken(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				//boolean
+				return ResponseEntity.ok().body(memberService.selectKakaoTokenByUserNo(userNo));
+			}			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
+	
+	@GetMapping(value="/auth/naverToken")
+	public ResponseEntity<?> getNaverToken(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				//boolean
+				return ResponseEntity.ok().body(memberService.selectNaverTokenByUserNo(userNo));
+			}			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
+	
+	@GetMapping(value="/auth/googleToken")
+	public ResponseEntity<?> getGoogleToken(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				//boolean
+				return ResponseEntity.ok().body(memberService.selectGoogleTokenByUserNo(userNo));
+			}			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
 
 	// 테스트 용도 (피드 작성 폼 구성 시 삭제 예정)
  	@GetMapping(value="/auth/selectUserList")

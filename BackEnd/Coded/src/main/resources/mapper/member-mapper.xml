@@ -27,6 +27,18 @@
   	<select id="selectMemberByNaverToken" resultType="kh.coded.dto.MemberDTO">
   		select * from Member where NaverToken=#{naverToken}
   	</select>
+  	<select id="selectMemberByGoogleToken" resultType="kh.coded.dto.MemberDTO">
+  		select * from Member where GoogleToken=${googleToken}
+  	</select>
+  	<select id="selectKakaoTokenByUserNo" resultType="String">
+  		select NakaoToken from Member where UserNo=${userNo}
+  	</select>
+  	<select id="selectNaverTokenByUserNo" resultType="String">
+  		select NaverToken from Member where UserNo=${userNo}
+  	</select>
+  	<select id="selectGoogleTokenByUserNo" resultType="String">
+  		select GoogleToken from Member where UserNo=${userNo}
+  	</select>
   	<insert id="insertMember">
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select userno_seq.nextval from dual
