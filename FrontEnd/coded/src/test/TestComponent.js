@@ -8,6 +8,9 @@ const TestComponent = () => {
       <br />
       <br />
       <Link to="/searchLabelSelect">검색 자동완성, 해시태그 입력</Link>
+      <br />
+      <br />
+      <Link to="/caroselTest">캐러셀 테스트</Link>
     </div>
   );
 };
