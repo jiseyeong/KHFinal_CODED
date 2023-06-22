@@ -25,10 +25,18 @@
 	<delete id="delete">
 		delete from FeedComment where FeedCommentId=${feedCommentId}
 	</delete>
-	<select id="selectByFeedPostDepth0" resultType="kh.coded.dto.FeedCommentDTO">
-		select * from FeedComment where FeedPostId=${feedPostId} and ParentId is null order by FeedCommentId asc
+	<select id="selectByFeedPostDepth0" resultType="kh.coded.dto.FeedCommentAddDTO">
+		select f.*, m.userId, m.userNickName, p.sysName from FeedComment f
+		left join member m on f.UserNo = m.UserNo
+        left join photo p on f.userNo = p.userNo
+		where f.FeedPostId=${feedPostId} and f.ParentId is null
+		order by f.FeedCommentId asc
 	</select>
-	<select id="selectByParentIdAndDepth" resultType="kh.coded.dto.FeedCommentDTO">
-		select * from FeedComment where ParentId=${parentId} and depth=${depth} order by FeedCommentId asc
+	<select id="selectByParentIdAndDepth" resultType="kh.coded.dto.FeedCommentAddDTO">
+		select f.*, m.userId, m.userNickName, p.sysName from FeedComment f
+		left join member m on f.UserNo = m.UserNo
+        left join photo p on f.userNo = p.userNo
+		where f.ParentId=${parentId} and f.depth=${depth}
+		order by f.FeedCommentId asc
 	</select>
 </mapper>

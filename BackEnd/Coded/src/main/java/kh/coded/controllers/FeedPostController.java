@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
@@ -114,9 +115,11 @@ public class FeedPostController {
 				@RequestParam int feedPostId,
 				@RequestHeader(value="authorization") String authorization) {		
 			int userNo = 0;
-			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-			if(jwtProvider.validateToken(accessToken)) {
-				userNo = jwtProvider.getLoginUserNo(accessToken);
+			if(authorization.length() > 7) {
+				String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+				if(jwtProvider.validateToken(accessToken)) {
+					userNo = jwtProvider.getLoginUserNo(accessToken);
+				}				
 			}
 			
 			Map<String,Object> data = feedpostService.selectFeedDetail(feedPostId,userNo);
@@ -167,11 +170,13 @@ public class FeedPostController {
 			@RequestParam(value="feedPostId") int feedPostId,
 			@RequestParam(value="body") String body
 			){
-		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-		if(jwtProvider.validateToken(accessToken)) {
-			int userNo = jwtProvider.getLoginUserNo(accessToken);
-			return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
-		};
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				return ResponseEntity.ok().body(feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
+			};
+		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 	
@@ -183,11 +188,13 @@ public class FeedPostController {
 			@RequestParam(value="body") String body,
 			@RequestParam(value="depth") int depth
 			){
-		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-		if(jwtProvider.validateToken(accessToken)) {
-			int userNo = jwtProvider.getLoginUserNo(accessToken);
-			return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
-		};
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				return ResponseEntity.ok().body(feedpostService.insertNestedComment(new FeedCommentDTO(0, userNo, feedPostId, parentId, body, null, depth)));
+			};			
+		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 	
@@ -210,11 +217,10 @@ public class FeedPostController {
 	
 	@GetMapping("comment/depth0")
 	public ResponseEntity<?> selectCommentDepth0(
-			@RequestParam(value="feedPostId") int feedPostId,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			@RequestParam(value="feedPostId") int feedPostId
 			){
-		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+		List<FeedCommentAddDTO> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId);
+		if(result.size() > 0) {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("댓글이 없습니다.");
@@ -223,15 +229,49 @@ public class FeedPostController {
 	@GetMapping("comment/depthN")
 	public ResponseEntity<?> selectCommentDepth(
 			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="depth") int depth,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			@RequestParam(value="depth") int depth
 			){
-		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+		List<FeedCommentAddDTO> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth);
+		if(result.size() > 0) {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
 		
 	}
-
+	
+	@GetMapping("comment/like")
+	public ResponseEntity<?> selectCommentLike(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="commentId") int commentId
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				return ResponseEntity.ok().body(feedpostService.selectCommentLikeForChecked(userNo, commentId));
+			};
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+	
+	@PostMapping("comment/like")
+	public ResponseEntity<?> insertCommentLike(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="commentId") int commentId
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				boolean isChecked = feedpostService.selectCommentLikeForChecked(userNo, commentId);
+				if(isChecked) {
+					feedpostService.deleteCommentLike(userNo, commentId);
+				}else {
+					feedpostService.insertCommentLike(userNo, commentId);
+				}
+				return ResponseEntity.ok().body(!isChecked);
+			};
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 }

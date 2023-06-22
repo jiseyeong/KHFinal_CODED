@@ -1,10 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { FeedMaxTempContext } from "../../modules/Context/FeedMaxTempContext";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { useContext, useEffect, useRef, useState } from 'react';
+import { FeedMaxTempContext } from '../../modules/Context/FeedMaxTempContext';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import Masonry from 'react-masonry-component';
-import FeedPostDetail from "../FeedPostDetail/FeedPostDetail";
+import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
+import LoadingBar from '../Common/LoadingBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -42,79 +43,93 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function WeeklyFeedForm(){
-    const {maxTemp, tempRange} = useContext(FeedMaxTempContext);
-    const [feedList, setFeedList] = useState([]);
-    const accessToken = useSelector((state) => state.member.access);
-    const [loading, setLoading] = useState(false);
+function WeeklyFeedForm() {
+  const { maxTemp, tempRange } = useContext(FeedMaxTempContext);
+  const [feedList, setFeedList] = useState([]);
+  const accessToken = useSelector((state) => state.member.access);
+  const [loading, setLoading] = useState(false);
+  const [needLogin, setNeedLogin] = useState(false);
 
-    const [cpage, setCpage] = useState(1);
-    const [thumbNail, setThumbnail] = useState([]);
-    const [member, setMember] = useState([]);
-    const [userProfile, setUserProfile] = useState([]);
-    const [hashTagList, setHashTagList] = useState([]);
-    const feedPostOuterRef = useRef(null);
-    
-    useEffect(()=>{
-        addFeedList();
-    }, [maxTemp, tempRange]);
+  const [cpage, setCpage] = useState(1);
+  const [thumbNail, setThumbnail] = useState([]);
+  const [member, setMember] = useState([]);
+  const [userProfile, setUserProfile] = useState([]);
+  const [hashTagList, setHashTagList] = useState([]);
+  const feedPostOuterRef = useRef(null);
 
-    useEffect(()=>{
-        console.log(feedList);
-    }, [feedList]);
-
-    useEffect(()=>{
-      window.onscroll = function(){
-        if(window.innerHeight + window.scrollY >= document.body.offsetHeight){
-            addFeedList();
-        }
-      }
-      return ()=>{
-        window.onscroll = null;
-      }
-    }, []);
-
-    function addFeedList(){
-        setLoading(true);
-        axios({
-            method:'get',
-            url:'/feedpost/weeklyFeed',
-            headers:{
-                Authorization:'Bearer '+accessToken
-            },
-            params:{
-                currentTemp:maxTemp,
-                currentTempRange:tempRange,
-                cpage: cpage
-            }
-        }).then((response)=>{
-            setLoading(false);
-            const {
-                feedPostList,
-                thumbNailList,
-                memberList,
-                userProfileList,
-                hashTagLists,
-              } = response.data;
-
-            setFeedList((prev)=>{return [...prev, ...feedPostList]});
-            setThumbnail((prev)=>{return [...prev, ...thumbNailList]});
-            setMember((prev)=>{return [...prev, ...memberList]});
-            setHashTagList((prev) => [...prev, ...hashTagLists]);
-            setCpage((prev)=>{return prev+1});
-        }).catch((error)=>{
-            setLoading(false);
-            console.log(error);
-        })
+  useEffect(() => {
+    if (!(maxTemp === -9999 || tempRange === -9999)) {
+      setNeedLogin(false);
+      addFeedList();
+    } else {
+      setNeedLogin(true);
     }
+  }, [maxTemp, tempRange]);
 
-    if(loading){
-        return (
-            <div>진행 중...</div>
-        );
+  useEffect(() => {
+    console.log(feedList);
+  }, [feedList]);
+
+  useEffect(() => {
+    window.onscroll = function () {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        addFeedList();
+      }
     };
+    return () => {
+      window.onscroll = null;
+    };
+  }, []);
 
-    return (
+  function addFeedList() {
+    setLoading(true);
+    axios({
+      method: 'get',
+      url: '/feedpost/weeklyFeed',
+      headers: {
+        Authorization: 'Bearer ' + accessToken,
+      },
+      params: {
+        currentTemp: maxTemp,
+        currentTempRange: tempRange,
+        cpage: cpage,
+      },
+    })
+      .then((response) => {
+        setLoading(false);
+        const {
+          feedPostList,
+          thumbNailList,
+          memberList,
+          userProfileList,
+          hashTagLists,
+        } = response.data;
+
+        setFeedList((prev) => {
+          return [...prev, ...feedPostList];
+        });
+        setThumbnail((prev) => {
+          return [...prev, ...thumbNailList];
+        });
+        setMember((prev) => {
+          return [...prev, ...memberList];
+        });
+        setHashTagList((prev) => [...prev, ...hashTagLists]);
+        setCpage((prev) => {
+          return prev + 1;
+        });
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  }
+
+  if (needLogin) {
+    return <div>로그인이 필요한 서비스입니다. 먼저 로그인을 해주세요!</div>;
+  }
+
+  return (
     <FeedPostOuter ref={feedPostOuterRef}>
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
         {feedList.map((item, index) => {
@@ -135,7 +150,7 @@ function WeeklyFeedForm(){
         })}
       </Masonry>
     </FeedPostOuter>
-    )
+  );
 }
 
 export default WeeklyFeedForm;

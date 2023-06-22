@@ -1,6 +1,7 @@
 package kh.coded.dto;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class FeedCommentDTO {
 
@@ -66,6 +67,11 @@ public class FeedCommentDTO {
 	}
 	public void setDepth(int depth) {
 		this.depth = depth;
+	}
+	
+	public String getFormedWriteDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return sdf.format(writeDate);
 	}
     
 }
