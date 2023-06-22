@@ -16,22 +16,23 @@ public class DMRoomService {
 
 	@Autowired
 	private MemberDAO memberDAO;
-	
+
 	@Autowired
 	private DMDAO dmDAO;
-	
+
 	@Autowired
 	private DMRoomDAO dmRoomDAO;
-	
+
 	@Autowired
 	private DMRoomUserDAO dmRoomUserDAO;
-	
+
 	public List<DMRoomDTO> selectByUserNo (int userNo) {
-		return dmRoomDAO.selectByUserNo(userNo);	}
-	
+		return dmRoomDAO.selectByUserNo(userNo);	
+	}
+
 	public int createRoomId () {
 		return dmRoomDAO.createRoomId();
 	}
-	
-	
+
+
 }

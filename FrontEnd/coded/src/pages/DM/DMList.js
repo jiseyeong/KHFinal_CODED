@@ -13,8 +13,8 @@ function DMList() {
 
     useEffect(()=>{
         axios({
-            method: 'GET',
-            url: '/DM/selectChatList/',
+            method: 'get',
+            url: '/DM/selectChatList',
             params: {
                 userNo: loginUserNo,
             },

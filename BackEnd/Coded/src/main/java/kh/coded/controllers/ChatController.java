@@ -43,10 +43,10 @@ public class ChatController {
 
 	// UserNo를 통한 DMRoomDTO 데이터 얻어오기
 	@GetMapping("selectChatList")
-	public ResponseEntity<?> selectChatList (@RequestParam(value = "userNo") int UserNo){
-		System.out.println(UserNo);
+	public ResponseEntity<?> selectChatList (@RequestParam(value = "userNo") int userNo){
+		System.out.println(userNo);
 		try {
-			List<DMRoomDTO> list = DMRoomService.selectByUserNo(UserNo);
+			List<DMRoomDTO> list = DMRoomService.selectByUserNo(userNo);
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
