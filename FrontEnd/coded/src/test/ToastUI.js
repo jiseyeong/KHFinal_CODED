@@ -32,6 +32,7 @@ function ToastUI() {
     }
   };
   const selectRef = useRef();
+  const contentRef = useRef();
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -57,64 +58,137 @@ function ToastUI() {
   }, []);
 
   return (
+    // <div>
+    //   <div
+    //     className={Styled.yscroll}
+    //     placeholder="내용을 입력해주세요"
+    //     contentEditable="true"
+    //     ref={contentRef}
+    //   ></div>
+    //   <br />
+    //   <CreatableSelect
+    //   isMulti
+    //     options={options}
+    //     ref={selectRef}
+    //   />
+    //   <br />
+    //   <div
+    //     style={{
+    //       border: '1px solid black',
+    //       width: '100%',
+    //       height: '100px',
+    //       overflowX: 'scroll',
+    //       whiteSpace: 'nowrap',
+    //     }}
+    //   >
+
+    //     {imgBase64.map((item) => {
+    //       return (
+    //         <div>
+    //         <img
+    //           src={item}
+    //           style={{ maxHeight: '100%', maxWidth: '100px', float:"left"}}
+    //         ></img>
+    //         </div>
+    //       );
+    //     })}
+
+    //     <label
+    //       className="input-file-button"
+    //       for="input-file"
+    //       style={{
+    //         border: '1px solid black',
+    //         height: '100%',
+    //         display: 'inline-block',
+    //         width: '100px',
+    //         textAlign: 'center',
+    //         lineHeight: '80px',
+    //       }}
+    //     >
+    //       사진 등록
+    //     </label>
+    //     <input
+    //       type="file"
+    //       id="input-file"
+    //       onChange={handleChangeFile}
+    //       style={{ display: 'none' }}
+    //       accept="image/gif,image/jpeg,image/png"
+    //       multiple
+    //     ></input>
+    //   </div>
+    //   <br />
+    // </div>
+
     <div>
-      <div
-        className={Styled.yscroll}
-        placeholder="내용을 입력해주세요"
-        contentEditable="true"
-      ></div>
-      <br />
-      <CreatableSelect 
-      isMulti
-        options={options}
-        ref={selectRef}
-      />
-      <br />
-      <div
-        style={{
-          border: '1px solid black',
-          width: '100%',
-          height: '100px',
-          overflowX: 'scroll',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        
-        {imgBase64.map((item) => {
-          return (
-            <div>
-            <img
-              src={item}
-              style={{ maxHeight: '100%', maxWidth: '100px', float:"left"}}
-            ></img>
-            </div>
-          );
-        })}
-        
-        <label
-          className="input-file-button"
-          for="input-file"
+      {/* 좌측창 사진 미리보기 */}
+      <div style={{ float: 'left', width: '30%', height: '459px' }}>
+        <div
           style={{
             border: '1px solid black',
+            width: '100%',
             height: '100%',
-            display: 'inline-block',
-            width: '100px',
-            textAlign: 'center',
-            lineHeight: '80px',
+            overflowX: 'scroll',
           }}
         >
-          사진 등록
-        </label>
-        <input
-          type="file"
-          id="input-file"
-          onChange={handleChangeFile}
-          style={{ display: 'none' }}
-          accept="image/gif,image/jpeg,image/png"
-          multiple
-        ></input>
+          {imgBase64.map((item) => {
+            return (
+              <div>
+                <div style={{ border: '1px solid black' }}>
+                  <img
+                    src={item}
+                    style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                </div>
+                <div style={{ height: '10px' }}></div>
+              </div>
+            );
+          })}
+
+          <label
+            className="input-file-button"
+            for="input-file"
+            style={{
+              border: '1px solid black',
+              height: '150px',
+              display: 'inline-block',
+              width: '100%',
+              textAlign: 'center',
+              lineHeight: '150px',
+            }}
+          >
+            사진 등록
+          </label>
+          <input
+            type="file"
+            id="input-file"
+            onChange={handleChangeFile}
+            style={{ display: 'none' }}
+            accept="image/gif,image/jpeg,image/png"
+            multiple
+          ></input>
+        </div>
       </div>
-      <br />
+      
+      {/* 중앙 여백 */}
+      <div style={{ float: 'left', width: '3%', height: '459px' }}></div>
+
+      {/* 우측창 게시글 내용 및 해시태그 */}
+      <div style={{ float: 'right', width: '67%', height: '459px' }}>
+        <div
+          className={Styled.yscroll}
+          placeholder="내용을 입력해주세요"
+          contentEditable="true"
+          ref={contentRef}
+        ></div>
+        <br />
+        <CreatableSelect
+          isMulti
+          options={options}
+          ref={selectRef}
+          className={Styled.select}
+        />
+        <br />
+      </div>
     </div>
   );
 }
