@@ -42,13 +42,13 @@
 		 address1 = #{address1}, address2 = #{address2} where userId = #{userId}
 	</update>
 	<update id="updateKakaoToken">
-		update Member set KakaoToken=#{kakaoToken} where userNo=${userNo}
+		update Member set KakaoToken=#{kakaoToken, jdbcType=VARCHAR} where userNo=${userNo}
 	</update>
 	<update id="updateNaverToken">
-		update Member set NaverToken=#{naverToken} where userNo=${userNo}
+		update Member set NaverToken=#{naverToken, jdbcType=VARCHAR} where userNo=${userNo}
 	</update>
 	<update id="updateGoogleToken">
-		update Member set GoogleToken=#{googleToken} where userNo=${userNo}
+		update Member set GoogleToken=#{googleToken, jdbcType=VARCHAR} where userNo=${userNo}
 	</update>
 	<update id="updatePw">
 		update member set pw = #{pw} where userId = #{userId}

@@ -310,6 +310,51 @@ public class AuthenticationController {
 		}
 		return ResponseEntity.ok().body(result);
 	}
+	
+	@PutMapping(value="/auth/kakaoUnlink")
+	public ResponseEntity<?> kakaoUnlink(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				memberService.kakaoUnlink(userNo);
+				return ResponseEntity.ok().body(null);
+			}			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
+	
+	@PutMapping(value="/auth/naverUnlink")
+	public ResponseEntity<?> naverUnlink(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				memberService.naverUnlink(userNo);
+				return ResponseEntity.ok().body(null);
+			}			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
+	
+	@PutMapping(value="/auth/googleUnlink")
+	public ResponseEntity<?> googleUnlink(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				memberService.googleUnlink(userNo);
+				return ResponseEntity.ok().body(null);
+			}			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
 
 	// 테스트 용도 (피드 작성 폼 구성 시 삭제 예정)
  	@GetMapping(value="/auth/selectUserList")
