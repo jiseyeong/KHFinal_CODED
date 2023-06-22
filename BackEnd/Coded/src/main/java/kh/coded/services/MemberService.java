@@ -270,6 +270,10 @@ public class MemberService implements UserDetailsService {
 	public void kakaoUnlink(int userNo) {
 		memberDAO.updateKakaoToken(userNo, null);
 	}
+	
+	public boolean selectKakaoTokenByUserNo(int userNo) {
+		return memberDAO.selectKakaoToken(userNo) != null;
+	}
 
 	private Long getKakaoUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
@@ -318,6 +322,10 @@ public class MemberService implements UserDetailsService {
 	
 	public void naverUnlink(int userNo) {
 		memberDAO.updateNaverToken(userNo, null);
+	}
+	
+	public boolean selectNaverTokenByUserNo(int userNo) {
+		return memberDAO.selectNaverToken(userNo) != null;
 	}
 
 	private String getNaverAccessToken(String code) throws Exception{ 
@@ -396,6 +404,10 @@ public class MemberService implements UserDetailsService {
     
 	public void googleUnlink(int userNo) {
 		memberDAO.updateGoogleToken(userNo, null);
+	}
+	
+	public boolean selectGoogleTokenByUserNo(int userNo) {
+		return memberDAO.selectGoogleToken(userNo) != null;
 	}
     
     private String getGoogleAccessToken(String code) throws Exception{ 

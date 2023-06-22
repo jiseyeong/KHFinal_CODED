@@ -32,6 +32,10 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectMemberByNaverToken", token);
 	}
 	
+	public MemberDTO selectMemberByGoogleToken(String token) {
+		return mybatis.selectOne("Member.selectMemberByGoogleToken", token);
+	}
+	
 	public boolean isMemberId(String userId) { //아이디 중복확인
 		if(userId.isBlank()) {
 			return false;
@@ -92,6 +96,18 @@ public class MemberDAO {
 		data.put("googleToken", googleToken);
 		
 		mybatis.update("Member.updateGoogleToken", data);
+	}
+	
+	public String selectKakaoToken(int userNo) {
+		return mybatis.selectOne("Member.selectKakaoTokenByUserNo", userNo);
+	}
+	
+	public String selectNaverToken(int userNo) {
+		return mybatis.selectOne("Member.selectNaverTokenByUserNo", userNo);
+	}
+	
+	public String selectGoogleToken(int userNo) {
+		return mybatis.selectOne("Member.selectGoogleTokenByUserNo", userNo);
 	}
 	
 	public int deleteMember(String userId,String pw) { //회원탈퇴
