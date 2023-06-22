@@ -1,10 +1,26 @@
-// .slick-initialized {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// }
+.custom-slider {
+  width: 300px;
+  background-color: black;
+  align-items: center;
+  /* 슬라이더 컨테이너에 대한 스타일 */
+}
 
-.slick-track {
+.custom-slider .slick-slide {
+  /* 슬라이드에 대한 스타일 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-slider .slick-prev {
+  /* 이전 버튼에 대한 스타일 */
+}
+
+.custom-slider .slick-next {
+  /* 다음 버튼에 대한 스타일 */
+}
+
+.custom-slider .slick-track {
   display: flex;
   align-items: center;
 }

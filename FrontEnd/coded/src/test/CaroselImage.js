@@ -4,7 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 import axios from 'axios';
-import './CaroselTest.scss';
+import './CaroselImage.module.scss';
 
 const CaroselImage = ({ imgBase64 }) => {
   //   const settings = {

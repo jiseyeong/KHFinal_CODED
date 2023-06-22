@@ -70,6 +70,7 @@ const CaroselTest = () => {
       })
       .then((resp) => {
         setImageList(resp.data);
+        console.log(resp.data);
       })
       .catch((error) => {
         console.log(error);
@@ -78,14 +79,7 @@ const CaroselTest = () => {
 
   return (
     <LayoutDiv>
-      <Slider
-        {...settings}
-        style={{
-          width: '300px',
-          backgroundColor: 'black',
-          alignIten: 'center',
-        }}
-      >
+      <Slider className="custom-slider" {...settings}>
         {imageList.map((image) => {
           return (
             <ImageLayout>
