@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
@@ -216,11 +217,10 @@ public class FeedPostController {
 	
 	@GetMapping("comment/depth0")
 	public ResponseEntity<?> selectCommentDepth0(
-			@RequestParam(value="feedPostId") int feedPostId,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			@RequestParam(value="feedPostId") int feedPostId
 			){
-		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+		List<FeedCommentAddDTO> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId);
+		if(result.size() > 0) {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("댓글이 없습니다.");
@@ -229,11 +229,10 @@ public class FeedPostController {
 	@GetMapping("comment/depthN")
 	public ResponseEntity<?> selectCommentDepth(
 			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="depth") int depth,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			@RequestParam(value="depth") int depth
 			){
-		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+		List<FeedCommentAddDTO> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth);
+		if(result.size() > 0) {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
