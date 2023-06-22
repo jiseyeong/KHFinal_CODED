@@ -28,6 +28,7 @@ const HeartIcons = {
 function FeedComment({
   userNickName,
   userId,
+  userProfile,
   commentInfo,
   isLike,
   feedPostId,
@@ -35,6 +36,7 @@ function FeedComment({
   readComments,
 }) {
   const [onReply, setOnReply] = useState(false);
+  const [profileSysName, setProfileSysName] = useState(userProfile ? userProfile.sysName : "");
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
 
@@ -70,6 +72,7 @@ function FeedComment({
   }
   return (
     <div>
+      <div><img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img></div>
       <div>작성자: {userNickName}</div>
       <div>작성자 ID : {userId}</div>
       <div>본문: {commentInfo.body}</div>
