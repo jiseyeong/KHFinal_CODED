@@ -20,9 +20,6 @@ const IndexPage = () => {
       <Link to="/signup">회원가입 페이지</Link>
       <br />
       <br />
-      <Link to="/HomePageTemplate">홈페이지 양식</Link>
-      <br />
-      <br />
       <Link to="/feedList">단순 피드 리스트</Link>
       <br />
       <br />
