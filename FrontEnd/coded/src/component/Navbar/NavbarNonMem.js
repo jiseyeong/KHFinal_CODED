@@ -51,7 +51,7 @@ function NavbarNonMem() {
                     }
                     onClick={handleClickWeekly}
                   >
-                    WEEKLY
+                    #WEEKLY
                   </span>
                 </li>
               </ul>

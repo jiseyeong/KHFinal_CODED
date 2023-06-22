@@ -58,7 +58,7 @@ function FeedComment({
       })
       .catch((error)=>{
         if(error.request.status === 400){
-          console.log("로그인 부터 진행해주셔야 합니다.");
+          console.log("먼저 로그인을 해주세요.");
         }else{
           console.log(error);
         }
@@ -84,7 +84,7 @@ function FeedComment({
       setIsLike(response.data);
     }).catch((error)=>{
       if(error.request.status === 400){
-        console.log("로그인부터 진행해주셔야 합니다.");
+        console.log("저 로그인을 해주세요.");
       }else{
         console.log(error);
       }
@@ -111,7 +111,7 @@ function FeedComment({
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('로그인부터 진행해주서야 합니다.');
+          console.log('먼저 로그인을 해주세요.');
         } else {
           console.log(error);
         }
@@ -120,13 +120,13 @@ function FeedComment({
   return (
     <div>
       <div><img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img></div>
-      <div>작성자: {userNickName}</div>
-      <div>작성자 ID : {userId}</div>
-      <div>본문: {commentInfo.body}</div>
-      <div>작성일시: {commentInfo.formedWriteDate}</div>
-      <div onClick={handleIsLike}>좋아요: {isLike ? 'heart' : HeartIcons.empty}</div>
+      <div>nickname: {userNickName}</div>
+      <div>id : {userId}</div>
+      <div>content: {commentInfo.body}</div>
+      <div>write date: {commentInfo.formedWriteDate}</div>
+      <div onClick={handleIsLike}>likes: {isLike ? 'heart' : HeartIcons.empty}</div>
       {(depth < 1 && accessToken) &&
-        <button onClick={handleOnReply}>답글</button>
+        <button onClick={handleOnReply}>comment</button>
       }
 
       {onReply && (

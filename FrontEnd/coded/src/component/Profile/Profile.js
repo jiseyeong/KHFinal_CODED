@@ -60,7 +60,6 @@ const ProfileTemplate = () => {
                 <button className={styles.EditBtn}>수정하기</button>
                 <button className={styles.EditCancelBtn}>수정취소</button>
                 <button className={styles.EditComBtn}>수정완료</button>
-                <button className={styles.MemberOutBtn}>회원탈퇴</button>
               </div>
             </div>
           </div>
