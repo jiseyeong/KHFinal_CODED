@@ -150,10 +150,12 @@ public class AuthenticationController {
 	public ResponseEntity<?> getUserNo(
 			@RequestHeader(value="authorization") String authorization
 			) {
-		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-		if(jwtProvider.validateToken(accessToken)) {
-			return ResponseEntity.ok().body(jwtProvider.getLoginUserNo(accessToken));
-		};
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				return ResponseEntity.ok().body(jwtProvider.getLoginUserNo(accessToken));
+			};			
+		}
 		return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
 	}
 	
@@ -162,13 +164,15 @@ public class AuthenticationController {
 			@RequestHeader(value="authorization") String authorization
 			)
 	{
-		String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-		if(jwtProvider.validateToken(accessToken)) {
-			MemberDTO member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
-			if(member != null) {
-				member.setPw("");
-				return ResponseEntity.ok().body(member);
-			}
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				MemberDTO member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
+				if(member != null) {
+					member.setPw("");
+					return ResponseEntity.ok().body(member);
+				}
+			}			
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
 	}

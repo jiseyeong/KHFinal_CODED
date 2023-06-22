@@ -148,7 +148,7 @@ public class WeatherService {
 			for(AddressCoordDTO coord : coordList) {						
 				UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst")
 						.queryParam("serviceKey", weatherShortAPIKey)
-						.queryParam("numOfRows", 1200)
+						.queryParam("numOfRows", 1500)
 						.queryParam("pageNo", 1)
 						.queryParam("base_date", day)
 						.queryParam("base_time", "0200")
