@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import '@toast-ui/editor/dist/toastui-editor.css';
-import { Editor } from '@toast-ui/react-editor';
 import FeedCommentList from './FeedCommentList';
 import axios from 'axios';
 
@@ -30,6 +28,7 @@ const HeartIcons = {
 function FeedComment({
   userNickName,
   userId,
+  userProfile,
   commentInfo,
   isLike,
   feedPostId,
@@ -37,21 +36,16 @@ function FeedComment({
   readComments,
 }) {
   const [onReply, setOnReply] = useState(false);
+  const [profileSysName, setProfileSysName] = useState(userProfile ? userProfile.sysName : "");
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
 
-  useEffect(() => {
-    if (editorRef.current) {
-      // editorRef.current.getInstance.removeHook('addImageBlobHook');
-      console.log(editorRef.current.getInstance());
-    }
-  }, [editorRef.current]);
-
   function handleOnReply() {
-    setOnReply(!onReply);
+    setOnReply((prev)=>{return !prev});
   }
 
   function onSubmit() {
+    console.log(editorRef.current.innerText);
     axios({
       method: 'post',
       url: '/feedpost/nestedComment',
@@ -61,7 +55,7 @@ function FeedComment({
       params: {
         feedPostId: feedPostId,
         parentId: commentInfo.feedCommentId,
-        body: editorRef.current.getInstance().getMarkdown(),
+        body: editorRef.current.innerText,
         depth: depth + 1,
       },
     })
@@ -78,25 +72,21 @@ function FeedComment({
   }
   return (
     <div>
+      <div><img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img></div>
       <div>작성자: {userNickName}</div>
       <div>작성자 ID : {userId}</div>
       <div>본문: {commentInfo.body}</div>
       <div>작성일시: {commentInfo.writeDate}</div>
       <div>좋아요: {isLike ? 'heart' : HeartIcons.empty}</div>
-      {depth < 1 &&
+      {(depth < 1 && accessToken) &&
         <button onClick={handleOnReply}>답글</button>
       }
 
       {onReply && (
         <div>
-          <Editor
+          <div
             ref={editorRef}
-            previewStyle="vertical"
-            height="150px"
-            initialEditType="wysiwyg"
-            language="ko-KR"
-            hideModeSwitch="true"
-            toolbarItems={[['bold', 'italic', 'strike']]}
+            contentEditable="true"
           />
           <button onClick={onSubmit}>전송</button>
         </div>

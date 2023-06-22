@@ -1,15 +1,15 @@
 import { createContext, useState } from "react";
 
 const FeedMaxTempContext = createContext({
-    maxTemp:0,
+    maxTemp:-9999,
     setMaxTemp:()=>{},
-    tempRange:0,
+    tempRange:-9999,
     setTempRange:()=>{},
 });
 
 function FeedMaxTempProvider({children}){
-    const [maxTemp, setMaxTemp] = useState(0);
-    const [tempRange, setTempRange] = useState(0);
+    const [maxTemp, setMaxTemp] = useState(-9999);
+    const [tempRange, setTempRange] = useState(-9999);
 
     return(
         <FeedMaxTempContext.Provider value={{

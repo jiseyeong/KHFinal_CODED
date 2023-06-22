@@ -262,19 +262,23 @@ public class FeedPostService {
     	List<Boolean> isLikeList = new ArrayList<>();
     	List<String> userIdList = new ArrayList<>();
     	List<String> userNickNameList = new ArrayList<>();
+    	List<PhotoDTO> userProfileList = new ArrayList<>();
     	for(FeedCommentDTO comment : commentList) {
     		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
     		
     		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
     		String userId = member.getUserId();
     		String userNickName = member.getUserNickName();
+    		PhotoDTO userProfile = photoDAO.selectByUserNo(member.getUserNo());
     		userIdList.add(userId);
     		userNickNameList.add(userNickName);
+    		userProfileList.add(userProfile);
     	}
     	data.put("commentList", commentList);
     	data.put("isLikeList", isLikeList);
     	data.put("userIdList", userIdList);
     	data.put("userNickNameList", userNickNameList);
+    	data.put("userProfileList", userProfileList);
     	return data;
     }
     public Map<String, Object> selectCommentByParentIdAndDepth(int parentId, int depth, int userNo){
@@ -283,6 +287,7 @@ public class FeedPostService {
     	List<Boolean> isLikeList = new ArrayList<>();
     	List<String> userIdList = new ArrayList<>();
     	List<String> userNickNameList = new ArrayList<>();
+    	List<PhotoDTO> userProfileList = new ArrayList<>();
     	
     	for(FeedCommentDTO comment : commentList) {
     		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
@@ -290,13 +295,16 @@ public class FeedPostService {
     		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
     		String userId = member.getUserId();
     		String userNickName = member.getUserNickName();
+    		PhotoDTO userProfile = photoDAO.selectByUserNo(member.getUserNo());
     		userIdList.add(userId);
     		userNickNameList.add(userNickName);
+    		userProfileList.add(userProfile);
     	}
     	data.put("commentList", commentList);
     	data.put("isLikeList", isLikeList);
     	data.put("userIdList", userIdList);
     	data.put("userNickNameList", userNickNameList);
+    	data.put("userProfileList", userProfileList);
     	return data;
     }
     

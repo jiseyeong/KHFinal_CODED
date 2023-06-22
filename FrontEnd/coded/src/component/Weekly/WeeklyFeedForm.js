@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { styled } from 'styled-components';
 import Masonry from 'react-masonry-component';
 import FeedPostDetail from "../FeedPostDetail/FeedPostDetail";
+import LoadingBar from "../Common/LoadingBar";
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -47,6 +48,7 @@ function WeeklyFeedForm(){
     const [feedList, setFeedList] = useState([]);
     const accessToken = useSelector((state) => state.member.access);
     const [loading, setLoading] = useState(false);
+    const [needLogin, setNeedLogin] = useState(false);
 
     const [cpage, setCpage] = useState(1);
     const [thumbNail, setThumbnail] = useState([]);
@@ -56,7 +58,12 @@ function WeeklyFeedForm(){
     const feedPostOuterRef = useRef(null);
     
     useEffect(()=>{
-        addFeedList();
+        if(!(maxTemp === -9999 || tempRange === -9999)){
+          setNeedLogin(false);
+          addFeedList();
+        }else{
+          setNeedLogin(true);
+        }
     }, [maxTemp, tempRange]);
 
     useEffect(()=>{
@@ -108,11 +115,11 @@ function WeeklyFeedForm(){
         })
     }
 
-    if(loading){
-        return (
-            <div>진행 중...</div>
-        );
-    };
+    if(needLogin){
+      return(
+        <div>로그인이 필요한 서비스입니다. 로그인부터 해주십시오.</div>
+      )
+    }
 
     return (
     <FeedPostOuter ref={feedPostOuterRef}>
