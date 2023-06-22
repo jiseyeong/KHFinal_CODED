@@ -1,0 +1,9 @@
+.yscroll{
+    border: 1px solid black;
+    height: 300px;
+}
+
+.yscroll[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #555; 
+}
