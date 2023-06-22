@@ -23,7 +23,7 @@ public class FeedCommentLikeDAO {
 	public void delete(int userNo, int commentId) {
 		Map<String, Integer> data = new HashMap<>();
 		data.put("userNo", userNo);
-		data.put("commetId", commentId);
+		data.put("commentId", commentId);
 		mybatis.delete("FeedCommentLike.delete", data);
 	}
 	

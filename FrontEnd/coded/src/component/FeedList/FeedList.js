@@ -90,7 +90,6 @@ function FeedList() {
       })
       .catch((error) => {
         console.log(error);
-        setLoading(false);
       });
   };
   // window.innerHeight 실제 보이는 창의 높이
@@ -99,48 +98,36 @@ function FeedList() {
 
   useEffect(() => {
     addFeedList();
-    setLoading(false);
     return () => {
       window.onscroll = null;
     };
   }, []);
 
   window.onscroll = function () {
-    if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-      !scrollWait
-    ) {
-      setScrollWait((prev) => !prev);
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       addFeedList();
-      setScrollWait((prev) => !prev);
     }
   };
 
   return (
-    <>
-      {!loading ? (
-        <FeedPostOuter ref={feedPostOuterRef}>
-          <Masonry className={'my-masonry-grid'} options={masonryOptions}>
-            {feedPost.map((e, i) => (
-              <div className="grid-item" key={i}>
-                <FeedPostDetail
-                  index={i}
-                  // columnHeights={columnHeights}
-                  // setColumnHeights={setColumnHeights}
-                  feedPost={e}
-                  thumbNail={thumbNail[i]}
-                  member={member[i]}
-                  userProfile={userProfile[i]}
-                  hashTagList={hashTagList[i]}
-                ></FeedPostDetail>
-              </div>
-            ))}
-          </Masonry>
-        </FeedPostOuter>
-      ) : (
-        <LoadingBar></LoadingBar>
-      )}
-    </>
+    <FeedPostOuter ref={feedPostOuterRef}>
+      <Masonry className={'my-masonry-grid'} options={masonryOptions}>
+        {feedPost.map((e, i) => (
+          <div className="grid-item" key={i}>
+            <FeedPostDetail
+              index={i}
+              // columnHeights={columnHeights}
+              // setColumnHeights={setColumnHeights}
+              feedPost={e}
+              thumbNail={thumbNail[i]}
+              member={member[i]}
+              userProfile={userProfile[i]}
+              hashTagList={hashTagList[i]}
+            ></FeedPostDetail>
+          </div>
+        ))}
+      </Masonry>
+    </FeedPostOuter>
   );
 }
 

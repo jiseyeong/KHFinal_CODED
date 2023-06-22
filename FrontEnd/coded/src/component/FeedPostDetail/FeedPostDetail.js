@@ -66,12 +66,19 @@ const FeedPostDetail = (props) => {
         <div className={styles.feedInfoDiv}>
           <div className={styles.userProfileLayout}>
             {/* 해당 유저의 마이픽 페이지로 이동 */}
-            <Link to="#">
+            {userProfile !== null ? (
+              <Link to="#">
+                <img
+                  className={styles.userProfile}
+                  src={`/images/${userProfile.sysName}`}
+                ></img>
+              </Link>
+            ) : (
               <img
                 className={styles.userProfile}
                 src={`/images/test.jpg`}
               ></img>
-            </Link>
+            )}
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
@@ -88,8 +95,8 @@ const FeedPostDetail = (props) => {
             <div className={styles.userHashTagLayout}>
               {hashTagList.length > 0 ? (
                 hashTagList.map((e, i) => (
-                  <Link to={`/feed/search?keyword=${e.hashTag}`}>
-                    <span key={i}>
+                  <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                    <span>
                       #{e.hashTag}
                       &nbsp;&nbsp;
                     </span>

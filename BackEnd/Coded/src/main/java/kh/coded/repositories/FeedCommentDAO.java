@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
 
 @Repository
@@ -37,11 +38,11 @@ public class FeedCommentDAO {
 		mybatis.delete("FeedComment.delete", feedCommentId);
 	}
 	
-	public List<FeedCommentDTO> selectByFeedPostDepth0(int feedPostId){
+	public List<FeedCommentAddDTO> selectByFeedPostDepth0(int feedPostId){
 		return mybatis.selectList("FeedComment.selectByFeedPostDepth0", feedPostId);
 	}
 	
-	public List<FeedCommentDTO> selectByParentIdAndDepth(int parentId, int depth){
+	public List<FeedCommentAddDTO> selectByParentIdAndDepth(int parentId, int depth){
 		Map<String, Integer> data = new HashMap<>();
 		data.put("parentId", parentId);
 		data.put("depth", depth);
