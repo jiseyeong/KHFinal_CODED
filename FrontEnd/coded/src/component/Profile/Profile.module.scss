@@ -1,40 +1,86 @@
-*{
-    margin:0px;
-    padding:0px;
-}
+.profileContainer {
+  height: 600px;
 
-.container{
-    width:800px;
-    margin:auto;
-    display:flex;
-    text-align: center;
+  * {
+    width: 100%;
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    height: 20%;
+    padding-left: 20px;
+    font-size: 18px;
+    border: 1px solid silver;
   }
 
-.btns{
-    border: 1px solid silver;
-    border-radius: 10px;
-}
+  .info > div {
+    float: left;
+    height: 100%;
+  }
+  .info {
+    height: 80%;
 
-.imageBox{
-    width: 300px;
-}
+    .profile {
+      width: 18%;
 
-img {
-    width:100%;
-}  
- 
-.infoBox{
-    width: 500px;
-}
+      .profile1 {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-.infocontents{
-width: 400px;
-border: 1px solid silver;
-border-radius: 10px;
-box-sizing: border-box;
-}
+        img {
+          width: 100px;
+          height: 100px;
+          border: 1px solid black;
+          border-radius: 100px;
+          object-fit: cover;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
 
-.infocontents li {
-list-style-type: none;
-}
+      .profile2 {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
+        button {
+          border: 0px;
+          background-color: white;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .infoLayout > div {
+      width: 100%;
+    }
+
+    .infoLayout {
+      width: 80%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      .email {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .name {
+        font-size: 24px;
+        font-family: news-gothic-std, sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        letter-spacing: 5px;
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
