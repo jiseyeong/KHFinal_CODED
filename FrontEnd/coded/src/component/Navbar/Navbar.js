@@ -65,49 +65,39 @@ function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (accessToken !== '') {
+    if (accessToken) {
       onNavbarSetMem();
       axios({
         method: 'get',
-        url: '/auth/userDTO',
+        url: '/weather/today',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        params: {
+          time: new Date().getTime(),
+        },
       })
         .then((response) => {
-          axios({
-            method: 'get',
-            url: '/weather/today',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              address1: response.data.address1,
-              address2: response.data.address2,
-              time: new Date().getTime(),
-            },
-          }).then((response) => {
-            setWeatherMessage(response.data.message);
-            setRecentTemp(response.data.today.recent);
-            setMinTemp(response.data.today.min);
-            setMaxTemp(response.data.today.max);
-            if (
-              response.data.today.ptyCode == 1 ||
-              response.data.today.ptyCode == 2
-            ) {
-              setWeatherIcon(weatherIcons.rain);
-            } else if (response.data.today.ptyCode == 3) {
-              setWeatherIcon(weatherIcons.snow);
-            } else if (response.data.today.ptyCode == 4) {
-              setWeatherIcon(weatherIcons.heavyRain);
+          setWeatherMessage(response.data.message);
+          setRecentTemp(response.data.today.recent);
+          setMinTemp(response.data.today.min);
+          setMaxTemp(response.data.today.max);
+          if (
+            response.data.today.ptyCode == 1 ||
+            response.data.today.ptyCode == 2
+          ) {
+            setWeatherIcon(weatherIcons.rain);
+          } else if (response.data.today.ptyCode == 3) {
+            setWeatherIcon(weatherIcons.snow);
+          } else if (response.data.today.ptyCode == 4) {
+            setWeatherIcon(weatherIcons.heavyRain);
+          } else {
+            if (response.data.today.skyCode == 1) {
+              setWeatherIcon(weatherIcons.sun);
             } else {
-              if (response.data.today.skyCode == 1) {
-                setWeatherIcon(weatherIcons.sun);
-              } else {
-                setWeatherIcon(weatherIcons.cloud);
-              }
+              setWeatherIcon(weatherIcons.cloud);
             }
-          });
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -172,16 +162,18 @@ function Navbar() {
                     #OOTD
                   </span>
                 </li>
-                <li value="feed" className="leftMenu">
-                  <span
-                    className={
-                      isWeeklyBorder ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
-                    }
-                    onClick={handleClickWeekly}
-                  >
-                    WEEKLY
-                  </span>
-                </li>
+                {accessToken && (
+                  <li value="feed" className="leftMenu">
+                    <span
+                      className={
+                        isWeeklyBorder ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
+                      }
+                      onClick={handleClickWeekly}
+                    >
+                      WEEKLY
+                    </span>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
