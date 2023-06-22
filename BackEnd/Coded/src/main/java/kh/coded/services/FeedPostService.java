@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedCommentLikeDTO;
+import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
@@ -132,6 +133,13 @@ public class FeedPostService {
         map.put("isFeedLikeList", isFeedLikeList);
         
         return map;
+    }
+    
+    public List<FeedPostAddDTO> selectAllFeedPost2(int cpage){
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        return feedpostDAO.selectAllFeedPost2(startFeedNum, endFeedNum);
     }
     
     public Map<String, Object> selectFeedDetail(int feedPostId,int userNo) { 
