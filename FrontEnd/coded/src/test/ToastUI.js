@@ -1,70 +1,9 @@
-// import React, { useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 import Styled from './ToastUI.module.css';
 import { useState } from 'react';
-
-// // Toast 에디터
-// import { Editor } from '@toast-ui/react-editor';
-// import '@toast-ui/editor/dist/toastui-editor.css';
-// import SearchLabelSelect from './SearchLabelSelect';
-
-// function ToastUI() {
-//   const [previewImg, setPreviewImg] = useState(null);
-
-//   const insertImg = (e) => {
-//     // console.log(e.target.files[0])
-//     let reader = new FileReader();
-
-//     if (e.target.files[0]) {
-//       reader.readAsDataURL(e.target.files[0]);
-//     }
-//     reader.onloadend = () => {
-//       const previewImgURL = reader.result;
-
-//       if (previewImgURL) {
-//         console.log(previewImgURL, 123);
-//         setPreviewImg(previewImgURL);
-//       }
-//     };
-//   };
-
-//   return (
-//     <div className="container">
-//       <br />
-//       <Editor
-//         placeholder="내용을 입력해주세요."
-//         previewStyle="vertical" // 미리보기 스타일 지정
-//         height="350px" // 에디터 창 높이
-//         initialEditType="wysiwyg" // 초기 입력모드 설정(디폴트 markdown)
-//         hideModeSwitch={true}
-//         toolbarItems={false}
-//       />
-//       <br />
-//       <div>
-//         <SearchLabelSelect />
-//       </div>
-//       <div>
-//         {/* <label className="input-file-button" for="input-file">
-//           사진 등록
-//         </label> */}
-//         {/* <input type="file" id="input-file" style={{display:"none"}} accept="image/gif,image/jpeg,image/png" multiple></input> */}
-
-//         <input
-//           type="file"
-//           accept="image/gif,image/jpeg,image/png"
-//           onChange={insertImg}
-//           multiple
-//         ></input>
-//       </div>
-//       <br />
-//       <div align="right">
-//         <button>작성 완료</button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default ToastUI;
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 function ToastUI() {
   const [file, setFile] = useState(null); //파일
@@ -92,6 +31,30 @@ function ToastUI() {
       }
     }
   };
+  const selectRef = useRef();
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    axios
+      .request({
+        url: '/PostHashs/selectAllPostTagNames',
+        type: 'get',
+      })
+      .then((resp) => {
+        const HashTagNameList = resp.data;
+        let arrTemp = [];
+        HashTagNameList.forEach((hashTag, index) => {
+          arrTemp = arrTemp.concat({
+            value: hashTag.hashTag,
+            label: hashTag.hashTag,
+          });
+          setOptions([...options, ...arrTemp]);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div>
@@ -101,7 +64,11 @@ function ToastUI() {
         contentEditable="true"
       ></div>
       <br />
-      <CreatableSelect />
+      <CreatableSelect 
+      isMulti
+        options={options}
+        ref={selectRef}
+      />
       <br />
       <div
         style={{
