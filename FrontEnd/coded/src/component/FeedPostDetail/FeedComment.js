@@ -26,22 +26,66 @@ const HeartIcons = {
 };
 
 function FeedComment({
-  userNickName,
-  userId,
-  userProfile,
   commentInfo,
-  isLike,
   feedPostId,
   depth,
   readComments,
 }) {
   const [onReply, setOnReply] = useState(false);
-  const [profileSysName, setProfileSysName] = useState(userProfile ? userProfile.sysName : "");
+  const [profileSysName, setProfileSysName] = useState(commentInfo.sysName ? commentInfo.sysName : "test");
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
+  const [isLike, setIsLike] = useState(false);
+
+
+  useEffect(()=>{
+    if(accessToken){
+      axios({
+        method:'get',
+        url:'/feedpost/comment/like',
+        headers:{
+          Authorization:`Bearer ${accessToken}`
+        },
+        params:{
+          commentId:commentInfo.feedCommentId,
+        },
+      })
+      .then((response)=>{
+        setIsLike(response.data);
+      })
+      .catch((error)=>{
+        if(error.request.status === 400){
+          console.log("로그인 부터 진행해주셔야 합니다.");
+        }else{
+          console.log(error);
+        }
+      })
+    }
+  }, [accessToken]);
 
   function handleOnReply() {
     setOnReply((prev)=>{return !prev});
+  }
+
+  function handleIsLike(){
+    axios({
+      method:'post',
+      url:'/feedpost/comment/like',
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      },
+      params:{
+        commentId:commentInfo.feedCommentId,
+      },
+    }).then((response)=>{
+      setIsLike(response.data);
+    }).catch((error)=>{
+      if(error.request.status === 400){
+        console.log("로그인부터 진행해주셔야 합니다.");
+      }else{
+        console.log(error);
+      }
+    })
   }
 
   function onSubmit() {
@@ -73,11 +117,11 @@ function FeedComment({
   return (
     <div>
       <div><img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img></div>
-      <div>작성자: {userNickName}</div>
-      <div>작성자 ID : {userId}</div>
+      <div>작성자: {commentInfo.userNickName}</div>
+      <div>작성자 ID : {commentInfo.userId}</div>
       <div>본문: {commentInfo.body}</div>
-      <div>작성일시: {commentInfo.writeDate}</div>
-      <div>좋아요: {isLike ? 'heart' : HeartIcons.empty}</div>
+      <div>작성일시: {commentInfo.formedWriteDate}</div>
+      <div onClick={handleIsLike}>좋아요: {isLike ? 'heart' : HeartIcons.empty}</div>
       {(depth < 1 && accessToken) &&
         <button onClick={handleOnReply}>답글</button>
       }

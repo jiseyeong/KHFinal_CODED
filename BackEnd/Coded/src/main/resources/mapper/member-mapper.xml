@@ -27,6 +27,18 @@
   	<select id="selectMemberByNaverToken" resultType="kh.coded.dto.MemberDTO">
   		select * from Member where NaverToken=#{naverToken}
   	</select>
+  	<select id="selectMemberByGoogleToken" resultType="kh.coded.dto.MemberDTO">
+  		select * from Member where GoogleToken=${googleToken}
+  	</select>
+  	<select id="selectKakaoTokenByUserNo" resultType="String">
+  		select NakaoToken from Member where UserNo=${userNo}
+  	</select>
+  	<select id="selectNaverTokenByUserNo" resultType="String">
+  		select NaverToken from Member where UserNo=${userNo}
+  	</select>
+  	<select id="selectGoogleTokenByUserNo" resultType="String">
+  		select GoogleToken from Member where UserNo=${userNo}
+  	</select>
   	<insert id="insertMember">
   		<selectKey keyProperty="userNo" resultType="int" order="BEFORE">
   			select userno_seq.nextval from dual
@@ -42,13 +54,13 @@
 		 address1 = #{address1}, address2 = #{address2} where userId = #{userId}
 	</update>
 	<update id="updateKakaoToken">
-		update Member set KakaoToken=#{kakaoToken} where userNo=${userNo}
+		update Member set KakaoToken=#{kakaoToken, jdbcType=VARCHAR} where userNo=${userNo}
 	</update>
 	<update id="updateNaverToken">
-		update Member set NaverToken=#{naverToken} where userNo=${userNo}
+		update Member set NaverToken=#{naverToken, jdbcType=VARCHAR} where userNo=${userNo}
 	</update>
 	<update id="updateGoogleToken">
-		update Member set GoogleToken=#{googleToken} where userNo=${userNo}
+		update Member set GoogleToken=#{googleToken, jdbcType=VARCHAR} where userNo=${userNo}
 	</update>
 	<update id="updatePw">
 		update member set pw = #{pw} where userId = #{userId}

@@ -9,9 +9,6 @@ import LoadingBar from "../Common/LoadingBar";
 function FeedCommentList({feedPostId, depth, parentId}){
 
     const [commentList, setCommentList] = useState([]);
-    const [commentLikeList, setCommentLikeList] = useState([]);
-    const [userIds, setUserIds] = useState([]);
-    const [userNickNames, setUserNickNames] = useState([]);
     const [loading, setLoading] = useState(false);
     const loginUserNo = useSelector((state)=>state.member.userNo);
 
@@ -23,9 +20,6 @@ function FeedCommentList({feedPostId, depth, parentId}){
     function readComments(){
         setLoading(true);
         setCommentList([]);
-        setCommentLikeList([]);
-        setUserIds([]);
-        setUserNickNames([]);
 
         if(depth === 0){
             axios({
@@ -36,17 +30,12 @@ function FeedCommentList({feedPostId, depth, parentId}){
                     userNo:loginUserNo
                 }
             }).then((response)=>{
-                const {commentList, isLikeList, userIdList, userNickNameList} = response.data;
-
                 setLoading(false);
-                setCommentList((prev)=>{return [...prev, ...commentList]});
-                setCommentLikeList((prev)=>{return [...prev, ...isLikeList]});
-                setUserIds((prev)=>{return [...prev, ...userIdList]});
-                setUserNickNames((prev)=>{return [...prev, ...userNickNameList]});
+                setCommentList((prev)=>{return [...prev, ...response.data]});
             }).catch((error)=>{
                 setLoading(false);
                 if(error.request.status === 400){
-                    console.log(error.response.body);
+                    console.log(error.response.data);
                 }else{
                     console.log(error);
                 }
@@ -61,12 +50,8 @@ function FeedCommentList({feedPostId, depth, parentId}){
                     userNo:loginUserNo
                 }
             }).then((response)=>{
-                const {commentList, isLikeList, userIdList, userNickNameList} = response.data;
                 setLoading(false);
-                setCommentList((prev)=>{return [...prev, ...commentList]});
-                setCommentLikeList((prev)=>{return [...prev, ...isLikeList]});
-                setUserIds((prev)=>{return [...prev, ...userIdList]});
-                setUserNickNames((prev)=>{return [...prev, ...userNickNameList]});
+                setCommentList((prev)=>{return [...prev, ...response.data]});
             }).catch((error)=>{
                 setLoading(false);
                 if(error.request.status === 400){
@@ -92,10 +77,7 @@ function FeedCommentList({feedPostId, depth, parentId}){
                     return(
                         <FeedComment
                             key={item.feedCommentId}
-                            userNickName={userNickNames[index]}
-                            userIds={userIds[index]}
                             commentInfo={item}
-                            isLike={commentLikeList[index]}
                             feedPostId={feedPostId}
                             depth={item.depth}
                             readComments={readComments}
