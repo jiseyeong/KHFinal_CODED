@@ -7,6 +7,7 @@ const NoticeBarLayout = styled('div')`
   justify-content: center;
   align-items: center;
 `;
+
 const NoticeDataDiv = styled('div')`
   width: 1180px;
   height: 50px;

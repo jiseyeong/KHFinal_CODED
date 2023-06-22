@@ -194,6 +194,12 @@ const ProfileTemplate = () => {
                     </div>
                   </div>
                 </div>
+                <div className={styles.infoBar}>
+                  <button className={styles.PwChangeBtn}>비밀번호 변경</button>
+                  <button className={styles.EditBtn}>수정하기</button>
+                  <button className={styles.EditCancelBtn}>수정취소</button>
+                  <button className={styles.EditComBtn}>수정완료</button>
+                </div>
               </div>
             </div>
           </div>

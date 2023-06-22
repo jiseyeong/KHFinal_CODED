@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import WeeklyWetherCard from './WeeklyWetherCard';
+import WeeklyWeatherCard from './WeeklyWeatherCard';
 import LoadingBar from '../Common/LoadingBar';
 
 function WeeklySideForm() {
@@ -94,7 +94,7 @@ function WeeklySideForm() {
     <div>
       {weeklyData.map((item, index) => {
         return (
-          <WeeklyWetherCard
+          <WeeklyWeatherCard
             key={index}
             weeklyData={item.weekly}
             weatherMessage={item.message}

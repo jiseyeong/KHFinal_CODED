@@ -171,7 +171,7 @@ function Navbar() {
                       }
                       onClick={handleClickWeekly}
                     >
-                      WEEKLY
+                      #WEEKLY
                     </span>
                   </li>
                 )}
