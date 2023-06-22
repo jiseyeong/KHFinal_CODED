@@ -26,16 +26,13 @@ const HeartIcons = {
 };
 
 function FeedComment({
-  userNickName,
-  userId,
-  userProfile,
   commentInfo,
   feedPostId,
   depth,
   readComments,
 }) {
   const [onReply, setOnReply] = useState(false);
-  const [profileSysName, setProfileSysName] = useState(userProfile ? userProfile.sysName : "");
+  const [profileSysName, setProfileSysName] = useState(commentInfo.sysName ? commentInfo.sysName : "test");
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
   const [isLike, setIsLike] = useState(false);
@@ -120,8 +117,8 @@ function FeedComment({
   return (
     <div>
       <div><img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img></div>
-      <div>작성자: {userNickName}</div>
-      <div>작성자 ID : {userId}</div>
+      <div>작성자: {commentInfo.userNickName}</div>
+      <div>작성자 ID : {commentInfo.userId}</div>
       <div>본문: {commentInfo.body}</div>
       <div>작성일시: {commentInfo.formedWriteDate}</div>
       <div onClick={handleIsLike}>좋아요: {isLike ? 'heart' : HeartIcons.empty}</div>

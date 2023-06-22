@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedCommentLikeDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -257,49 +258,11 @@ public class FeedPostService {
     public void deleteComment(int feedCommentId) {
     	commentDAO.delete(feedCommentId);
     }
-    public Map<String, Object> selectCommentByFeedPostIdAndDepth0(int feedPostId, int userNo){
-    	Map<String, Object> data = new HashMap<>();
-    	List<FeedCommentDTO> commentList = commentDAO.selectByFeedPostDepth0(feedPostId);
-    	List<String> userIdList = new ArrayList<>();
-    	List<String> userNickNameList = new ArrayList<>();
-    	List<PhotoDTO> userProfileList = new ArrayList<>();
-    	for(FeedCommentDTO comment : commentList) {
-    		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
-    		String userId = member.getUserId();
-    		String userNickName = member.getUserNickName();
-    		PhotoDTO userProfile = photoDAO.selectByUserNo(member.getUserNo());
-    		userIdList.add(userId);
-    		userNickNameList.add(userNickName);
-    		userProfileList.add(userProfile);
-    	}
-    	data.put("commentList", commentList);
-    	data.put("userIdList", userIdList);
-    	data.put("userNickNameList", userNickNameList);
-    	data.put("userProfileList", userProfileList);
-    	return data;
+    public List<FeedCommentAddDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
+    	return commentDAO.selectByFeedPostDepth0(feedPostId);
     }
-    public Map<String, Object> selectCommentByParentIdAndDepth(int parentId, int depth, int userNo){
-    	Map<String, Object> data = new HashMap<>();
-    	List<FeedCommentDTO> commentList = commentDAO.selectByParentIdAndDepth(parentId, depth);
-    	List<String> userIdList = new ArrayList<>();
-    	List<String> userNickNameList = new ArrayList<>();
-    	List<PhotoDTO> userProfileList = new ArrayList<>();
-    	
-    	for(FeedCommentDTO comment : commentList) {
-    		
-    		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
-    		String userId = member.getUserId();
-    		String userNickName = member.getUserNickName();
-    		PhotoDTO userProfile = photoDAO.selectByUserNo(member.getUserNo());
-    		userIdList.add(userId);
-    		userNickNameList.add(userNickName);
-    		userProfileList.add(userProfile);
-    	}
-    	data.put("commentList", commentList);
-    	data.put("userIdList", userIdList);
-    	data.put("userNickNameList", userNickNameList);
-    	data.put("userProfileList", userProfileList);
-    	return data;
+    public List<FeedCommentAddDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
+    	return commentDAO.selectByParentIdAndDepth(parentId, depth);
     }
     public boolean selectCommentLikeForChecked(int userNo, int commentId) {
     	return commentLikeDAO.selectForChecked(userNo, commentId) != null;
