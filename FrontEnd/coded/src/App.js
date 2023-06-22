@@ -10,7 +10,6 @@ import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
 import DMPage from './pages/DM/DMPage';
-import HomePageTemplate from './pages/HomePageTemplate';
 import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
 import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
@@ -24,7 +23,7 @@ import TestComponent from './test/TestComponent';
 import SearchLabelSelect from './test/SearchLabelSelect';
 import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
-import Footer from './component/Profile/Component/Footer/Footer';
+import Footer from './component/Footer/Footer';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
@@ -74,7 +73,6 @@ function App() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/HomePageTemplate" element={<HomePageTemplate />} />
         <Route path="/feedList" element={<FeedList />} />
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
