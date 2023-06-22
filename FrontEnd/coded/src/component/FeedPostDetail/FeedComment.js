@@ -25,70 +25,67 @@ const HeartIcons = {
   heart: null,
 };
 
-function FeedComment({
-  userNickName,
-  userId,
-  userProfile,
-  commentInfo,
-  feedPostId,
-  depth,
-  readComments,
-}) {
+function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   const [onReply, setOnReply] = useState(false);
-  const [profileSysName, setProfileSysName] = useState(userProfile ? userProfile.sysName : "");
+  const [profileSysName, setProfileSysName] = useState(
+    commentInfo.sysName ? commentInfo.sysName : 'test',
+  );
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
   const [isLike, setIsLike] = useState(false);
 
-
-  useEffect(()=>{
-    if(accessToken){
+  useEffect(() => {
+    if (accessToken) {
       axios({
-        method:'get',
-        url:'/feedpost/comment/like',
-        headers:{
-          Authorization:`Bearer ${accessToken}`
+        method: 'get',
+        url: '/feedpost/comment/like',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-        params:{
-          commentId:commentInfo.feedCommentId,
+        params: {
+          commentId: commentInfo.feedCommentId,
         },
       })
-      .then((response)=>{
-        setIsLike(response.data);
-      })
-      .catch((error)=>{
-        if(error.request.status === 400){
-          console.log("먼저 로그인을 해주세요.");
-        }else{
-          console.log(error);
-        }
-      })
+        .then((response) => {
+          setIsLike(response.data);
+        })
+        .catch((error) => {
+          if (error.request.status === 400) {
+            console.log('먼저 로그인을 해주세요.');
+          } else {
+            console.log(error);
+          }
+        });
     }
   }, [accessToken]);
 
   function handleOnReply() {
-    setOnReply((prev)=>{return !prev});
+    setOnReply((prev) => {
+      return !prev;
+    });
   }
 
-  function handleIsLike(){
+  function handleIsLike() {
     axios({
-      method:'post',
-      url:'/feedpost/comment/like',
-      headers:{
-        Authorization:`Bearer ${accessToken}`
+      method: 'post',
+      url: '/feedpost/comment/like',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-      params:{
-        commentId:commentInfo.feedCommentId,
+      params: {
+        commentId: commentInfo.feedCommentId,
       },
-    }).then((response)=>{
-      setIsLike(response.data);
-    }).catch((error)=>{
-      if(error.request.status === 400){
-        console.log("저 로그인을 해주세요.");
-      }else{
-        console.log(error);
-      }
     })
+      .then((response) => {
+        setIsLike(response.data);
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log('저 로그인을 해주세요.');
+        } else {
+          console.log(error);
+        }
+      });
   }
 
   function onSubmit() {
@@ -119,22 +116,23 @@ function FeedComment({
   }
   return (
     <div>
-      <div><img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img></div>
-      <div>nickname: {userNickName}</div>
-      <div>id : {userId}</div>
-      <div>content: {commentInfo.body}</div>
-      <div>write date: {commentInfo.formedWriteDate}</div>
-      <div onClick={handleIsLike}>likes: {isLike ? 'heart' : HeartIcons.empty}</div>
-      {(depth < 1 && accessToken) &&
+      <div>
+        <img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img>
+      </div>
+      <div>nick : {commentInfo.userNickName}</div>
+      <div>id : {commentInfo.userId}</div>
+      <div>content : {commentInfo.body}</div>
+      <div>write date : {commentInfo.formedWriteDate}</div>
+      <div onClick={handleIsLike}>
+        like : {isLike ? 'heart' : HeartIcons.empty}
+      </div>
+      {depth < 1 && accessToken && (
         <button onClick={handleOnReply}>comment</button>
-      }
+      )}
 
       {onReply && (
         <div>
-          <div
-            ref={editorRef}
-            contentEditable="true"
-          />
+          <div ref={editorRef} contentEditable="true" />
           <button onClick={onSubmit}>전송</button>
         </div>
       )}

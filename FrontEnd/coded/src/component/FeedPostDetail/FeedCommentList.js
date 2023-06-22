@@ -9,9 +9,6 @@ import LoadingBar from "../Common/LoadingBar";
 function FeedCommentList({feedPostId, depth, parentId}){
 
     const [commentList, setCommentList] = useState([]);
-    const [userIds, setUserIds] = useState([]);
-    const [userNickNames, setUserNickNames] = useState([]);
-    const [userProfiles, setUserProfiles] = useState([]);
     const [loading, setLoading] = useState(false);
     const loginUserNo = useSelector((state)=>state.member.userNo);
 
@@ -23,9 +20,6 @@ function FeedCommentList({feedPostId, depth, parentId}){
     function readComments(){
         setLoading(true);
         setCommentList([]);
-        setUserIds([]);
-        setUserNickNames([]);
-        setUserProfiles([]);
 
         if(depth === 0){
             axios({
@@ -36,17 +30,12 @@ function FeedCommentList({feedPostId, depth, parentId}){
                     userNo:loginUserNo
                 }
             }).then((response)=>{
-                const {commentList, userIdList, userNickNameList, userProfileList} = response.data;
-
                 setLoading(false);
-                setCommentList((prev)=>{return [...prev, ...commentList]});
-                setUserIds((prev)=>{return [...prev, ...userIdList]});
-                setUserNickNames((prev)=>{return [...prev, ...userNickNameList]});
-                setUserProfiles((prev)=>{return [...prev, ...userProfileList]});
+                setCommentList((prev)=>{return [...prev, ...response.data]});
             }).catch((error)=>{
                 setLoading(false);
                 if(error.request.status === 400){
-                    console.log(error.response.body);
+                    console.log(error.response.data);
                 }else{
                     console.log(error);
                 }
@@ -61,12 +50,8 @@ function FeedCommentList({feedPostId, depth, parentId}){
                     userNo:loginUserNo
                 }
             }).then((response)=>{
-                const {commentList, userIdList, userNickNameList, userProfileList} = response.data;
                 setLoading(false);
-                setCommentList((prev)=>{return [...prev, ...commentList]});
-                setUserIds((prev)=>{return [...prev, ...userIdList]});
-                setUserNickNames((prev)=>{return [...prev, ...userNickNameList]});
-                setUserProfiles((prev)=>{return [...prev, ...userProfileList]});
+                setCommentList((prev)=>{return [...prev, ...response.data]});
             }).catch((error)=>{
                 setLoading(false);
                 if(error.request.status === 400){
@@ -92,9 +77,6 @@ function FeedCommentList({feedPostId, depth, parentId}){
                     return(
                         <FeedComment
                             key={item.feedCommentId}
-                            userNickName={userNickNames[index]}
-                            userId={userIds[index]}
-                            userProfile={userProfiles[index]}
                             commentInfo={item}
                             feedPostId={feedPostId}
                             depth={item.depth}
