@@ -43,9 +43,29 @@ const ProfileTemplate = () => {
                   <button>사진 바꾸기</button>
                 </div>
               </div>
-              <div className={styles.infoLayout}>
-                <div className={styles.email}>dltkdn97@naver.com</div>
-                <div className={styles.name}>이상우</div>
+              <div className={styles.btns}>
+                <button className={styles.profileImageChangebtn}>
+                  변경하기
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.infoBox}>
+              <div className={styles.infocontents}>
+                <ul>
+                  <li>nick : </li>
+                  <li>id : </li>
+                  <li>pw : </li>
+                  <li>bio : </li>
+                  <li>hashtag : </li>
+                  <li>location : </li>
+                </ul>
+              </div>
+              <div className={styles.btns}>
+                <button className={styles.PwChangeBtn}>비밀번호 변경</button>
+                <button className={styles.EditBtn}>수정하기</button>
+                <button className={styles.EditCancelBtn}>수정취소</button>
+                <button className={styles.EditComBtn}>수정완료</button>
               </div>
             </div>
           </div>

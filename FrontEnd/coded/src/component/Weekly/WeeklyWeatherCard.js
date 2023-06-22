@@ -32,18 +32,18 @@ const weatherIcons = {
   ),
 };
 
-function WeeklyWetherCard({ weeklyData, weatherMessage, date, index}) {
+function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
   const [weatherIcon, setWeatherIcon] = useState('');
   const { setMaxTemp, setTempRange } = useContext(FeedMaxTempContext);
-  const accessToken = useSelector((state)=>state.member.access);
+  const accessToken = useSelector((state) => state.member.access);
 
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
-  const [day, setDay] = useState("");
-  const [week, setWeek] = useState("");
+  const [year, setYear] = useState('');
+  const [month, setMonth] = useState('');
+  const [day, setDay] = useState('');
+  const [week, setWeek] = useState('');
 
   useEffect(() => {
-    if(index == 0){
+    if (index == 0) {
       handleClickCard();
     }
     if (weeklyData.ptyCode == 1 || weeklyData.ptyCode == 2) {
@@ -59,31 +59,31 @@ function WeeklyWetherCard({ weeklyData, weatherMessage, date, index}) {
         setWeatherIcon(weatherIcons.cloud);
       }
     }
-    if(date){
+    if (date) {
       setYear(date.getFullYear());
       setMonth(date.getMonth() + 1);
       setDay(date.getDate());
       switch (date.getDay()) {
         case 0:
-          setWeek('일');
+          setWeek('SUN');
           break;
         case 1:
-          setWeek('월');
+          setWeek('MON');
           break;
         case 2:
-          setWeek('화');
+          setWeek('TUE');
           break;
         case 3:
-          setWeek('수');
+          setWeek('WED');
           break;
         case 4:
-          setWeek('목');
+          setWeek('THU');
           break;
         case 5:
-          setWeek('금');
+          setWeek('FRI');
           break;
         case 6:
-          setWeek('토');
+          setWeek('SAT');
           break;
       }
     }
@@ -94,8 +94,8 @@ function WeeklyWetherCard({ weeklyData, weatherMessage, date, index}) {
     setTempRange(weeklyData.max - weeklyData.min);
   }
 
-  if(!accessToken){
-    return <div>로그인이 필요한 서비스입니다. 로그인부터 해주십시오.</div>
+  if (!accessToken) {
+    return <div>로그인이 필요한 서비스입니다. 로그인부터 해주십시오.</div>;
   }
   return (
     <div onClick={handleClickCard}>
@@ -108,4 +108,4 @@ function WeeklyWetherCard({ weeklyData, weatherMessage, date, index}) {
   );
 }
 
-export default WeeklyWetherCard;
+export default WeeklyWeatherCard;
