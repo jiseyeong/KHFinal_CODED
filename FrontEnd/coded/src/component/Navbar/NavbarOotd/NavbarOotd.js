@@ -56,7 +56,7 @@ class NavbarOotd extends Component {
                       }
                       onClick={this.handleClickWeekly}
                     >
-                      WEEKLY
+                      #WEEKLY
                     </span>
                   </li>
                 </ul>

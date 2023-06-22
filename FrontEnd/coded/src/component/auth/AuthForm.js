@@ -61,7 +61,8 @@ const AuthForm = ({ type }) => {
   //const access = useSelector((state) => state.token.access);
   const dispatch = useDispatch();
   const onLogin = useCallback(
-    (accessToken, userId, userNo) => dispatch(login(accessToken, userId, userNo)),
+    (accessToken, userId, userNo) =>
+      dispatch(login(accessToken, userId, userNo)),
     [dispatch],
   );
   const onLogout = useCallback(() => dispatch(logout(), [dispatch]));
@@ -71,18 +72,18 @@ const AuthForm = ({ type }) => {
   );
 
   const nickNameRef = useRef(null);
-  const [nickNameRegexMessage, setNickNameRegexMessage] = useState("");
-  const [id, setId] = useState("");
+  const [nickNameRegexMessage, setNickNameRegexMessage] = useState('');
+  const [id, setId] = useState('');
   const idRef = useRef(null);
   const [idDuplicateChecked, setIdDuplicateChecked] = useState(false);
-  const [idDuplicateMessage, setIdDuplicateMessage] = useState("");
+  const [idDuplicateMessage, setIdDuplicateMessage] = useState('');
   let idDupTimer;
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
   const [pwConfirmCheck, setPwConfirmCheck] = useState(false);
   const emailRef = useRef(null);
   const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
-  const [emailDuplicateMessage, setEmailDuplicateMessage] = useState("");
+  const [emailDuplicateMessage, setEmailDuplicateMessage] = useState('');
   let emailDupTimer;
   const address1 = useRef(null);
   const address2 = useRef(null);
@@ -91,33 +92,38 @@ const AuthForm = ({ type }) => {
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
 
-  const [isIdSaveChecked, setIdSaveChecked] = useState(!cookie.load('userId') ? true:false);
+  const [isIdSaveChecked, setIdSaveChecked] = useState(
+    !cookie.load('userId') ? true : false,
+  );
   const [isPwView, setIsPwView] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const regexId= /^[a-z0-9_]{7,13}$/;
+  const regexId = /^[a-z0-9_]{7,13}$/;
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
   useEffect(() => {
-    if(searchParams.get('error')){
-      alert("로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.");
+    if (searchParams.get('error')) {
+      alert('로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.');
     }
-    if(type=="register"){
+    if (type == 'register') {
       axios({
         method: 'get',
         url: '/auth/getAddress1List',
-      }).then((response) => {
-        response.data.forEach((item) => {
-          setAddressList1((prev) => {
-            return [...prev, item];
+        headers: {},
+      })
+        .then((response) => {
+          response.data.forEach((item) => {
+            setAddressList1((prev) => {
+              return [...prev, item];
+            });
           });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      }).catch((error)=>{
-        console.log(error);
-      });
-    }else if(type==="login"){
-      setId(cookie.load('userId') ? cookie.load('userId'):"");
+    } else if (type === 'login') {
+      setId(cookie.load('userId') ? cookie.load('userId') : '');
     }
   }, []);
   function updateAddressList2() {
@@ -127,23 +133,34 @@ const AuthForm = ({ type }) => {
       params: {
         address1: address1.current.value,
       },
-    }).then((response) => {
-      setAddressList2([]);
-      response.data.forEach((item) => {
-        setAddressList2((prev) => {
-          return [...prev, item];
+    })
+      .then((response) => {
+        setAddressList2([]);
+        response.data.forEach((item) => {
+          setAddressList2((prev) => {
+            return [...prev, item];
+          });
         });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    }).catch((error)=>{
-      console.log(error);
-    });
   }
 
-  useEffect(()=>{
-    if(type=="register"){
-      if(idDuplicateChecked || emailDuplicateChecked || !regexId.test(id) || !regexEmail.test(emailRef.current.value) || !regexNickName.test(nickNameRef.current.value) || pwRef.current.value !== pwConfirmRef.current.value || !address1.current.value || !address2.current.value){
+  useEffect(() => {
+    if (type == 'register') {
+      if (
+        idDuplicateChecked ||
+        emailDuplicateChecked ||
+        !regexId.test(id) ||
+        !regexEmail.test(emailRef.current.value) ||
+        !regexNickName.test(nickNameRef.current.value) ||
+        pwRef.current.value !== pwConfirmRef.current.value ||
+        !address1.current.value ||
+        !address2.current.value
+      ) {
         setRegisterPassCheck(false);
-      }else{
+      } else {
         setRegisterPassCheck(true);
       }
     }
@@ -155,96 +172,99 @@ const AuthForm = ({ type }) => {
     // }
   });
 
-  function handleId(e){
+  function handleId(e) {
     setId(e.target.value);
-    if(type==="register"){
+    if (type === 'register') {
       //아이디 중복 체크
-      if(!idDupTimer){
-        idDupTimer = setTimeout(()=>{
+      if (!idDupTimer) {
+        idDupTimer = setTimeout(() => {
           idDupTimer = null;
           axios({
-          method:'get',
-          url:'/auth/isMember',
-          params:{
-            userId: idRef.current.value
-          }
-        }).then((response)=>{
-          setIdDuplicateChecked(response.data);
-          if(response.data){
-            setIdDuplicateMessage("중복된 아이디가 있습니다.");
-          }
-          else if(!regexId.test(idRef.current.value)){
-            setIdDuplicateMessage("사용 불가능한 아이디 형식입니다.");
-          }else{
-            setIdDuplicateMessage("사용 가능합니다.");
-          }
-        }).catch((error)=>{
-          console.log(error);
-        })}, 200);
+            method: 'get',
+            url: '/auth/isMember',
+            params: {
+              userId: idRef.current.value,
+            },
+          })
+            .then((response) => {
+              setIdDuplicateChecked(response.data);
+              if (response.data) {
+                setIdDuplicateMessage('중복된 아이디가 있습니다.');
+              } else if (!regexId.test(idRef.current.value)) {
+                setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
+              } else {
+                setIdDuplicateMessage('사용 가능합니다.');
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }, 200);
       }
     }
   }
 
-  function handlePw(e){
-    if(pwRef.current.value === pwConfirmRef.current.value){
+  function handlePw(e) {
+    if (pwRef.current.value === pwConfirmRef.current.value) {
       setPwConfirmCheck(true);
-    }else{
+    } else {
       setPwConfirmCheck(false);
     }
   }
 
-  function handleEmail(e){
+  function handleEmail(e) {
     //setEmail(e.target.value);
-    if(!emailDupTimer){
-      emailDupTimer = setTimeout(()=>{
+    if (!emailDupTimer) {
+      emailDupTimer = setTimeout(() => {
         emailDupTimer = null;
         axios({
-          method:'get',
-          url:'/auth/isMemberByEmail',
-          params:{
-            email:emailRef.current.value
-          }
-        }).then((response)=>{
-          setEmailDuplicateChecked(response.data);
-          if(response.data){
-            setEmailDuplicateMessage("중복된 이메일이 있습니다.");
-          }else if(!regexEmail.test(emailRef.current.value)){
-            setEmailDuplicateMessage("이메일 형식을 지켜주셔야 합니다.");
-          }else{
-            setEmailDuplicateMessage("사용 가능합니다.");
-          }
-        }).catch((error)=>{
-          console.log(error);
-        });
+          method: 'get',
+          url: '/auth/isMemberByEmail',
+          params: {
+            email: emailRef.current.value,
+          },
+        })
+          .then((response) => {
+            setEmailDuplicateChecked(response.data);
+            if (response.data) {
+              setEmailDuplicateMessage('중복된 이메일이 있습니다.');
+            } else if (!regexEmail.test(emailRef.current.value)) {
+              setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
+            } else {
+              setEmailDuplicateMessage('사용 가능합니다.');
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }, 200);
     }
   }
 
-  function handleNickName(e){
-    if(!regexNickName.test(nickNameRef.current.value)){
-      setNickNameRegexMessage("사용할 수 없는 닉네임 형식입니다.");
-    }else{
-      setNickNameRegexMessage("사용 가능합니다.");
+  function handleNickName(e) {
+    if (!regexNickName.test(nickNameRef.current.value)) {
+      setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
+    } else {
+      setNickNameRegexMessage('사용 가능합니다.');
     }
   }
 
   function doRegister(e) {
-
-    if(idDuplicateChecked){
-      alert("중복된 아이디가 있습니다. 아이디를 변경해주세요.");
-    }else if(emailDuplicateChecked){
-      alert("해당 이메일의 계정이 있습니다.");
-    }else if(!regexId.test(id)){
-      alert("사용할 수 없는 아이디입니다.");
-    }else if(!regexEmail.test(emailRef.current.value)){
-      alert("사용할 수 없는 이메일입니다.");
-    }else if(!regexNickName.test(nickNameRef.current.value)){
-      alert("사용할 수 없는 닉네임입니다.");
-    }else if(pwRef.current.value !== pwConfirmRef.current.value){
-      alert("비밀번호들이 일치하지 않습니다.");
-    }else if(!address1.current.value || !address2.current.value){
-      alert("주소를 입력해주셔야 합니다.");
-    }else{
+    if (idDuplicateChecked) {
+      alert('중복된 아이디가 있습니다. 아이디를 변경해주세요.');
+    } else if (emailDuplicateChecked) {
+      alert('해당 이메일의 계정이 있습니다.');
+    } else if (!regexId.test(id)) {
+      alert('사용할 수 없는 아이디입니다.');
+    } else if (!regexEmail.test(emailRef.current.value)) {
+      alert('사용할 수 없는 이메일입니다.');
+    } else if (!regexNickName.test(nickNameRef.current.value)) {
+      alert('사용할 수 없는 닉네임입니다.');
+    } else if (pwRef.current.value !== pwConfirmRef.current.value) {
+      alert('비밀번호들이 일치하지 않습니다.');
+    } else if (!address1.current.value || !address2.current.value) {
+      alert('주소를 입력해주셔야 합니다.');
+    } else {
       axios({
         method: 'post',
         url: '/auth/member',
@@ -252,9 +272,9 @@ const AuthForm = ({ type }) => {
           userId: idRef.current.value,
           pw: pwRef.current.value,
           userNickName: nickNameRef.current.value,
-          email:emailRef.current.value,
-          address1 : address1.current.value,
-          address2 : address2.current.value
+          email: emailRef.current.value,
+          address1: address1.current.value,
+          address2: address2.current.value,
         },
         timeout: 5000,
         //responseType:"json" // or "stream"
@@ -269,15 +289,15 @@ const AuthForm = ({ type }) => {
     }
   }
   function doLogin(e) {
-    if(isIdSaveChecked){
+    if (isIdSaveChecked) {
       const expires = new Date();
       expires.setMinutes(expires.getMinutes() + 60); // 아이디 1시간 기억
-      cookie.save('userId', id,{
-        path : "/",
-        expires
-      })
-    }else{
-      cookie.remove('userId', {path : '/'});
+      cookie.save('userId', id, {
+        path: '/',
+        expires,
+      });
+    } else {
+      cookie.remove('userId', { path: '/' });
     }
     axios({
       method: 'get',
@@ -294,16 +314,19 @@ const AuthForm = ({ type }) => {
           'Bearer '.length,
           refreshToken.length,
         );
-        onLogin(response.data.accessToken, response.data.userId, response.data.userNo);
+        onLogin(
+          response.data.accessToken,
+          response.data.userId,
+          response.data.userNo,
+        );
         onSetRefresh(refreshToken);
-        navigate("/");
+        navigate('/');
       })
       .catch(function (e) {
         console.log(e);
         onLogout();
       });
   }
-
 
   function doRefrshTest() {
     axios({
@@ -355,17 +378,19 @@ const AuthForm = ({ type }) => {
       });
   }
 
-  function doGoogleLogin(){
+  function doGoogleLogin() {
     axios({
       method: 'get',
       url: '/login/oauth2/google/codeInfo',
-    }).then((response)=>{
-      console.log(response);
-      const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
-      window.location.href = GOOGLE_AUTH_URL;
-    }).catch((error)=>{
-      console.log(error);
     })
+      .then((response) => {
+        console.log(response);
+        const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
+        window.location.href = GOOGLE_AUTH_URL;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
@@ -399,21 +424,37 @@ const AuthForm = ({ type }) => {
         autoComplete="new-password"
         name="pw"
         placeholder="비밀번호"
-        type={isPwView ? "text" : "password"}
+        type={isPwView ? 'text' : 'password'}
         ref={pwRef}
       />
       {type === 'login' && (
         <>
           <div>
-            <button onClick={()=>{setIsPwView((prev) => {return !prev})}}>pw보기</button>
+            <button
+              onClick={() => {
+                setIsPwView((prev) => {
+                  return !prev;
+                });
+              }}
+            >
+              pw보기
+            </button>
           </div>
           <div>
-            <input type="checkbox" checked={isIdSaveChecked} onChange={()=>{setIdSaveChecked((prev)=>{return !prev})}} />
+            <input
+              type="checkbox"
+              checked={isIdSaveChecked}
+              onChange={() => {
+                setIdSaveChecked((prev) => {
+                  return !prev;
+                });
+              }}
+            />
             <label>아이디 기억</label>
           </div>
           <div>
             <Link to="/idSearch">아이디 찾기</Link>
-            <br/>
+            <br />
             <Link to="/pwSearch">비밀번호 재발급</Link>
           </div>
         </>
@@ -428,11 +469,15 @@ const AuthForm = ({ type }) => {
             ref={pwConfirmRef}
             onChange={handlePw}
           />
-          {pwConfirmCheck ? (<div>비밀번호가 일치합니다.</div>) : (<div>비밀번호가 일치하지 않습니다.</div>)}
+          {pwConfirmCheck ? (
+            <div>비밀번호가 일치합니다.</div>
+          ) : (
+            <div>비밀번호가 일치하지 않습니다.</div>
+          )}
           <StyledInput
-            autoComplete='email'
+            autoComplete="email"
             name="e-mail"
-            placeholder='e-mail'
+            placeholder="e-mail"
             type="text"
             //value={email}
             ref={emailRef}
@@ -465,9 +510,12 @@ const AuthForm = ({ type }) => {
       >
         {text}
       </ButtonWithMarginTop>
-      {
-        type==="register" && (registerPassCheck ? (<div>회원가입이 가능합니다.</div>):(<div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>))
-      }
+      {type === 'register' &&
+        (registerPassCheck ? (
+          <div>회원가입이 가능합니다.</div>
+        ) : (
+          <div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
+        ))}
       <Footer>
         {type === 'login' ? (
           <Link to="/signup">회원가입</Link>

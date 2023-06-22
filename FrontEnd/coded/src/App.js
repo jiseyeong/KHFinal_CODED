@@ -28,6 +28,8 @@ import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
+import CaroselTest from './test/CaroselTest';
+import FeedInsertTest from './test/FeedInsertTest';
 
 function App() {
   const dispatch = useDispatch();
@@ -88,6 +90,8 @@ function App() {
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
         <Route path="/searchBox" element={<SearchBox />} />
+        <Route path="/caroselTest" element={<CaroselTest />} />
+        <Route path="/feedInsertTest" element={<FeedInsertTest />} />
 
         <Route
           path="/test/feedComment"

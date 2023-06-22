@@ -53,7 +53,7 @@ public class FeedPostController {
 		}
 	}
 
-	@PutMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
+	@PostMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	public ResponseEntity<?> insertFeedPost(
 			@RequestParam(value="fdto") FeedPostDTO fdto,
 			@RequestParam(value="hdto") HashTagDTO hdto,
