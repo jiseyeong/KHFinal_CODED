@@ -266,6 +266,10 @@ public class MemberService implements UserDetailsService {
 		}
 		return "F";
 	}
+	
+	public void kakaoUnlink(int userNo) {
+		memberDAO.updateKakaoToken(userNo, null);
+	}
 
 	private Long getKakaoUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
@@ -310,6 +314,10 @@ public class MemberService implements UserDetailsService {
 			return this.login(response, member);
 		}
 		return "F";
+	}
+	
+	public void naverUnlink(int userNo) {
+		memberDAO.updateNaverToken(userNo, null);
 	}
 
 	private String getNaverAccessToken(String code) throws Exception{ 
@@ -385,6 +393,10 @@ public class MemberService implements UserDetailsService {
 		}
 		return "F";
     }
+    
+	public void googleUnlink(int userNo) {
+		memberDAO.updateGoogleToken(userNo, null);
+	}
     
     private String getGoogleAccessToken(String code) throws Exception{ 
 		HttpHeaders headers = new HttpHeaders();
