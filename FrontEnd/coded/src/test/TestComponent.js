@@ -11,6 +11,9 @@ const TestComponent = () => {
       <br />
       <br />
       <Link to="/caroselTest">캐러셀 테스트</Link>
+      <br />
+      <br />
+      <Link to="/feedInsertTest">캐러셀 파일 첨부 테스트</Link>
     </div>
   );
 };
