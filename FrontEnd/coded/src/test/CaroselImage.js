@@ -4,9 +4,9 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 import axios from 'axios';
-import './CaroselTest.scss';
+import './CaroselImage.module.scss';
 
-const CaroselTest = () => {
+const CaroselImage = ({ imgBase64 }) => {
   //   const settings = {
   //     dots: true, // 개수 표시 점
   //     infinite: true, // 무한 캐러셀
@@ -48,46 +48,44 @@ const CaroselTest = () => {
   };
 
   const ImageLayout = styled('div')`
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   `;
 
   const LayoutDiv = styled('div')`
-    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
   `;
 
-  const [imageList, setImageList] = useState([]);
-
-  useEffect(() => {
-    axios
-      .request({
-        method: 'get',
-        url: '/photo/testedBySelectPhoto',
-      })
-      .then((resp) => {
-        setImageList(resp.data);
-        console.log(resp.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
     <LayoutDiv>
-      <Slider className="custom-slider" {...settings}>
-        {imageList.map((image) => {
+      <Slider
+        {...settings}
+        style={{
+          width: '400px',
+          height: '500px',
+          alignIten: 'center',
+        }}
+      >
+        {imgBase64.map((item) => {
           return (
-            <ImageLayout>
-              <img
-                style={{ width: '100%', objectFit: 'contain' }}
-                src={`/images/${image.sysName}`}
-              ></img>
-            </ImageLayout>
+            <div>
+              <ImageLayout>
+                <img
+                  src={item}
+                  style={{
+                    height: '100%',
+                    width: '80%',
+                    objectFit: 'contain',
+                    float: 'left',
+                  }}
+                />
+              </ImageLayout>
+            </div>
           );
         })}
       </Slider>
@@ -95,4 +93,4 @@ const CaroselTest = () => {
   );
 };
 
-export default CaroselTest;
+export default CaroselImage;
