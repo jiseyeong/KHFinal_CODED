@@ -56,32 +56,22 @@ const ProfileTemplate = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
-        .then((response) => {
-          const {
-            userNo,
-            userId,
-            pw,
-            address1,
-            address2,
-            email,
-            userNickName,
-          } = response.data;
+      }).then((resp) => {
+        const { userNo, userId, pw, address1, address2, email, userNickName } =
+          resp.data;
 
-          setMemberInfo({
-            userNo: userNo,
-            userId: userId,
-            pw: pw,
-            address1: address1,
-            address2: address2,
-            email: email,
-            userNickName: userNickName,
-          });
-          // userno userid pw address1 address2 email
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        let test = {
+          userNo: userNo,
+          userId: userId,
+          pw: pw,
+          address1: address1,
+          address2: address2,
+          email: email,
+          userNickName: userNickName,
+        };
+        console.log(test);
+        return test;
+      });
     } else {
       denyAccess();
     }
@@ -122,7 +112,7 @@ const ProfileTemplate = () => {
   };
 
   const updateAddressList2 = () => {
-    axios({
+    const response = axios({
       method: 'get',
       url: '/auth/getAddress2List',
       params: {
@@ -136,7 +126,7 @@ const ProfileTemplate = () => {
             value: address,
             label: address,
           });
-          setAddressList2((prev) => [...prev, ...arrTemp]);
+          setAddressList2(tmp);
         });
       })
       .catch((error) => {
@@ -157,31 +147,28 @@ const ProfileTemplate = () => {
   };
 
   useEffect(() => {
-    getLoginData();
-    updateAddressList1();
+    const member = getLoginData();
+    console.log(member);
+    // updateAddressList1();
+    // handleAddress1();
+    // updateAddressList2();
+    // handleAddress2();
   }, [accessToken]);
 
-  useEffect(() => {
-    handleAddress1();
-  }, [memberInfo]);
+  // useEffect(() => {
+  // }, [memberInfo]);
 
-  useEffect(() => {
-    updateAddressList2();
-  }, [myAddress1Location]);
+  // useEffect(() => {
+  // }, [myAddress1Location]);
 
-  useEffect(() => {
-    handleAddress2();
-  }, [addressList2]);
+  // useEffect(() => {
+  // }, [addressList2]);
 
   const handleEditing = () => {
     setEditing((prev) => {
       return !prev;
     });
   };
-
-  useEffect(() => {
-    console.log(editing);
-  }, [editing]);
 
   return (
     <ProfileTemplateBlock>
