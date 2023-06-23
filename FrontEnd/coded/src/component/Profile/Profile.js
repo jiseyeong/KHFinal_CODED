@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import styles from './Profile.module.scss';
-import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,8 +35,6 @@ const ProfileTemplate = () => {
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
   const [memberInfo, setMemberInfo] = useState({});
-  const address1 = useRef(null);
-  const address2 = useRef(null);
   const dispatch = useDispatch();
 
   // useSelector로 토큰 값 가져오기
@@ -46,6 +43,10 @@ const ProfileTemplate = () => {
 
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
+  const [myAddress1, setMyAddress1] = useState(null);
+  const [myAddress1Location, setMyAddress1Location] = useState({});
+  const [myAddress2, setMyAddress2] = useState(null);
+  const [editing, setEditing] = useState(false);
 
   const getLoginData = () => {
     if (accessToken) {
@@ -67,7 +68,6 @@ const ProfileTemplate = () => {
             userNickName,
           } = response.data;
 
-          console.log(response.data);
           setMemberInfo({
             userNo: userNo,
             userId: userId,
@@ -93,20 +93,32 @@ const ProfileTemplate = () => {
       url: '/auth/getAddress1List',
     })
       .then((response) => {
-        console.log(response.data);
-        const addressListTemp = response.data;
         let arrTemp = [];
-        addressListTemp.forEach((address) => {
+        response.data.forEach((address) => {
           arrTemp = arrTemp.concat({
             value: address,
             label: address,
           });
-          setAddressList1([...addressList1, ...arrTemp]);
+          setAddressList1((prev) => [...prev, ...arrTemp]);
         });
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  // Address1 자동 선택
+  const handleAddress1 = () => {
+    addressList1.forEach((item, index) => {
+      if (item.value === memberInfo.address1) {
+        setMyAddress1(() => {
+          setMyAddress1Location(addressList1[index]);
+          return (
+            <Select options={addressList1} defaultValue={addressList1[index]} />
+          );
+        });
+      }
+    });
   };
 
   const updateAddressList2 = () => {
@@ -114,15 +126,17 @@ const ProfileTemplate = () => {
       method: 'get',
       url: '/auth/getAddress2List',
       params: {
-        address1: address1.current.value,
+        address1: myAddress1Location.value,
       },
     })
       .then((response) => {
-        setAddressList2([]);
-        response.data.forEach((item) => {
-          setAddressList2((prev) => {
-            return [...prev, item];
+        let arrTemp = [];
+        response.data.forEach((address) => {
+          arrTemp = arrTemp.concat({
+            value: address,
+            label: address,
           });
+          setAddressList2((prev) => [...prev, ...arrTemp]);
         });
       })
       .catch((error) => {
@@ -130,15 +144,44 @@ const ProfileTemplate = () => {
       });
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await getLoginData();
-      await updateAddressList1();
-      // await updateAddressList2();
-    };
+  const handleAddress2 = () => {
+    addressList2.forEach((item, index) => {
+      if (item.value === memberInfo.address2) {
+        setMyAddress2(() => {
+          return (
+            <Select options={addressList2} defaultValue={addressList2[index]} />
+          );
+        });
+      }
+    });
+  };
 
-    fetchData();
-  }, []);
+  useEffect(() => {
+    getLoginData();
+    updateAddressList1();
+  }, [accessToken]);
+
+  useEffect(() => {
+    handleAddress1();
+  }, [memberInfo]);
+
+  useEffect(() => {
+    updateAddressList2();
+  }, [myAddress1Location]);
+
+  useEffect(() => {
+    handleAddress2();
+  }, [addressList2]);
+
+  const handleEditing = () => {
+    setEditing((prev) => {
+      return !prev;
+    });
+  };
+
+  useEffect(() => {
+    console.log(editing);
+  }, [editing]);
 
   return (
     <ProfileTemplateBlock>
@@ -183,23 +226,30 @@ const ProfileTemplate = () => {
                   <div className={styles.infoTitle}>location</div>
                   <div className={styles.infoSpace}>:</div>
                   <div className={styles.infoBody}>
-                    <div className={styles.body1}>
-                      <Select
-                        options={addressList1}
-                        defaultValue={addressList1[0]}
-                      />
-                    </div>
-                    <div className={styles.body2}>
-                      <Select options={addressList2} />
-                    </div>
+                    <div className={styles.body1}>{myAddress1}</div>
+                    <div className={styles.body2}>{myAddress2}</div>
                   </div>
                 </div>
-                <div className={styles.infoBar}>
-                  <button className={styles.PwChangeBtn}>비밀번호 변경</button>
-                  <button className={styles.EditBtn}>수정하기</button>
-                  <button className={styles.EditCancelBtn}>수정취소</button>
-                  <button className={styles.EditComBtn}>수정완료</button>
-                </div>
+                {editing ? (
+                  <div className={styles.infoBar3}>
+                    <button className={styles.EditCancelBtn}>수정취소</button>
+                    <button
+                      className={styles.EditComBtn}
+                      onClick={handleEditing}
+                    >
+                      수정완료
+                    </button>
+                  </div>
+                ) : (
+                  <div className={styles.infoBar3}>
+                    <button className={styles.EditBtn} onClick={handleEditing}>
+                      수정하기
+                    </button>
+                    <button className={styles.PwChangeBtn}>
+                      비밀번호 변경
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
