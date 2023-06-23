@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
+import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
@@ -78,9 +79,11 @@ public class FeedPostController {
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
 			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
-
 		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
 		return ResponseEntity.ok().body(map);
+		
+//		List<FeedPostAddDTO> list = feedpostService.selectAllFeedPost2(cpage);
+//		return ResponseEntity.ok().body(list);
 	}
 
 	// 해시태그 검색을 통한 피드 리스트 뽑기
@@ -236,8 +239,10 @@ public class FeedPostController {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
-		
 	}
+
+
+
 	
 	@GetMapping("comment/like")
 	public ResponseEntity<?> selectCommentLike(
@@ -275,3 +280,4 @@ public class FeedPostController {
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 }
+
