@@ -53,7 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/auth/isMemberByEmail",
 					"/auth/send-mail/pw",
 					"/auth/getAddress1List",
-					"/auth/getAddress2List"
+					"/auth/getAddress2List",
+					"/weather/todayNonMem"
 					));
 
 	@Override
@@ -64,44 +65,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					throws ServletException, IOException {
 
 		String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
-		String accessToken = this.getAccessToken(authorizationHeader);
-
-		MemberDTO member = null;
-
-		if(accessToken != null && accessToken.startsWith("Bearer ")) {
-			accessToken = accessToken.substring("Bearer ".length(), accessToken.length());
-			if(jwtProvider.validateToken(accessToken)) {
-				try {
-					member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
-				}catch(Exception e) {
-					e.printStackTrace();
-				}				
-			}else {
-				System.out.println("JWT 토큰이 유효하지 않습니다.");
-			}
-		}else {
-//			System.out.println("JWT 토큰이 Bearer String 으로 시작하지 않습니다.");
-		}
-
-		if(member != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			if(jwtProvider.validateToken(accessToken)) {
-				UserDetails authentication = memberService.loadUserByUsername(member.getUserId());
-				Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
-				SecurityContextHolder.getContext().setAuthentication(auth);
-			}
-		}
-		try {
-			if(member != null) {
-				if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
-					String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
-					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
-						CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
-					}
-					CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+		if(authorizationHeader != null) {
+			String accessToken = this.getAccessToken(authorizationHeader);
+			MemberDTO member = null;
+			if(accessToken != null) {
+				if(jwtProvider.validateToken(accessToken)) {
+					try {
+						member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
+					}catch(Exception e) {
+						e.printStackTrace();
+					}				
+				}else {
+					System.out.println("JWT 토큰이 유효하지 않습니다.");
 				}
+			}else {
+				System.out.println("JWT 토큰이 Bearer String 으로 시작하지 않습니다.");
+			}			
+			try {
+				if(member != null) {
+					if(jwtProvider.validateToken(accessToken)) {
+						UserDetails authentication = memberService.loadUserByUsername(member.getUserId());
+						Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
+						SecurityContextHolder.getContext().setAuthentication(auth);
+					}
+					
+					if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+						String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
+						if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
+							CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
+						}
+						CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
+					}
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
 		}
 		filterChain.doFilter(request, response);
 	}
@@ -112,8 +110,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	}
 
 	private String getAccessToken(String authorizationHeader) {
-		if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
-			return authorizationHeader.substring(TOKEN_PREFIX.length());
+		if(authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX) && authorizationHeader.length() > 7) {
+			return authorizationHeader.substring(TOKEN_PREFIX.length(), authorizationHeader.length());
 		}
 		return null;
 	}
