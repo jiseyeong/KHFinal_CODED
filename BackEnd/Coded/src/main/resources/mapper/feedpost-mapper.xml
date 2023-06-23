@@ -45,12 +45,10 @@
 		select f.*
         , m.userNickName,
         m.sysName as profileSysName,
-        thum.sysName as thumnailSysName,
-        l.likeCount
+        thum.sysName as thumbNailSysName
 		from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) f
 		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
         left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
-		left join (select feedPostId, Count(feedPostId) as likecount from feedLike group by feedpostid) l on f.feedPostId = l.feedPostId
 		where rn between ${startFeedNum} and ${endFeedNum}
 		order by f.feedpostid asc
 	</select>

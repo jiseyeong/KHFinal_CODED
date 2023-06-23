@@ -89,7 +89,10 @@ public class FeedPostService {
     public List<FeedPostDTO> selectTestFeedList() {
         return feedpostDAO.selectTestFeedList();
     }
-
+    
+    public List<PostHashsWithHashTagDTO> selectHashTagList(int feedPostId){
+    	return postHashsDAO.selectAllTagIdByFeedPostId(feedPostId);
+    }
     
     // 고도화 작업 요구
     public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
@@ -139,6 +142,7 @@ public class FeedPostService {
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        
         return feedpostDAO.selectAllFeedPost2(startFeedNum, endFeedNum);
     }
     
