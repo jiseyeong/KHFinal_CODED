@@ -1,0 +1,45 @@
+
+.inputId,.inputPw {
+    border:1px solid silver;
+    border-radius:10px;
+    font-size:13px;
+    height:33px;
+    margin-bottom:10px;
+    width:270px;
+    text-align:center;
+}
+
+.kakaoBtn,.naverBtn{
+    width:80%;
+    height:40px;
+    object-fit:cover;
+    margin-bottom:5px;
+    cursor:pointer;
+    border-radius:10px;
+}
+
+.googleBtn{
+    width:80%;
+    height:40px;
+    object-fit:cover;
+    margin-bottom:5px;
+    cursor:pointer;
+    border-radius:10px;
+}
+
+.checkBox{
+    margin-left:10px;
+    text-align:left;
+    margin-bottom:30px;
+    input{
+        margin-right:5px;
+    }
+    label{
+        font-size:13px;
+        margin-right:130px;
+    }
+}
+
+.loginFooter{
+    font-size:12px;
+}

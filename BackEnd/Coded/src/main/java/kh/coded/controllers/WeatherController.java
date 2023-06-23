@@ -50,13 +50,33 @@ public class WeatherController {
 					TodayWeatherDTO today = weatherService.getTodayWeather(addressCoordService.getAddressCoord(member.getAddress1(), member.getAddress2()).getAddressID(), time);
 					String message = weatherService.getMessage(today.getMax(), today.getMin());
 
-					if(today != null & message != null) {
+					if(today != null && message != null) {
 						data.put("today", today);
 						data.put("message", message);
+						data.put("address1", member.getAddress1());
+						data.put("address2", member.getAddress2());
 						return ResponseEntity.ok().body(data);
 					}			
 				}
 			}
+		}
+		return ResponseEntity.badRequest().body("데이터를 찾지 못하였습니다.");
+	}
+	
+	@GetMapping("todayNonMem")
+	public ResponseEntity<?> getTodayInfo_NonMem(
+			@RequestParam(value="time") long time
+			){
+		Map<String, Object> data = new HashMap<>();
+		TodayWeatherDTO today = weatherService.getTodayWeather(addressCoordService.getAddressCoord("서울특별시", "서울").getAddressID(), time);
+		String message = weatherService.getMessage(today.getMax(), today.getMin());
+		
+		if(today != null && message != null) {
+			data.put("today", today);
+			data.put("message", message);
+			data.put("address1", "서울특별시");
+			data.put("address2", "서울");
+			return ResponseEntity.ok().body(data);
 		}
 		return ResponseEntity.badRequest().body("데이터를 찾지 못하였습니다.");
 	}

@@ -84,6 +84,7 @@ public class SecurityConfiguration {
 			
 			"/feedPost/comment/**", //얘들은 단순 select임.
 			
+			"/weather/todayNonMem",
 
 	};
 	private final String[] API_USER_LIST = {
@@ -175,13 +176,13 @@ public class SecurityConfiguration {
 //		}
 //	});
 		
-		http.rememberMe(rememberMe -> 
-							rememberMe
-								.key("myKey")
-								.tokenValiditySeconds(60 * 60 * 24 * 7)
-								.userDetailsService(memberService)
-								.rememberMeParameter("remember-me")
-		);
+//		http.rememberMe(rememberMe -> 
+//							rememberMe
+//								.key("myKey")
+//								.tokenValiditySeconds(60 * 60 * 24 * 7)
+//								.userDetailsService(memberService)
+//								.rememberMeParameter("remember-me")
+//		);
 		
 		//한 계정 당 하나의 로그인 유지만 가능하도록 하는 설정임.
 		//http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));

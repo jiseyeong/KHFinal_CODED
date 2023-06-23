@@ -8,9 +8,12 @@ function WeeklySideForm() {
   const [weeklyData, setWeeklyData] = useState([
     { weekly: { min: 0, max: 0 }, message: '', date: new Date() },
   ]);
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
   const accessToken = useSelector((state) => state.member.access);
   const [dates, setDates] = useState([]);
   const [loading, setLoading] = useState(true);
+
   let cnt = 0;
 
   useEffect(() => {
@@ -28,6 +31,8 @@ function WeeklySideForm() {
       .then((response) => {
         setWeeklyData([]);
         setDates([]);
+        setAddress1(response.data.address1);
+        setAddress2(response.data.address2);
         cnt = 0;
         setWeeklyData((prev) => {
           const newDay = new Date();
@@ -92,6 +97,7 @@ function WeeklySideForm() {
 
   return (
     <div>
+      <div>{`${address1}, ${address2}의 주간 날씨`}</div>
       {weeklyData.map((item, index) => {
         return (
           <WeeklyWeatherCard

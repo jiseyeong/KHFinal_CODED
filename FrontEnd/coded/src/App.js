@@ -31,6 +31,7 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
+import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 
 function App() {
@@ -102,6 +103,7 @@ function App() {
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
         <Route path="/test/FeedInsert" element={<FeedInsert />} />
+        <Route path="/test/TodayAndAdForm" element={<TodayAndAdForm/>}/>
 
         <Route
           path="/login/oauth2/code/kakao"
