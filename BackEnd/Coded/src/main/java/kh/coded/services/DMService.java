@@ -26,8 +26,8 @@ public class DMService {
 	@Autowired
 	private DMRoomUserDAO dmRoomUserDAO;
 
-	public List<DMDTO> selectDMList(int roomId) {
-		return dmDAO.selectDMList(roomId);
+	public List<DMDTO> selectDMRoomList(int roomId) {
+		return dmDAO.selectDMRoomList(roomId);
 	}
 	
 }
