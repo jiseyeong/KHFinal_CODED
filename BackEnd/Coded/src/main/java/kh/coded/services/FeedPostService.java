@@ -8,7 +8,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
+import kh.coded.dto.FeedCommentLikeDTO;
+import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
@@ -132,6 +135,13 @@ public class FeedPostService {
         return map;
     }
     
+    public List<FeedPostAddDTO> selectAllFeedPost2(int cpage){
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        return feedpostDAO.selectAllFeedPost2(startFeedNum, endFeedNum);
+    }
+    
     public Map<String, Object> selectFeedDetail(int feedPostId,int userNo) { 
     	// 피드 상세페이지 출력
     	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수, 
@@ -203,7 +213,6 @@ public class FeedPostService {
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-
         List<FeedPostDTO> feedPostList = feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
         List<MemberDTO> memberList = new ArrayList<>();
         List<PhotoDTO> userProfileList = new ArrayList<>();
@@ -257,48 +266,24 @@ public class FeedPostService {
     public void deleteComment(int feedCommentId) {
     	commentDAO.delete(feedCommentId);
     }
-    public Map<String, Object> selectCommentByFeedPostIdAndDepth0(int feedPostId, int userNo){
-    	Map<String, Object> data = new HashMap<>();
-    	List<FeedCommentDTO> commentList = commentDAO.selectByFeedPostDepth0(feedPostId);
-    	List<Boolean> isLikeList = new ArrayList<>();
-    	List<String> userIdList = new ArrayList<>();
-    	List<String> userNickNameList = new ArrayList<>();
-    	for(FeedCommentDTO comment : commentList) {
-    		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
-    		
-    		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
-    		String userId = member.getUserId();
-    		String userNickName = member.getUserNickName();
-    		userIdList.add(userId);
-    		userNickNameList.add(userNickName);
-    	}
-    	data.put("commentList", commentList);
-    	data.put("isLikeList", isLikeList);
-    	data.put("userIdList", userIdList);
-    	data.put("userNickNameList", userNickNameList);
-    	return data;
+    public List<FeedCommentAddDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
+    	return commentDAO.selectByFeedPostDepth0(feedPostId);
     }
-    public Map<String, Object> selectCommentByParentIdAndDepth(int parentId, int depth, int userNo){
-    	Map<String, Object> data = new HashMap<>();
-    	List<FeedCommentDTO> commentList = commentDAO.selectByParentIdAndDepth(parentId, depth);
-    	List<Boolean> isLikeList = new ArrayList<>();
-    	List<String> userIdList = new ArrayList<>();
-    	List<String> userNickNameList = new ArrayList<>();
-    	
-    	for(FeedCommentDTO comment : commentList) {
-    		isLikeList.add(commentLikeDAO.selectForChecked(userNo, comment.getFeedCommentId()) != null);
-    		
-    		MemberDTO member = memberService.selectByUserNo(comment.getUserNo());
-    		String userId = member.getUserId();
-    		String userNickName = member.getUserNickName();
-    		userIdList.add(userId);
-    		userNickNameList.add(userNickName);
-    	}
-    	data.put("commentList", commentList);
-    	data.put("isLikeList", isLikeList);
-    	data.put("userIdList", userIdList);
-    	data.put("userNickNameList", userNickNameList);
-    	return data;
+    public List<FeedCommentAddDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
+    	return commentDAO.selectByParentIdAndDepth(parentId, depth);
+    }
+    public boolean selectCommentLikeForChecked(int userNo, int commentId) {
+    	return commentLikeDAO.selectForChecked(userNo, commentId) != null;
+    }
+    public int selectCommentLikeForCount(int commentId) {
+    	return commentLikeDAO.selectForCount(commentId).size();
+    }
+    public void insertCommentLike(int userNo, int commentId) {
+    	FeedCommentLikeDTO dto = new FeedCommentLikeDTO(0, userNo, commentId);
+    	commentLikeDAO.insert(dto);
+    }
+    public void deleteCommentLike(int userNo, int commentId) {
+    	commentLikeDAO.delete(userNo, commentId);
     }
     
     public int insertFeedLike(int userNo,int feedPostId) {

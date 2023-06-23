@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 
-const ImageUpload = ({ uploadState, setUploadState }) => {
+const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
   const [feedPostId, setFeedPostId] = useState(0);
   const [files, setFiles] = useState([]);
   // 여러 파일을 받는 경우
@@ -45,14 +45,15 @@ const ImageUpload = ({ uploadState, setUploadState }) => {
       formData.append('files', file);
     });
 
-    axios({
-      method: 'post',
-      url: '/photo/insertPhoto',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      data: formData,
-    })
+    axios
+      .request({
+        method: 'post',
+        url: '/photo/insertPhoto',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+      })
       .then((resp) => {
         console.log('완료 : ' + resp.data);
         setUploadState(
@@ -104,9 +105,14 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
     axios({
       url: '/auth/selectUserList',
       type: 'GET',
-    }).then((resp) => {
-      setUserList(resp.data);
-    });
+    })
+      .then((resp) => {
+        console.log(resp.data);
+        setUserList(resp.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const handleUserChange = (e) => {
@@ -174,7 +180,7 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
   );
 };
 
-const FileUploadTest = () => {
+const ImageUpload = () => {
   const [uploadState, setUploadState] =
     useState('이미지 파일을 업로드 해주세요');
   return (

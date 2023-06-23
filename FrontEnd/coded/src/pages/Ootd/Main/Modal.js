@@ -7,6 +7,16 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 function Modal({ modalData, data, setData, closeModal, id }) {
+
+
+  const [feedPost,setFeedPost] = useState({});
+  const [photoList,setPhotoList] = useState([]);
+  const [writeMember,setWriteMember] = useState({});
+  const [userProfile,setUserProfile] = useState({});
+  const [feedLikeCount,setFeedLikeCount] = useState(0);
+  const [isFeedLike,setFeedLike] = useState();
+
+
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
   const [description, setDescription] = useState(
@@ -66,6 +76,31 @@ function Modal({ modalData, data, setData, closeModal, id }) {
       }
     }
   }
+  
+  useEffect(()=>{
+      axios({
+        method:'post',
+        url:'/feedpost/selectFeedDetail',
+        headers:{
+          Authorization:'Bearer '+accessToken
+      },
+      params:{
+        feedpostid:id
+     }
+      }).then((response)=>{
+        const [
+          feedPost,
+          photoList,
+          writeMember,
+          userProfile,
+          feedLikeCount,
+          isFeedLike
+        ] = response.data;
+
+      }).catch(()=>{
+
+      })
+  },[])
 
   // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
   function handleComment(e) {

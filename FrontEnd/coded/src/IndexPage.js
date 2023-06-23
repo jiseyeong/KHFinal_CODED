@@ -9,7 +9,7 @@ const IndexPage = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <Link to="/HomepageTemplate">
+      <Link to="/feedList">
         <button style={{ width: '200px', height: '100px' }}>페이지 시작</button>
       </Link>
       <br />
@@ -20,10 +20,7 @@ const IndexPage = () => {
       <Link to="/signup">회원가입 페이지</Link>
       <br />
       <br />
-      <Link to="/HomePageTemplate">홈페이지 양식</Link>
-      <br />
-      <br />
-      <Link to="/feed">단순 피드 리스트</Link>
+      <Link to="/feedList">단순 피드 리스트</Link>
       <br />
       <br />
       <Link to="/profile">마이 프로필 페이지</Link>

@@ -94,7 +94,7 @@ function SearchForm({type}){
             {
                 loading ? (<div>진행 중입니다.</div>) : (            <button onClick={type==="id" ? doIdSearch : doPwSearch}>{type==="id" ? "아이디 찾기" : "비밀번호 재발급"}</button>)
             }
-            <Link to="/login"><button>로그인 창으로</button></Link>
+            <Link to="/login"><button>Login</button></Link>
         </div>
     );
 }
