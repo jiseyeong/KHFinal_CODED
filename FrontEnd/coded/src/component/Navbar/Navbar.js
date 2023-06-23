@@ -92,6 +92,15 @@ function Navbar() {
     navigate('/weekly');
   }
 
+  function loginPage () {
+    navigate('/login');
+  }
+
+  function myPage() {
+    navigate('/profile');
+  }
+
+
   return (
     <>
       <div className="navBarWrapper">
@@ -136,9 +145,8 @@ function Navbar() {
 
           <div className="rightNavBar">
             <div className="rightMenuWrapper">
-             <button className='loginBtn'>로그인</button>
-             <button className='joinBtn'>회원가입</button>
-              <button className='mypage'>마이페이지</button>
+             <button onClick={loginPage} className='loginBtn'>로그인 / 회원가입</button>
+              <button onClick={myPage} className='mypage'>마이페이지</button>
               {/* <svg
                 stroke="currentColor"
                 fill="currentColor"

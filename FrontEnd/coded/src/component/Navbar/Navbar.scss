@@ -179,10 +179,10 @@ $storeBorderColor: #f0f1f4;
         //   height: 28px;
         //   cursor: pointer;
         // }
-        .loginBtn,.joinBtn,.mypage {
+        .loginBtn{
           border:none;
           border-radius:20px;
-          width:90px;
+          width:130px;
           height:35px;
           background-color:black;
           color:white;
@@ -192,7 +192,15 @@ $storeBorderColor: #f0f1f4;
         }
 
         .mypage{
-          margin-right:50px;
+          border:none;
+          border-radius:20px;
+          width:90px;
+          height:35px;
+          background-color:black;
+          color:white;
+          margin-left:10px;
+          cursor:pointer;
+          font-size:12px;
         }
       }
     }
