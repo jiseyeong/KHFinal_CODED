@@ -56,22 +56,33 @@ const ProfileTemplate = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }).then((resp) => {
-        const { userNo, userId, pw, address1, address2, email, userNickName } =
-          resp.data;
+      })
+        .then((resp) => {
+          const {
+            userNo,
+            userId,
+            pw,
+            address1,
+            address2,
+            email,
+            userNickName,
+          } = resp.data;
 
-        let test = {
-          userNo: userNo,
-          userId: userId,
-          pw: pw,
-          address1: address1,
-          address2: address2,
-          email: email,
-          userNickName: userNickName,
-        };
-        console.log(test);
-        return test;
-      });
+          let test = {
+            userNo: userNo,
+            userId: userId,
+            pw: pw,
+            address1: address1,
+            address2: address2,
+            email: email,
+            userNickName: userNickName,
+          };
+          console.log(test);
+          return test;
+        })
+        .then((resp) => {
+          console.log(resp);
+        });
     } else {
       denyAccess();
     }
