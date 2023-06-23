@@ -183,45 +183,13 @@ public class FeedPostService {
     	
     }
 
-    public Map<String, Object> selectSearchFeedListByHashs(int cpage, int userNo, String keyword) {
+    public List<FeedPostAddDTO> selectSearchFeedListByHashs(int cpage, String keyword) {
         // 피드 리스트 출력
         // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-        List<FeedPostDTO> feedPostList = feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
-        List<MemberDTO> memberList = new ArrayList<>();
-        List<PhotoDTO> userProfileList = new ArrayList<>();
-        List<PhotoDTO> thumbNailList = new ArrayList<>();
-        List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
-        List<Integer> feedLikeList = new ArrayList<>();
-        List<Boolean> isFeedLikeList = new ArrayList<>();
-
-        for (FeedPostDTO feedPost : feedPostList) {
-            PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
-            MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
-            userInfo.setPw("");
-            PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
-            List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
-            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
-            boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
-            thumbNailList.add(thumbNail);
-            memberList.add(userInfo);
-            userProfileList.add(userProfile);
-            hashTagLists.add(hashTagList);
-            feedLikeList.add(feedLike);
-            isFeedLikeList.add(isFeedLike);
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("feedPostList",feedPostList);
-        map.put("thumbNailList",thumbNailList);
-        map.put("memberList",memberList);
-        map.put("userProfileList",userProfileList);
-        map.put("hashTagLists",hashTagLists);
-        map.put("feedLikeList", feedLikeList);
-        map.put("isFeedLikeList", isFeedLikeList);
-        return map;
+        return feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
     }
     
     public int updateFeedPost(int feedPostId,String body) {

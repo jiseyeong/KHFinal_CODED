@@ -66,13 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
 		String accessToken = this.getAccessToken(authorizationHeader);
 
-		//		String token = Arrays.stream(request.getCookies())
-		//				.filter(c -> c.getName().equals("Coded-Token"))
-		//				.findFirst().map(Cookie::getValue)
-		//				.orElse(null);
-
 		MemberDTO member = null;
-		//String jwt = null;
 
 		if(accessToken != null && accessToken.startsWith("Bearer ")) {
 			accessToken = accessToken.substring("Bearer ".length(), accessToken.length());
@@ -90,8 +84,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		}
 
 		if(member != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			//MemberDTO dto = memberService.selectByUserNo(userNo);
-
 			if(jwtProvider.validateToken(accessToken)) {
 				UserDetails authentication = memberService.loadUserByUsername(member.getUserId());
 				Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
@@ -100,8 +92,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		}
 		try {
 			if(member != null) {
-				//jwtProvider.reCreateLoginRefreshToken(member);
-				
 				if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
 					String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
 					if(refreshToken != null && refreshToken.startsWith("Bearer ")) {
