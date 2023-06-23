@@ -239,8 +239,10 @@ public class FeedPostController {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
-		
 	}
+
+
+
 	
 	@GetMapping("comment/like")
 	public ResponseEntity<?> selectCommentLike(
@@ -278,3 +280,4 @@ public class FeedPostController {
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 }
+
