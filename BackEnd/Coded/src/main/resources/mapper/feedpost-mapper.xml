@@ -46,7 +46,7 @@
 		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
         left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
 		where rn between ${startFeedNum} and ${endFeedNum}
-		order by f.feedpostid asc
+		order by f.feedpostid desc
 	</select>
 	
 	<select id="selectPagingWeatherDiff" resultType="kh.coded.dto.FeedPostAddDTO">
