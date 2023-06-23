@@ -81,7 +81,7 @@ const ProfileTemplate = () => {
           return test;
         })
         .then((resp) => {
-          console.log(resp);
+          updateAddressList1(resp);
         });
     } else {
       denyAccess();
@@ -100,8 +100,18 @@ const ProfileTemplate = () => {
             value: address,
             label: address,
           });
-          setAddressList1((prev) => [...prev, ...arrTemp]);
         });
+        setAddressList1(arrTemp);
+        return arrTemp;
+      })
+      .then((resp) => {
+        handleAddress1(resp);
+      })
+      .then(() => {
+        updateAddressList2();
+      })
+      .then(() => {
+        handleAddress2();
       })
       .catch((error) => {
         console.log(error);
@@ -109,9 +119,10 @@ const ProfileTemplate = () => {
   };
 
   // Address1 자동 선택
-  const handleAddress1 = () => {
-    addressList1.forEach((item, index) => {
+  const handleAddress1 = (resp) => {
+    resp.forEach((item, index) => {
       if (item.value === memberInfo.address1) {
+        console.log('find');
         setMyAddress1(() => {
           setMyAddress1Location(addressList1[index]);
           return (
