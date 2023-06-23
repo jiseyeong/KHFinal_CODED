@@ -1,5 +1,4 @@
 import React from 'react';
-import { Oval } from 'react-loader-spinner';
 import { styled } from 'styled-components';
 
 const LoadingLayout = styled('div')`
@@ -13,7 +12,9 @@ const LoadingLayout = styled('div')`
 function LoadingBar() {
   return (
     <LoadingLayout>
-      <Oval color="#3d66ba" height={100} width={100} />
+      <div className="preloader">
+        <div className="text">LOADING ... SUNGHA WORKING</div>
+      </div>
     </LoadingLayout>
   );
 }

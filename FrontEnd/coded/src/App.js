@@ -28,8 +28,10 @@ import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
+
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
+import ImageSlide from './test/ImageSlide';
 
 function App() {
   const dispatch = useDispatch();
@@ -90,8 +92,10 @@ function App() {
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
         <Route path="/searchBox" element={<SearchBox />} />
+
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
+        <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route
           path="/test/feedComment"
@@ -112,6 +116,8 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
+        {/* <Route path="/likepeed" element={<Likepeed/>} />
+        <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
