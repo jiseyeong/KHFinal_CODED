@@ -133,7 +133,8 @@ function Navbar() {
 
   return (
     <>
-      {navbarType !== 'NonMem' && (
+      {/* 임시로 주석 처리하였습니다 */}
+      {/* {navbarType !== 'NonMem' && (
         <div>
           <div>{weatherIcon}</div>
           <div>{recentTemp}</div>
@@ -141,7 +142,7 @@ function Navbar() {
           <div>L:{minTemp}</div>
           <div>{'>' + weatherMessage}</div>
         </div>
-      )}
+      )} */}
 
       <div className="navBarWrapper">
         <nav className="topNavBar">
@@ -170,7 +171,7 @@ function Navbar() {
                       }
                       onClick={handleClickWeekly}
                     >
-                      WEEKLY
+                      #WEEKLY
                     </span>
                   </li>
                 )}

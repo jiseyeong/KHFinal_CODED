@@ -1,13 +1,11 @@
 package kh.coded.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kh.coded.dto.PhotoDTO;
 import kh.coded.services.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,5 +39,10 @@ public class PhotoController {
         System.out.println("userNo : "+userNo);
         System.out.println("feedPostId : "+feedPostId);
         return ResponseEntity.ok().body("success");
+    }
+    @GetMapping("testedBySelectPhoto")
+    public ResponseEntity<?> testedBySelectPhoto(){
+        List<PhotoDTO> list = photoService.testedBySelectPhoto();
+        return ResponseEntity.ok().body(list);
     }
 }

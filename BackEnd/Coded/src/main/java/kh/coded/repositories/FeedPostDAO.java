@@ -8,10 +8,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
-import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
-import kh.coded.dto.PostHashsDTO;
 
 @Repository
 public class FeedPostDAO {
@@ -68,6 +67,13 @@ public class FeedPostDAO {
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);
 		return mybatis.selectList("FeedPost.selectAllFeedPost",map);
+	}
+	
+	public List<FeedPostAddDTO> selectAllFeedPost2(int startFeedNum, int endFeedNum) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		return mybatis.selectList("FeedPost.selectAllFeedPost2",map);
 	}
 
 	public FeedPostDTO selectByUserNo(int userNo) {

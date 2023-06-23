@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
+import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.PhotoDTO;
@@ -51,7 +53,7 @@ public class FeedPostController {
 		}
 	}
 
-	@PutMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
+	@PostMapping(value="feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	public ResponseEntity<?> insertFeedPost(
 			@RequestParam(value="fdto") FeedPostDTO fdto,
 			@RequestParam(value="hdto") HashTagDTO hdto,
@@ -77,9 +79,11 @@ public class FeedPostController {
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
 			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
-
 		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
 		return ResponseEntity.ok().body(map);
+		
+//		List<FeedPostAddDTO> list = feedpostService.selectAllFeedPost2(cpage);
+//		return ResponseEntity.ok().body(list);
 	}
 
 	// 해시태그 검색을 통한 피드 리스트 뽑기
@@ -216,11 +220,10 @@ public class FeedPostController {
 	
 	@GetMapping("comment/depth0")
 	public ResponseEntity<?> selectCommentDepth0(
-			@RequestParam(value="feedPostId") int feedPostId,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			@RequestParam(value="feedPostId") int feedPostId
 			){
-		Map<String, Object> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId,userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+		List<FeedCommentAddDTO> result = feedpostService.selectCommentByFeedPostIdAndDepth0(feedPostId);
+		if(result.size() > 0) {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("댓글이 없습니다.");
@@ -229,16 +232,17 @@ public class FeedPostController {
 	@GetMapping("comment/depthN")
 	public ResponseEntity<?> selectCommentDepth(
 			@RequestParam(value="parentId") int parentId,
-			@RequestParam(value="depth") int depth,
-			@RequestParam(value="userNo", required=false, defaultValue="0") int userNo
+			@RequestParam(value="depth") int depth
 			){
-		Map<String, Object> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth, userNo);
-		if(((List<FeedCommentDTO>)result.get("commentList")).size() > 0) {
+		List<FeedCommentAddDTO> result = feedpostService.selectCommentByParentIdAndDepth(parentId, depth);
+		if(result.size() > 0) {
 			return ResponseEntity.ok().body(result);
 		}
 		return ResponseEntity.badRequest().body("대댓글이 없습니다.");
-		
 	}
+
+
+
 	
 	@GetMapping("comment/like")
 	public ResponseEntity<?> selectCommentLike(
@@ -276,3 +280,4 @@ public class FeedPostController {
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 }
+
