@@ -41,7 +41,7 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function FeedList() {
+function Likepeed() {
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
   const [member, setMember] = useState([]);
@@ -57,7 +57,7 @@ function FeedList() {
   const cpage = useRef(1);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addFeedList = () => {
+  const addLikepeed = () => {
     // setLoading(false);
     axios({
       method: 'GET',
@@ -76,7 +76,7 @@ function FeedList() {
           feedLikeList,
           isFeedLikeList,
         } = resp.data;
-        
+
         setFeedPost((prev) => [...prev, ...feedPostList]);
         setThumbnail((prev) => [...prev, ...thumbNailList]);
         setUserProfile((prev) => [...prev, ...userProfileList]);
@@ -98,14 +98,14 @@ function FeedList() {
   // document.body.offsetHeight 페이지 전체 높이
 
   useEffect(() => {
-    addFeedList();
+    addLikepeed();
     window.onscroll = function () {
       if (
         window.innerHeight + window.scrollY >= document.body.offsetHeight &&
         scrollWait
       ) {
         setScrollWait((prev) => !prev);
-        addFeedList();
+        addLikepeed();
         setScrollWait((prev) => !prev);
       }
     };
@@ -145,7 +145,7 @@ function FeedList() {
   // }
 }
 
-export default FeedList;
+export default Likepeed;
 
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값

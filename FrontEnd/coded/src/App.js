@@ -110,6 +110,10 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
+
+        <Route path="/likepeed" element={<Likepeed/>} />
+        <Route path="/newpeed"  element={<Newpeed/>} />
+        
       </Routes>
       <Footer />
     </BrowserRouter>
