@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+ import axios from "axios";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import FeedComment from "./FeedComment";
 import LoadingBar from "../Common/LoadingBar";
@@ -12,6 +12,8 @@ function FeedCommentList({feedPostId, depth, parentId}){
     const [loading, setLoading] = useState(false);
     const loginUserNo = useSelector((state)=>state.member.userNo);
 
+
+    const abc = useRef();
 
     useEffect(()=>{
         readComments();
@@ -73,6 +75,7 @@ function FeedCommentList({feedPostId, depth, parentId}){
         <>
             {commentList ?
             (<div>
+                <div ref={abc}></div>
                 {commentList.map((item, index)=>{
                     return(
                         <FeedComment
