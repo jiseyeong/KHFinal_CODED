@@ -10,8 +10,9 @@ body {
   }
   
   code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
+    font-family: input-mono, monospace;
+    font-weight: 400;
+    font-style: normal;
   }
   
   /* 책 따라 임의 추가 */

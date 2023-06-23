@@ -45,8 +45,6 @@ public class MemberDTO{
 		this.address1 = address1;
 		this.address2 = address2;
 		this.role = Role.USER.getValue();
-		
-		Role.USER.getValue();
 	}
 	
 	public MemberDTO() {
