@@ -84,6 +84,7 @@ public class SecurityConfiguration {
 			
 			"/feedPost/comment/**", //얘들은 단순 select임.
 			
+			"/weather/todayNonMem",
 
 	};
 	private final String[] API_USER_LIST = {

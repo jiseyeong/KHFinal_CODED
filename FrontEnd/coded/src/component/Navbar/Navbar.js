@@ -46,11 +46,6 @@ function Navbar() {
   const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
   const [isListOotdBorder, setListOotdBorder] = useState(true);
   const [isHomeBorder, setIsHomeBorder] = useState(true);
-  const [weatherIcon, setWeatherIcon] = useState('');
-  const [weatherMessage, setWeatherMessage] = useState('');
-  const [minTemp, setMinTemp] = useState(0);
-  const [maxTemp, setMaxTemp] = useState(0);
-  const [recentTemp, setRecentTemp] = useState(0);
   const accessToken = useSelector((state) => state.member.access);
   const navbarType = useSelector((state) => state.navbarSetting.type);
   const dispatch = useDispatch();
@@ -69,41 +64,6 @@ function Navbar() {
   useEffect(() => {
     if (accessToken) {
       onNavbarSetMem();
-      axios({
-        method: 'get',
-        url: '/weather/today',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          time: new Date().getTime(),
-        },
-      })
-        .then((response) => {
-          setWeatherMessage(response.data.message);
-          setRecentTemp(response.data.today.recent);
-          setMinTemp(response.data.today.min);
-          setMaxTemp(response.data.today.max);
-          if (
-            response.data.today.ptyCode == 1 ||
-            response.data.today.ptyCode == 2
-          ) {
-            setWeatherIcon(weatherIcons.rain);
-          } else if (response.data.today.ptyCode == 3) {
-            setWeatherIcon(weatherIcons.snow);
-          } else if (response.data.today.ptyCode == 4) {
-            setWeatherIcon(weatherIcons.heavyRain);
-          } else {
-            if (response.data.today.skyCode == 1) {
-              setWeatherIcon(weatherIcons.sun);
-            } else {
-              setWeatherIcon(weatherIcons.cloud);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     } else {
       onNavbarSetNonMem();
     }
@@ -114,12 +74,11 @@ function Navbar() {
     setIsOotdBorder(true);
     setIsWeeklyBorder(false);
 
-    if (accessToken !== '') {
+    if (accessToken) {
       onNavbarSetMem();
     } else {
       onNavbarSetNonMem();
     }
-
     navigate('/');
   }
 
@@ -144,17 +103,6 @@ function Navbar() {
 
   return (
     <>
-      {/* 임시로 주석 처리하였습니다 */}
-      {/* {navbarType !== 'NonMem' && (
-        <div>
-          <div>{weatherIcon}</div>
-          <div>{recentTemp}</div>
-          <div>H:{maxTemp}</div>
-          <div>L:{minTemp}</div>
-          <div>{'>' + weatherMessage}</div>
-        </div>
-      )} */}
-
       <div className="navBarWrapper">
         <nav className="topNavBar">
           <div className="leftNavBar">
