@@ -53,7 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/auth/isMemberByEmail",
 					"/auth/send-mail/pw",
 					"/auth/getAddress1List",
-					"/auth/getAddress2List"
+					"/auth/getAddress2List",
+					"/weather/todayNonMem"
 					));
 
 	@Override
