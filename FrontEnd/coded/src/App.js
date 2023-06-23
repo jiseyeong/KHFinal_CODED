@@ -30,6 +30,7 @@ import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
+import Follow from './test/follow';
 
 function App() {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ function App() {
         <Route path="/searchBox" element={<SearchBox />} />
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
+        <Route path="/test/follow" element={<Follow/>}/>
 
         <Route
           path="/test/feedComment"

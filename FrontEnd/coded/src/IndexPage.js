@@ -47,6 +47,10 @@ const IndexPage = () => {
       <Link to="/test/FeedInsert">피드 작성 테스트</Link>
       <br />
       <br />
+      <Link to="/test/follow">팔로워 팔로잉 리스트 테스트</Link>
+      <br />
+      <br />
+
       <button onClick={onLogout}>로그아웃</button>
     </div>
   );
