@@ -82,7 +82,7 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
 	}
 
-	public List<FeedPostDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
+	public List<FeedPostAddDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);

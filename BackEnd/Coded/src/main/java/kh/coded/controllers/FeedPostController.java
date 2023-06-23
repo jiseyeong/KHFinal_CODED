@@ -91,10 +91,9 @@ public class FeedPostController {
 	@GetMapping("/selectSearchHashFeedList/{keyword}")
 	public ResponseEntity<?> selectSearchFeedListByHashs(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
-			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
 			@PathVariable("keyword") String keyword){
-		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
-		return ResponseEntity.ok().body(map);
+		List<FeedPostAddDTO> data = feedpostService.selectSearchFeedListByHashs(cpage,keyword);
+		return ResponseEntity.ok().body(data);
 	}
 
 	// 단순 피드DTO만 뽑기
