@@ -74,16 +74,21 @@ public class FeedPostController {
 		}
 	}
 
+	@GetMapping("/hashtagList")
+	public ResponseEntity<?> getHashTagLists(@RequestParam(value="feedPostId") int feedPostId){
+		return ResponseEntity.ok().body(feedpostService.selectHashTagList(feedPostId));
+	}
+	
 	// 피드 리스트 전체 뽑기 ( 기본 양식 )
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
 			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
-		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
-		return ResponseEntity.ok().body(map);
+//		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
+//		return ResponseEntity.ok().body(map);
 		
-//		List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost2(cpage);
-//		return ResponseEntity.ok().body(data);
+		List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost2(cpage);
+		return ResponseEntity.ok().body(data);
 	}
 
 	// 해시태그 검색을 통한 피드 리스트 뽑기

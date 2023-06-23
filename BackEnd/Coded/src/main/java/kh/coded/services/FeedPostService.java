@@ -89,7 +89,10 @@ public class FeedPostService {
     public List<FeedPostDTO> selectTestFeedList() {
         return feedpostDAO.selectTestFeedList();
     }
-
+    
+    public List<PostHashsWithHashTagDTO> selectHashTagList(int feedPostId){
+    	return postHashsDAO.selectAllTagIdByFeedPostId(feedPostId);
+    }
     
     // 고도화 작업 요구
     public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {

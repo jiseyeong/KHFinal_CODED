@@ -35,10 +35,10 @@ function Modal({
   ); // 그냥 modalData?.description으로 바꿔볼 것.
   const [res, setRes] = useState([]);
   //const [isLikeBtn, setIsLikeBtn] = useState(false);
-  const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
-  const [follower, setFollower] = useState(
-    modalData?.modalData?.modalData?.follower,
-  ); // 그냥 modalData?.follower로 바꿔볼 것.
+  // const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
+  // const [follower, setFollower] = useState(
+  //   modalData?.modalData?.modalData?.follower,
+  // ); // 그냥 modalData?.follower로 바꿔볼 것.
   const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
 
@@ -55,13 +55,13 @@ function Modal({
   //   }
   // }
 
-  function handleRepleLike(e) {
-    if (!isRepleLikeBtn) {
-      setIsRepleLikeBtn(true);
-    } else {
-      setIsRepleLikeBtn(false);
-    }
-  }
+  // function handleRepleLike(e) {
+  //   if (!isRepleLikeBtn) {
+  //     setIsRepleLikeBtn(true);
+  //   } else {
+  //     setIsRepleLikeBtn(false);
+  //   }
+  // }
 
   function followBtnActive() {
     if (isFollowBtn) {
@@ -71,22 +71,22 @@ function Modal({
     }
   }
 
-  function getData(e) {
-    e.preventDefault();
-    setComment(e.target.value);
-    setData(e.target.value);
-  }
+  // function getData(e) {
+  //   e.preventDefault();
+  //   setComment(e.target.value);
+  //   setData(e.target.value);
+  // }
 
-  function handleKeyPress(e) {
-    e.preventDefault();
-    if (e.key === 'Enter') {
-      if (!comment) {
-        e.preventDefault();
-      } else {
-        // handleComment();
-      }
-    }
-  }
+  // function handleKeyPress(e) {
+  //   e.preventDefault();
+  //   if (e.key === 'Enter') {
+  //     if (!comment) {
+  //       e.preventDefault();
+  //     } else {
+  //       // handleComment();
+  //     }
+  //   }
+  // }
   
   // useEffect(()=>{
   //     axios({
@@ -120,30 +120,30 @@ function Modal({
   // },[])
 
   // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
-  function handleComment(e) {
-    axios({
-      method: 'post',
-      url: API,
-      headers: {
-        Authorization: 'Bearer ' + accessToken,
-      },
-      params: {
-        content: comment,
-        user_id: modalData?.modalData?.modalData?.id,
-      },
-    })
-      .then((response) => {
-        setRes(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    setComments((prev) => {
-      return [...prev, comment];
-    });
-    setComment('');
-    num += 1;
-  }
+  // function handleComment(e) {
+  //   axios({
+  //     method: 'post',
+  //     url: API,
+  //     headers: {
+  //       Authorization: 'Bearer ' + accessToken,
+  //     },
+  //     params: {
+  //       content: comment,
+  //       user_id: modalData?.modalData?.modalData?.id,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       setRes(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   setComments((prev) => {
+  //     return [...prev, comment];
+  //   });
+  //   setComment('');
+  //   num += 1;
+  // }
 
   useEffect(() => {
     console.log('id값', modalData?.modalData?.modalData?.id);
@@ -223,7 +223,7 @@ function Modal({
 
             <div className="rightWrapper">
               <div className="authorPopularity">
-                <div className={isLikeBtn ? 'likeBox' : 'dislikeBox'}>
+                <div className={isLike ? 'likeBox' : 'dislikeBox'}>
                   <Like></Like>
                 </div>
                 <div className="likeNumBox">
