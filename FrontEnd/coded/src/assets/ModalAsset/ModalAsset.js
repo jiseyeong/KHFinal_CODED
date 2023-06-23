@@ -17,7 +17,7 @@ const OptionBox = () => {
   );
 };
 
-const Like = () => {
+const Like = (handleClickLike) => {
   return (
     <svg
       className="like"
