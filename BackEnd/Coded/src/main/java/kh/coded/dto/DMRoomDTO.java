@@ -2,12 +2,12 @@ package kh.coded.dto;
 
 public class DMRoomDTO {
     private int roomId;
-    private int LastMessageId;
+    private int lastMessageId;
 
     public DMRoomDTO(int roomId, int lastMessageId) {
 		super();
 		this.roomId = roomId;
-		LastMessageId = lastMessageId;
+		lastMessageId = lastMessageId;
 	}
 
 	public DMRoomDTO() {
@@ -23,11 +23,11 @@ public class DMRoomDTO {
 	}
 
 	public int getLastMessageId() {
-		return LastMessageId;
+		return lastMessageId;
 	}
 
 	public void setLastMessageId(int lastMessageId) {
-		LastMessageId = lastMessageId;
+		lastMessageId = lastMessageId;
 	}
     
 }

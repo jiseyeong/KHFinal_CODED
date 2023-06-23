@@ -14,8 +14,8 @@ public class DMDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-	public List<DMDTO> selectDMList(int roomId) {
-		return mybatis.selectList("DM.selectDMList",roomId);
+	public List<DMDTO> selectDMRoomList(int roomId) {
+		return mybatis.selectList("DM.selectDMRoomList",roomId);
 	}
 	
 	

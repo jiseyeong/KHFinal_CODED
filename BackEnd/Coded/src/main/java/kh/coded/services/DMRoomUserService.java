@@ -1,8 +1,11 @@
 package kh.coded.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kh.coded.dto.DMRoomUserDTO;
 import kh.coded.repositories.DMDAO;
 import kh.coded.repositories.DMRoomDAO;
 import kh.coded.repositories.DMRoomUserDAO;
@@ -22,5 +25,9 @@ public class DMRoomUserService {
 	
 	@Autowired
 	private DMRoomUserDAO dmRoomUserDAO;
+
+	public List<DMRoomUserDTO> selectByUserNo(int userNo) {
+		return dmRoomUserDAO.selectByUserNo(userNo);
+	}
 	
 }

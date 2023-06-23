@@ -47,6 +47,9 @@ const IndexPage = () => {
       <Link to="/test/FeedInsert">피드 작성 테스트</Link>
       <br />
       <br />
+      <Link to="/test/TodayAndAdForm">오늘의 날씨 및 광고 테스트</Link>
+      <br />
+      <br />
       <button onClick={onLogout}>로그아웃</button>
     </div>
   );
