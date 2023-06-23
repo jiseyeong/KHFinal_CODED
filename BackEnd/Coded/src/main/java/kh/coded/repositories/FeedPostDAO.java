@@ -62,25 +62,18 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectTestFeedList");
 	}
 
-	public List<FeedPostDTO> selectAllFeedPost(int startFeedNum, int endFeedNum) {
+	public List<FeedPostAddDTO> selectAllFeedPost(int startFeedNum, int endFeedNum) {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);
 		return mybatis.selectList("FeedPost.selectAllFeedPost",map);
-	}
-	
-	public List<FeedPostAddDTO> selectAllFeedPost2(int startFeedNum, int endFeedNum) {
-		Map<String, Integer> map = new HashMap<>();
-		map.put("startFeedNum",startFeedNum);
-		map.put("endFeedNum",endFeedNum);
-		return mybatis.selectList("FeedPost.selectAllFeedPost2",map);
 	}
 
 	public FeedPostDTO selectByUserNo(int userNo) {
 		return mybatis.selectOne("FeedPost.selectByUserNo",userNo);
 	}
 
-	public List<FeedPostDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){
+	public List<FeedPostAddDTO> selectWeeklyFeed(int targetTemp, int targetTempRange, int startFeedNum, int endFeedNum){
 		Map<String, Integer> data = new HashMap<>();
 		data.put("targetTemp", targetTemp);
 		data.put("targetTempRange", targetTempRange);
@@ -89,7 +82,7 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectPagingWeatherDiff", data);
 	}
 
-	public List<FeedPostDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
+	public List<FeedPostAddDTO> selectSearchFeedListByHashs(int startFeedNum, int endFeedNum, String keyword) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("startFeedNum",startFeedNum);
 		map.put("endFeedNum",endFeedNum);

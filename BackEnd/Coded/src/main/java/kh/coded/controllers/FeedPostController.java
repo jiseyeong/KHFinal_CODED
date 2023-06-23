@@ -82,12 +82,8 @@ public class FeedPostController {
 	// 피드 리스트 전체 뽑기 ( 기본 양식 )
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
-			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
-			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
-//		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
-//		return ResponseEntity.ok().body(map);
-		
-		List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost2(cpage);
+			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage){		
+		List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost(cpage);
 		return ResponseEntity.ok().body(data);
 	}
 
@@ -95,10 +91,9 @@ public class FeedPostController {
 	@GetMapping("/selectSearchHashFeedList/{keyword}")
 	public ResponseEntity<?> selectSearchFeedListByHashs(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1")  int cpage,
-			@RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
 			@PathVariable("keyword") String keyword){
-		Map<String, Object> map = feedpostService.selectSearchFeedListByHashs(cpage,userNo,keyword);
-		return ResponseEntity.ok().body(map);
+		List<FeedPostAddDTO> data = feedpostService.selectSearchFeedListByHashs(cpage,keyword);
+		return ResponseEntity.ok().body(data);
 	}
 
 	// 단순 피드DTO만 뽑기
@@ -114,7 +109,7 @@ public class FeedPostController {
 			@RequestParam(value="currentTempRange") int currentTempRange,
 			@RequestParam(value="cpage", required = false, defaultValue = "1") int cpage
 			){
-		Map<String, Object> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
+		List<FeedPostAddDTO> data = feedpostService.selectWeeklyFeed(currentTemp, currentTempRange, cpage);
 		return ResponseEntity.ok().body(data);
 	}
 
