@@ -10,7 +10,7 @@ const Follow = () => {
                         <div>아이디</div>
                         <div>닉네임</div>
                     </div>
-                    <div>팔로워 버튼</div>
+                    <div>팔로우 버튼</div>
                 </div>
             </div>
         </div>

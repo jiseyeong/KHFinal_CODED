@@ -31,6 +31,7 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
 import Follow from './test/follow';
+import Likepeed from './component/FeedList/Likepeed';
 
 function App() {
   const dispatch = useDispatch();
@@ -116,7 +117,7 @@ function App() {
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
 
         <Route path="/likepeed" element={<Likepeed/>} />
-        <Route path="/newpeed"  element={<Newpeed/>} />
+        {/* <Route path="/newpeed"  element={<Newpeed/>} /> */}
         
       </Routes>
       <Footer />
