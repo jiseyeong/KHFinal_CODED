@@ -45,13 +45,13 @@ const FeedPostOuter = styled('div')`
 
 function FeedList() {
   const [feedPost, setFeedPost] = useState([]);
-  const [thumbNail, setThumbnail] = useState([]);
-  const [member, setMember] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
-  const [hashTagList, setHashTagList] = useState([]);
+  // const [thumbNail, setThumbnail] = useState([]);
+  // const [member, setMember] = useState([]);
+  // const [userProfile, setUserProfile] = useState([]);
+  // const [hashTagList, setHashTagList] = useState([]);
+  // const [feedLike, setFeedLike] = useState([]);
+  // const [isFeedLike, setIsFeedLike] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [feedLike, setFeedLike] = useState([]);
-  const [isFeedLike, setIsFeedLike] = useState([]);
   const [scrollWait, setScrollWait] = useState(true);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
   const feedPostOuterRef = useRef(null);
@@ -69,23 +69,25 @@ function FeedList() {
       },
     })
       .then((resp) => {
-        const {
-          feedPostList,
-          thumbNailList,
-          memberList,
-          userProfileList,
-          hashTagLists,
-          feedLikeList,
-          isFeedLikeList,
-        } = resp.data;
+        // const {
+        //   feedPostList,
+        //   // thumbNailList,
+        //   // memberList,
+        //   // userProfileList,
+        //   // hashTagLists,
+        //   // feedLikeList,
+        //   // isFeedLikeList,
+        // } = resp.data;
         
-        setFeedPost((prev) => [...prev, ...feedPostList]);
-        setThumbnail((prev) => [...prev, ...thumbNailList]);
-        setUserProfile((prev) => [...prev, ...userProfileList]);
-        setMember((prev) => [...prev, ...memberList]);
-        setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setFeedLike((prev) => [...prev, ...feedLikeList]);
-        setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
+        console.log(resp.data);
+
+        setFeedPost((prev) => [...prev, ...resp.data]);
+        // setThumbnail((prev) => [...prev, ...thumbNailList]);
+        // setUserProfile((prev) => [...prev, ...userProfileList]);
+        // setMember((prev) => [...prev, ...memberList]);
+        // setHashTagList((prev) => [...prev, ...hashTagLists]);
+        // setFeedLike((prev) => [...prev, ...feedLikeList]);
+        // setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
         cpage.current = cpage.current + 1;
       })
       .catch((error) => {
@@ -119,10 +121,10 @@ function FeedList() {
               // columnHeights={columnHeights}
               // setColumnHeights={setColumnHeights}
               feedPost={e}
-              thumbNail={thumbNail[i]}
-              member={member[i]}
-              userProfile={userProfile[i]}
-              hashTagList={hashTagList[i]}
+              // thumbNail={thumbNail[i]}
+              // member={member[i]}
+              // userProfile={userProfile[i]}
+              // hashTagList={hashTagList[i]}
             ></FeedPostDetail>
           </div>
         ))}

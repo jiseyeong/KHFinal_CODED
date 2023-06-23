@@ -74,16 +74,21 @@ public class FeedPostController {
 		}
 	}
 
+	@GetMapping("/hashtagList")
+	public ResponseEntity<?> getHashTagLists(@RequestParam(value="feedPostId") int feedPostId){
+		return ResponseEntity.ok().body(feedpostService.selectHashTagList(feedPostId));
+	}
+	
 	// 피드 리스트 전체 뽑기 ( 기본 양식 )
 	@GetMapping("/selectAllFeedPost/")
 	public ResponseEntity<?> selectFeedList(
 			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
 			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
-		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
-		return ResponseEntity.ok().body(map);
+//		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
+//		return ResponseEntity.ok().body(map);
 		
-//		List<FeedPostAddDTO> list = feedpostService.selectAllFeedPost2(cpage);
-//		return ResponseEntity.ok().body(list);
+		List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost2(cpage);
+		return ResponseEntity.ok().body(data);
 	}
 
 	// 해시태그 검색을 통한 피드 리스트 뽑기
@@ -144,15 +149,44 @@ public class FeedPostController {
 		}
 
 		@PostMapping("/insertFeedLike") //피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)
-		public ResponseEntity<?> FeedLike(@RequestParam int userNo,@RequestParam int feedPostId) {
-			boolean result = feedpostService.isFeedLike(userNo, feedPostId);
-			if(!result) {	
-				return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
-			}else {
-				feedpostService.deleteFeedLike(userNo, feedPostId);
-
-				return ResponseEntity.ok().body(null);
+		public ResponseEntity<?> FeedLike(@RequestHeader(value="authorization") String authorization,@RequestParam int feedPostId) {
+			if(authorization.length() > 7) {
+				String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+				if(jwtProvider.validateToken(accessToken)) {
+					int userNo = jwtProvider.getLoginUserNo(accessToken);
+					boolean result = feedpostService.isFeedLike(userNo, feedPostId);
+					if(!result) {	
+						feedpostService.insertFeedLike(userNo, feedPostId);
+						return ResponseEntity.ok().body(null);
+					}else {
+						feedpostService.deleteFeedLike(userNo, feedPostId);
+						return ResponseEntity.ok().body(null);
+					}
+				};			
 			}
+			return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+		}
+		
+		@GetMapping("/likeCount")
+		public ResponseEntity<?> getFeedLikeCount(
+				@RequestParam(value="feedPostId") int feedPostId
+				){
+			return ResponseEntity.ok().body(feedpostService.selectFeedLike(feedPostId));
+		}
+		
+		@GetMapping("/isLike")
+		public ResponseEntity<?> getFeedIsLike(
+				@RequestHeader(value="authorization") String authorization,
+				@RequestParam(value="feedPostId") int feedPostId
+				){
+			if(authorization.length() > 7) {
+				String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+				if(jwtProvider.validateToken(accessToken)) {
+					int userNo = jwtProvider.getLoginUserNo(accessToken);
+					return ResponseEntity.ok().body(feedpostService.isFeedLike(userNo, feedPostId));
+				};			
+			}
+			return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 		}
 
 		@PostMapping("/insertFeedScrap") //피드 스크랩 입력 & 삭제 
