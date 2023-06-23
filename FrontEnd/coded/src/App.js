@@ -28,6 +28,7 @@ import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
+
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
 import Follow from './test/follow';
@@ -92,6 +93,7 @@ function App() {
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
         <Route path="/searchBox" element={<SearchBox />} />
+
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
         <Route path="/test/follow" element={<Follow/>}/>
@@ -116,7 +118,7 @@ function App() {
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
         {/* <Route path="/likepeed" element={<Likepeed/>} />
-        <Route path="/newpeed"  element={<Newpeed/>} /> */}      
+        <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
