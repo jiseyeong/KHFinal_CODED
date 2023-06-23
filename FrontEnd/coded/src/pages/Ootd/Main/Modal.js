@@ -6,7 +6,7 @@ import './Modal.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import FeedCommentList from '../../../component/FeedPostDetail/FeedCommentList';
-import {OptionBox,Like} from '../../../assets/ModalAsset';
+import {OptionBox,Like, ScrapImage} from '../../../assets/ModalAsset/ModalAsset';
 
 function Modal({
   // modalData,
@@ -160,7 +160,7 @@ function Modal({
                 <img
                   className="image"
                   //src={modalData?.modalData?.modalData?.contentImg}
-                  src={feedPost.thumbNailSysName}
+                  src={"/images/" + feedPost.thumbNailSysName}
                 />
                 {/* <div
                   className={
@@ -190,7 +190,7 @@ function Modal({
                     <img
                       className="commentUserImg"
                       //src={modalData?.modalData?.modalData?.authorImg}
-                      src={feedPost.profileSysName}
+                      src={"/images/"+feedPost.profileSysName}
                       width="40"
                       height="40"
                     />
@@ -225,7 +225,9 @@ function Modal({
             <div className="rightWrapper">
               <div className="authorPopularity">
                 <div className={isLike ? 'likeBox' : 'dislikeBox'}>
-                  <Like></Like>
+                  <Like
+                    handleClickLike={setIsLike}
+                  />
                 </div>
                 <div className="likeNumBox">
                   <span className="likeNum">
