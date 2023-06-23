@@ -154,11 +154,12 @@ const FeedPostDetail = (props) => {
     <div className={styles.feedInnerParentDiv}>
       <div className={styles.feedInnerLayoutDiv} ref={myRef}>
         <div className={styles.feedImageDiv} onClick={openModal}>
-          {feedPost.thumbNailSysName !== null ? (
+          {feedPost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
               src={`/images/${feedPost.thumbNailSysName}`}
               onLoad={handleThumbNailLoaded}
+              onError={handleThumbNailLoaded}
             ></img>
           ) : (
             <img className={styles.thumbNail} src={`/images/test.jpg`} onLoad={handleThumbNailLoaded}></img>
@@ -169,14 +170,13 @@ const FeedPostDetail = (props) => {
           <div className={styles.userProfileLayout}>
             {/* 해당 유저의 마이픽 페이지로 이동 */}
             <Link to="#">
-            {feedPost.userProfileSysName !== null ? (
-              
+            {feedPost.userProfileSysName != null ? (
                 <img
                   className={styles.userProfile}
                   src={`/images/${feedPost.profileSysName}`}
                   onLoad={handleProfileLoaded}
+                  onError={handleProfileLoaded}
                 ></img>
-              
             ) : (
               <img
                 className={styles.userProfile}

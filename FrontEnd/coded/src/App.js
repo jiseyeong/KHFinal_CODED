@@ -31,6 +31,7 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
+import ImageSlide from './test/ImageSlide';
 
 function App() {
   const dispatch = useDispatch();
@@ -94,6 +95,7 @@ function App() {
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
+        <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route
           path="/test/feedComment"
