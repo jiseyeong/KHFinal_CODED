@@ -90,25 +90,31 @@ function Modal({
   
   // useEffect(()=>{
   //     axios({
-  //       method:'post',
+  //       method:'get',
   //       url:'/feedpost/selectFeedDetail',
   //       headers:{
   //         Authorization:'Bearer '+accessToken
   //     },
   //     params:{
-  //       feedpostid:id
+  //       feedPostId:feedPostId
   //    }
   //     }).then((response)=>{
-  //       const [
+  //       const {
   //         feedPost,
   //         photoList,
   //         writeMember,
   //         userProfile,
   //         feedLikeCount,
   //         isFeedLike
-  //       ] = response.data;
-
-  //     }).catch(()=>{
+  //       } = response.data;
+  //       setFeedPost(feedPost);
+  //       setPhotoList(photoList);
+  //       setWriteMember(writeMember);
+  //       setUserProfile(userProfile);
+  //       setFeedLikeCount(feedLikeCount);
+  //       setFeedLike(isFeedLike);
+  //     }).catch((error)=>{
+  //       console.log(error);
 
   //     })
   // },[])
@@ -201,37 +207,8 @@ function Modal({
                     </div>
                   </div>
                   <div className="optionBox">
-                  <svg
-                    className="option"
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 512 512"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M255.8 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38zM102 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38zM410 218c-21 0-38 17-38 38s17 38 38 38 38-17 38-38-17-38-38-38z"></path>
-                  </svg>
+                  <OptionBox></OptionBox>
                 </div>
-                  {/* <div className="followBtnBox">
-                    <svg
-                      className={isFollowBtn ? 'followBtnActive' : 'followBtn'}
-                      onClick={followBtnActive}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      stroke="currentColor"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                      <path
-                        fillRule="evenodd"
-                        d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"
-                      />
-                    </svg>
-                  </div> */}
                 </div>
                 <hr className="hrTag"></hr>
                 <div className="authorDescription">
@@ -247,23 +224,7 @@ function Modal({
             <div className="rightWrapper">
               <div className="authorPopularity">
                 <div className={isLikeBtn ? 'likeBox' : 'dislikeBox'}>
-                  <svg
-                    className="like"
-                    onClick={handleClickLike}
-                    stroke="currentColor"
-                    fill="currentColor"
-                    strokeWidth="0"
-                    viewBox="0 0 16 16"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+                  <Like></Like>
                 </div>
                 <div className="likeNumBox">
                   <span className="likeNum">
@@ -274,15 +235,7 @@ function Modal({
                   </span>
                 </div>
                 <div className="scrapBox">
-                  <svg
-                    className="scrapImage"
-                    fill="black"
-                    viewBox="0 0 48 48"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M34 6H14c-2.21 0-3.98 1.79-3.98 4L10 42l14-6 14 6V10c0-2.21-1.79-4-4-4zm0 30l-10-4.35L14 36V10h20v26z" />
-                    <path d="M0 0h48v48H0z" fill="none" />
-                  </svg>
+                  <ScrapImage></ScrapImage>
                 </div>
               </div>
 

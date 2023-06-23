@@ -4,8 +4,6 @@ import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
 import LoadingBar from '../Common/LoadingBar';
-import NoticeBar from './NoticeBar';
-import NoneSearchedBar from './NoneSearchedBar';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -43,13 +41,13 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function FeedList() {
+function Likepeed() {
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
   const [member, setMember] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
   const [hashTagList, setHashTagList] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [feedLike, setFeedLike] = useState([]);
   const [isFeedLike, setIsFeedLike] = useState([]);
   const [scrollWait, setScrollWait] = useState(true);
@@ -59,8 +57,8 @@ function FeedList() {
   const cpage = useRef(1);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addFeedList = () => {
-    console.log(cpage.current);
+  const addLikepeed = () => {
+    // setLoading(false);
     axios({
       method: 'GET',
       url: '/feedpost/selectAllFeedPost/',
@@ -78,7 +76,7 @@ function FeedList() {
           feedLikeList,
           isFeedLikeList,
         } = resp.data;
-        
+
         setFeedPost((prev) => [...prev, ...feedPostList]);
         setThumbnail((prev) => [...prev, ...thumbNailList]);
         setUserProfile((prev) => [...prev, ...userProfileList]);
@@ -87,9 +85,12 @@ function FeedList() {
         setFeedLike((prev) => [...prev, ...feedLikeList]);
         setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
         cpage.current = cpage.current + 1;
+        // setLoading(true);
+        console.log(cpage.current);
       })
       .catch((error) => {
         console.log(error);
+        // setLoading(true);
       });
   };
   // window.innerHeight 실제 보이는 창의 높이
@@ -97,41 +98,54 @@ function FeedList() {
   // document.body.offsetHeight 페이지 전체 높이
 
   useEffect(() => {
-    addFeedList();
+    addLikepeed();
+    window.onscroll = function () {
+      if (
+        window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+        scrollWait
+      ) {
+        setScrollWait((prev) => !prev);
+        addLikepeed();
+        setScrollWait((prev) => !prev);
+      }
+    };
+
     return () => {
       window.onscroll = null;
     };
   }, []);
 
-  window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      addFeedList();
-    }
-  };
-
+  // if (loading) {
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
       <Masonry className={'my-masonry-grid'} options={masonryOptions}>
-        {feedPost.map((e, i) => (
-          <div className="grid-item" key={i}>
-            <FeedPostDetail
-              index={i}
-              // columnHeights={columnHeights}
-              // setColumnHeights={setColumnHeights}
-              feedPost={e}
-              thumbNail={thumbNail[i]}
-              member={member[i]}
-              userProfile={userProfile[i]}
-              hashTagList={hashTagList[i]}
-            ></FeedPostDetail>
-          </div>
-        ))}
+        {feedPost.map((e, i) => {
+          return (
+            <div className="grid-item" key={i}>
+              <FeedPostDetail
+                index={i}
+                // columnHeights={columnHeights}
+                // setColumnHeights={setColumnHeights}
+                feedPost={e}
+                thumbNail={thumbNail[i]}
+                member={member[i]}
+                userProfile={userProfile[i]}
+                hashTagList={hashTagList[i]}
+                feedLike={feedLike[i]}
+                isFeedLike={isFeedLike[i]}
+              ></FeedPostDetail>
+            </div>
+          );
+        })}
       </Masonry>
     </FeedPostOuter>
   );
+  // } else {
+  //   return <LoadingBar />;
+  // }
 }
 
-export default FeedList;
+export default Likepeed;
 
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값
