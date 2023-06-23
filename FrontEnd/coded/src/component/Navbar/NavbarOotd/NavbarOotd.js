@@ -35,7 +35,7 @@ class NavbarOotd extends Component {
             <div className="leftNavBar">
               <a className="navLogo" href="/">
                 <img src="/images/navLogo.png" />
-                // 로고 사진 이미지
+               
               </a>
               <div className="leftMenuWrapper">
                 <ul className="leftMenuList">

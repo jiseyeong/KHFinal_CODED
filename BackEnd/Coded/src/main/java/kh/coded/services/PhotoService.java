@@ -44,4 +44,7 @@ public class PhotoService {
 		}
 	}
 
+    public List<PhotoDTO> testedBySelectPhoto() {
+		return photoDAO.testedBySelectPhoto();
+    }
 }

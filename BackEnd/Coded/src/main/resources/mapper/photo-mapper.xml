@@ -23,6 +23,10 @@
         select * from photo where userno = ${userNo}
     </select>
 
+    <select id="testedBySelectPhoto" resultType="kh.coded.dto.PhotoDTO">
+        select * from (select photo.*, row_number() over(order by photoid desc) rn from photo) where rn between 3 and 7
+    </select>
+
 </mapper>
 
   

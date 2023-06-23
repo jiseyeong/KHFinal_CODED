@@ -1,5 +1,5 @@
 import React, { Component, useCallback, useEffect, useState } from 'react';
-import './NavbarNonMem.scss';
+import './Navbar.module.scss';
 import { useNavigate, withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -149,7 +149,7 @@ function Navbar() {
           <div className="leftNavBar">
             <a className="navLogo" href="/">
               <img src="/images/navLogo.png" />
-              // 로고 사진 이미지
+              
             </a>
             <div className="leftMenuWrapper">
               <ul className="leftMenuList">
