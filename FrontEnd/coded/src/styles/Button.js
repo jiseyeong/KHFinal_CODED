@@ -3,14 +3,14 @@ import styled, { css } from 'styled-components';
 /* 여기서 스타일 적용하면 여러 곳에서 같은 스타일의 버튼을 사용 가능. */
 
 const StyledButton = styled.button`
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 0.25rem 1rem;
-  color: white;
-  outline: none;
-  cursor: pointer;
+border:none;
+border-radius:20px;
+height:35px;
+background-color:black;
+color:white;
+margin-left:10px;
+cursor:pointer;
+font-size:12px;
 
   ${(props) =>
     props.fullWidth &&
