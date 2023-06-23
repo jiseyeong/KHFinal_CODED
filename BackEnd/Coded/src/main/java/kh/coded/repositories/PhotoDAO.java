@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.PhotoDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -34,4 +35,9 @@ public class PhotoDAO {
 		else
 			return null;
 	}
+
+    public List<PhotoDTO> testedBySelectPhoto() {
+		List<PhotoDTO> list = mybatis.selectList("Photo.testedBySelectPhoto");
+		return list;
+    }
 }

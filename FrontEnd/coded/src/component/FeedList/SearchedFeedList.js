@@ -45,10 +45,10 @@ const FeedPostOuter = styled('div')`
 
 function SearchedFeedList() {
   const [feedPost, setFeedPost] = useState([]);
-  const [thumbNail, setThumbnail] = useState([]);
-  const [member, setMember] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
-  const [hashTagList, setHashTagList] = useState([]);
+  // const [thumbNail, setThumbnail] = useState([]);
+  // const [member, setMember] = useState([]);
+  // const [userProfile, setUserProfile] = useState([]);
+  // const [hashTagList, setHashTagList] = useState([]);
   // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
   const [newSearch, setNewSearch] = useState(false);
   const feedPostOuterRef = useRef(null);
@@ -88,34 +88,34 @@ function SearchedFeedList() {
         },
       })
       .then((resp) => {
-        console.log(resp.data);
-        const {
-          feedPostList,
-          thumbNailList,
-          memberList,
-          userProfileList,
-          hashTagLists,
-        } = resp.data;
+        // console.log(resp.data);
+        // const {
+        //   feedPostList,
+        //   thumbNailList,
+        //   memberList,
+        //   userProfileList,
+        //   hashTagLists,
+        // } = resp.data;
 
         // 새로 검색했을 때,
         if (newSearch) {
-          setFeedPost(() => [...feedPostList]);
-          setThumbnail(() => [...thumbNailList]);
-          setUserProfile(() => [...userProfileList]);
-          setMember(() => [...memberList]);
-          setHashTagList(() => [...hashTagLists]);
+          setFeedPost(() => [...resp.data]);
+          // setThumbnail(() => [...thumbNailList]);
+          // setUserProfile(() => [...userProfileList]);
+          // setMember(() => [...memberList]);
+          // setHashTagList(() => [...hashTagLists]);
         } else {
-          setFeedPost((prev) => [...prev, ...feedPostList]);
-          setThumbnail((prev) => [...prev, ...thumbNailList]);
-          setUserProfile((prev) => [...prev, ...userProfileList]);
-          setMember((prev) => [...prev, ...memberList]);
-          setHashTagList((prev) => [...prev, ...hashTagLists]);
+          setFeedPost((prev) => [...prev, ...resp.data]);
+          // setThumbnail((prev) => [...prev, ...thumbNailList]);
+          // setUserProfile((prev) => [...prev, ...userProfileList]);
+          // setMember((prev) => [...prev, ...memberList]);
+          // setHashTagList((prev) => [...prev, ...hashTagLists]);
         }
 
         // setCpage((prev) => {
         //   return (prev + 1);
         // });
-        console.log(feedPostList);
+        console.log(resp.data);
         cpage.current = cpage.current + 1;
       })
       .catch((error) => console.log(error));
@@ -139,10 +139,10 @@ function SearchedFeedList() {
                     // columnHeights={columnHeights}
                     // setColumnHeights={setColumnHeights}
                     feedPost={e}
-                    thumbNail={thumbNail[i]}
-                    member={member[i]}
-                    userProfile={userProfile[i]}
-                    hashTagList={hashTagList[i]}
+                    // thumbNail={thumbNail[i]}
+                    // member={member[i]}
+                    // userProfile={userProfile[i]}
+                    // hashTagList={hashTagList[i]}
                   ></FeedPostDetail>
                 </div>
               ))}

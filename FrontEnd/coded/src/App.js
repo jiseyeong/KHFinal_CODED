@@ -29,6 +29,10 @@ import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
+import CaroselTest from './test/CaroselTest';
+import FeedInsertTest from './test/FeedInsertTest';
+import ImageSlide from './test/ImageSlide';
+
 function App() {
   const dispatch = useDispatch();
   const onLogin = useCallback(
@@ -89,6 +93,10 @@ function App() {
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
         <Route path="/searchBox" element={<SearchBox />} />
 
+        <Route path="/caroselTest" element={<CaroselTest />} />
+        <Route path="/feedInsertTest" element={<FeedInsertTest />} />
+        <Route path="/imageSlide" element={<ImageSlide />} />
+
         <Route
           path="/test/feedComment"
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
@@ -108,6 +116,8 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
+        {/* <Route path="/likepeed" element={<Likepeed/>} />
+        <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>
       <Footer />
     </BrowserRouter>
