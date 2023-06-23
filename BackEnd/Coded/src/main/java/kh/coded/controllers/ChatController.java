@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.DMDTO;
 import kh.coded.dto.DMRoomDTO;
+import kh.coded.dto.DMRoomListDTO;
 import kh.coded.services.DMRoomService;
 import kh.coded.services.DMRoomUserService;
 import kh.coded.services.DMService;
@@ -41,27 +42,20 @@ public class ChatController {
 
 	// -- DM 관련 DB 작업 --
 
-	// UserNo를 통한 DMRoomDTO 데이터 얻어오기
+	// UserNo를 통한 DMRoomListDTO(로그인사용자와 대화중인 상대방의 id, nickname, 사진 등) 데이터 얻어오기
 	@GetMapping("selectChatList")
 	public ResponseEntity<?> selectChatList (@RequestParam(value = "userNo") int userNo){
-		System.out.println(userNo);
+		System.out.println("채팅 참가자 조회"+userNo);
 		try {
-			List<DMRoomDTO> list = DMRoomService.selectByUserNo(userNo);
+			List<DMRoomListDTO> list = DMRoomService.selectByUserNo(userNo);
+			System.out.println(list);
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
-	@GetMapping("selectDMList")
-	public ResponseEntity<?> selectDMList (int RoomId){
-		try {
-			List<DMDTO> list = DMService.selectDMList(RoomId);
-			return ResponseEntity.ok().body(list);
-		}catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
 
 
 

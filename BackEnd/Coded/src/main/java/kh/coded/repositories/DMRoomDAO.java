@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kh.coded.dto.DMRoomDTO;
+import kh.coded.dto.DMRoomListDTO;
 
 @Repository
 public class DMRoomDAO {
@@ -15,7 +16,7 @@ public class DMRoomDAO {
 	private SqlSessionTemplate mybatis;
 
 	// userNo를 통해 DmRoomId를 가져옴
-	public List<DMRoomDTO> selectByUserNo(int userNo) {
+	public List<DMRoomListDTO> selectByUserNo(int userNo) {
 		return mybatis.selectList("DMRoom.selectByUserNo",userNo);
 	}
 

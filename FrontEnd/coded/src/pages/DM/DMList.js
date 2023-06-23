@@ -9,27 +9,35 @@ function DMList() {
 
     const accessToken = useSelector((state) => state.member.access);
     const loginUserNo = useSelector((state) => state.member.userNo);
-    const [chatList, setChatList] = useState();
+    const [DMRoomList, setDMRoomList] = useState([]);
 
-    useEffect(()=>{
-        axios({
-            method: 'get',
-            url: '/DM/selectChatList',
-            params: {
-                userNo: loginUserNo,
-            },
-        })
-            .then((resp) => {
-                
-              
+    useEffect(() => {
+        if (loginUserNo > 0) {
+            axios({
+                method: 'get',
+                url: '/DM/selectChatList',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                params: {
+                    userNo: loginUserNo
+                },
+
             })
-            .catch((error) => console.log(error));
-    },[loginUserNo])
-  
+                .then((resp) => {
+                    console.log(resp.data);
+
+
+                })
+                .catch((error) => console.log(error));
+        }
+    }, [loginUserNo])
+
+
     const DMListOuter = styled('div')`
     margin:auto;
     border: 1px solid black;
-    width:1000px;
+    width:1000px;=
     height:600px;
     
 
@@ -90,7 +98,7 @@ function DMList() {
                     <input className='search' type='text'></input>
                 </div>
                 <div className='chatList'>
-                    
+
                 </div>
             </div>
         </DMListOuter>
