@@ -3,21 +3,96 @@ import React, { useEffect, useRef, useState } from 'react';
 import Modal from '../../pages/Ootd/Main/Modal';
 import styles from './FeedPostDetail.module.scss';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const FeedPostDetail = (props) => {
   const {
     index,
     feedPost,
-    thumbNail,
-    member,
-    userProfile,
-    hashTagList,
-    feedLike,
-    isFeedLike,
+    // thumbNail,
+    // member,
+    // userProfile,
+    //hashTagList,
+    // feedLike,
+    // isFeedLike,
     // columnHeights,
     // setColumnHeights,
   } = props;
   const [modal, setModal] = useState(false);
+  const [feedLikeCount, setFeedLikeCount] = useState(0);
+  const [isFeedLike, setIsFeedLike] = useState(false);
+  const [hashTagList, setHashTagList] = useState([]);
+  const accessToken = useSelector((state)=>state.member.access);
+  
+  const myRef = useRef(null);
+
+  useEffect(()=>{
+    //likeCount 초기값 세팅
+    getFeedLikeCount();
+  },[]);
+  useEffect(()=>{
+    //피드 라이크가 변경된다면, likeCount 갱신하기.
+    getFeedLikeCount();
+  }, [isFeedLike]);
+  useEffect(()=>{
+    //엑세스 토큰이 있다면, 로그인 유저의 isLike 정보 긁어오기
+    axios({
+      method:'get',
+      url:'/feedpost/isLike',
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      },
+      params:{
+        feedPostId:feedPost.feedPostId
+      }
+    })
+    .then((response)=>{
+      setIsFeedLike(response.data);
+    })
+    .catch((error)=>{
+      if (error.request.status === 400) {
+        console.log(error.response.data);
+      } else {
+        console.log(error);
+      }
+    });
+  }, [accessToken]);
+
+  function getFeedLikeCount(){
+    axios({
+      method:'get',
+      url:'/feedpost/likeCount',
+      params:{
+        feedPostId:feedPost.feedPostId
+      }
+    })
+    .then((response)=>{
+      setFeedLikeCount(response.data);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+  function setFeedLike(){
+    axios({
+      method:'post',
+      url:'/feedpost/inserFeedLike',
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      },
+      params:{
+        feedPostId:feedPost.feedPostId
+      },
+    })
+    .catch((error)=>{
+      if (error.request.status === 400) {
+        console.log(error.response.data);
+      } else {
+        console.log(error);
+      }
+    });
+  };
 
   const openModal = () => {
     if (!modal) {
@@ -30,8 +105,6 @@ const FeedPostDetail = (props) => {
       setModal(false);
     }
   };
-
-  const myRef = useRef(null);
 
   // useEffect(() => {
   //   // 피드 내 정렬 설정
@@ -113,6 +186,9 @@ const FeedPostDetail = (props) => {
             modal={modal}
             closeModal={closeModal}
             feedPostId={feedPost.feedPostId}
+            feedLikeCount={feedLikeCount}
+            isLike={isFeedLike}
+            setIsLike={setFeedLike}
           />
         )}
       </div>

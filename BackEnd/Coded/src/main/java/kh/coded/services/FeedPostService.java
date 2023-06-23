@@ -139,6 +139,7 @@ public class FeedPostService {
         int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
         int endFeedNum = cpage * feedCountPerPage;
         int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        
         return feedpostDAO.selectAllFeedPost2(startFeedNum, endFeedNum);
     }
     
