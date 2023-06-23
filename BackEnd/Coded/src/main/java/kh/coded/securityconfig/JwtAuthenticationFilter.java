@@ -86,8 +86,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 				System.out.println("JWT 토큰이 유효하지 않습니다.");
 			}
 		}else {
-			System.out.println("JWT 토큰이 Bearer String 으로 시작하지 않습니다.");
-			
+//			System.out.println("JWT 토큰이 Bearer String 으로 시작하지 않습니다.");
 		}
 
 		if(member != null && SecurityContextHolder.getContext().getAuthentication() == null) {
