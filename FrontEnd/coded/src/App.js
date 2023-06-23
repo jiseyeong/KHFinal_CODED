@@ -28,6 +28,7 @@ import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
+import PrivacyPolicy from "./component/Footer/Component/PrivacyPolicy/PrivacyPolicy"
 
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
@@ -87,6 +88,7 @@ function App() {
         <Route path="/idSearch" element={<IdSearch />} />
         <Route path="/pwSearch" element={<PwSearch />} />
         <Route path="/weekly" element={<WeeklyPage />} />
+        <Route path="/privacyPolicy" element={<PrivacyPolicy />} />
 
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
