@@ -6,6 +6,7 @@ import './Modal.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import FeedCommentList from '../../../component/FeedPostDetail/FeedCommentList';
+import {OptionBox,Like} from '../../../assets/ModalAsset';
 
 function Modal({
   // modalData,
@@ -30,9 +31,9 @@ function Modal({
 
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
-  const [description, setDescription] = useState(
-    modalData?.modalData?.modalData?.description,
-  ); // 그냥 modalData?.description으로 바꿔볼 것.
+  // const [description, setDescription] = useState(
+  //   modalData?.modalData?.modalData?.description,
+  // ); // 그냥 modalData?.description으로 바꿔볼 것.
   const [res, setRes] = useState([]);
   //const [isLikeBtn, setIsLikeBtn] = useState(false);
   // const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
@@ -63,13 +64,13 @@ function Modal({
   //   }
   // }
 
-  function followBtnActive() {
-    if (isFollowBtn) {
-      setIsFollowBtn(false);
-    } else {
-      setIsFollowBtn(true);
-    }
-  }
+  // function followBtnActive() {
+  //   if (isFollowBtn) {
+  //     setIsFollowBtn(false);
+  //   } else {
+  //     setIsFollowBtn(true);
+  //   }
+  // }
 
   // function getData(e) {
   //   e.preventDefault();
@@ -145,9 +146,9 @@ function Modal({
   //   num += 1;
   // }
 
-  useEffect(() => {
-    console.log('id값', modalData?.modalData?.modalData?.id);
-  });
+  // useEffect(() => {
+  //   console.log('id값', modalData?.modalData?.modalData?.id);
+  // });
 
   return (
     <div className="wrapper">
@@ -161,13 +162,13 @@ function Modal({
                   //src={modalData?.modalData?.modalData?.contentImg}
                   src={feedPost.thumbNailSysName}
                 />
-                <div
+                {/* <div
                   className={
                     modalData?.modalData?.modalData?.contentImg?.length > 1
                       ? 'smallImages'
                       : 'displayNone'
                   }
-                >
+                > */}
                   <div></div>
                   {/* <figure className="smallImagesWrapper">
                     <img
@@ -181,7 +182,7 @@ function Modal({
                       src={modalData?.modalData?.modalData?.contentImg[1]}
                     />
                   </figure> */}
-                </div>
+                {/* </div> */}
               </div>
               <div className="information">
                 <div className="commentData">
