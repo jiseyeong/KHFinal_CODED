@@ -84,7 +84,7 @@ public class JwtProvider {
 	    }
 	    return false;
 	}
-		
+//		
 //	public Authentication getAuthentication(String token) {
 //		UserDetails member = memberService.loadUserByUsername(this.getLoiginUserID(token));
 //		return new UsernamePasswordAuthenticationToken(member, "", member.getAuthorities());

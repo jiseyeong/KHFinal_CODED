@@ -3,7 +3,6 @@ package kh.coded.services;
 import java.util.List;
 import java.util.Random;
 
-import kh.coded.dto.MemberWithProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -33,6 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
+import kh.coded.dto.MemberWithProfileDTO;
 import kh.coded.repositories.AddressCoordDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.security.JwtProvider;
@@ -74,11 +74,11 @@ public class MemberService implements UserDetailsService {
 			throw new UsernameNotFoundException(username + "은 없는 회원입니다.");
 		}
 		return new MemberPrincipal(user);
-		//		return User.builder()
-		//				.username(user.getUserId())
-		//				.password(user.getPw())
-		//				.roles(user.getRole())
-		//				.build();
+//				return User.builder()
+//						.username(user.getUserId())
+//						.password(user.getPw())
+//						.roles(user.getRole())
+//						.build();
 	}
 
 	public String login(HttpServletResponse response, MemberDTO member) throws Exception {
@@ -249,15 +249,15 @@ public class MemberService implements UserDetailsService {
 		return key.toString();
 	}
 
-	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal authUser) throws Exception{
 		Long kakaoId = this.getKakaoUserInfo(accessToken);
 		String token = Long.toString(kakaoId);
 		MemberDTO member = this.selectMemberByKakaoToken(token);
 
 		if(member == null) {
 			//등록 하려 누른 것일 것임.
-			if(auth != null) {
-				member = memberDAO.selectMemberById(auth.getName());
+			if(authUser != null) {
+				member = memberDAO.selectMemberById(authUser.getUsername());
 				memberDAO.updateKakaoToken(member.getUserNo(), token);
 				return "T";
 			}
@@ -303,14 +303,13 @@ public class MemberService implements UserDetailsService {
 		String accessToken = this.getNaverAccessToken(code);
 
 		//토큰으로 네이버 API 호출
-		Long naverId = this.getNaverUserInfo(accessToken);
-		String token = Long.toString(naverId);
+		String token = this.getNaverUserInfo(accessToken);
 		MemberDTO member = this.selectMemberByNaverToken(token);
-
+		
 		if(member == null) {
 			//등록 하려 누른 것일 것임.
 			if(auth != null) {
-				member = memberDAO.selectMemberById(auth.getName());
+				member = memberDAO.selectMemberById(auth.getUsername());
 				memberDAO.updateNaverToken(member.getUserNo(), token);
 				return "T";
 			}
@@ -352,12 +351,13 @@ public class MemberService implements UserDetailsService {
 				);
 
 		String responseBody = response.getBody();
+		System.out.println(responseBody);
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 		return jsonNode.get("access_token").asText();
 	}
 
-	private Long getNaverUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+	private String getNaverUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -375,7 +375,7 @@ public class MemberService implements UserDetailsService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-		Long id = jsonNode.get("response").get("id").asLong();
+		String id = jsonNode.get("response").get("id").asText();
 
 		return id;
 	}
@@ -385,14 +385,13 @@ public class MemberService implements UserDetailsService {
 		String accessToken = this.getGoogleAccessToken(code);
 
 		//토큰으로 구글 API 호출
-		Long googleId = this.getGoogleUserInfo(accessToken);
-		String token = Long.toString(googleId);
+		String token = this.getGoogleUserInfo(accessToken);
 		MemberDTO member = this.selectMemberByNaverToken(token);
 
 		if(member == null) {
 			//등록 하려 누른 것일 것임.
 			if(auth != null) {
-				member = memberDAO.selectMemberById(auth.getName());
+				member = memberDAO.selectMemberById(auth.getUsername());
 				memberDAO.updateGoogleToken(member.getUserNo(), token);
 				return "T";
 			}
@@ -438,7 +437,7 @@ public class MemberService implements UserDetailsService {
 		return jsonNode.get("access_token").asText();
     }
     
-    private Long getGoogleUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+    private String getGoogleUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -456,10 +455,11 @@ public class MemberService implements UserDetailsService {
 				);
 
 		String responseBody = response.getBody();
+		System.out.println(responseBody);
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 
-		Long id = jsonNode.get("id").asLong();
+		String id = jsonNode.get("id").asText();
 
 		return id;
 	}
