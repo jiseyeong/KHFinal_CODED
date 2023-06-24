@@ -77,4 +77,9 @@
 	<select id="selectUserWithProfileByUserNo" resultType="kh.coded.dto.MemberWithProfileDTO">
 		select * from member left join photo using (userNo) where userNo=${userNo}
 	</select>
+
+	<update id="updateMemberByUserNo">
+		update member set userId=#{userId}, userNickName = #{userNickName}, email = #{email},
+		address1 = #{address1}, address2 = #{address2} where userNo = ${userNo}
+	</update>
   </mapper>

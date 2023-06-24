@@ -92,10 +92,10 @@ const ProfileTemplate = () => {
             const {
               userNo,
               userId,
+              userNickName,
+              email,
               address1,
               address2,
-              email,
-              userNickName,
               sysName,
             } = resp1.data;
 
@@ -103,10 +103,10 @@ const ProfileTemplate = () => {
               userNo: userNo,
               userId: userId,
               pw: '******',
+              userNickName: userNickName,
+              email: email,
               address1: address1,
               address2: address2,
-              email: email,
-              userNickName: userNickName,
               sysName: sysName,
             };
 
@@ -126,7 +126,7 @@ const ProfileTemplate = () => {
           }),
         )
         .then((obj) => initAddress1(obj))
-        .then((obj) => setAddress2(obj))
+        .then((obj) => getAddress2(obj))
         .then((obj) => initAddress2(obj))
         .catch((error) => {
           console.log(error);
@@ -149,8 +149,8 @@ const ProfileTemplate = () => {
     return { member: member, addressList: address1 };
   };
 
-  // 1차 주소 지정에 따른 2차 주소 지정
-  const setAddress2 = (obj) => {
+  // 1차 주소를 토대로 2차 주소를 가져옴
+  const getAddress2 = (obj) => {
     const { member, addressList } = obj;
     axios
       .get('/auth/getAddress2List', {
@@ -175,8 +175,23 @@ const ProfileTemplate = () => {
     return obj;
   };
 
-  // 1차 주소를 토대로 2차 주소를 가져옴
-  const getAddress2 = (target) => {
+  // 내 정보에 등록된 2차 기본 주소 지정
+  const initAddress2 = (obj) => {
+    const { member, addressList } = obj;
+    if (addressList.length > 0) {
+      addressList.forEach((item, index) => {
+        if (item.value === member.address2) {
+          setAddress2Index(index);
+        }
+      });
+    } else {
+      setAddressIndex2(0);
+    }
+  };
+
+  // 1차 주소 지정에 따른 2차 주소 지정
+  const setAddress2 = (target) => {
+    setMemberInfo((prev) => ({ ...prev, address1: target.value }));
     axios
       .get('/auth/getAddress2List', {
         params: {
@@ -197,20 +212,6 @@ const ProfileTemplate = () => {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  // 내 정보에 등록된 2차 기본 주소 지정
-  const initAddress2 = (obj) => {
-    const { member, addressList } = obj;
-    if (addressList.length > 0) {
-      addressList.forEach((item, index) => {
-        if (item.value === member.address2) {
-          setAddress2Index(index);
-        }
-      });
-    } else {
-      setAddressIndex2(0);
-    }
   };
 
   // 첫 렌더링, 새로고침 시 초기 데이터 불러오기 작업 시작
@@ -243,11 +244,33 @@ const ProfileTemplate = () => {
         };
       }
     }
+
+    axios.put('/auth');
   };
 
   const toggleChangePwModal = () => {
     setChangePwModal((prev) => !prev);
     console.log(changePwModal);
+  };
+
+  const handleMemberInfo = (e) => {
+    const { id, innerText } = e.target;
+    const isActiveElement = e.target === document.activeElement;
+    if (!isActiveElement) {
+      setMemberInfo((prev) => ({ ...prev, [id]: innerText }));
+    }
+  };
+
+  // 회원 정보 수정 완료 버튼 클릭 시
+  const UpdateMemberInfo = () => {
+    axios
+      .put('/auth/updateMemberByUserNo', memberInfo)
+      .then(() => {
+        alert('수정이 완료되었습니다.');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -304,26 +327,45 @@ const ProfileTemplate = () => {
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>nickname</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={`${styles.infoBody} forEdit`}>
+                  <div
+                    className={`${styles.infoBody} forEdit`}
+                    id="userNickName"
+                    onInput={handleMemberInfo}
+                    value={memberInfo.userNickName}
+                  >
                     {memberInfo.userNickName}
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>id</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={`${styles.infoBody} forEdit`}>
+                  <div
+                    className={`${styles.infoBody} forEdit`}
+                    id="userId"
+                    onInput={handleMemberInfo}
+                  >
                     {memberInfo.userId}
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>pw</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}> {memberInfo.pw} </div>
+                  <div
+                    className={styles.infoBody}
+                    id="pw"
+                    onInput={handleMemberInfo}
+                  >
+                    {memberInfo.pw}
+                  </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>email</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={`${styles.infoBody} forEdit`}>
+                  <div
+                    className={`${styles.infoBody} forEdit`}
+                    id="email"
+                    onInput={handleMemberInfo}
+                  >
                     {memberInfo.email}
                   </div>
                 </div>
@@ -337,7 +379,7 @@ const ProfileTemplate = () => {
                           ref={address1}
                           options={addressList1}
                           defaultValue={addressList1[addressIndex1]}
-                          onChange={getAddress2}
+                          onChange={setAddress2}
                         />
                       )}
                     </div>
@@ -360,7 +402,12 @@ const ProfileTemplate = () => {
                     >
                       수정취소
                     </button>
-                    <button className={styles.EditComBtn}>수정완료</button>
+                    <button
+                      className={styles.EditComBtn}
+                      onClick={UpdateMemberInfo}
+                    >
+                      수정완료
+                    </button>
                   </div>
                 ) : (
                   <div className={styles.infoBar3}>

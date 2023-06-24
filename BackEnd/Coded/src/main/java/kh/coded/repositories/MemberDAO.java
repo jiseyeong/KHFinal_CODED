@@ -128,4 +128,8 @@ public class MemberDAO {
 	public MemberWithProfileDTO selectUserWithProfileByUserNo(int userNo) {
 		return mybatis.selectOne("Member.selectUserWithProfileByUserNo",userNo);
 	}
+
+	public int updateMemberByUserNo(MemberWithProfileDTO dto) {
+		return mybatis.update("Member.updateMemberByUserNo",dto);
+	}
 }
