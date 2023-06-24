@@ -73,4 +73,8 @@
 	<select id="selectUserListWithProfile" resultType="kh.coded.dto.MemberWithProfileDTO">
 		select * from member join photo using (userNo) order by userNo desc
 	</select>
+
+	<select id="selectUserWithProfileByUserNo" resultType="kh.coded.dto.MemberWithProfileDTO">
+		select * from member left join photo using (userNo) where userNo=${userNo}
+	</select>
   </mapper>
