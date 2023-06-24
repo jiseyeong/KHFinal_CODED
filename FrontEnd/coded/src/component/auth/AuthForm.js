@@ -24,6 +24,7 @@ const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
     margin-bottom: 1rem;
+    text-align:center;
   }
 `;
 
@@ -390,7 +391,7 @@ const AuthForm = ({ type }) => {
       {type === 'register' && (
         <>
           <input
-            className='inputNickname' 
+            className={style.inputNickname} 
             type="text"
             autoComplete="name"
             name="userNickName"
