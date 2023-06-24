@@ -57,7 +57,7 @@ const ProfileTemplate = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-        .then((response) => {
+        .then((resp) => {
           const {
             userNo,
             userId,
@@ -66,9 +66,9 @@ const ProfileTemplate = () => {
             address2,
             email,
             userNickName,
-          } = response.data;
+          } = resp.data;
 
-          setMemberInfo({
+          let test = {
             userNo: userNo,
             userId: userId,
             pw: pw,
@@ -76,11 +76,12 @@ const ProfileTemplate = () => {
             address2: address2,
             email: email,
             userNickName: userNickName,
-          });
-          // userno userid pw address1 address2 email
+          };
+          console.log(test);
+          return test;
         })
-        .catch((error) => {
-          console.log(error);
+        .then((resp) => {
+          updateAddressList1(resp);
         });
     } else {
       denyAccess();
@@ -99,8 +100,18 @@ const ProfileTemplate = () => {
             value: address,
             label: address,
           });
-          setAddressList1((prev) => [...prev, ...arrTemp]);
         });
+        setAddressList1(arrTemp);
+        return arrTemp;
+      })
+      .then((resp) => {
+        handleAddress1(resp);
+      })
+      .then(() => {
+        updateAddressList2();
+      })
+      .then(() => {
+        handleAddress2();
       })
       .catch((error) => {
         console.log(error);
@@ -108,9 +119,10 @@ const ProfileTemplate = () => {
   };
 
   // Address1 자동 선택
-  const handleAddress1 = () => {
-    addressList1.forEach((item, index) => {
+  const handleAddress1 = (resp) => {
+    resp.forEach((item, index) => {
       if (item.value === memberInfo.address1) {
+        console.log('find');
         setMyAddress1(() => {
           setMyAddress1Location(addressList1[index]);
           return (
@@ -122,7 +134,7 @@ const ProfileTemplate = () => {
   };
 
   const updateAddressList2 = () => {
-    axios({
+    const response = axios({
       method: 'get',
       url: '/auth/getAddress2List',
       params: {
@@ -136,7 +148,7 @@ const ProfileTemplate = () => {
             value: address,
             label: address,
           });
-          setAddressList2((prev) => [...prev, ...arrTemp]);
+          setAddressList2(tmp);
         });
       })
       .catch((error) => {
@@ -157,31 +169,28 @@ const ProfileTemplate = () => {
   };
 
   useEffect(() => {
-    getLoginData();
-    updateAddressList1();
+    const member = getLoginData();
+    console.log(member);
+    // updateAddressList1();
+    // handleAddress1();
+    // updateAddressList2();
+    // handleAddress2();
   }, [accessToken]);
 
-  useEffect(() => {
-    handleAddress1();
-  }, [memberInfo]);
+  // useEffect(() => {
+  // }, [memberInfo]);
 
-  useEffect(() => {
-    updateAddressList2();
-  }, [myAddress1Location]);
+  // useEffect(() => {
+  // }, [myAddress1Location]);
 
-  useEffect(() => {
-    handleAddress2();
-  }, [addressList2]);
+  // useEffect(() => {
+  // }, [addressList2]);
 
   const handleEditing = () => {
     setEditing((prev) => {
       return !prev;
     });
   };
-
-  useEffect(() => {
-    console.log(editing);
-  }, [editing]);
 
   return (
     <ProfileTemplateBlock>

@@ -50,7 +50,7 @@ const AuthForm = ({ type }) => {
   const text = textMap[type];
   const navigate = useNavigate();
 
-  //const access = useSelector((state) => state.token.access);
+  const accessToken = useSelector((state) => state.member.access);
   const dispatch = useDispatch();
   const onLogin = useCallback(
     (accessToken, userId, userNo) =>
@@ -94,6 +94,12 @@ const AuthForm = ({ type }) => {
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+  useEffect(()=>{
+    if(accessToken){
+      navigate("/");
+    }
+  },[accessToken])
+
   useEffect(() => {
     if (searchParams.get('error')) {
       alert('로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.');
@@ -118,6 +124,7 @@ const AuthForm = ({ type }) => {
       setId(cookie.load('userId') ? cookie.load('userId') : '');
     }
   }, []);
+
   function updateAddressList2() {
     axios({
       method: 'get',

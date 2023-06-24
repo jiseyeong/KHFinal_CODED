@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function KakaoCodeCallbackPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -8,49 +9,70 @@ function KakaoCodeCallbackPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
+  const accessToken = useSelector((state)=>state.member.access);
+  const [change, setChange] = useState(false);
+
+  useEffect(()=>{
+    setLoading(true);
+  }, []);
+
   useEffect(() => {
-    const code = searchParams.get('code');
-    if (code != null || code != undefined || cpde != '') {
-      setLoading(true);
-      axios({
-        method: 'get',
-        url: '/login/oauth2/kakao/tokenInfo',
-      })
-        .then((response) => {
-          axios({
-            method: 'post',
-            url: 'https://kauth.kakao.com/oauth/token',
-            params: {
-              grant_type: 'authorization_code',
-              client_id: response.data.client_id,
-              client_secret: response.data.client_secret,
-              redirect_uri: response.data.redirect_uri,
-              code: code,
-            },
-          }).then((response) => {
+    if(change){
+      const code = searchParams.get('code');
+      if (code) {
+        axios({
+          method: 'get',
+          url: '/login/oauth2/kakao/tokenInfo',
+        })
+          .then((response) => {
             axios({
-              method: 'get',
-              url: '/login/oauth2/kakao',
+              method: 'post',
+              url: 'https://kauth.kakao.com/oauth/token',
               params: {
-                accessToken: response.data.access_token,
+                grant_type: 'authorization_code',
+                client_id: response.data.client_id,
+                client_secret: response.data.client_secret,
+                redirect_uri: response.data.redirect_uri,
+                code: code,
               },
             }).then((response) => {
-              setLoading(false);
-              console.log(response);
-              let url = '/login/oauth2/callback?message=' + response.data;
-              navigate(url);
+              axios({
+                method: 'get',
+                url: '/login/oauth2/kakao',
+                params: {
+                  accessToken: response.data.access_token,
+                },
+                headers:{
+                  Authorization:`Bearer ${accessToken}`
+                },
+              }).then((response) => {
+                setLoading(false);
+                console.log(response);
+                let url = '/login/oauth2/callback?message=' + response.data;
+                navigate(url);
+              });
             });
+          })
+          .catch((error) => {
+            setLoading(false);
+            setError(true);
+            console.log(error);
           });
-        })
-        .catch((error) => {
-          setLoading(false);
-          setError(true);
-          console.log(error);
-        });
-    } else {
-      navigate('/login');
+      } else {
+        navigate('/login');
+      }
     }
-  }, []);
+  }, [change]);
+
+  useEffect(()=>{
+    if(accessToken){
+      setChange((prev)=>{return !prev});
+    }else{
+      setTimeout(()=>{
+        setChange((prev)=>{return !prev});
+      }, 1000)
+    }
+  }, [accessToken])
 
   if (loading) {
     return <div>진행 중...</div>;

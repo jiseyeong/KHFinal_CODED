@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kh.coded.dto.MemberWithProfileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
+import kh.coded.dto.MemberWithProfileDTO;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.AddressCoordService;
 import kh.coded.services.MemberService;
@@ -248,10 +250,16 @@ public class AuthenticationController {
 	@GetMapping(value="/login/oauth2/kakao")
 	public ResponseEntity<?> kakaoLogin(
 			@RequestParam(value="accessToken") String accessToken,
-			HttpServletResponse response,
-			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
+			HttpServletResponse response
+			)
+					throws Exception{
 		//"T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		String result = memberService.kakaoLogin(accessToken, response, auth);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		MemberPrincipal authUser = null;
+		if(!auth.getPrincipal().equals("anonymousUser")) {
+			authUser = (MemberPrincipal) memberService.loadUserByUsername((String)auth.getPrincipal());
+		}
+		String result = memberService.kakaoLogin(accessToken, response, authUser);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("T");
@@ -274,10 +282,14 @@ public class AuthenticationController {
 	@GetMapping(value="/login/oauth2/naver")
 	public ResponseEntity<?> naverLogin(
 			@RequestParam(value="code") String code,
-			HttpServletResponse response,
-			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
+			HttpServletResponse response) throws Exception{
 		//엑세스 토큰에 "T"이거나, "F"이거나, 엑세스 토큰 값이 나올 것임.
-		String result = memberService.naverLogin(code, response, auth);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		MemberPrincipal authUser = null;
+		if(!auth.getPrincipal().equals("anonymousUser")) {
+			authUser = (MemberPrincipal) memberService.loadUserByUsername((String)auth.getPrincipal());
+		}
+		String result = memberService.naverLogin(code, response, authUser);
 		if(result.equals("T")) {
 			//accepted - header 202. 원래라면 put, post 용.
 			return ResponseEntity.accepted().body("T");
@@ -300,9 +312,13 @@ public class AuthenticationController {
 	@GetMapping(value="/login/oauth2/google")
 	public ResponseEntity<?> googleLogin(
 			@RequestParam(value="code") String code,
-			HttpServletResponse response,
-			@AuthenticationPrincipal MemberPrincipal auth) throws Exception{
-		String result = memberService.googleLogin(code, response, auth);
+			HttpServletResponse response) throws Exception{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		MemberPrincipal authUser = null;
+		if(!auth.getPrincipal().equals("anonymousUser")) {
+			authUser = (MemberPrincipal) memberService.loadUserByUsername((String)auth.getPrincipal());
+		}
+		String result = memberService.googleLogin(code, response, authUser);
 		if(result.equals("T")) {
 			return ResponseEntity.accepted().body("T");
 		}else if(result.equals("F")) {

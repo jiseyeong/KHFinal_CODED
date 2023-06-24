@@ -4,7 +4,7 @@ import { FeedMaxTempContext } from '../../modules/Context/FeedMaxTempContext';
 import { useSelector } from 'react-redux';
 import weatherIcons from '../WeatherCommon/WetherIcons';
 
-function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
+function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index}) {
   const [weatherIcon, setWeatherIcon] = useState('');
   const { setMaxTemp, setTempRange } = useContext(FeedMaxTempContext);
   const accessToken = useSelector((state) => state.member.access);
