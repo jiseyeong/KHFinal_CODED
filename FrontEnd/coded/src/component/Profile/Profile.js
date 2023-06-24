@@ -1,16 +1,11 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-} from 'react';
-import styled from 'styled-components';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
 import styles from './Profile.module.scss';
 import axios from 'axios';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
+import ChangePwModal from './component/ChangePwModal';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -52,11 +47,29 @@ const ProfileTemplate = () => {
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const [editing, setEditing] = useState(false);
+  const fileInputRef = useRef();
+  const [changePwModal, setChangePwModal] = useState(false);
 
   const handleEditing = () => {
-    setEditing((prev) => {
-      return !prev;
-    });
+    // 수정 버튼을 눌렀을 때
+    let div = document.getElementsByClassName('forEdit');
+    if (!editing) {
+      Array.from(div).forEach((item) => {
+        item.setAttribute('contenteditable', 'true');
+        item.style.border = '1px solid silver';
+      });
+      setEditing((prev) => {
+        return !prev;
+      });
+    } else {
+      Array.from(div).forEach((item) => {
+        item.setAttribute('contenteditable', 'false');
+        item.style.border = 'none';
+      });
+      setEditing((prev) => {
+        return !prev;
+      });
+    }
   };
 
   // 초기 데이터 가져옴
@@ -89,6 +102,7 @@ const ProfileTemplate = () => {
             const member = {
               userNo: userNo,
               userId: userId,
+              pw: '******',
               address1: address1,
               address2: address2,
               email: email,
@@ -161,6 +175,7 @@ const ProfileTemplate = () => {
     return obj;
   };
 
+  // 1차 주소를 토대로 2차 주소를 가져옴
   const getAddress2 = (target) => {
     axios
       .get('/auth/getAddress2List', {
@@ -198,9 +213,42 @@ const ProfileTemplate = () => {
     }
   };
 
+  // 첫 렌더링, 새로고침 시 초기 데이터 불러오기 작업 시작
   useEffect(() => {
     getInitData();
   }, [accessToken]);
+
+  // 사진 등록 시, 바로 불러오기 기능
+  const [file, setFile] = useState(null); //파일
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const handleChangeFile = (event) => {
+    console.log(event.target.files);
+    setFile(event.target.files);
+    setImgBase64([]);
+
+    for (var i = 0; i < event.target.files.length; i++) {
+      if (event.target.files[i]) {
+        let reader = new FileReader();
+        reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장.
+        // 파일 상태 업데이트
+        reader.onloadend = () => {
+          // 2. 읽기가 완료되면 아래코드가 실행.
+          const base64 = reader.result;
+          if (base64) {
+            // 문자 형태로 저장
+            var base64Sub = base64.toString();
+            // 배열 state 업데이트
+            setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+          }
+        };
+      }
+    }
+  };
+
+  const toggleChangePwModal = () => {
+    setChangePwModal((prev) => !prev);
+    console.log(changePwModal);
+  };
 
   return (
     <ProfileTemplateBlock>
@@ -209,14 +257,45 @@ const ProfileTemplate = () => {
           <div className={styles.profileContainer}>
             <div className={styles.profile}>
               <div className={styles.profile1}>
-                {memberInfo.sysName === null ? (
-                  <img src={`/images/test.jpg`}></img>
+                {imgBase64.length > 0 ? (
+                  <img
+                    src={imgBase64}
+                    onClick={() => {
+                      fileInputRef.current.click();
+                    }}
+                  ></img>
+                ) : memberInfo.sysName === null ? (
+                  <img
+                    src={`/images/test.jpg`}
+                    onClick={() => {
+                      fileInputRef.current.click();
+                    }}
+                  ></img>
                 ) : (
-                  <img src={`/images/${memberInfo.sysName}`}></img>
+                  <img
+                    src={`/images/${memberInfo.sysName}`}
+                    onClick={() => {
+                      fileInputRef.current.click();
+                    }}
+                  ></img>
                 )}
               </div>
               <div className={styles.profile2}>
-                <button>사진 바꾸기</button>
+                <input
+                  type="file"
+                  id="profileChange"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  name="file"
+                  onChange={handleChangeFile}
+                />
+                <button
+                  onClick={() => {
+                    fileInputRef.current.click();
+                  }}
+                >
+                  사진 바꾸기
+                </button>
               </div>
             </div>
             <div className={styles.info}>
@@ -225,14 +304,16 @@ const ProfileTemplate = () => {
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>nickname</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}>
+                  <div className={`${styles.infoBody} forEdit`}>
                     {memberInfo.userNickName}
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>id</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}> {memberInfo.userId} </div>
+                  <div className={`${styles.infoBody} forEdit`}>
+                    {memberInfo.userId}
+                  </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>pw</div>
@@ -242,7 +323,9 @@ const ProfileTemplate = () => {
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>email</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}> {memberInfo.email} </div>
+                  <div className={`${styles.infoBody} forEdit`}>
+                    {memberInfo.email}
+                  </div>
                 </div>
                 <div className={styles.infoBar2}>
                   <div className={styles.infoTitle}>location</div>
@@ -284,11 +367,17 @@ const ProfileTemplate = () => {
                     <button className={styles.EditBtn} onClick={handleEditing}>
                       수정하기
                     </button>
-                    <button className={styles.PwChangeBtn}>
+                    <button
+                      className={styles.PwChangeBtn}
+                      onClick={toggleChangePwModal}
+                    >
                       비밀번호 변경
                     </button>
                     <button className={styles.PwChangeBtn}>회원 탈퇴</button>
                   </div>
+                )}
+                {changePwModal && (
+                  <ChangePwModal toggleChangePwModal={toggleChangePwModal} />
                 )}
               </div>
             </div>
