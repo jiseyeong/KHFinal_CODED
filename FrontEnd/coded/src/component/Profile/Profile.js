@@ -52,6 +52,7 @@ const ProfileTemplate = () => {
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const [editing, setEditing] = useState(false);
+  const fileInputRef = useRef();
 
   const handleEditing = () => {
     setEditing((prev) => {
@@ -202,6 +203,46 @@ const ProfileTemplate = () => {
     getInitData();
   }, [accessToken]);
 
+  const [file, setFile] = useState(null); //파일
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const handleChangeFile = (event) => {
+    console.log(event.target.files);
+    setFile(event.target.files);
+    setImgBase64([]);
+
+    for (var i = 0; i < event.target.files.length; i++) {
+      if (event.target.files[i]) {
+        let reader = new FileReader();
+        reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장.
+        // 파일 상태 업데이트
+        reader.onloadend = () => {
+          // 2. 읽기가 완료되면 아래코드가 실행.
+          const base64 = reader.result;
+          if (base64) {
+            // 문자 형태로 저장
+            var base64Sub = base64.toString();
+            // 배열 state 업데이트
+            setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+          }
+        };
+      }
+    }
+  };
+
+  // {imgBase64.map((item) => {
+  //   return (
+  //     <div>
+  //       <div style={{ border: '1px solid black' }}>
+  //         <img
+  //           src={item}
+  //           style={{ maxHeight: '100%', maxWidth: '100%' }}
+  //         />
+  //       </div>
+  //       <div style={{ height: '10px' }}></div>
+  //     </div>
+  //   );
+  // })}
+
   return (
     <ProfileTemplateBlock>
       <WhiteBox>
@@ -216,7 +257,20 @@ const ProfileTemplate = () => {
                 )}
               </div>
               <div className={styles.profile2}>
-                <button>사진 바꾸기</button>
+                <input
+                  type="file"
+                  id="profileChange"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  name="file"
+                />
+                <button
+                  onClick={() => {
+                    fileInputRef.current.click();
+                  }}
+                >
+                  사진 바꾸기
+                </button>
               </div>
             </div>
             <div className={styles.info}>
