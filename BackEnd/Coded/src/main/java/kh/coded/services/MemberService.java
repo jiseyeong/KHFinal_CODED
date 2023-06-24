@@ -472,4 +472,7 @@ public class MemberService implements UserDetailsService {
 	public List<MemberWithProfileDTO> selectUserListWithProfile() {
 		return memberDAO.selectUserListWithProfile();
 	}
+	public MemberWithProfileDTO selectUserWithProfileByUserNo(int userNo) {
+		return memberDAO.selectUserWithProfileByUserNo(userNo);
+	}
 }

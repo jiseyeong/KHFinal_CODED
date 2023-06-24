@@ -429,4 +429,25 @@ public class AuthenticationController {
 		List<MemberWithProfileDTO> userList = memberService.selectUserListWithProfile();
 		return ResponseEntity.ok().body(userList);
 	}
+
+
+
+	// 토큰 값 조회하여 해당 유저의 프로필사진 과 멤버DTO 반환
+	@GetMapping(value = "/auth/userWithProfileDTO")
+	public ResponseEntity<?> getUserwithProfile(
+			@RequestHeader(value="authorization") String authorization
+	)
+	{
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				MemberWithProfileDTO member = memberService.selectUserWithProfileByUserNo(jwtProvider.getLoginUserNo(accessToken));
+				if(member != null) {
+					member.setPw("");
+					return ResponseEntity.ok().body(member);
+				}
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
 }
