@@ -402,8 +402,9 @@ const AuthForm = ({ type }) => {
       {/* <h3>{text}</h3> */}
       {type === 'register' && (
         <>
+        <div className={style.inputNicknameForm}>
           <input
-            className={style.inputNickname} 
+            className={style.inputNickname}
             type="text"
             autoComplete="name"
             name="userNickName"
@@ -412,6 +413,7 @@ const AuthForm = ({ type }) => {
             // value={nickName}
             onChange={handleNickName}>
           </input>
+          </div>
           <div>{nickNameRegexMessage}</div>
         </>
       )}
@@ -474,6 +476,7 @@ const AuthForm = ({ type }) => {
       )}
       {type === 'register' && (
         <>
+          <div className={style.inputNewPw}>
           <input 
             autoComplete="new-password"
             name="pwConfirm"
@@ -482,6 +485,7 @@ const AuthForm = ({ type }) => {
             ref={pwConfirmRef}
             onChange={handlePw}>
           </input>
+          </div>
           {pwConfirmCheck ? (
             <div>비밀번호가 일치합니다.</div>
           ) : (

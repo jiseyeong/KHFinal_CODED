@@ -1,3 +1,22 @@
+.inputNicknameForm{
+    border:1px solid silver;
+    border-radius:10px;
+    width:90%;
+    margin-left:18px;
+    margin-bottom:5px; 
+    .inputNickname{
+        border:none;
+        font-size:13px;
+        height:40px;
+        width:70%;
+        margin-left:10px;
+    }
+}
+
+
+
+
+
 .inputIdForm{
     border:1px solid silver;
     border-radius:10px;
@@ -31,6 +50,21 @@
         height:50%;
         margin-top:8px;
         margin-left:15px;
+    }
+}
+.inputNewPw{
+    border:1px solid silver;
+    display:flex;
+    width:90%;
+    margin-left:18px;
+    border-radius:10px;
+    margin-bottom:5px;
+    input{
+        border:none;
+        font-size:13px;
+        height:40px;
+        width:70%;
+        margin-left:10px;
     }
 }
 .socialLogin{
