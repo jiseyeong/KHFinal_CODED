@@ -10,6 +10,7 @@ import style from './AuthForm.module.scss';
 import kakaoImage from './kakao.png';
 import googleImage from './google.png';
 import naverImage from './naver.png';
+import {EyeImage,NoneEyeImage} from '../../assets/LoginAsset/LoginAsset.js'
 
 /*
     회원가입 또는 로그인 폼
@@ -36,14 +37,18 @@ const Footer = styled.div`
   margin-top: 2rem;
   text-align: right;
   a {
-    text-decoration: underline;
+    text-decoration: none;
     &:hover {
+      opacity:50%;
     }
   }
 `;
 
 const ButtonWithMarginTop = styled(Button)`
   margin-top: 1rem;
+  font-size:13px;
+  width:95%;
+  height:43px;
 `;
 
 const AuthForm = ({ type }) => {
@@ -410,6 +415,7 @@ const AuthForm = ({ type }) => {
           <div>{nickNameRegexMessage}</div>
         </>
       )}
+      <div className={style.inputIdForm}>
       <input  
         className={style.inputId}
         type="text"
@@ -420,7 +426,9 @@ const AuthForm = ({ type }) => {
         value={id}
         onChange={handleId}>
       </input>
+      </div>
       <div>{idDuplicateMessage}</div>
+      <div className={style.inputPwForm}>
       <input 
         className={style.inputPw}
         autoComplete="new-password"
@@ -429,9 +437,20 @@ const AuthForm = ({ type }) => {
         type={isPwView ? 'text' : 'password'}
         ref={pwRef}>
       </input>
+      <button className={style.eyeBtn}
+              onClick={() => {
+                setIsPwView((prev) => {
+                  return !prev;
+                });
+              }}
+            >
+             pw 보기
+      </button>
+      </div>
       {type === 'login' && (
         <>
-          <div className={style.checkBox}>    
+          <div className={style.checkBox}>
+            <div className={style.checkBox1}>
             <input
               type="checkbox"
               checked={isIdSaveChecked}
@@ -442,15 +461,11 @@ const AuthForm = ({ type }) => {
               }}
             />
             <label>아이디 기억</label>
-            <button
-              onClick={() => {
-                setIsPwView((prev) => {
-                  return !prev;
-                });
-              }}
-            >
-              pw보기
-            </button>
+            </div>
+            <div className={style.checkBox2}>
+            <span><Link to="/idSearch">아이디 찾기</Link></span>  / 
+            <span><Link to="/pwSearch">비밀번호 찾기</Link></span>
+            </div>
           </div>
           <div>
         
@@ -496,9 +511,11 @@ const AuthForm = ({ type }) => {
       )}
       {type === 'login' && (
         <>
+          <div className={style.socialLogin}>
           <img src={kakaoImage} className={style.kakaoBtn} onClick={doKakaoLogin}></img>
           <img src={naverImage} className={style.naverBtn} onClick={doNaverLogin}></img>
           <img src={googleImage} className={style.googleBtn} onClick={doGoogleLogin}></img>
+          </div>
         </>
       )}
       <ButtonWithMarginTop
@@ -516,15 +533,11 @@ const AuthForm = ({ type }) => {
         ))}
       <Footer>
         {type === 'login' ? (
-          <Link to="/signup">회원가입</Link>
+          <Link to="/signup" className={style.signup}>회원가입</Link>
         ) : (
           <Link to="/login">로그인</Link>
         )}
       </Footer>
-      <div className={style.loginFooter}>
-            <Link to="/idSearch">아이디 찾기</Link> /  
-            <Link to="/pwSearch">비밀번호 재발급</Link>
-      </div>
     </AuthFormBlock>
   );
 };
