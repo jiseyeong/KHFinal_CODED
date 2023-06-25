@@ -10,6 +10,7 @@ import style from './AuthForm.module.scss';
 import kakaoImage from './kakao.png';
 import googleImage from './google.png';
 import naverImage from './naver.png';
+import {EyeImage,NoneEyeImage} from '../../assets/LoginAsset/LoginAsset.js'
 
 /*
     회원가입 또는 로그인 폼
@@ -36,14 +37,18 @@ const Footer = styled.div`
   margin-top: 2rem;
   text-align: right;
   a {
-    text-decoration: underline;
+    text-decoration: none;
     &:hover {
+      opacity:50%;
     }
   }
 `;
 
 const ButtonWithMarginTop = styled(Button)`
   margin-top: 1rem;
+  font-size:13px;
+  width:95%;
+  height:43px;
 `;
 
 const AuthForm = ({ type }) => {
@@ -397,8 +402,9 @@ const AuthForm = ({ type }) => {
       {/* <h3>{text}</h3> */}
       {type === 'register' && (
         <>
+        <div className={style.inputNicknameForm}>
           <input
-            className={style.inputNickname} 
+            className={style.inputNickname}
             type="text"
             autoComplete="name"
             name="userNickName"
@@ -407,9 +413,11 @@ const AuthForm = ({ type }) => {
             // value={nickName}
             onChange={handleNickName}>
           </input>
-          <div>{nickNameRegexMessage}</div>
+          </div>
+          <div className={style.nickNameConfirm}>{nickNameRegexMessage}</div>
         </>
       )}
+      <div className={style.inputIdForm}>
       <input  
         className={style.inputId}
         type="text"
@@ -420,7 +428,9 @@ const AuthForm = ({ type }) => {
         value={id}
         onChange={handleId}>
       </input>
-      <div>{idDuplicateMessage}</div>
+      </div>
+      <div className={style.idConfirm}>{idDuplicateMessage}</div>
+      <div className={style.inputPwForm}>
       <input 
         className={style.inputPw}
         autoComplete="new-password"
@@ -429,9 +439,20 @@ const AuthForm = ({ type }) => {
         type={isPwView ? 'text' : 'password'}
         ref={pwRef}>
       </input>
+      <button className={style.eyeBtn}
+              onClick={() => {
+                setIsPwView((prev) => {
+                  return !prev;
+                });
+              }}
+            >
+             pw 보기
+      </button>
+      </div>
       {type === 'login' && (
         <>
-          <div className={style.checkBox}>    
+          <div className={style.checkBox}>
+            <div className={style.checkBox1}>
             <input
               type="checkbox"
               checked={isIdSaveChecked}
@@ -442,15 +463,11 @@ const AuthForm = ({ type }) => {
               }}
             />
             <label>아이디 기억</label>
-            <button
-              onClick={() => {
-                setIsPwView((prev) => {
-                  return !prev;
-                });
-              }}
-            >
-              pw보기
-            </button>
+            </div>
+            <div className={style.checkBox2}>
+            <span><Link to="/idSearch">아이디 찾기</Link></span>  / 
+            <span><Link to="/pwSearch">비밀번호 찾기</Link></span>
+            </div>
           </div>
           <div>
         
@@ -459,6 +476,7 @@ const AuthForm = ({ type }) => {
       )}
       {type === 'register' && (
         <>
+          <div className={style.inputNewPw}>
           <input 
             autoComplete="new-password"
             name="pwConfirm"
@@ -467,11 +485,13 @@ const AuthForm = ({ type }) => {
             ref={pwConfirmRef}
             onChange={handlePw}>
           </input>
+          </div>
           {pwConfirmCheck ? (
-            <div>비밀번호가 일치합니다.</div>
+            <div className={style.pwConfirm}>비밀번호가 일치합니다.</div>
           ) : (
-            <div>비밀번호가 일치하지 않습니다.</div>
+            <div className={style.pwConfirm}>비밀번호가 일치하지 않습니다.</div>
           )}
+          <div className={style.inputEmail}>
           <input
            autoComplete="email"
            name="e-mail"
@@ -481,24 +501,29 @@ const AuthForm = ({ type }) => {
            ref={emailRef}
            onChange={handleEmail}>
           </input>
-          <div>{emailDuplicateMessage}</div>
-          <select ref={address1} onChange={updateAddressList2}>
+          </div>
+          <div className={style.emailConfirm}>{emailDuplicateMessage}</div>
+          <div className={style.selectBox}>
+          <select className={style.select1} ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
-          <select ref={address2}>
+          <select className={style.select2} ref={address2}>
             {addressList2.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
+          </div>
         </>
       )}
       {type === 'login' && (
         <>
+          <div className={style.socialLogin}>
           <img src={kakaoImage} className={style.kakaoBtn} onClick={doKakaoLogin}></img>
           <img src={naverImage} className={style.naverBtn} onClick={doNaverLogin}></img>
           <img src={googleImage} className={style.googleBtn} onClick={doGoogleLogin}></img>
+          </div>
         </>
       )}
       <ButtonWithMarginTop
@@ -510,21 +535,17 @@ const AuthForm = ({ type }) => {
       </ButtonWithMarginTop>
       {type === 'register' &&
         (registerPassCheck ? (
-          <div>회원가입이 가능합니다.</div>
+          <div className={style.joinConfirm}>회원가입이 가능합니다.</div>
         ) : (
-          <div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
+          <div className={style.joinConfirm}>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
         ))}
       <Footer>
         {type === 'login' ? (
-          <Link to="/signup">회원가입</Link>
+          <Link to="/signup" className={style.signup}>회원가입</Link>
         ) : (
           <Link to="/login">로그인</Link>
         )}
       </Footer>
-      <div className={style.loginFooter}>
-            <Link to="/idSearch">아이디 찾기</Link> /  
-            <Link to="/pwSearch">비밀번호 재발급</Link>
-      </div>
     </AuthFormBlock>
   );
 };

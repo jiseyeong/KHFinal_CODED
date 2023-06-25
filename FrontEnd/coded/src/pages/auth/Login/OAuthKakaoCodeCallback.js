@@ -47,7 +47,6 @@ function KakaoCodeCallbackPage() {
                 },
               }).then((response) => {
                 setLoading(false);
-                console.log(response);
                 let url = '/login/oauth2/callback?message=' + response.data;
                 navigate(url);
               });

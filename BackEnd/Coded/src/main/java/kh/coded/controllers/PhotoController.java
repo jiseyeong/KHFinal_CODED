@@ -45,12 +45,6 @@ public class PhotoController {
         }
     }
 
-    @GetMapping("testedBySelectPhoto")
-    public ResponseEntity<?> testedBySelectPhoto() {
-        List<PhotoDTO> list = photoService.testedBySelectPhoto();
-        return ResponseEntity.ok().body(list);
-    }
-
     @PostMapping("updatePhoto")
     public ResponseEntity<?> updatePhoto(
             @RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
@@ -74,6 +68,21 @@ public class PhotoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @GetMapping("testedBySelectPhoto")
+    public ResponseEntity<?> testedBySelectPhoto() {
+        List<PhotoDTO> list = photoService.testedBySelectPhoto();
+        return ResponseEntity.ok().body(list);
+    }
+    
+    @GetMapping("feedpost")
+    public ResponseEntity<?> selectFeedPostPhoto(
+    		@RequestParam(value="feedPostId") int feedPostId
+    		){
+    	List<PhotoDTO> list = photoService.selectByFeedpostId(feedPostId);
+    	return ResponseEntity.ok().body(list);
+    }
+    
 }
 //    @PostMapping("/removeFile")
 //    public ResponseEntity<Boolean> removeFile(String fileName){
