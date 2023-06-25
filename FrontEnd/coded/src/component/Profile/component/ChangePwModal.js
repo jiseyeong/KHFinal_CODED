@@ -2,19 +2,8 @@ import React, { Component, useEffect, useState } from 'react';
 import './ChangePwModal.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import FeedCommentList from '../../FeedPostDetail/FeedCommentList';
-import {
-  OptionBox,
-  Like,
-  ScrapImage,
-} from '../../../assets/ModalAsset/ModalAsset';
 
 function ChangePwModal({ toggleChangePwModal }) {
-  const [userBio, setUserBio] = useState('');
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([]);
-  const [res, setRes] = useState([]);
-  const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
 
   let num = 0;
@@ -24,20 +13,24 @@ function ChangePwModal({ toggleChangePwModal }) {
       <div className="mainWrapper">
         <div className="modalWrapper" onClick={toggleChangePwModal}>
           <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
-            <div className="centerWrapper">
+            <div className="infoWrapper">
+              <p>비밀번호를 변경해 주세요!</p>
+            </div>
+            <div className="inputWrapper">
               <div className="inputLayout">
-                <input type="password" placeholder="비밀번호를 입력해주세요" />
+                <input type="password" placeholder="기존 비밀번호" />
               </div>
               <div className="inputLayout">
-                <input
-                  type="password"
-                  placeholder="비밀번호를 다시 입력해주세요"
-                />
+                <input type="password" placeholder="새 비밀번호" />
               </div>
-              <div>
-                <button>submit</button>
+              <div className="inputLayout">
+                <input type="password" placeholder="새 비밀번호 확인" />
+              </div>
+              <div className="btnLayout">
+                <button>변경 완료</button>
               </div>
             </div>
+            <div className="blankWrapper"></div>
           </div>
         </div>
       </div>
