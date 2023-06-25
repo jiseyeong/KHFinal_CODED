@@ -16,7 +16,7 @@ function LastCallbackPage() {
 
   useEffect(()=>{
     const paramMessage = searchParams.get('message');
-    if (paramMessage != 'T' && paramMessage != 'F') {
+    if (paramMessage != 'T' && paramMessage != 'F' && paramMessage != 'FF') {
       onLogin(paramMessage);
       navigate('/');
     } else if (paramMessage == 'T') {
@@ -25,7 +25,10 @@ function LastCallbackPage() {
       setMessage(
         '회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.',
       );
-    } else {
+    } else if(paramMessage == 'FF'){
+      setMessage('이미 다른 계정에 연동되어 있는 소셜 계정입니다.');
+    }
+    else {
       setMessage('알 수 없는 오류입니다. 관리자에게 문의해주십시오.');
     }
   },[]);

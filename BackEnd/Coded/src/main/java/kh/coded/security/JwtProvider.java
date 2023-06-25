@@ -105,7 +105,7 @@ public class JwtProvider {
 	
 	//엑세스 토큰에만 사용 가능
 	public String getLoiginUserID(String token) {
-		return this.parseJwtToken(token).get("userID", String.class);
+		return this.parseJwtToken(token).get("userId", String.class);
 	}
 	
 
