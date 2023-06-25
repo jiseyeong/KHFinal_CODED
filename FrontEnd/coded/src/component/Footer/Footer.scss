@@ -6,6 +6,11 @@
   border-top: 1px solid #e8ebed;
   padding-top: 30px;
 
+  font-family: 'sofia-pro', 'sans-serif';
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  
+
   .footerContainer {
       display: flex;
       background-color: #f2f2f2;
@@ -23,23 +28,21 @@
 
       .middle {
         width: 40%;
-        .title {
-          margin: 5px 0 10px 0;
-        }
-        .descList {
-          width: 100%;
-          font-size: 14px;
-          line-height: normal;
-          a {
-            color: #454c53;
-            text-decoration-color: #454c53;
-          }
-        }
       }
-    }
 
-    .right {
-      width: 20%;
+      .right {
+        width: 20%;
+      }
+
+      .title {
+        margin: 5px 0 10px 0;
+      }
+    
+      .descList {
+        width: 100%;
+        font-size: 14px;
+        line-height: normal;
+      }
     }
   }
 

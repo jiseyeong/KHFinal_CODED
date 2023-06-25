@@ -5,10 +5,11 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-public class MemberPrincipal implements UserDetails, OAuth2User{
+public class MemberPrincipal implements UserDetails{
 	//Our DB User
 		private MemberDTO user;
 
@@ -16,24 +17,13 @@ public class MemberPrincipal implements UserDetails, OAuth2User{
 		//private Collection<GrantedAuthority> authorities;
 		private boolean locked = false;
 
-		//OAuth
-		private Map<String, Object> attributes;
-
 		public MemberPrincipal() {
 			super();
 		}
 
-		//select 용
 		public MemberPrincipal(MemberDTO user) {
 			super();
 			this.user = user;
-		}
-
-		//OAuth용
-		public MemberPrincipal(MemberDTO user, Map<String, Object> attributes) {
-			super();
-			this.user = user;
-			this.attributes = attributes;
 		}
 
 
@@ -41,13 +31,17 @@ public class MemberPrincipal implements UserDetails, OAuth2User{
 		@Override
 		public Collection<? extends GrantedAuthority> getAuthorities() {
 			Collection<GrantedAuthority> collection = new ArrayList<>();
-			MemberPrincipal self = this;
-			collection.add(new GrantedAuthority(){
-				@Override
-				public String getAuthority() {
-					return self.user.getRole();
-				}
-			});
+			collection.add(new SimpleGrantedAuthority(Role.USER.getValue()));
+			if(this.user.getRole().equals(Role.ADMIN.getValue())) {
+				collection.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));	
+			}
+//			MemberPrincipal self = this;
+//			collection.add(new GrantedAuthority(){
+//				@Override
+//				public String getAuthority() {
+//					return self.user.getRole();
+//				}
+//			});
 			return collection;
 		}
 
@@ -99,17 +93,5 @@ public class MemberPrincipal implements UserDetails, OAuth2User{
 		@Override
 		public boolean isEnabled() {
 			return !this.locked;
-		}
-
-		//OAuth2
-		@Override
-		public Map<String, Object> getAttributes() {
-			return attributes;
-		}
-		//OAuth2
-		@Override
-		public String getName() {
-			//return this.user.getUserID();
-			return this.attributes.get("sub").toString();
 		}
 }

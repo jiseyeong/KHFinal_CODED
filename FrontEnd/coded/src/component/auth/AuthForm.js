@@ -6,6 +6,11 @@ import Button from '../../styles/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from '../../modules/Redux/members';
 import cookie from 'react-cookies';
+import style from './AuthForm.module.scss';
+import kakaoImage from './kakao.png';
+import googleImage from './google.png';
+import naverImage from './naver.png';
+import {EyeImage,NoneEyeImage} from '../../assets/LoginAsset/LoginAsset.js'
 
 /*
     회원가입 또는 로그인 폼
@@ -20,45 +25,37 @@ const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
     margin-bottom: 1rem;
+    text-align:center;
   }
 `;
 
 /*
     스타일링 된 인풋
 */
-const StyledInput = styled.input`
-  font-size: 1rem;
-  border: none;
-  padding-bottom: 0.5rem;
-  outline: none;
-  width: 100%;
-  &:focus {
-    color: $oc-teal-7;
-  }
-  & + & {
-    margin-top: 1rem;
-  }
-`;
 
 const Footer = styled.div`
   margin-top: 2rem;
   text-align: right;
   a {
-    text-decoration: underline;
+    text-decoration: none;
     &:hover {
+      opacity:50%;
     }
   }
 `;
 
 const ButtonWithMarginTop = styled(Button)`
   margin-top: 1rem;
+  font-size:13px;
+  width:95%;
+  height:43px;
 `;
 
 const AuthForm = ({ type }) => {
   const text = textMap[type];
   const navigate = useNavigate();
 
-  //const access = useSelector((state) => state.token.access);
+  const accessToken = useSelector((state) => state.member.access);
   const dispatch = useDispatch();
   const onLogin = useCallback(
     (accessToken, userId, userNo) =>
@@ -102,6 +99,12 @@ const AuthForm = ({ type }) => {
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+  useEffect(()=>{
+    if(accessToken){
+      navigate("/");
+    }
+  },[accessToken])
+
   useEffect(() => {
     if (searchParams.get('error')) {
       alert('로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.');
@@ -126,6 +129,7 @@ const AuthForm = ({ type }) => {
       setId(cookie.load('userId') ? cookie.load('userId') : '');
     }
   }, []);
+
   function updateAddressList2() {
     axios({
       method: 'get',
@@ -395,52 +399,60 @@ const AuthForm = ({ type }) => {
 
   return (
     <AuthFormBlock>
-      <h3>{text}</h3>
+      {/* <h3>{text}</h3> */}
       {type === 'register' && (
         <>
-          <StyledInput
+        <div className={style.inputNicknameForm}>
+          <input
+            className={style.inputNickname}
             type="text"
             autoComplete="name"
             name="userNickName"
             placeholder="닉네임"
             ref={nickNameRef}
             // value={nickName}
-            onChange={handleNickName}
-          />
-          <div>{nickNameRegexMessage}</div>
+            onChange={handleNickName}>
+          </input>
+          </div>
+          <div className={style.nickNameConfirm}>{nickNameRegexMessage}</div>
         </>
       )}
-      <StyledInput
+      <div className={style.inputIdForm}>
+      <input  
+        className={style.inputId}
         type="text"
         autoComplete="username"
         name="userId"
-        placeholder="아이디"
+        placeholder="아이디를 입력해주세요"
         ref={idRef}
         value={id}
-        onChange={handleId}
-      />
-      <div>{idDuplicateMessage}</div>
-      <StyledInput
+        onChange={handleId}>
+      </input>
+      </div>
+      <div className={style.idConfirm}>{idDuplicateMessage}</div>
+      <div className={style.inputPwForm}>
+      <input 
+        className={style.inputPw}
         autoComplete="new-password"
         name="pw"
-        placeholder="비밀번호"
+        placeholder="비밀번호를 입력해주세요"
         type={isPwView ? 'text' : 'password'}
-        ref={pwRef}
-      />
-      {type === 'login' && (
-        <>
-          <div>
-            <button
+        ref={pwRef}>
+      </input>
+      <button className={style.eyeBtn}
               onClick={() => {
                 setIsPwView((prev) => {
                   return !prev;
                 });
               }}
             >
-              pw보기
-            </button>
-          </div>
-          <div>
+              <EyeImage></EyeImage>
+      </button>
+      </div>
+      {type === 'login' && (
+        <>
+          <div className={style.checkBox}>
+            <div className={style.checkBox1}>
             <input
               type="checkbox"
               checked={isIdSaveChecked}
@@ -451,56 +463,67 @@ const AuthForm = ({ type }) => {
               }}
             />
             <label>아이디 기억</label>
+            </div>
+            <div className={style.checkBox2}>
+            <span><Link to="/idSearch">아이디 찾기</Link></span>  / 
+            <span><Link to="/pwSearch">비밀번호 찾기</Link></span>
+            </div>
           </div>
           <div>
-            <Link to="/idSearch">아이디 찾기</Link>
-            <br />
-            <Link to="/pwSearch">비밀번호 재발급</Link>
+        
           </div>
         </>
       )}
       {type === 'register' && (
         <>
-          <StyledInput
+          <div className={style.inputNewPw}>
+          <input 
             autoComplete="new-password"
             name="pwConfirm"
             placeholder="비밀번호 확인"
             type="password"
             ref={pwConfirmRef}
-            onChange={handlePw}
-          />
+            onChange={handlePw}>
+          </input>
+          </div>
           {pwConfirmCheck ? (
-            <div>비밀번호가 일치합니다.</div>
+            <div className={style.pwConfirm}>비밀번호가 일치합니다.</div>
           ) : (
-            <div>비밀번호가 일치하지 않습니다.</div>
+            <div className={style.pwConfirm}>비밀번호가 일치하지 않습니다.</div>
           )}
-          <StyledInput
-            autoComplete="email"
-            name="e-mail"
-            placeholder="e-mail"
-            type="text"
-            //value={email}
-            ref={emailRef}
-            onChange={handleEmail}
-          />
-          <div>{emailDuplicateMessage}</div>
-          <select ref={address1} onChange={updateAddressList2}>
+          <div className={style.inputEmail}>
+          <input
+           autoComplete="email"
+           name="e-mail"
+           placeholder="e-mail"
+           type="text"
+           //value={email}
+           ref={emailRef}
+           onChange={handleEmail}>
+          </input>
+          </div>
+          <div className={style.emailConfirm}>{emailDuplicateMessage}</div>
+          <div className={style.selectBox}>
+          <select className={style.select1} ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
-          <select ref={address2}>
+          <select className={style.select2} ref={address2}>
             {addressList2.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
+          </div>
         </>
       )}
       {type === 'login' && (
         <>
-          <button onClick={doKakaoLogin}>카카오 로그인</button>
-          <button onClick={doNaverLogin}>네이버 로그인</button>
-          <button onClick={doGoogleLogin}>구글 로그인</button>
+          <div className={style.socialLogin}>
+          <img src={kakaoImage} className={style.kakaoBtn} onClick={doKakaoLogin}></img>
+          <img src={naverImage} className={style.naverBtn} onClick={doNaverLogin}></img>
+          <img src={googleImage} className={style.googleBtn} onClick={doGoogleLogin}></img>
+          </div>
         </>
       )}
       <ButtonWithMarginTop
@@ -512,13 +535,13 @@ const AuthForm = ({ type }) => {
       </ButtonWithMarginTop>
       {type === 'register' &&
         (registerPassCheck ? (
-          <div>회원가입이 가능합니다.</div>
+          <div className={style.joinConfirm}>회원가입이 가능합니다.</div>
         ) : (
-          <div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
+          <div className={style.joinConfirm}>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
         ))}
       <Footer>
         {type === 'login' ? (
-          <Link to="/signup">회원가입</Link>
+          <Link to="/signup" className={style.signup}>회원가입</Link>
         ) : (
           <Link to="/login">로그인</Link>
         )}

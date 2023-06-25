@@ -47,7 +47,7 @@
   			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{hashTag}, #{email},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
   	</insert>
 	<delete id="deleteMember">
-		delete member where userId = #{userId} and pw = #{pw}
+		delete member where userId = #{userId}
 	</delete>
 	<update id="updateMember">
 		update member set usernickname = #{userNickName}, bio = #{bio}, hashtag = #{hashtag},
@@ -73,4 +73,14 @@
 	<select id="selectUserListWithProfile" resultType="kh.coded.dto.MemberWithProfileDTO">
 		select * from member join photo using (userNo) order by userNo desc
 	</select>
+
+	<select id="selectUserWithProfileByUserNo" resultType="kh.coded.dto.MemberWithProfileDTO">
+		select * from member left join photo using (userNo) where userNo=${userNo}
+	</select>
+
+	<update id="updateMemberByUserNo">
+		update member set userId=#{userId}, userNickName = #{userNickName}, email = #{email},
+		address1 = #{address1}, address2 = #{address2} where userNo = ${userNo}
+	</update>
+
   </mapper>
