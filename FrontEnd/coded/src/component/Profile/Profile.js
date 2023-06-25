@@ -50,11 +50,17 @@ const ProfileTemplate = () => {
   const [editing, setEditing] = useState(false);
   const fileInputRef = useRef();
   const [changePwModal, setChangePwModal] = useState(false);
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
 
   const navi = useNavigate();
 
+  // 정규식 적용
+  const regexId = /^[A-Za-z0-9_]{7,13}$/;
+  const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
+  const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+  // 수정 버튼을 눌렀을 때 (readonly 적용 해제, css 변경)
   const handleEditing = () => {
-    // 수정 버튼을 눌렀을 때
     let edit = document.getElementsByClassName('forEdit');
 
     // 수정 버튼이 눌린 상태
@@ -79,18 +85,20 @@ const ProfileTemplate = () => {
   // 초기 데이터 가져옴
   const getInitData = () => {
     if (accessToken) {
-      // 여러 axios 통신을 한 번에 수행
-      // access토큰으로 내 정보 가져오기
+      // 여러 axios 통신을 한 번에 수행 (axios.all)
       axios
         .all([
+          // 1. access토큰으로 내 정보 가져오기
           axios.get('/auth/userWithProfileDTO', {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           }),
+          // 2. DB에 저장된 1차 주소들을 가져옴
           axios.get('/auth/getAddress1List'),
         ])
         .then(
+          // axios의 다중 통신 이후 전달받은 데이터는 spread로 다른 매개 변수에 지정
           axios.spread((resp1, resp2) => {
             console.log(resp1);
             const {
@@ -123,14 +131,18 @@ const ProfileTemplate = () => {
               });
             });
 
+            // 현재 내 정보와 1차 주소 리스트를 저장
             setMemberInfo(member);
             setAddressList1(address);
             const obj = { member: member, addressList: address };
             return obj;
           }),
         )
+        // 3. 내 정보에 등록된 1차 기본 주소 지정
         .then((obj) => initAddress1(obj))
+        // 4. 1차 주소를 토대로 2차 주소를 가져옴 (getAddress2와 setAddress2를 매개변수로 구분)
         .then((obj) => getAddress2(obj))
+        // 5. 내 정보에 등록된 2차 기본 주소 지정
         .then((obj) => initAddress2(obj))
         .catch((error) => {
           console.log(error);
@@ -153,7 +165,7 @@ const ProfileTemplate = () => {
     return { member: member, addressList: address1 };
   };
 
-  // 1차 주소를 토대로 2차 주소를 가져옴
+  // 1차 주소를 토대로 2차 주소를 가져옴 (넘겨받은 객체를 통한 주소 가져옴)
   const getAddress2 = (obj) => {
     const { member, addressList } = obj;
     axios
@@ -193,7 +205,7 @@ const ProfileTemplate = () => {
     }
   };
 
-  // 1차 주소 지정에 따른 2차 주소 지정
+  // 1차 주소 지정에 따른 2차 주소 지정 (target을 통한 지정된 내용 불러오기)
   const setAddress2 = (target) => {
     setMemberInfo((prev) => ({ ...prev, address1: target.value }));
     axios
@@ -224,7 +236,7 @@ const ProfileTemplate = () => {
   }, [accessToken]);
 
   // 사진 등록 시, 바로 불러오기 기능
-  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+
   const handleChangeFile = (event) => {
     console.log(event.target.files);
     setImgBase64([]);
@@ -245,6 +257,7 @@ const ProfileTemplate = () => {
       };
     }
 
+    // Multi-part/form을 사용하기 위한 Form데이터 구성
     const formData = new FormData();
     formData.append('userNo', memberInfo.userNo);
     formData.append('files', event.target.files[0]);
@@ -275,7 +288,31 @@ const ProfileTemplate = () => {
   };
 
   // 회원 정보 수정 완료 버튼 클릭 시
-  const updateMemberInfo = () => {
+  const updateMemberInfo = async () => {
+    if (
+      memberInfo.userId === '' ||
+      memberInfo.userNickName === '' ||
+      memberInfo.email === ''
+    ) {
+      alert('모든 입력박스를 입력해주세요.');
+      return;
+    }
+
+    if (!regexId.test(memberInfo.userId)) {
+      alert('ID는 영문 대소문자 또는 숫자로 7~13 자리로 구성되어야 합니다.');
+      return;
+    }
+
+    if (!regexNickName.test(memberInfo.userNickName)) {
+      alert('닉네임은 특수문자를 제외, 8자리 이하 길이로 구성되어야 합니다.');
+      return;
+    }
+
+    if (!regexEmail.test(memberInfo.email)) {
+      alert('이메일은 이메일 형식의 30자리 이하 길이로 구성되어야 합니다.');
+      return;
+    }
+
     axios
       .put('/auth/updateMemberByUserNo', memberInfo)
       .then(() => {
@@ -399,12 +436,11 @@ const ProfileTemplate = () => {
                   <div className={styles.infoBody}>
                     <input
                       type="text"
-                      className="forEdit"
                       placeholder="비밀번호를 입력해주세요"
                       name="pw"
                       onChange={handleMemberInfo}
                       value={memberInfo.pw || ''}
-                      readOnly={!editing}
+                      readOnly
                     />
                   </div>
                 </div>
