@@ -475,4 +475,8 @@ public class MemberService implements UserDetailsService {
 	public MemberWithProfileDTO selectUserWithProfileByUserNo(int userNo) {
 		return memberDAO.selectUserWithProfileByUserNo(userNo);
 	}
+
+	public int updateMemberByUserNo(MemberWithProfileDTO dto) {
+		return memberDAO.updateMemberByUserNo(dto);
+	}
 }

@@ -2,19 +2,8 @@ import React, { Component, useEffect, useState } from 'react';
 import './ChangePwModal.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import FeedCommentList from '../../FeedPostDetail/FeedCommentList';
-import {
-  OptionBox,
-  Like,
-  ScrapImage,
-} from '../../../assets/ModalAsset/ModalAsset';
 
 function ChangePwModal({ toggleChangePwModal }) {
-  const [userBio, setUserBio] = useState('');
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([]);
-  const [res, setRes] = useState([]);
-  const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
 
   let num = 0;
@@ -34,7 +23,7 @@ function ChangePwModal({ toggleChangePwModal }) {
                   placeholder="비밀번호를 다시 입력해주세요"
                 />
               </div>
-              <div>
+              <div className="btnLayout">
                 <button>submit</button>
               </div>
             </div>

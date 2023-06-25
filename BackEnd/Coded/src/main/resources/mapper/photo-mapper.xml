@@ -27,6 +27,17 @@
         select * from (select photo.*, row_number() over(order by photoid desc) rn from photo) where rn between 3 and 7
     </select>
 
+    <insert id="updatePhoto">
+        <choose>
+            <when test="userNo!=0">
+                update photo set oriName = #{oriName}, sysName = #{sysName} where userNo = ${userNo}
+            </when>
+            <when test="feedPostId!=0">
+                update photo set oriName = #{oriName}, sysName = #{sysName} where feedPostId = ${feedPostId}
+            </when>
+        </choose>
+    </insert>
+
 </mapper>
 
   

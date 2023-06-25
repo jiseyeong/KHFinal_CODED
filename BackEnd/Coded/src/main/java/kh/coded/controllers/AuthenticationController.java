@@ -10,13 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -449,5 +443,14 @@ public class AuthenticationController {
 			}
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+	}
+
+	@PutMapping(value="/auth/updateMemberByUserNo")
+	public ResponseEntity<?> updateMemberByUserNo(
+			@RequestBody MemberWithProfileDTO dto) {
+		System.out.println(dto.getUserNickName());
+		System.out.println(dto.getUserNo());
+		int result = memberService.updateMemberByUserNo(dto);
+		return ResponseEntity.ok().body(null);
 	}
 }
