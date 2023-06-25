@@ -1,6 +1,7 @@
 package kh.coded.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kh.coded.dto.MemberWithProfileDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.services.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class PhotoController {
     // axios로 넘길 시, 파일과 해당 컬럼 값만 파라미터로 넘겨주면 사용 가능
     @PostMapping("insertPhoto")
     public ResponseEntity<?> insertPhoto(
-            @RequestParam(value="userNo", required = false, defaultValue ="0") int userNo,
-            @RequestParam(value="feedPostId", required = false, defaultValue ="0") int feedPostId,
+            @RequestParam(value = "userNo", required = false, defaultValue = "0") int userNo,
+            @RequestParam(value = "feedPostId", required = false, defaultValue = "0") int feedPostId,
             @RequestParam("files") List<MultipartFile> files,
             HttpServletRequest request
     ) throws IOException {
@@ -36,13 +37,23 @@ public class PhotoController {
         String realPath = request.getServletContext().getRealPath("images");
         photoService.insertPhoto(realPath, files, map);
         System.out.println(request.getServletContext().getRealPath("images"));
-        System.out.println("userNo : "+userNo);
-        System.out.println("feedPostId : "+feedPostId);
+        System.out.println("userNo : " + userNo);
+        System.out.println("feedPostId : " + feedPostId);
         return ResponseEntity.ok().body("success");
     }
+
     @GetMapping("testedBySelectPhoto")
-    public ResponseEntity<?> testedBySelectPhoto(){
+    public ResponseEntity<?> testedBySelectPhoto() {
         List<PhotoDTO> list = photoService.testedBySelectPhoto();
         return ResponseEntity.ok().body(list);
+    }
+
+    @PostMapping("updatePhotoByUserNo")
+    public ResponseEntity<?> updatePhotoByUserNo(int userNo, MultipartFile file, HttpServletRequest request) throws IOException {
+        String realPath = request.getServletContext().getRealPath("images");
+//        photoService.insertPhoto(realPath, file, userNo);
+        System.out.println("userNo : " + userNo);
+        System.out.println("file : " + file);
+        return ResponseEntity.ok().body(null);
     }
 }

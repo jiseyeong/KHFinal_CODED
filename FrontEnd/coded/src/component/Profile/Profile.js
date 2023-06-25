@@ -52,18 +52,19 @@ const ProfileTemplate = () => {
 
   const handleEditing = () => {
     // 수정 버튼을 눌렀을 때
-    let div = document.getElementsByClassName('forEdit');
+    let edit = document.getElementsByClassName('forEdit');
+
+    // 수정 버튼이 눌린 상태
     if (!editing) {
-      Array.from(div).forEach((item) => {
-        item.setAttribute('contenteditable', 'true');
+      Array.from(edit).forEach((item) => {
         item.style.border = '1px solid silver';
       });
       setEditing((prev) => {
         return !prev;
       });
+      // 수정 버튼이 눌리지 않은 상태
     } else {
-      Array.from(div).forEach((item) => {
-        item.setAttribute('contenteditable', 'false');
+      Array.from(edit).forEach((item) => {
         item.style.border = 'none';
       });
       setEditing((prev) => {
@@ -224,49 +225,62 @@ const ProfileTemplate = () => {
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const handleChangeFile = (event) => {
     console.log(event.target.files);
-    setFile(event.target.files);
     setImgBase64([]);
 
-    for (var i = 0; i < event.target.files.length; i++) {
-      if (event.target.files[i]) {
-        let reader = new FileReader();
-        reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장.
-        // 파일 상태 업데이트
-        reader.onloadend = () => {
-          // 2. 읽기가 완료되면 아래코드가 실행.
-          const base64 = reader.result;
-          if (base64) {
-            // 문자 형태로 저장
-            var base64Sub = base64.toString();
-            // 배열 state 업데이트
-            setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
-          }
-        };
-      }
+    if (event.target.files[0]) {
+      let reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]); // 1. 파일을 읽어 버퍼에 저장.
+      // 파일 상태 업데이트
+      reader.onloadend = () => {
+        // 2. 읽기가 완료되면 아래코드가 실행.
+        const base64 = reader.result;
+        if (base64) {
+          // 문자 형태로 저장
+          var base64Sub = base64.toString();
+          // 배열 state 업데이트
+          setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+        }
+      };
     }
 
-    axios.put('/auth');
+    const formData = new FormData();
+    formData.append('userNo', memberInfo.userNo);
+    formData.append('file', event.target.files[0]);
+    // formData.append('file', file);
+    // 파일 하나만 넣는 경우
+
+    axios
+      .request({
+        method: 'post',
+        url: '/photo/updatePhotoByUserNo',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+      })
+      .then(() => {
+        console.log('사진이 변경 되었습니다.');
+      });
   };
 
+  // 모달창 열고 닫기 적용
   const toggleChangePwModal = () => {
     setChangePwModal((prev) => !prev);
-    console.log(changePwModal);
   };
 
+  // input 태그 입력 시
   const handleMemberInfo = (e) => {
-    const { id, innerText } = e.target;
-    const isActiveElement = e.target === document.activeElement;
-    if (!isActiveElement) {
-      setMemberInfo((prev) => ({ ...prev, [id]: innerText }));
-    }
+    const { name, value } = e.target;
+    setMemberInfo((prev) => ({ ...prev, [name]: value }));
   };
 
   // 회원 정보 수정 완료 버튼 클릭 시
-  const UpdateMemberInfo = () => {
+  const updateMemberInfo = () => {
     axios
       .put('/auth/updateMemberByUserNo', memberInfo)
       .then(() => {
         alert('수정이 완료되었습니다.');
+        // forceUpdate();
       })
       .catch((error) => {
         console.log(error);
@@ -306,7 +320,6 @@ const ProfileTemplate = () => {
               <div className={styles.profile2}>
                 <input
                   type="file"
-                  id="profileChange"
                   ref={fileInputRef}
                   style={{ display: 'none' }}
                   name="file"
@@ -327,46 +340,61 @@ const ProfileTemplate = () => {
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>nickname</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div
-                    className={`${styles.infoBody} forEdit`}
-                    id="userNickName"
-                    onInput={handleMemberInfo}
-                    value={memberInfo.userNickName}
-                  >
-                    {memberInfo.userNickName}
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="닉네임을 입력해주세요"
+                      name="userNickName"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.userNickName || ''}
+                      readOnly={!editing}
+                    />
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>id</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div
-                    className={`${styles.infoBody} forEdit`}
-                    id="userId"
-                    onInput={handleMemberInfo}
-                  >
-                    {memberInfo.userId}
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="ID를 입력해주세요"
+                      name="userId"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.userId || ''}
+                      readOnly={!editing}
+                    />
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>pw</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div
-                    className={styles.infoBody}
-                    id="pw"
-                    onInput={handleMemberInfo}
-                  >
-                    {memberInfo.pw}
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="비밀번호를 입력해주세요"
+                      name="pw"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.pw || ''}
+                      readOnly={!editing}
+                    />
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>email</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div
-                    className={`${styles.infoBody} forEdit`}
-                    id="email"
-                    onInput={handleMemberInfo}
-                  >
-                    {memberInfo.email}
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="이메일을 입력해주세요"
+                      name="email"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.email || ''}
+                      readOnly={!editing}
+                    />
                   </div>
                 </div>
                 <div className={styles.infoBar2}>
@@ -380,6 +408,7 @@ const ProfileTemplate = () => {
                           options={addressList1}
                           defaultValue={addressList1[addressIndex1]}
                           onChange={setAddress2}
+                          isDisabled={!editing}
                         />
                       )}
                     </div>
@@ -389,6 +418,7 @@ const ProfileTemplate = () => {
                           ref={address2}
                           options={addressList2}
                           defaultValue={addressList2[addressIndex2]}
+                          isDisabled={!editing}
                         />
                       )}
                     </div>
@@ -404,7 +434,7 @@ const ProfileTemplate = () => {
                     </button>
                     <button
                       className={styles.EditComBtn}
-                      onClick={UpdateMemberInfo}
+                      onClick={updateMemberInfo}
                     >
                       수정완료
                     </button>
