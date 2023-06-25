@@ -124,4 +124,8 @@ public class MemberDAO {
 	public List<MemberWithProfileDTO> selectUserListWithProfile() {
 		return mybatis.selectList("Member.selectUserListWithProfile");
 	}
+
+	public MemberWithProfileDTO selectUserWithProfileByUserNo(int userNo) {
+		return mybatis.selectOne("Member.selectUserWithProfileByUserNo",userNo);
+	}
 }

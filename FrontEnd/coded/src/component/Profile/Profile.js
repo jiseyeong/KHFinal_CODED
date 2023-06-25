@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import styles from './Profile.module.scss';
 import axios from 'axios';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
+import ChangePwModal from './component/ChangePwModal';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -32,164 +33,221 @@ const ProfileFormBlock = styled.div`
 `;
 
 const ProfileTemplate = () => {
+  const [memberInfo, setMemberInfo] = useState({});
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
-  const [memberInfo, setMemberInfo] = useState({});
-  const dispatch = useDispatch();
-
+  const [addressIndex1, setAddressIndex1] = useState(-1);
+  const [addressIndex2, setAddressIndex2] = useState(-1);
+  const address1 = useRef();
+  const address2 = useRef();
   // useSelector로 토큰 값 가져오기
   // 토큰 값을 활용하여 유저 DTO 정보를 가져오기
   // 로그인 정보 출력
-
+  const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
-  const [myAddress1, setMyAddress1] = useState(null);
-  const [myAddress1Location, setMyAddress1Location] = useState({});
-  const [myAddress2, setMyAddress2] = useState(null);
   const [editing, setEditing] = useState(false);
+  const fileInputRef = useRef();
+  const [changePwModal, setChangePwModal] = useState(false);
 
-  const getLoginData = () => {
+  const handleEditing = () => {
+    // 수정 버튼을 눌렀을 때
+    let div = document.getElementsByClassName('forEdit');
+    if (!editing) {
+      Array.from(div).forEach((item) => {
+        item.setAttribute('contenteditable', 'true');
+        item.style.border = '1px solid silver';
+      });
+      setEditing((prev) => {
+        return !prev;
+      });
+    } else {
+      Array.from(div).forEach((item) => {
+        item.setAttribute('contenteditable', 'false');
+        item.style.border = 'none';
+      });
+      setEditing((prev) => {
+        return !prev;
+      });
+    }
+  };
+
+  // 초기 데이터 가져옴
+  const getInitData = () => {
     if (accessToken) {
-      axios({
-        method: 'get',
-        url: '/auth/userDTO',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        .then((resp) => {
-          const {
-            userNo,
-            userId,
-            pw,
-            address1,
-            address2,
-            email,
-            userNickName,
-          } = resp.data;
+      // 여러 axios 통신을 한 번에 수행
+      // access토큰으로 내 정보 가져오기
+      axios
+        .all([
+          axios.get('/auth/userWithProfileDTO', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }),
+          axios.get('/auth/getAddress1List'),
+        ])
+        .then(
+          axios.spread((resp1, resp2) => {
+            console.log(resp1);
+            const {
+              userNo,
+              userId,
+              address1,
+              address2,
+              email,
+              userNickName,
+              sysName,
+            } = resp1.data;
 
-          let test = {
-            userNo: userNo,
-            userId: userId,
-            pw: pw,
-            address1: address1,
-            address2: address2,
-            email: email,
-            userNickName: userNickName,
-          };
-          console.log(test);
-          return test;
-        })
-        .then((resp) => {
-          updateAddressList1(resp);
+            const member = {
+              userNo: userNo,
+              userId: userId,
+              pw: '******',
+              address1: address1,
+              address2: address2,
+              email: email,
+              userNickName: userNickName,
+              sysName: sysName,
+            };
+
+            console.log(member);
+            let address = [];
+            resp2.data.forEach((addressData) => {
+              address = address.concat({
+                value: addressData,
+                label: addressData,
+              });
+            });
+
+            setMemberInfo(member);
+            setAddressList1(address);
+            const obj = { member: member, addressList: address };
+            return obj;
+          }),
+        )
+        .then((obj) => initAddress1(obj))
+        .then((obj) => setAddress2(obj))
+        .then((obj) => initAddress2(obj))
+        .catch((error) => {
+          console.log(error);
         });
     } else {
       denyAccess();
     }
   };
 
-  const updateAddressList1 = () => {
-    axios({
-      method: 'get',
-      url: '/auth/getAddress1List',
-    })
-      .then((response) => {
-        let arrTemp = [];
-        response.data.forEach((address) => {
-          arrTemp = arrTemp.concat({
-            value: address,
-            label: address,
-          });
-        });
-        setAddressList1(arrTemp);
-        return arrTemp;
+  // 내 정보에 등록된 1차 기본 주소 지정
+  const initAddress1 = (obj) => {
+    const { addressList, member } = obj;
+    let address1 = {};
+    addressList.forEach((item, index) => {
+      if (item.value === member.address1) {
+        setAddressIndex1(index);
+        address1 = item;
+      }
+    });
+    return { member: member, addressList: address1 };
+  };
+
+  // 1차 주소 지정에 따른 2차 주소 지정
+  const setAddress2 = (obj) => {
+    const { member, addressList } = obj;
+    axios
+      .get('/auth/getAddress2List', {
+        params: {
+          address1: addressList.value,
+        },
       })
       .then((resp) => {
-        handleAddress1(resp);
-      })
-      .then(() => {
-        updateAddressList2();
-      })
-      .then(() => {
-        handleAddress2();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // Address1 자동 선택
-  const handleAddress1 = (resp) => {
-    resp.forEach((item, index) => {
-      if (item.value === memberInfo.address1) {
-        console.log('find');
-        setMyAddress1(() => {
-          setMyAddress1Location(addressList1[index]);
-          return (
-            <Select options={addressList1} defaultValue={addressList1[index]} />
-          );
-        });
-      }
-    });
-  };
-
-  const updateAddressList2 = () => {
-    const response = axios({
-      method: 'get',
-      url: '/auth/getAddress2List',
-      params: {
-        address1: myAddress1Location.value,
-      },
-    })
-      .then((response) => {
         let arrTemp = [];
-        response.data.forEach((address) => {
+        resp.data.forEach((addressData) => {
           arrTemp = arrTemp.concat({
-            value: address,
-            label: address,
+            value: addressData,
+            label: addressData,
           });
-          setAddressList2(tmp);
         });
+        setAddressList2(arrTemp);
+        obj = { member: member, addressList: arrTemp };
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return obj;
+  };
+
+  // 1차 주소를 토대로 2차 주소를 가져옴
+  const getAddress2 = (target) => {
+    axios
+      .get('/auth/getAddress2List', {
+        params: {
+          address1: target.value,
+        },
+      })
+      .then((resp) => {
+        let arrTemp = [];
+        resp.data.forEach((addressData) => {
+          arrTemp = arrTemp.concat({
+            value: addressData,
+            label: addressData,
+          });
+        });
+        address2.current.setValue('');
+        setAddressList2(arrTemp);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const handleAddress2 = () => {
-    addressList2.forEach((item, index) => {
-      if (item.value === memberInfo.address2) {
-        setMyAddress2(() => {
-          return (
-            <Select options={addressList2} defaultValue={addressList2[index]} />
-          );
-        });
-      }
-    });
+  // 내 정보에 등록된 2차 기본 주소 지정
+  const initAddress2 = (obj) => {
+    const { member, addressList } = obj;
+    if (addressList.length > 0) {
+      addressList.forEach((item, index) => {
+        if (item.value === member.address2) {
+          setAddress2Index(index);
+        }
+      });
+    } else {
+      setAddressIndex2(0);
+    }
   };
 
+  // 첫 렌더링, 새로고침 시 초기 데이터 불러오기 작업 시작
   useEffect(() => {
-    const member = getLoginData();
-    console.log(member);
-    // updateAddressList1();
-    // handleAddress1();
-    // updateAddressList2();
-    // handleAddress2();
+    getInitData();
   }, [accessToken]);
 
-  // useEffect(() => {
-  // }, [memberInfo]);
+  // 사진 등록 시, 바로 불러오기 기능
+  const [file, setFile] = useState(null); //파일
+  const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const handleChangeFile = (event) => {
+    console.log(event.target.files);
+    setFile(event.target.files);
+    setImgBase64([]);
 
-  // useEffect(() => {
-  // }, [myAddress1Location]);
+    for (var i = 0; i < event.target.files.length; i++) {
+      if (event.target.files[i]) {
+        let reader = new FileReader();
+        reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장.
+        // 파일 상태 업데이트
+        reader.onloadend = () => {
+          // 2. 읽기가 완료되면 아래코드가 실행.
+          const base64 = reader.result;
+          if (base64) {
+            // 문자 형태로 저장
+            var base64Sub = base64.toString();
+            // 배열 state 업데이트
+            setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+          }
+        };
+      }
+    }
+  };
 
-  // useEffect(() => {
-  // }, [addressList2]);
-
-  const handleEditing = () => {
-    setEditing((prev) => {
-      return !prev;
-    });
+  const toggleChangePwModal = () => {
+    setChangePwModal((prev) => !prev);
+    console.log(changePwModal);
   };
 
   return (
@@ -199,27 +257,63 @@ const ProfileTemplate = () => {
           <div className={styles.profileContainer}>
             <div className={styles.profile}>
               <div className={styles.profile1}>
-                <img></img>
+                {imgBase64.length > 0 ? (
+                  <img
+                    src={imgBase64}
+                    onClick={() => {
+                      fileInputRef.current.click();
+                    }}
+                  ></img>
+                ) : memberInfo.sysName === null ? (
+                  <img
+                    src={`/images/test.jpg`}
+                    onClick={() => {
+                      fileInputRef.current.click();
+                    }}
+                  ></img>
+                ) : (
+                  <img
+                    src={`/images/${memberInfo.sysName}`}
+                    onClick={() => {
+                      fileInputRef.current.click();
+                    }}
+                  ></img>
+                )}
               </div>
               <div className={styles.profile2}>
-                <button>사진 바꾸기</button>
+                <input
+                  type="file"
+                  id="profileChange"
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  name="file"
+                  onChange={handleChangeFile}
+                />
+                <button
+                  onClick={() => {
+                    fileInputRef.current.click();
+                  }}
+                >
+                  사진 바꾸기
+                </button>
               </div>
             </div>
-
             <div className={styles.info}>
               <div className={styles.space}></div>
               <div className={styles.infoLayout}>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>nickname</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}>
+                  <div className={`${styles.infoBody} forEdit`}>
                     {memberInfo.userNickName}
                   </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>id</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}> {memberInfo.userId} </div>
+                  <div className={`${styles.infoBody} forEdit`}>
+                    {memberInfo.userId}
+                  </div>
                 </div>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>pw</div>
@@ -229,35 +323,61 @@ const ProfileTemplate = () => {
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>email</div>
                   <div className={styles.infoSpace}>:</div>
-                  <div className={styles.infoBody}> {memberInfo.email} </div>
+                  <div className={`${styles.infoBody} forEdit`}>
+                    {memberInfo.email}
+                  </div>
                 </div>
                 <div className={styles.infoBar2}>
                   <div className={styles.infoTitle}>location</div>
                   <div className={styles.infoSpace}>:</div>
                   <div className={styles.infoBody}>
-                    <div className={styles.body1}>{myAddress1}</div>
-                    <div className={styles.body2}>{myAddress2}</div>
+                    <div className={styles.body1}>
+                      {addressList1.length > 0 && (
+                        <Select
+                          ref={address1}
+                          options={addressList1}
+                          defaultValue={addressList1[addressIndex1]}
+                          onChange={getAddress2}
+                        />
+                      )}
+                    </div>
+                    <div className={styles.body2}>
+                      {addressList2.length > 0 && (
+                        <Select
+                          ref={address2}
+                          options={addressList2}
+                          defaultValue={addressList2[addressIndex2]}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
                 {editing ? (
                   <div className={styles.infoBar3}>
-                    <button className={styles.EditCancelBtn}>수정취소</button>
                     <button
-                      className={styles.EditComBtn}
+                      className={styles.EditCancelBtn}
                       onClick={handleEditing}
                     >
-                      수정완료
+                      수정취소
                     </button>
+                    <button className={styles.EditComBtn}>수정완료</button>
                   </div>
                 ) : (
                   <div className={styles.infoBar3}>
                     <button className={styles.EditBtn} onClick={handleEditing}>
                       수정하기
                     </button>
-                    <button className={styles.PwChangeBtn}>
+                    <button
+                      className={styles.PwChangeBtn}
+                      onClick={toggleChangePwModal}
+                    >
                       비밀번호 변경
                     </button>
+                    <button className={styles.PwChangeBtn}>회원 탈퇴</button>
                   </div>
+                )}
+                {changePwModal && (
+                  <ChangePwModal toggleChangePwModal={toggleChangePwModal} />
                 )}
               </div>
             </div>
