@@ -55,6 +55,8 @@ function Modal({
   // const [feedLikeCount,setFeedLikeCount] = useState(0);
   // const [isFeedLike,setFeedLike] = useState();
 
+  const [optionBox,setOptionBox] = useState('');
+
   const [userBio, setUserBio] = useState('');
 
   const [imageList, setImageList] = useState([]);
@@ -96,6 +98,9 @@ function Modal({
     })
   }
 
+  function optionBoxClick () {
+    setOptionBox(true);
+  }
   // function handleClickLike(e) {
   //   e.preventDefault();
   //   if (!isLikeBtn) {
@@ -275,7 +280,11 @@ function Modal({
                     </div>
                   </div>
                   <div className="optionBox">
-                  <OptionBox></OptionBox>
+                  <OptionBox className={optionBox ?  'isOptionBox' : 'disOptionBox' } onClick={optionBoxClick}></OptionBox>
+                </div>
+                <div className="optionList">
+                  <div className="optionListDiv">수정하기</div>
+                  <div className="optionListDiv">삭제하기</div>
                 </div>
                 </div>
                 <hr className="hrTag"></hr>
