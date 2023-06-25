@@ -491,6 +491,7 @@ const AuthForm = ({ type }) => {
           ) : (
             <div>비밀번호가 일치하지 않습니다.</div>
           )}
+          <div className={style.inputEmail}>
           <input
            autoComplete="email"
            name="e-mail"
@@ -500,17 +501,20 @@ const AuthForm = ({ type }) => {
            ref={emailRef}
            onChange={handleEmail}>
           </input>
+          </div>
           <div>{emailDuplicateMessage}</div>
-          <select ref={address1} onChange={updateAddressList2}>
+          <div className={style.selectBox}>
+          <select className={style.select1} ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
-          <select ref={address2}>
+          <select className={style.select2} ref={address2}>
             {addressList2.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
+          </div>
         </>
       )}
       {type === 'login' && (
