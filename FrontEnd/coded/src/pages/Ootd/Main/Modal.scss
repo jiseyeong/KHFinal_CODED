@@ -171,6 +171,24 @@
                 height: 70%;
                 margin-top: 12px;
               }
+              .option:hover{
+                opacity:50%;
+              }
+            }
+            .optionList{
+              display:none;
+              position:absolute;
+              border:1px solid silver;
+              width:90px;
+              height:150px;
+              right:380px;
+              bottom:95px;
+              text-align:center;
+              background-color:white;
+              .optionListDiv{
+                font-size:12px;
+                margin-top:10px;
+              }
             }
             // .followBtnBox {
             //   border: 1px solid silver;
