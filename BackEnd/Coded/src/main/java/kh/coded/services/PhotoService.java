@@ -19,10 +19,6 @@ public class PhotoService {
     @Autowired
     private PhotoDAO photoDAO;
 
-    public PhotoDTO selectFeedlike(int feedPostId) {
-        return photoDAO.selectFeedlike(feedPostId);
-    }
-
     public void insertPhoto(String realPath, List<MultipartFile> files, Map<String, Integer> map) throws IOException {
         File realPathFile = new File(realPath);
         if (!realPathFile.exists()) {
@@ -42,10 +38,6 @@ public class PhotoService {
                     photoDAO.insertPhoto(new PhotoDTO(0, oriName, sysName, map.get("feedPostId"), 0, 0));
             }
         }
-    }
-
-    public List<PhotoDTO> testedBySelectPhoto() {
-        return photoDAO.testedBySelectPhoto();
     }
 
     public void updatePhoto(String realPath, List<MultipartFile> files, Map<String, Integer> map) throws IOException {
@@ -82,5 +74,13 @@ public class PhotoService {
                 }
             }
         }
+    }
+    
+    public List<PhotoDTO> testedBySelectPhoto() {
+        return photoDAO.testedBySelectPhoto();
+    }
+    
+    public List<PhotoDTO> selectByFeedpostId(int feedPostId){
+    	return photoDAO.selectByFeedpostId(feedPostId);
     }
 }

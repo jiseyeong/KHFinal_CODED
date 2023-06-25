@@ -18,10 +18,6 @@ public class PhotoDAO {
 	public List<PhotoDTO> selectByFeedpostId(int feedPostId) {
 		return mybatis.selectList("Photo.selectByFeedpostId",feedPostId);
 	}
-
-	public PhotoDTO selectFeedlike(int feedPostId) {
-		return mybatis.selectOne("Ptoho.selectFeedlike",feedPostId);
-	}
     public void insertPhoto(PhotoDTO photoDTO) {
 		mybatis.insert("Photo.insertPhoto",photoDTO);
     }
