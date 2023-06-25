@@ -446,7 +446,7 @@ const AuthForm = ({ type }) => {
                 });
               }}
             >
-             pw 보기
+              <EyeImage></EyeImage>
       </button>
       </div>
       {type === 'login' && (

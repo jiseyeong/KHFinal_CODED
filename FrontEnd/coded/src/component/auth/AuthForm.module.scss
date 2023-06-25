@@ -46,18 +46,22 @@
     margin-left:18px;
     border-radius:10px;
     margin-bottom:5px;
+    text-align:center;
     .inputPw{
         border:none;
         font-size:13px;
         height:38px;
-        width:70%;
+        width:88%;
         margin-left:10px;
     }
 
     .eyeBtn{
         height:50%;
         margin-top:8px;
-        margin-left:15px;
+        border:none;
+        margin-right:3px;
+        background-color:white;
+        cursor: pointer;
     }
 }
 .inputNewPw{
