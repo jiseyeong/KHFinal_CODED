@@ -7,18 +7,31 @@ import axios from 'axios';
 const MyPickPage = () => {
   const accessToken = useSelector((state) => state.member.access);
   const [feedPost, setFeedPost] = useState([]);
+  const [memberInfo, setMemberInfo] = useState({});
 
   useEffect(() => {
     if (accessToken) {
+      // 1. 토큰 값으로 유저의 정보를 반환
       axios({
-        url: '',
+        url: 'auth/userWithProfileDTO',
         method: 'get',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
+        // 2. 고유 넘버로
         .then((resp) => {
-          console.log(resp.data);
+          const { userNo, userId, userNickName, email, bio, hashTag, sysName } =
+            resp.data;
+          setMemberInfo({
+            userNo: userNo,
+            userId: userId,
+            userNickName: userNickName,
+            email: email,
+            bio: bio,
+            hashTag: hashTag,
+            sysName: sysName,
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -28,30 +41,16 @@ const MyPickPage = () => {
 
   return (
     <div className="myPickPageLayout">
-      <header>
-        <nav>
-          <div className="logo">
-            <img src="instagram_logo.png" alt="Instagram Logo" />
-          </div>
-          <div className="searchBar">
-            <input type="text" placeholder="Search" />
-          </div>
-          <div className="profileIcon">
-            <img src="profile_icon.jpg" alt="Profile Icon" />
-          </div>
-        </nav>
-      </header>
-
       <div className="profile">
         <div className="profileHeader">
           <div className="imageLayout">
             <img src="/images/test.jpg" alt="Profile Picture" />
           </div>
           <div className="profileInfo">
-            <h1>Heeeesam</h1>
-            <div>@woosang97</div>
-            <div>여름시러</div>
-            <div>@heeeesam</div>
+            <h1>{memberInfo.userNickName}</h1>
+            <div>@{memberInfo.userId}</div>
+            <div>여름시러{memberInfo.bio}</div>
+            <div>#{memberInfo.hashTag}</div>
           </div>
           <div className="profileStatsLayout">
             <ul className="profileStats">
