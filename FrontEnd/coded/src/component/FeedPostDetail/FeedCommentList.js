@@ -10,10 +10,8 @@ function FeedCommentList({feedPostId, depth, parentId}){
 
     const [commentList, setCommentList] = useState([]);
     const [loading, setLoading] = useState(false);
-    const loginUserNo = useSelector((state)=>state.member.userNo);
-
-
-    const abc = useRef();
+    const accessToken = useSelector((state)=>state.member.access);
+    const editorRef = useRef(null);
 
     useEffect(()=>{
         readComments();
@@ -29,7 +27,6 @@ function FeedCommentList({feedPostId, depth, parentId}){
                 url:'/feedpost/comment/depth0',
                 params:{
                     feedPostId:feedPostId,
-                    userNo:loginUserNo
                 }
             }).then((response)=>{
                 setLoading(false);
@@ -49,7 +46,6 @@ function FeedCommentList({feedPostId, depth, parentId}){
                 params:{
                     parentId : parentId,
                     depth : depth,
-                    userNo:loginUserNo
                 }
             }).then((response)=>{
                 setLoading(false);
@@ -67,15 +63,47 @@ function FeedCommentList({feedPostId, depth, parentId}){
         }
     }
 
+    function writeComment(){
+        axios({
+            method:'post',
+            url:'/feedpost/comment',
+            headers:{
+                Authorization:`Bearer ${accessToken}`
+            },
+            params:{
+                feedPostId:feedPostId,
+                body:editorRef.current.innerText
+            },
+        })
+        .then((response)=>{
+            readComments();
+        })
+        .catch((error) => {
+            if (error.request.status === 400) {
+              console.log('먼저 로그인을 해주세요.');
+            } else {
+              console.log(error);
+            }
+        });
+    }
+
     if(loading){
         return <LoadingBar />
     }
 
     return (
-        <>
-            {commentList ?
+        <div>
+            {(depth === 0 && accessToken) && 
+                (
+                    <div>
+                        <div>댓글 쓰기</div>
+                        <div ref={editorRef} contentEditable="true"/>
+                        <button onClick={writeComment}>댓글 전송하기</button>
+                    </div>
+                )
+            }
+            {commentList &&
             (<div>
-                <div ref={abc}></div>
                 {commentList.map((item, index)=>{
                     return(
                         <FeedComment
@@ -87,9 +115,8 @@ function FeedCommentList({feedPostId, depth, parentId}){
                         />
                     )
                 })}
-            </div>)
-            :null}
-        </>
+            </div>)}
+        </div>
     )
 }
 
