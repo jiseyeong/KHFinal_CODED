@@ -7,7 +7,7 @@ import axios from 'axios';
 const IndexPage = () => {
   const dispatch = useDispatch();
   const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
-  const accessToken = useSelector((state)=>state.member.access);
+  const accessToken = useSelector((state) => state.member.access);
 
   function doKakaoLogin() {
     axios({
@@ -52,48 +52,43 @@ const IndexPage = () => {
       });
   }
 
-  function kakaoUnlink(){
-    if(accessToken){
+  function kakaoUnlink() {
+    if (accessToken) {
       axios({
-        method:'put',
-        url:'auth/kakaoUnlink',
-        headers:{
-          Authorization:`Bearer ${accessToken}`
-        }
-      })
-      .catch((error)=>{
+        method: 'put',
+        url: 'auth/kakaoUnlink',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).catch((error) => {
         console.log(error);
       });
     }
   }
 
-  
-  function naverUnlink(){
-    if(accessToken){
+  function naverUnlink() {
+    if (accessToken) {
       axios({
-        method:'put',
-        url:'auth/naverUnlink',
-        headers:{
-          Authorization:`Bearer ${accessToken}`
-        }
-      })
-      .catch((error)=>{
+        method: 'put',
+        url: 'auth/naverUnlink',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).catch((error) => {
         console.log(error);
       });
     }
   }
 
-  
-  function googleUnlink(){
-    if(accessToken){
+  function googleUnlink() {
+    if (accessToken) {
       axios({
-        method:'put',
-        url:'auth/googleUnlink',
-        headers:{
-          Authorization:`Bearer ${accessToken}`
-        }
-      })
-      .catch((error)=>{
+        method: 'put',
+        url: 'auth/googleUnlink',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).catch((error) => {
         console.log(error);
       });
     }
@@ -127,6 +122,9 @@ const IndexPage = () => {
       <Link to="/weekly">Weekly</Link>
       <br />
       <br />
+      <Link to="myPickPage">마이픽 페이지</Link>
+      <br />
+      <br />
       <Link to="/TestComponent">기능 테스트</Link>
       <br />
       <br />
@@ -143,8 +141,8 @@ const IndexPage = () => {
       <br />
       <br />
       <button onClick={onLogout}>로그아웃</button>
-      <br/>
-      <br/>
+      <br />
+      <br />
       <button onClick={doKakaoLogin}>카카오 소셜 등록</button>
       <button onClick={kakaoUnlink}>카카오 소셜 해제</button>
       <br />
