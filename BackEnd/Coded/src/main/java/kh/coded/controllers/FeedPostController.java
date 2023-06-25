@@ -230,21 +230,36 @@ public class FeedPostController {
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 	
-	@PutMapping("commnet")
+	@PutMapping("comment")
 	public ResponseEntity<?> updateComment(
+			@RequestHeader(value="authorization") String authorization,
 			@RequestParam(value="feedCommentId") int commentId,
 			@RequestParam(value="body") String body
 			){
-		feedpostService.updateComment(commentId, body);
-		return ResponseEntity.ok().body(null);
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				feedpostService.updateComment(commentId, body);
+				return ResponseEntity.ok().body(null);
+			};			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 	
 	@DeleteMapping("comment")
 	public ResponseEntity<?> deleteComment(
+			@RequestHeader(value="authorization") String authorization,
 			@RequestParam(value="feedCommentId") int commentId
 			){
-		feedpostService.deleteComment(commentId);
-		return ResponseEntity.ok().body(null);
+		if(authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if(jwtProvider.validateToken(accessToken)) {
+				feedpostService.deleteComment(commentId);
+				return ResponseEntity.ok().body(null);
+			};			
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+
 	}
 	
 	@GetMapping("comment/depth0")
@@ -307,6 +322,14 @@ public class FeedPostController {
 			};
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+	
+	@GetMapping("comment/likeCount")
+	public ResponseEntity<?> selectCommentLikeCount(
+			@RequestParam(value="commentId") int commentId
+			){
+		int likeCount = feedpostService.selectCommentLikeForCount(commentId);
+		return ResponseEntity.ok().body(likeCount);
 	}
 }
 

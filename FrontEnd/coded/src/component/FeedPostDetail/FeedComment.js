@@ -32,7 +32,15 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   );
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
+  const userNo = useSelector((state)=>state.member.userNo);
   const [isLike, setIsLike] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const commentRef = useRef(null);
+  const [isUpdate, setIsUpdate] = useState(false);
+
+  useEffect(()=>{
+    handleLikeCount();
+  },[])
 
   useEffect(() => {
     if (accessToken) {
@@ -78,6 +86,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
     })
       .then((response) => {
         setIsLike(response.data);
+        handleLikeCount();
       })
       .catch((error) => {
         if (error.request.status === 400) {
@@ -86,6 +95,22 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
           console.log(error);
         }
       });
+  }
+
+  function handleLikeCount(){
+    axios({
+      method:'get',
+      url:'/feedpost/comment/likeCount',
+      params:{
+        commentId: commentInfo.feedCommentId,
+      },
+    })
+    .then((response)=>{
+      setLikeCount(response.data);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
 
   function writeComment() {
@@ -114,6 +139,60 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         }
       });
   }
+
+  function handleUpdate(){
+    setIsUpdate((prev)=>{return !prev});
+  }
+  function updateComment(){
+    handleUpdate();
+    axios({
+      method:'Put',
+      url:'/feedpost/comment',
+      params:{
+        feedCommentId:commentInfo.feedCommentId,
+        body:commentRef.current.innerText,
+      },
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      }
+    })
+    .then((response)=>{
+      readComments();
+    })
+    .catch((error) => {
+      if (error.request.status === 400) {
+        console.log('먼저 로그인을 해주세요.');
+      } else {
+        console.log(error);
+      }
+    });
+  }
+  function cancelUpdateComment(){
+    handleUpdate();
+    commentRef.current.innerText = commentInfo.body;
+  }
+  function deleteComment(){
+    axios({
+      method:'Delete',
+      url:'/feedpost/comment',
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      },
+      params:{
+        feedCommentId:commentInfo.feedCommentId,
+      },
+    })
+    .then((response)=>{
+      readComments();
+    })
+    .catch((error) => {
+      if (error.request.status === 400) {
+        console.log('먼저 로그인을 해주세요.');
+      } else {
+        console.log(error);
+      }
+    });
+  }
   return (
     <div>
       <div>
@@ -121,10 +200,24 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       </div>
       <div>nick : {commentInfo.userNickName}</div>
       <div>id : {commentInfo.userId}</div>
-      <div>content : {commentInfo.body}</div>
+      <div>content</div>
+      <div
+        contentEditable={isUpdate}
+        ref={commentRef}
+        suppressContentEditableWarning={true}
+        >
+          {commentInfo.body}
+      </div>
+      {(userNo === commentInfo.userNo) && ((isUpdate) ?
+        (<div>
+          <button onClick={updateComment}>확정</button>
+          <button onClick={cancelUpdateComment}>취소</button>
+        </div>)
+        : (<button onClick={handleUpdate}>수정</button>))}
+      {(userNo === commentInfo.userNo) && (<button onClick={deleteComment}>삭제</button>)}
       <div>write date : {commentInfo.formedWriteDate}</div>
       <div onClick={handleIsLike}>
-        like : {isLike ? 'heart' : HeartIcons.empty}
+        like : {isLike ? 'heart' : HeartIcons.empty}{likeCount}
       </div>
       {depth < 1 && accessToken && (
         <button onClick={handleOnReply}>comment</button>
