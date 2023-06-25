@@ -262,6 +262,9 @@ public class MemberService implements UserDetailsService {
 				return "T";
 			}
 		}else {
+			if(authUser != null) {
+				return "FF";
+			}
 			return this.login(response, member);
 		}
 		return "F";
@@ -314,6 +317,9 @@ public class MemberService implements UserDetailsService {
 				return "T";
 			}
 		}else {
+			if(auth != null) {
+				return "FF";
+			}
 			return this.login(response, member);
 		}
 		return "F";
@@ -396,6 +402,9 @@ public class MemberService implements UserDetailsService {
 				return "T";
 			}
 		}else {
+			if(auth != null) {
+				return "FF";
+			}
 			return this.login(response, member);
 		}
 		return "F";

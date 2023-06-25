@@ -88,7 +88,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       });
   }
 
-  function onSubmit() {
+  function writeComment() {
     console.log(editorRef.current.innerText);
     axios({
       method: 'post',
@@ -133,7 +133,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       {onReply && (
         <div>
           <div ref={editorRef} contentEditable="true" />
-          <button onClick={onSubmit}>전송</button>
+          <button onClick={writeComment}>전송</button>
         </div>
       )}
       <div>
