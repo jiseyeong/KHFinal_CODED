@@ -414,7 +414,7 @@ const AuthForm = ({ type }) => {
             onChange={handleNickName}>
           </input>
           </div>
-          <div>{nickNameRegexMessage}</div>
+          <div className={style.nickNameConfirm}>{nickNameRegexMessage}</div>
         </>
       )}
       <div className={style.inputIdForm}>
@@ -429,7 +429,7 @@ const AuthForm = ({ type }) => {
         onChange={handleId}>
       </input>
       </div>
-      <div>{idDuplicateMessage}</div>
+      <div className={style.idConfirm}>{idDuplicateMessage}</div>
       <div className={style.inputPwForm}>
       <input 
         className={style.inputPw}
@@ -487,9 +487,9 @@ const AuthForm = ({ type }) => {
           </input>
           </div>
           {pwConfirmCheck ? (
-            <div>비밀번호가 일치합니다.</div>
+            <div className={style.pwConfirm}>비밀번호가 일치합니다.</div>
           ) : (
-            <div>비밀번호가 일치하지 않습니다.</div>
+            <div className={style.pwConfirm}>비밀번호가 일치하지 않습니다.</div>
           )}
           <div className={style.inputEmail}>
           <input
@@ -502,7 +502,7 @@ const AuthForm = ({ type }) => {
            onChange={handleEmail}>
           </input>
           </div>
-          <div>{emailDuplicateMessage}</div>
+          <div className={style.emailConfirm}>{emailDuplicateMessage}</div>
           <div className={style.selectBox}>
           <select className={style.select1} ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
@@ -535,9 +535,9 @@ const AuthForm = ({ type }) => {
       </ButtonWithMarginTop>
       {type === 'register' &&
         (registerPassCheck ? (
-          <div>회원가입이 가능합니다.</div>
+          <div className={style.joinConfirm}>회원가입이 가능합니다.</div>
         ) : (
-          <div>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
+          <div className={style.joinConfirm}>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
         ))}
       <Footer>
         {type === 'login' ? (

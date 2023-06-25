@@ -13,9 +13,11 @@
     }
 }
 
-
-
-
+.nickNameConfirm{
+    font-size:12px;
+    margin-left:20px;
+    margin-bottom:10px;
+}
 
 .inputIdForm{
     border:1px solid silver;
@@ -30,6 +32,12 @@
         width:70%;
         margin-left:10px;
     }
+}
+
+.idConfirm{
+    font-size:12px;
+    margin-left:20px;
+    margin-bottom:10px;
 }
 .inputPwForm{
     border:1px solid silver;
@@ -67,6 +75,11 @@
         margin-left:10px;
     }
 }
+.pwConfirm{
+    font-size:12px;
+    margin-left:20px;
+    margin-bottom:10px;
+}
 .inputEmail{
     border:1px solid silver;
     display:flex;
@@ -81,6 +94,11 @@
         width:70%;
         margin-left:10px;
     }
+}
+.emailConfirm{
+    font-size:12px;
+    margin-left:20px;
+    margin-bottom:10px;
 }
 .socialLogin{
     display:flex;
@@ -159,4 +177,11 @@
 }
 .loginFooter{
     font-size:12px;
+}
+.joinConfirm{
+    font-size:12px;
+    margin-left:25px;
+    margin-bottom:10px;
+    margin-top:20px;
+    color:red;
 }
