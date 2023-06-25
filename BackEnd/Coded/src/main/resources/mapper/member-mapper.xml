@@ -47,7 +47,7 @@
   			values(${userNo},#{userId},#{pw},#{userNickName},#{bio},#{hashTag}, #{email},#{address1},#{address2},#{role},#{naverToken},#{kakaoToken},#{googleToken})
   	</insert>
 	<delete id="deleteMember">
-		delete member where userId = #{userId} and pw = #{pw}
+		delete member where userId = #{userId}
 	</delete>
 	<update id="updateMember">
 		update member set usernickname = #{userNickName}, bio = #{bio}, hashtag = #{hashtag},

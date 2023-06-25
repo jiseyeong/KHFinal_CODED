@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
 import ChangePwModal from './component/ChangePwModal';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -49,6 +50,8 @@ const ProfileTemplate = () => {
   const [editing, setEditing] = useState(false);
   const fileInputRef = useRef();
   const [changePwModal, setChangePwModal] = useState(false);
+
+  const navi = useNavigate();
 
   const handleEditing = () => {
     // 수정 버튼을 눌렀을 때
@@ -284,6 +287,32 @@ const ProfileTemplate = () => {
       });
   };
 
+  // 회원 탈퇴 시
+  const removeAccount = () => {
+    let checkPw = '';
+    if (comfirm('정말로 회원을 탈퇴하시겠습니까?')) {
+      checkPw = prompt('비밀번호를 다시 입력해주세요.');
+    }
+    axios({
+      url: '/auth/deleteMemberWithoutId',
+      method: 'delete',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        checkPw: checkPw,
+      },
+    }).then((resp) => {
+      if (resp.data === 0) {
+        alert('회원 탈퇴가 완료되었습니다.');
+        navi('/');
+      } else {
+        alert('회원 번호가 일치하지 않습니다.');
+        return;
+      }
+    });
+  };
+
   return (
     <ProfileTemplateBlock>
       <WhiteBox>
@@ -447,7 +476,7 @@ const ProfileTemplate = () => {
                     >
                       비밀번호 변경
                     </button>
-                    <button className={styles.PwChangeBtn}>회원 탈퇴</button>
+                    {/* <button className={styles.PwChangeBtn} onCLick={removeAccount}>회원 탈퇴</button> */}
                   </div>
                 )}
                 {changePwModal && (
