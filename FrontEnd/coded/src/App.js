@@ -31,6 +31,8 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
+import Follow from './test/follow';
+import Likepeed from './component/FeedList/Likepeed';
 import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
@@ -97,6 +99,7 @@ function App() {
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
+        <Route path="/test/follow" element={<Follow/>}/>
         <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route path="/myPickPage" element={<MyPickPage />} />

@@ -137,6 +137,10 @@ const IndexPage = () => {
       <Link to="/test/FeedInsert">피드 작성 테스트</Link>
       <br />
       <br />
+      <Link to="/test/follow">팔로워 팔로잉 리스트 테스트</Link>
+      <br />
+      <br />
+
       <Link to="/test/TodayAndAdForm">오늘의 날씨 및 광고 테스트</Link>
       <br />
       <br />
