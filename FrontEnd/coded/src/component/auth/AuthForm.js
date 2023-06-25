@@ -402,8 +402,9 @@ const AuthForm = ({ type }) => {
       {/* <h3>{text}</h3> */}
       {type === 'register' && (
         <>
+        <div className={style.inputNicknameForm}>
           <input
-            className={style.inputNickname} 
+            className={style.inputNickname}
             type="text"
             autoComplete="name"
             name="userNickName"
@@ -412,6 +413,7 @@ const AuthForm = ({ type }) => {
             // value={nickName}
             onChange={handleNickName}>
           </input>
+          </div>
           <div>{nickNameRegexMessage}</div>
         </>
       )}
@@ -474,6 +476,7 @@ const AuthForm = ({ type }) => {
       )}
       {type === 'register' && (
         <>
+          <div className={style.inputNewPw}>
           <input 
             autoComplete="new-password"
             name="pwConfirm"
@@ -482,11 +485,13 @@ const AuthForm = ({ type }) => {
             ref={pwConfirmRef}
             onChange={handlePw}>
           </input>
+          </div>
           {pwConfirmCheck ? (
             <div>비밀번호가 일치합니다.</div>
           ) : (
             <div>비밀번호가 일치하지 않습니다.</div>
           )}
+          <div className={style.inputEmail}>
           <input
            autoComplete="email"
            name="e-mail"
@@ -496,17 +501,20 @@ const AuthForm = ({ type }) => {
            ref={emailRef}
            onChange={handleEmail}>
           </input>
+          </div>
           <div>{emailDuplicateMessage}</div>
-          <select ref={address1} onChange={updateAddressList2}>
+          <div className={style.selectBox}>
+          <select className={style.select1} ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
-          <select ref={address2}>
+          <select className={style.select2} ref={address2}>
             {addressList2.map((item, index) => {
               return <option key={index}>{item}</option>;
             })}
           </select>
+          </div>
         </>
       )}
       {type === 'login' && (
