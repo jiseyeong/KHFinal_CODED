@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,7 +52,6 @@ public class MemberService implements UserDetailsService {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private JwtProvider jwtProvider;
-	
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
@@ -165,7 +166,12 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public int deleteMember(String userId, String pw) {
-		return memberDAO.deleteMember(userId, pw);
+		MemberDTO member = memberDAO.selectMemberById(userId);
+		if(passwordEncoder.matches(pw, member.getPw())){
+			return memberDAO.deleteMember(userId);
+		}else{
+			return 0;
+		}
 	}
 
 	public int updateMember(MemberDTO dto) {
@@ -478,5 +484,11 @@ public class MemberService implements UserDetailsService {
 
 	public int updateMemberByUserNo(MemberWithProfileDTO dto) {
 		return memberDAO.updateMemberByUserNo(dto);
+	}
+
+
+	public boolean checkPw(String userId, String pw) {
+		MemberDTO member = memberDAO.selectMemberById(userId);
+		return passwordEncoder.matches(pw, member.getPw());
 	}
 }
