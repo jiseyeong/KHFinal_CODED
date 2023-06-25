@@ -13,20 +13,24 @@ function ChangePwModal({ toggleChangePwModal }) {
       <div className="mainWrapper">
         <div className="modalWrapper" onClick={toggleChangePwModal}>
           <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
-            <div className="centerWrapper">
+            <div className="infoWrapper">
+              <p>비밀번호를 변경해 주세요!</p>
+            </div>
+            <div className="inputWrapper">
               <div className="inputLayout">
-                <input type="password" placeholder="비밀번호를 입력해주세요" />
+                <input type="password" placeholder="기존 비밀번호" />
               </div>
               <div className="inputLayout">
-                <input
-                  type="password"
-                  placeholder="비밀번호를 다시 입력해주세요"
-                />
+                <input type="password" placeholder="새 비밀번호" />
+              </div>
+              <div className="inputLayout">
+                <input type="password" placeholder="새 비밀번호 확인" />
               </div>
               <div className="btnLayout">
-                <button>submit</button>
+                <button>변경 완료</button>
               </div>
             </div>
+            <div className="blankWrapper"></div>
           </div>
         </div>
       </div>
