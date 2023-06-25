@@ -1,43 +1,99 @@
-
-.inputId,.inputPw {
+.inputIdForm{
     border:1px solid silver;
     border-radius:10px;
-    font-size:13px;
-    height:33px;
-    margin-bottom:10px;
-    width:320px;
-    text-align:center;
-    margin-left:8px;
-}
-
-.kakaoBtn,.naverBtn{
-    width:80%;
-    height:40px;
-    object-fit:cover;
+    width:90%;
+    margin-left:18px;
     margin-bottom:5px;
-    cursor:pointer;
-    border-radius:10px;
+    .inputId{
+        border:none;
+        font-size:13px;
+        height:40px;
+        width:70%;
+        margin-left:10px;
+    }
 }
-
-.googleBtn{
-    width:80%;
-    height:40px;
-    object-fit:cover;
-    margin-bottom:5px;
-    cursor:pointer;
+.inputPwForm{
+    border:1px solid silver;
+    display:flex;
+    width:90%;
+    margin-left:18px;
     border-radius:10px;
+    margin-bottom:5px;
+    .inputPw{
+        border:none;
+        font-size:13px;
+        height:40px;
+        width:70%;
+        margin-left:10px;
+    }
+
+    .eyeBtn{
+        width:20%;
+        height:50%;
+        margin-top:8px;
+        margin-left:15px;
+    }
+}
+.socialLogin{
+    display:flex;
+    justify-content:center;
+    width:100%;
+    height:60px;
+    .kakaoBtn{
+        width:14%;
+        height:45px;
+        object-fit:fill;
+        margin-bottom:5px;
+        cursor:pointer;
+        border-radius:10px;
+        margin-right:10px;
+    }
+    .naverBtn{
+        width:14%;
+        height:45px;
+        object-fit:fill;
+        margin-bottom:5px;
+        cursor:pointer;
+        border-radius:10px;
+        margin-right:8px;
+    }
+    .googleBtn{
+        padding:5px;
+        width:14%;
+        height:45px;
+        object-fit:fill;
+        margin-bottom:5px;
+        cursor:pointer;
+        border-radius:30px;
+        border:1px solid silver;
+    }
 }
 
 .checkBox{
-    margin-left:10px;
+    margin-left:20px;
     text-align:left;
-    margin-bottom:30px;
-    input{
-        margin-right:5px;
+    margin-bottom:50px;
+    display:flex;
+    margin-top:10px;
+    .checkBox1{
+        flex:1;
+        line-height:21px;
+        font-size:12px;
+        input{
+            margin-right:5px;
+        }
     }
-    label{
-        font-size:13px;
-        margin-right:130px;
+    .checkBox2{
+        line-height:21px;
+        margin-right:10px;
+        flex:1;
+        font-size:12px;
+        span{
+            margin-left:3px;
+        }
+        span:hover{
+            opacity:50%;
+        }
     }
 }
 

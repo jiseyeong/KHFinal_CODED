@@ -76,4 +76,4 @@ const ModalAsset = () => {
 };
 
 export default ModalAsset;
-export { OptionBox, Like, ScrapImage, RepleImage };
+export { OptionBox, Like, ScrapImage, RepleImage};
