@@ -7,6 +7,18 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import FeedCommentList from '../../../component/FeedPostDetail/FeedCommentList';
 import {OptionBox,Like, ScrapImage} from '../../../assets/ModalAsset/ModalAsset';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { styled } from 'styled-components';
+
+const ImageLayout = styled('div')`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 function Modal({
   // modalData,
@@ -19,6 +31,22 @@ function Modal({
   setIsLike
 }) {
 
+  const carrouselSettings = {
+    dots:true,
+    infinite: true,
+    speed:500,
+    slidesToShow: 1, //한번에 보이는 수
+    slidesToScroll: 1, //넘어가는 수
+    centerMode : true,
+    centerPadding: '0px',
+    vertical: false,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed : 2000,
+    pauseOnFocus : true,
+    pauseOnHover: true,
+    fade : false,
+  }
 
   // const [feedPost,setFeedPost] = useState({});
   // const [photoList,setPhotoList] = useState([]);
@@ -29,21 +57,44 @@ function Modal({
 
   const [userBio, setUserBio] = useState('');
 
-  const [comment, setComment] = useState('');
-  const [comments, setComments] = useState([]);
+  const [imageList, setImageList] = useState([]);
+
+  // const [comment, setComment] = useState('');
+  // const [comments, setComments] = useState([]);
   // const [description, setDescription] = useState(
   //   modalData?.modalData?.modalData?.description,
   // ); // 그냥 modalData?.description으로 바꿔볼 것.
-  const [res, setRes] = useState([]);
+  // const [res, setRes] = useState([]);
   //const [isLikeBtn, setIsLikeBtn] = useState(false);
   // const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
   // const [follower, setFollower] = useState(
   //   modalData?.modalData?.modalData?.follower,
   // ); // 그냥 modalData?.follower로 바꿔볼 것.
-  const [isFollowBtn, setIsFollowBtn] = useState(false);
+  // const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
 
   let num = 0;
+
+  useEffect(()=>{
+    updateImageList();
+  },[]);
+
+  function updateImageList(){
+    axios({
+      method:'get',
+      url:'/photo/feedpost',
+      params:{
+        feedPostId:feedPost.feedPostId,
+      },
+    })
+    .then((response)=>{
+      console.log(response);
+      setImageList((prev)=>{return [...response.data]});
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
 
   // function handleClickLike(e) {
   //   e.preventDefault();
@@ -157,11 +208,28 @@ function Modal({
           <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
             <div className="leftWrapper">
               <div className="imgWrapper">
-                <img
+                <Slider {...carrouselSettings}>
+                  {imageList.map((item, index)=>{
+                    return (<div>
+                      <ImageLayout key={index}>
+                        <img
+                          src={`/images/${item.sysName}`}
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                            objectFit: 'contain',
+                          }}
+                        />
+                      </ImageLayout>
+                    </div>
+                    )
+                  })}
+                </Slider>
+                {/* <img
                   className="image"
                   //src={modalData?.modalData?.modalData?.contentImg}
                   src={"/images/" + feedPost.thumbNailSysName}
-                />
+                /> */}
                 {/* <div
                   className={
                     modalData?.modalData?.modalData?.contentImg?.length > 1
@@ -169,7 +237,6 @@ function Modal({
                       : 'displayNone'
                   }
                 > */}
-                  <div></div>
                   {/* <figure className="smallImagesWrapper">
                     <img
                       className="smallImage"
