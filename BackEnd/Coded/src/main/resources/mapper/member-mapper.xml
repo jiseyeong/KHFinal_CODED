@@ -82,4 +82,5 @@
 		update member set userId=#{userId}, userNickName = #{userNickName}, email = #{email},
 		address1 = #{address1}, address2 = #{address2} where userNo = ${userNo}
 	</update>
+
   </mapper>

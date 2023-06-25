@@ -221,7 +221,6 @@ const ProfileTemplate = () => {
   }, [accessToken]);
 
   // 사진 등록 시, 바로 불러오기 기능
-  const [file, setFile] = useState(null); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const handleChangeFile = (event) => {
     console.log(event.target.files);
@@ -245,21 +244,19 @@ const ProfileTemplate = () => {
 
     const formData = new FormData();
     formData.append('userNo', memberInfo.userNo);
-    formData.append('file', event.target.files[0]);
-    // formData.append('file', file);
-    // 파일 하나만 넣는 경우
+    formData.append('files', event.target.files[0]);
 
     axios
       .request({
         method: 'post',
-        url: '/photo/updatePhotoByUserNo',
+        url: '/photo/updatePhoto',
         headers: {
           'Content-Type': 'multipart/form-data',
         },
         data: formData,
       })
       .then(() => {
-        console.log('사진이 변경 되었습니다.');
+        alert('사진이 변경 되었습니다.');
       });
   };
 
