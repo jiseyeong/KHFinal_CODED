@@ -75,7 +75,6 @@ public class FeedPostController {
     public ResponseEntity<?> selectFeedList(
             @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
         List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost(cpage);
-        System.out.println("writedate : "+data.get(0).getFormedWriteDate());
         return ResponseEntity.ok().body(data);
     }
 

@@ -134,27 +134,17 @@ const FeedPostDetail = (props) => {
     setIsProfileLoaded(true);
   }
 
-  // useEffect(() => {
-  //   // 피드 내 정렬 설정
-  //   const sort = () => {
-  //     const columnIndex = index % 5; // 다섯 개의 컬럼 번갈아가며 배치
-  //     const currentColumnHeight = columnHeights[columnIndex];
-  //     myRef.current.style.marginTop = currentColumnHeight + 'px'; // 현재 컬럼의 높이만큼 marginTop 설정
-  //     // myRef.current.style.marginLeft =
-  //     const cardHeight = myRef.current.offsetHeight; // 카드의 세로 길이
-  //     setColumnHeights((prev) => {
-  //       const newArray = [...prev];
-  //       newArray[index] = columnHeights[columnIndex] + cardHeight;
-  //       return newArray;
-  //     });
+  const shortCutRef = useRef();
 
-  //   };
-  // }, [columnHeights]);
+  const viewShortCutMenu = () => {
+    shortCutRef.current.style.display = 'block';
+  };
 
   return (
     <div className={styles.feedInnerParentDiv}>
       <div className={styles.feedInnerLayoutDiv} ref={myRef}>
         <div className={styles.feedImageDiv} onClick={openModal}>
+          <nav className={styles.shortCutMenu} ref={shortCutRef}></nav>
           {feedPost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
@@ -200,23 +190,29 @@ const FeedPostDetail = (props) => {
                   {feedPost.userNickName}
                 </span>
               </Link>
-              <div className={styles.feedPostIdLayout}>
-                {feedPost.writeDate}
+              <div className={styles.feedWriteDateLayout}>
+                {feedPost.formedWriteDate}
               </div>
             </div>
-            <div className={styles.userHashTagLayout}>
-              {hashTagList.length > 0 ? (
-                hashTagList.map((e, i) => (
-                  <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
-                    <span>
-                      #{e.hashTag}
-                      &nbsp;&nbsp;
-                    </span>
-                  </Link>
-                ))
-              ) : (
-                <span>태그 없음</span>
-              )}
+            <div className={styles.feedBottomLayout}>
+              <div className={styles.feedHashTagLayout}>
+                {hashTagList.length > 0 ? (
+                  hashTagList.map((e, i) => (
+                    <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                      <span>
+                        #{e.hashTag}
+                        &nbsp;&nbsp;
+                      </span>
+                    </Link>
+                  ))
+                ) : (
+                  <span>태그 없음</span>
+                )}
+              </div>
+              <div className={styles.feedWeatherLayout}>
+                <span>{feedPost.writeTemp}º</span>
+                <img src="/images/test.jpg"></img>
+              </div>
             </div>
           </div>
         </div>

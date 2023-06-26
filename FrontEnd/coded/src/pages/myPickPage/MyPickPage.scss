@@ -33,6 +33,10 @@ body {
         justify-content: center;
         align-items: center;
 
+        .shortCutMenu {
+          display: none;
+        }
+
         img {
           width: 150px;
           height: 150px;

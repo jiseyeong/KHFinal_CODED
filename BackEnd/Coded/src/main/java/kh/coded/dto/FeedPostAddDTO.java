@@ -56,7 +56,7 @@ public class FeedPostAddDTO {
 		return writeDate;
 	}
 	public String getFormedWriteDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(writeDate);
 	}
 	public void setWriteDate(Timestamp writeDate) {
