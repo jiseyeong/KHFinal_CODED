@@ -25,7 +25,13 @@ function ToastUI() {
             // 문자 형태로 저장
             var base64Sub = base64.toString();
             // 배열 state 업데이트
-            setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+            if (imgBase64.length > 0) {
+              // 이미 추가된 사진이 있는 경우
+              setImgBase64([...imgBase64, base64Sub]);
+            } else {
+              // 이미 추가된 사진이 없는 경우
+              setImgBase64([base64Sub]);
+            }
           }
         };
       }
@@ -57,68 +63,13 @@ function ToastUI() {
       });
   }, []);
 
+  const Cancelpicture = (index) => {
+    const updatedImgBase64 = [...imgBase64];
+    updatedImgBase64.splice(index, 1);
+    setImgBase64(updatedImgBase64);
+  };
+
   return (
-    // <div>
-    //   <div
-    //     className={Styled.yscroll}
-    //     placeholder="내용을 입력해주세요"
-    //     contentEditable="true"
-    //     ref={contentRef}
-    //   ></div>
-    //   <br />
-    //   <CreatableSelect
-    //   isMulti
-    //     options={options}
-    //     ref={selectRef}
-    //   />
-    //   <br />
-    //   <div
-    //     style={{
-    //       border: '1px solid black',
-    //       width: '100%',
-    //       height: '100px',
-    //       overflowX: 'scroll',
-    //       whiteSpace: 'nowrap',
-    //     }}
-    //   >
-
-    //     {imgBase64.map((item) => {
-    //       return (
-    //         <div>
-    //         <img
-    //           src={item}
-    //           style={{ maxHeight: '100%', maxWidth: '100px', float:"left"}}
-    //         ></img>
-    //         </div>
-    //       );
-    //     })}
-
-    //     <label
-    //       className="input-file-button"
-    //       for="input-file"
-    //       style={{
-    //         border: '1px solid black',
-    //         height: '100%',
-    //         display: 'inline-block',
-    //         width: '100px',
-    //         textAlign: 'center',
-    //         lineHeight: '80px',
-    //       }}
-    //     >
-    //       사진 등록
-    //     </label>
-    //     <input
-    //       type="file"
-    //       id="input-file"
-    //       onChange={handleChangeFile}
-    //       style={{ display: 'none' }}
-    //       accept="image/gif,image/jpeg,image/png"
-    //       multiple
-    //     ></input>
-    //   </div>
-    //   <br />
-    // </div>
-
     <div>
       {/* 좌측창 사진 미리보기 */}
       <div style={{ float: 'left', width: '30%', height: '459px' }}>
@@ -127,12 +78,16 @@ function ToastUI() {
             border: '1px solid black',
             width: '100%',
             height: '100%',
-            overflowX: 'scroll',
+            overflowY: 'scroll',
           }}
         >
+          {/* imgBase64 사진들 */}
           {imgBase64.map((item) => {
             return (
               <div>
+                <button style={{ float: 'right' }} onClick={Cancelpicture}>
+                  취소
+                </button>
                 <div style={{ border: '1px solid black' }}>
                   <img
                     src={item}
@@ -168,7 +123,7 @@ function ToastUI() {
           ></input>
         </div>
       </div>
-      
+
       {/* 중앙 여백 */}
       <div style={{ float: 'left', width: '3%', height: '459px' }}></div>
 
