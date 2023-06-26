@@ -21,7 +21,7 @@ const Like = (handleClickLike) => {
   return (
     <svg
       className="like"
-      onClick={handleClickLike}
+      // onClick={handleClickLike}
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"

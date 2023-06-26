@@ -129,6 +129,7 @@
 
           .commentData {
             display: flex;
+            position: relative;
             height: 26%;
             width: 100%;
             padding: 10px;
@@ -201,18 +202,24 @@
               }
             }
             .optionList{
-              display:none;
+              z-index:1;
               position:absolute;
+              right:0;
+              top:50px;
               border:1px solid silver;
               width:90px;
-              height:150px;
-              right:380px;
-              bottom:95px;
+              height:75px;
               text-align:center;
               background-color:white;
               .optionListDiv{
                 font-size:12px;
                 margin-top:10px;
+                a{
+                  cursor:pointer;
+                }
+                a:hover{
+                  opacity:50%;
+                }
               }
             }
             // .followBtnBox {
