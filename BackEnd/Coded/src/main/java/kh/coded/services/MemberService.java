@@ -511,7 +511,7 @@ public class MemberService implements UserDetailsService {
 		return passwordEncoder.matches(pw, member.getPw());
 	}
 
-	public MyPickPageDTO selectMyPickPageData() {
-		return null;
+	public MyPickPageDTO selectMyPickPageData(int userNo) {
+		return memberDAO.selectMyPickPageData(userNo);
 	}
 }

@@ -14,34 +14,56 @@ const MyPickPage = ({ userNo }) => {
   }
 
   useEffect(() => {
-    if (accessToken) {
-      // 1. 토큰 값으로 유저의 정보를 반환
-      axios({
-        url: 'auth/userWithProfileDTO',
-        method: 'get',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        // 2. 고유 넘버로
-        .then((resp) => {
-          const { userNo, userId, userNickName, email, bio, hashTag, sysName } =
-            resp.data;
-          setMemberInfo({
-            userNo: userNo,
-            userId: userId,
-            userNickName: userNickName,
-            email: email,
-            bio: bio,
-            hashTag: hashTag,
-            sysName: sysName,
-          });
+    if (userNo) {
+      if (accessToken) {
+        // 1. 토큰 값으로 나의 고유 넘버를 반환
+        axios({
+          url: 'auth/userNo',
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         })
-        .catch((error) => {
-          console.log(error);
-        });
+          // 2. 고유 넘버로 유저 정보 반환
+          .then((resp) => {
+            console.log(resp.data);
+            // userNo = resp.data;
+            // return userNo;
+          })
+          // .then(getUserData(userNo))
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    } else {
+      // 또는 해당 유저 넘버의 유저 정보 반환
+      getUserData(userNo);
     }
   }, [accessToken]);
+
+  const getUserData = () => {
+    axios({
+      url: '/auto/selectMyPickPageData',
+      method: 'get',
+      param: {
+        userNo: userNo,
+      },
+    }).then((resp) => {
+      // const {
+      //   userNo: userNo,
+      //   userId: userId,
+      //   userNickName: userNickname,
+      //   bio: bio,
+      //   hashTag: hashTag,
+      //   sysName: sysName,
+      //   postCount: postCount,
+      //   followingCount: followingCount,
+      //   followerCount: followerCount,
+      // } = resp.data;
+
+      console.log(resp.data);
+    });
+  };
 
   return (
     <div className="myPickPageLayout">
