@@ -81,10 +81,23 @@ public class FeedPostController {
 			@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
 		Map<String, Object> map = feedpostService.selectAllFeedPost(cpage,userNo);
 		return ResponseEntity.ok().body(map);
+	}
+	
+	// 피드 리스트 전체 뽑기 ( 기본 양식 )
+		@GetMapping("/selectLikeFeedPost/")
+		public ResponseEntity<?> selectLikeFeedPost(
+				@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage,
+				@RequestParam(value = "userNo",required = false, defaultValue = "0") int userNo) {
+			Map<String, Object> map = feedpostService.selectLikeFeedPost(cpage,userNo);
+			return ResponseEntity.ok().body(map);
+		}
+	
+	
+		
 		
 //		List<FeedPostAddDTO> list = feedpostService.selectAllFeedPost2(cpage);
 //		return ResponseEntity.ok().body(list);
-	}
+	
 
 	// 해시태그 검색을 통한 피드 리스트 뽑기
 	@GetMapping("/selectSearchHashFeedList/{keyword}")
