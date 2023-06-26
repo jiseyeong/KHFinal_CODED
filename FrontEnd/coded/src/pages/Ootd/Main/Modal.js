@@ -111,23 +111,21 @@ function Modal({
   }
 
   function deleteFeedPost() {
-
     axios({
-      method:'delete',
-      url:'/feedpost/deleteFeedPost',
-      params:{
-        feedPostId: feedPost.feedPostId
+      method: 'delete',
+      url: '/feedpost/deleteFeedPost',
+      params: {
+        feedPostId: feedPost.feedPostId,
       },
-    }).then(() => {
-       closeModal();
-       window.location.reload();
     })
+      .then(() => {
+        closeModal();
+        window.location.reload();
+      })
       .catch((error) => {
         console.log(error);
-    })
-      
+      });
   }
-
 
   // function handleClickLike(e) {
   //   e.preventDefault();
@@ -313,8 +311,12 @@ function Modal({
                   </div>
                   {optionListDiv && (
                     <div className="optionList">
-                      <div className="optionListDiv"><a>수정하기</a></div>
-                      <div className="optionListDiv"><a onClick={deleteFeedPost}>삭제하기</a></div>
+                      <div className="optionListDiv">
+                        <a>수정하기</a>
+                      </div>
+                      <div className="optionListDiv">
+                        <a onClick={deleteFeedPost}>삭제하기</a>
+                      </div>
                     </div>
                   )}
                 </div>

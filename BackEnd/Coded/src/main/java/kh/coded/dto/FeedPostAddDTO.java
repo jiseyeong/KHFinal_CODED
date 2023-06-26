@@ -1,6 +1,7 @@
 package kh.coded.dto;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class FeedPostAddDTO {
 	private int feedPostId;
@@ -9,7 +10,7 @@ public class FeedPostAddDTO {
 	private Timestamp writeDate;
 	private int writeTemp;
 	private int writeTempRange;
-	
+
 	private String userNickName;
 	private String profileSysName;
 	private String thumbNailSysName;
@@ -53,6 +54,10 @@ public class FeedPostAddDTO {
 	}
 	public Timestamp getWriteDate() {
 		return writeDate;
+	}
+	public String getFormedWriteDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(writeDate);
 	}
 	public void setWriteDate(Timestamp writeDate) {
 		this.writeDate = writeDate;

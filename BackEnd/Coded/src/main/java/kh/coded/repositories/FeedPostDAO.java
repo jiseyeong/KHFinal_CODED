@@ -18,11 +18,6 @@ public class FeedPostDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-//	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
-	public List<FeedPostDTO> selectFeedList(int UserNo) {
-		return mybatis.selectList("FeedPost.selectByUserNo", UserNo);
-	}
-
 //	피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	public int insertFeedPost(FeedPostDTO dto) {
 		return mybatis.insert("FeedPost.insertFeedPost", dto);
@@ -99,6 +94,15 @@ public class FeedPostDAO {
 	
 	public int deleteFeedPost(int feedPostId) { //글 삭제 
 		return mybatis.delete("FeedPost.deleteFeedPost",feedPostId);
+	}
+
+	//	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
+	public List<FeedPostAddDTO> selectUserFeedPost(int userNo, int startFeedNum, int endFeedNum) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("userNo",userNo);
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		return mybatis.selectList("FeedPost.selectUserFeedPost",map);
 	}
 
 }
