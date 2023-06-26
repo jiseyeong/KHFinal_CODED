@@ -7,6 +7,7 @@ import axios from 'axios';
 const MyPickPage = ({ userNo }) => {
   const [feedPost, setFeedPost] = useState([]);
   const [memberInfo, setMemberInfo] = useState({});
+  const cpage = useRef(1);
 
   let accessToken;
   if (userNo === undefined) {
@@ -14,55 +15,91 @@ const MyPickPage = ({ userNo }) => {
   }
 
   useEffect(() => {
-    if (userNo) {
+    if (userNo != 0) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
         axios({
-          url: 'auth/userNo',
+          url: '/auth/userNo',
           method: 'get',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-          // 2. 고유 넘버로 유저 정보 반환
           .then((resp) => {
-            console.log(resp.data);
-            // userNo = resp.data;
-            // return userNo;
+            userNo = resp.data;
           })
-          // .then(getUserData(userNo))
+          // 2. 고유 넘버로 유저 정보 반환
+          .then(getMyPickData)
+          .then(addFeedList)
           .catch((error) => {
             console.log(error);
           });
       }
     } else {
       // 또는 해당 유저 넘버의 유저 정보 반환
-      getUserData(userNo);
+      getMyPickData(userNo);
     }
+    return () => {
+      window.onscroll = null;
+    };
   }, [accessToken]);
 
-  const getUserData = () => {
+  const getMyPickData = () => {
     axios({
-      url: '/auto/selectMyPickPageData',
+      url: '/auth/selectMyPickPageData',
       method: 'get',
-      param: {
+      params: {
         userNo: userNo,
       },
     }).then((resp) => {
-      // const {
-      //   userNo: userNo,
-      //   userId: userId,
-      //   userNickName: userNickname,
-      //   bio: bio,
-      //   hashTag: hashTag,
-      //   sysName: sysName,
-      //   postCount: postCount,
-      //   followingCount: followingCount,
-      //   followerCount: followerCount,
-      // } = resp.data;
+      const {
+        userNo: userNo,
+        userId: userId,
+        userNickName: userNickname,
+        bio: bio,
+        hashTag: hashTag,
+        sysName: sysName,
+        postCount: postCount,
+        followingCount: followingCount,
+        followerCount: followerCount,
+      } = resp.data;
 
-      console.log(resp.data);
+      setMemberInfo({
+        userNo: userNo,
+        userId: userId,
+        userNickName: userNickname,
+        bio: bio,
+        hashTag: hashTag,
+        sysName: sysName,
+        postCount: postCount,
+        followingCount: followingCount,
+        followerCount: followerCount,
+      });
     });
+  };
+
+  const addFeedList = () => {
+    axios({
+      method: 'GET',
+      url: '/feedpost/selectUserFeedPost/',
+      params: {
+        userNo: userNo,
+        cpage: cpage.current,
+      },
+    })
+      .then((resp) => {
+        setFeedPost((prev) => [...prev, ...resp.data]);
+        cpage.current = cpage.current + 1;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  window.onscroll = function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      addFeedList();
+    }
   };
 
   return (
@@ -81,15 +118,19 @@ const MyPickPage = ({ userNo }) => {
           <div className="profileStatsLayout">
             <ul className="profileStats">
               <li>
-                <strong className="statsCount">1,365</strong>
+                <strong className="statsCount">{memberInfo.postCount}</strong>
                 <div className="statsTitle">Posts</div>
               </li>
               <li>
-                <strong className="statsCount">238M</strong>
+                <strong className="statsCount">
+                  {memberInfo.followerCount}
+                </strong>
                 <div className="statsTitle">Followers</div>
               </li>
               <li>
-                <strong className="statsCount">67</strong>
+                <strong className="statsCount">
+                  {memberInfo.followingCount}
+                </strong>
                 <div className="statsTitle">Following</div>
               </li>
             </ul>

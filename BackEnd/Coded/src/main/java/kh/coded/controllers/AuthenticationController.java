@@ -150,8 +150,6 @@ public class AuthenticationController {
         if (authorization.length() > 7) {
             String accessToken = authorization.substring("Bearer ".length(), authorization.length());
             if (jwtProvider.validateToken(accessToken)) {
-                int check = jwtProvider.getLoginUserNo(accessToken);
-                System.out.println(check);
                 return ResponseEntity.ok().body(jwtProvider.getLoginUserNo(accessToken));
             }
         }
@@ -497,9 +495,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/auth/selectMyPickPageData")
-    public ResponseEntity<?> selectMyPickPageData(
-            @RequestParam("userNo") int userNo
-    ) {
+    public ResponseEntity<?> selectMyPickPageData(int userNo) {
         MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }

@@ -43,16 +43,6 @@ public class FeedPostController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
-    public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
-        try {
-            List<FeedPostDTO> list = feedpostService.selectFeedList(UserNo);
-            return ResponseEntity.ok().body(list);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     @PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
     public ResponseEntity<?> insertFeedPost(
             @RequestParam(value = "fdto") FeedPostDTO fdto,
@@ -338,5 +328,18 @@ public class FeedPostController {
         int likeCount = feedpostService.selectCommentLikeForCount(commentId);
         return ResponseEntity.ok().body(likeCount);
     }
+
+    @GetMapping(value = "selectUserFeedPost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력 + (마이픽 페이지 스크롤 적용)
+    public ResponseEntity<?> selectUserFeedPost(
+            @RequestParam(value = "userNo") int userNo,
+            @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
+        try {
+            List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo,cpage);
+            return ResponseEntity.ok().body(data);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
 
