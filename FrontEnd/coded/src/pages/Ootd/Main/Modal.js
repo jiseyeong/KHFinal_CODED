@@ -13,8 +13,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 
 const ImageLayout = styled('div')`
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -220,9 +220,11 @@ function Modal({
                         <img
                           src={`/images/${item.sysName}`}
                           style={{
-                            height: '100%',
-                            width: '100%',
+                            maxWidth:'100%',
+                            height:'100%',
                             objectFit: 'contain',
+                            margin:'auto',
+                            display:'block',
                           }}
                         />
                       </ImageLayout>

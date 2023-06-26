@@ -3,6 +3,7 @@ package kh.coded.services;
 import java.util.List;
 import java.util.Random;
 
+import kh.coded.dto.MyPickPageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -54,15 +55,15 @@ public class MemberService implements UserDetailsService {
 	private JwtProvider jwtProvider;
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String KAKAO_CLIENT_ID;
 	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-	private String KAKAO_CLIENT_SECRET; 	
+	private String KAKAO_CLIENT_SECRET;
 	@Value("${spring.security.oauth2.client.registration.naver.client-id}")
 	private String NAVER_CLIENT_ID;
 	@Value("${spring.security.oauth2.client.registration.naver.client-secret}")
-	private String NAVER_CLIENT_SECRET; 
+	private String NAVER_CLIENT_SECRET;
 	@Value("${spring.security.oauth2.client.registration.google.client-id}")
 	private String GOOGLE_CLIENT_ID;
 	@Value("${spring.security.oauth2.client.registration.google.client-secret}")
@@ -71,7 +72,7 @@ public class MemberService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberDTO user = memberDAO.selectMemberById(username);
-		if(user == null) {
+		if (user == null) {
 			throw new UsernameNotFoundException(username + "은 없는 회원입니다.");
 		}
 		return new MemberPrincipal(user);
@@ -100,9 +101,9 @@ public class MemberService implements UserDetailsService {
 	}
 
 	public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
-		if(CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
+		if (CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).isPresent()) {
 			String refreshToken = CookieUtil.getCookie(request, StaticValue.REFRESH_TOKEN_COOKIE_NAME).get().getValue();
-			if(refreshToken != null && refreshToken.startsWith("Bearer")) {
+			if (refreshToken != null && refreshToken.startsWith("Bearer")) {
 				refreshToken = refreshToken.substring("Bearer ".length(), refreshToken.length());
 				try {
 					MemberDTO member = this.selectByUserNo(jwtProvider.getLoginUserNo(refreshToken));
@@ -110,12 +111,12 @@ public class MemberService implements UserDetailsService {
 					//여기 내부에 있는 super.setAuthenticated(true)가 실행될 필요가 있음
 					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authentication.getUsername(), null, authentication.getAuthorities());
 					SecurityContextHolder.getContext().setAuthentication(auth);
-					
+
 					CookieUtil.deleteCookie(request, response, StaticValue.REFRESH_TOKEN_COOKIE_NAME);
 					CookieUtil.addCookie(response, StaticValue.REFRESH_TOKEN_COOKIE_NAME, "Bearer " + jwtProvider.createLoginRefreshToken(member), StaticValue.REFRESH_TIME);
-					
+
 					return jwtProvider.createLoginAccessToken(member);
-				}catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -136,12 +137,15 @@ public class MemberService implements UserDetailsService {
 	public boolean isMemberId(String userId) {
 		return memberDAO.isMemberId(userId);
 	}
+
 	public boolean isMemberByEmail(String email) {
 		return memberDAO.isMemberByEmail(email);
 	}
+
 	public String selectMemberIdByEmail(String email) {
 		return memberDAO.selectMemberIdByEmail(email);
 	}
+
 	public int join(MemberDTO dto) {
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		return memberDAO.insertMember(dto);
@@ -149,27 +153,27 @@ public class MemberService implements UserDetailsService {
 
 	public MemberDTO isValidMember(String id, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(id);
-		if(member != null) {
-			if(passwordEncoder.matches(pw, member.getPw())) {
+		if (member != null) {
+			if (passwordEncoder.matches(pw, member.getPw())) {
 				return member;
 			}
 		}
 		return null;
 	}
 
-	public List<String> getAddress1(){
+	public List<String> getAddress1() {
 		return addressCoordDAO.selectDistinctAddress1();
 	}
 
-	public List<String> getAddress2(String address1){
+	public List<String> getAddress2(String address1) {
 		return addressCoordDAO.selectScopedAddress2(address1);
 	}
 
 	public int deleteMember(String userId, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(userId);
-		if(passwordEncoder.matches(pw, member.getPw())){
+		if (passwordEncoder.matches(pw, member.getPw())) {
 			return memberDAO.deleteMember(userId);
-		}else{
+		} else {
 			return 0;
 		}
 	}
@@ -178,9 +182,9 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.updateMember(dto);
 	}
 
-	public int updatePw(String userId,String pw) {
+	public int updatePw(String userId, String pw) {
 		String encodingPw = passwordEncoder.encode(pw);
-		return memberDAO.updatePw(userId,encodingPw);
+		return memberDAO.updatePw(userId, encodingPw);
 	}
 
 	public MemberDTO selectMemberByKakaoToken(String token) {
@@ -190,101 +194,106 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectMemberByNaverToken(String token) {
 		return memberDAO.selectMemberByNaverToken(token);
 	}
-	
+
 	public MemberDTO selectMemberForPwSend(String userId, String userNickName, String email) {
 		return memberDAO.selectMemberForPwSend(userId, userNickName, email);
 	}
-	
+
 	public boolean sendMail(MemberDTO member, String subject) {
 		String authNum = this.createCode();
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		this.updatePw(member.getUserId(), authNum);
-		
+
 		try {
-			String html= String.format("""
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title></title>
-</head>
-					<body>
-						<div style="margin:100px;">
-							<h1>안녕하세요.</h1>
-							<h1>KH 종로 지점 교육원 Final 프로젝트 중 하나인 Coded 프로젝트입니다.</h1>
-							<h1>임시 새 비밀번호 발급 안내 드립니다.</h1>
-							<br/>
-							<div align="center" style="border:1px solid black; font-family:verdana;">
-								<h3 style="color:blue"> 임시 새 비밀번호입니다. </h3>
-								<div style="font-size:1.3em"> %s </div> 
-							</div>
-							<br/>
-						</div>
-					</body>
-</html>
-					""", authNum);
-			
+			String html = String.format("""
+					<!DOCTYPE html>
+					<html>
+					<head>
+					<meta charset="UTF-8">
+					<title></title>
+					</head>
+										<body>
+											<div style="margin:100px;">
+												<h1>안녕하세요.</h1>
+												<h1>KH 종로 지점 교육원 Final 프로젝트 중 하나인 Coded 프로젝트입니다.</h1>
+												<h1>임시 새 비밀번호 발급 안내 드립니다.</h1>
+												<br/>
+												<div align="center" style="border:1px solid black; font-family:verdana;">
+													<h3 style="color:blue"> 임시 새 비밀번호입니다. </h3>
+													<div style="font-size:1.3em"> %s </div> 
+												</div>
+												<br/>
+											</div>
+										</body>
+					</html>
+										""", authNum);
+
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 			mimeMessageHelper.setTo(member.getEmail());
 			mimeMessageHelper.setSubject(subject);
 			mimeMessageHelper.setText(html, true);
 			javaMailSender.send(mimeMessage);
-			
+
 			System.out.println("이메일 발송 성공");
-			
+
 			return true;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("이메일 발송 실패");
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public String createCode() {
 		Random random = new Random();
 		StringBuffer key = new StringBuffer();
-		
-		for(int i = 0; i < 8; i++) {
+
+		for (int i = 0; i < 8; i++) {
 			int index = random.nextInt(4);
-			
-			switch(index) {
-			case 0: key.append((char) ((int) random.nextInt(26) + 97)); break;
-			case 1: key.append((char) ((int) random.nextInt(26) + 65)); break;
-			default : key.append((random.nextInt(9)));
+
+			switch (index) {
+				case 0:
+					key.append((char) ((int) random.nextInt(26) + 97));
+					break;
+				case 1:
+					key.append((char) ((int) random.nextInt(26) + 65));
+					break;
+				default:
+					key.append((random.nextInt(9)));
 			}
 		}
 		return key.toString();
 	}
 
-	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal authUser) throws Exception{
+	public String kakaoLogin(String accessToken, HttpServletResponse response, MemberPrincipal authUser) throws Exception {
 		Long kakaoId = this.getKakaoUserInfo(accessToken);
 		String token = Long.toString(kakaoId);
 		MemberDTO member = this.selectMemberByKakaoToken(token);
 
-		if(member == null) {
+		if (member == null) {
 			//등록 하려 누른 것일 것임.
-			if(authUser != null) {
+			if (authUser != null) {
 				member = memberDAO.selectMemberById(authUser.getUsername());
 				memberDAO.updateKakaoToken(member.getUserNo(), token);
 				return "T";
 			}
-		}else {
-			if(authUser != null) {
+		} else {
+			if (authUser != null) {
 				return "FF";
 			}
 			return this.login(response, member);
 		}
 		return "F";
 	}
-	
+
 	public void kakaoUnlink(int userNo) {
 		memberDAO.updateKakaoToken(userNo, null);
 	}
-	
+
 	public boolean selectKakaoTokenByUserNo(int userNo) {
 		return memberDAO.selectKakaoToken(userNo) != null;
 	}
 
-	private Long getKakaoUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+	private Long getKakaoUserInfo(String accessToken) throws Exception { //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -296,7 +305,7 @@ public class MemberService implements UserDetailsService {
 				HttpMethod.POST,
 				kakaoUserInfoRequest,
 				String.class
-				);
+		);
 
 		String responseBody = response.getBody();
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -307,39 +316,39 @@ public class MemberService implements UserDetailsService {
 		return id;
 	}
 
-	public String naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+	public String naverLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception {
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getNaverAccessToken(code);
 
 		//토큰으로 네이버 API 호출
 		String token = this.getNaverUserInfo(accessToken);
 		MemberDTO member = this.selectMemberByNaverToken(token);
-		
-		if(member == null) {
+
+		if (member == null) {
 			//등록 하려 누른 것일 것임.
-			if(auth != null) {
+			if (auth != null) {
 				member = memberDAO.selectMemberById(auth.getUsername());
 				memberDAO.updateNaverToken(member.getUserNo(), token);
 				return "T";
 			}
-		}else {
-			if(auth != null) {
+		} else {
+			if (auth != null) {
 				return "FF";
 			}
 			return this.login(response, member);
 		}
 		return "F";
 	}
-	
+
 	public void naverUnlink(int userNo) {
 		memberDAO.updateNaverToken(userNo, null);
 	}
-	
+
 	public boolean selectNaverTokenByUserNo(int userNo) {
 		return memberDAO.selectNaverToken(userNo) != null;
 	}
 
-	private String getNaverAccessToken(String code) throws Exception{ 
+	private String getNaverAccessToken(String code) throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -349,7 +358,7 @@ public class MemberService implements UserDetailsService {
 		body.add("client_secret", NAVER_CLIENT_SECRET);
 		body.add("redirect_uri", "http://localhost:3000/login/oauth2/code/naver");
 		body.add("code", code);
-		body.add("state","test");
+		body.add("state", "test");
 
 		HttpEntity<MultiValueMap<String, String>> naverTokenRequest = new HttpEntity<>(body, headers);
 		RestTemplate rt = new RestTemplate();
@@ -360,7 +369,7 @@ public class MemberService implements UserDetailsService {
 				HttpMethod.POST,
 				naverTokenRequest,
 				String.class
-				);
+		);
 
 		String responseBody = response.getBody();
 		System.out.println(responseBody);
@@ -369,7 +378,7 @@ public class MemberService implements UserDetailsService {
 		return jsonNode.get("access_token").asText();
 	}
 
-	private String getNaverUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+	private String getNaverUserInfo(String accessToken) throws Exception { //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -381,7 +390,7 @@ public class MemberService implements UserDetailsService {
 				HttpMethod.POST,
 				naverUserInfoRequest,
 				String.class
-				);
+		);
 
 		String responseBody = response.getBody();
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -391,8 +400,8 @@ public class MemberService implements UserDetailsService {
 
 		return id;
 	}
-	
-    public String googleLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception{
+
+	public String googleLogin(String code, HttpServletResponse response, MemberPrincipal auth) throws Exception {
 		//인가 코드로 엑세스 토큰 요청.
 		String accessToken = this.getGoogleAccessToken(code);
 
@@ -400,31 +409,31 @@ public class MemberService implements UserDetailsService {
 		String token = this.getGoogleUserInfo(accessToken);
 		MemberDTO member = this.selectMemberByNaverToken(token);
 
-		if(member == null) {
+		if (member == null) {
 			//등록 하려 누른 것일 것임.
-			if(auth != null) {
+			if (auth != null) {
 				member = memberDAO.selectMemberById(auth.getUsername());
 				memberDAO.updateGoogleToken(member.getUserNo(), token);
 				return "T";
 			}
-		}else {
-			if(auth != null) {
+		} else {
+			if (auth != null) {
 				return "FF";
 			}
 			return this.login(response, member);
 		}
 		return "F";
-    }
-    
+	}
+
 	public void googleUnlink(int userNo) {
 		memberDAO.updateGoogleToken(userNo, null);
 	}
-	
+
 	public boolean selectGoogleTokenByUserNo(int userNo) {
 		return memberDAO.selectGoogleToken(userNo) != null;
 	}
-    
-    private String getGoogleAccessToken(String code) throws Exception{ 
+
+	private String getGoogleAccessToken(String code) throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -444,19 +453,19 @@ public class MemberService implements UserDetailsService {
 				HttpMethod.POST,
 				googleTokenRequest,
 				String.class
-				);
+		);
 
 		String responseBody = response.getBody();
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 		return jsonNode.get("access_token").asText();
-    }
-    
-    private String getGoogleUserInfo(String accessToken) throws Exception{ //유저 데이터를 얻어옴 (id)
+	}
+
+	private String getGoogleUserInfo(String accessToken) throws Exception { //유저 데이터를 얻어옴 (id)
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + accessToken);
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		
+
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("access_token", accessToken);
 
@@ -467,7 +476,7 @@ public class MemberService implements UserDetailsService {
 				HttpMethod.GET,
 				googleUserInfoRequest,
 				String.class
-				);
+		);
 
 		String responseBody = response.getBody();
 		System.out.println(responseBody);
@@ -479,14 +488,15 @@ public class MemberService implements UserDetailsService {
 		return id;
 	}
 
-    public List<MemberDTO> selectUserList() {
+	public List<MemberDTO> selectUserList() {
 		return memberDAO.selectUserList();
-    }
+	}
 
 
 	public List<MemberWithProfileDTO> selectUserListWithProfile() {
 		return memberDAO.selectUserListWithProfile();
 	}
+
 	public MemberWithProfileDTO selectUserWithProfileByUserNo(int userNo) {
 		return memberDAO.selectUserWithProfileByUserNo(userNo);
 	}
@@ -499,5 +509,9 @@ public class MemberService implements UserDetailsService {
 	public boolean checkPw(String userId, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(userId);
 		return passwordEncoder.matches(pw, member.getPw());
+	}
+
+	public MyPickPageDTO selectMyPickPageData() {
+		return null;
 	}
 }

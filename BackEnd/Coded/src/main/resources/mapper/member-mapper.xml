@@ -83,4 +83,14 @@
 		address1 = #{address1}, address2 = #{address2} where userNo = ${userNo}
 	</update>
 
+	<select id="selectMyPickPageData" resultType="kh.coded.dto.MyPickPageDTO">
+		SELECT m.*, p.*, fp.postCount, following.followingCount, follower.followerCount FROM member m
+		LEFT JOIN photo p ON m.userNo = p.userno
+		LEFT JOIN ( SELECT userno, COUNT(*) AS postCount FROM feedpost WHERE userno = ${userNo} GROUP BY userno ) fp ON m.userNo = fp.userno
+		left join ( select fromuserid, count(*) as followingCount from follow where fromuserid = ${userNo} group by fromuserid ) following on m.userno = following.fromuserid
+		left join ( select count(*) as followerCount from follow where touserid = ${userNo} group by touserid ) follower on m.userno = following.fromuserid
+		WHERE m.userNo = ${userNo}
+	</select>
+
+
   </mapper>

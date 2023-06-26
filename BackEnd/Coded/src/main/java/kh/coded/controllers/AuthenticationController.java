@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kh.coded.dto.MyPickPageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -492,5 +493,12 @@ public class AuthenticationController {
                 }
             }
         return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+    }
+
+    @GetMapping("/auth/selectMyPickPageData")
+    public ResponseEntity<?> selectMyPickPageData(
+    ){
+        MyPickPageDTO dto = memberService.selectMyPickPageData();
+        return ResponseEntity.ok().body(dto);
     }
 }
