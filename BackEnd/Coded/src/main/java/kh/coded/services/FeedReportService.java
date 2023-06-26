@@ -10,5 +10,6 @@ public class FeedReportService {
 
 
     public List<FeedPostDTO> selectFeedList(int userNo) {
+        return null;
     }
 }
