@@ -471,7 +471,7 @@ const AuthForm = ({ type }) => {
                 });
               }}
             >
-              <EyeImage></EyeImage>
+             {isPwView ? <EyeImage></EyeImage> : <NoneEyeImage></NoneEyeImage>}
       </button>
       </div>
       {type === 'login' && (
