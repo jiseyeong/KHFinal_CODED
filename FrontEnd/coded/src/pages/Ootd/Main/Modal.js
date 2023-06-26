@@ -215,7 +215,7 @@ function Modal({
               <div className="imgWrapper">
                 <Slider {...carrouselSettings}>
                   {imageList.map((item, index)=>{
-                    return (<div>
+                    return (
                       <ImageLayout key={index}>
                         <img
                           src={`/images/${item.sysName}`}
@@ -226,7 +226,6 @@ function Modal({
                           }}
                         />
                       </ImageLayout>
-                    </div>
                     )
                   })}
                 </Slider>
