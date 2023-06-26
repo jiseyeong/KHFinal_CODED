@@ -214,6 +214,12 @@
               .optionListDiv{
                 font-size:12px;
                 margin-top:10px;
+                a{
+                  cursor:pointer;
+                }
+                a:hover{
+                  opacity:50%;
+                }
               }
             }
             // .followBtnBox {
