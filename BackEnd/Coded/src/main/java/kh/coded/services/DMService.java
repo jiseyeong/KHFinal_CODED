@@ -29,5 +29,9 @@ public class DMService {
 	public List<DMDTO> selectDMRoomList(int roomId) {
 		return dmDAO.selectDMRoomList(roomId);
 	}
+
+	public List<DMDTO> selectDMbyRoomid(int roomId) {
+		return dmDAO.selectDMbyRoomid(roomId);
+	}
 	
 }
