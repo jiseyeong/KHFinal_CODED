@@ -101,6 +101,13 @@ const AuthForm = ({ type }) => {
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+  const nickNameDuplicateRef = useRef();
+  const idDuplicateRef = useRef();
+  const pwDuplicateRef = useRef();
+  const emailDuplicateRef = useRef();
+  const joinConfirmRef = useRef();
+
+
   useEffect(()=>{
     if(accessToken){
       navigate("/");
@@ -167,9 +174,11 @@ const AuthForm = ({ type }) => {
       ) {
         setRegisterPassCheck(false);
         setRegisterPassMessage('모든 요소를 기입하시고 조건을 통과해주셔야 회원가입이 가능합니다.');
+        joinConfirmRef.current.style.color = "red";
       } else {
         setRegisterPassCheck(true);
         setRegisterPassMessage('회원가입이 가능합니다.');
+        joinConfirmRef.current.style.color = "blue";
       }
     }
 
@@ -199,10 +208,13 @@ const AuthForm = ({ type }) => {
                 setIdDuplicateChecked(response.data);
                 if (response.data) {
                   setIdDuplicateMessage('중복된 아이디가 있습니다.');
+                  idDuplicateRef.current.style.color = "red";
                 } else if (!regexId.test(idRef.current.value)) {
                   setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
+                  idDuplicateRef.current.style.color = "red";
                 } else {
                   setIdDuplicateMessage('사용 가능합니다.');
+                  idDuplicateRef.current.style.color = "blue";
                 }
               })
               .catch((error) => {
@@ -222,9 +234,11 @@ const AuthForm = ({ type }) => {
       if (pwRef.current.value === pwConfirmRef.current.value) {
         setPwConfirmCheck(true);
         setPwConfirmMessage('비밀번호가 일치합니다.');
+        pwDuplicateRef.current.style.color = "blue";
       } else {
         setPwConfirmCheck(false);
         setPwConfirmMessage('비밀번호가 일치하지 않습니다.');
+        pwDuplicateRef.current.style.color = "red";
       }
     }else{
       setPwConfirmCheck(false);
@@ -249,10 +263,13 @@ const AuthForm = ({ type }) => {
               setEmailDuplicateChecked(response.data);
               if (response.data) {
                 setEmailDuplicateMessage('중복된 이메일이 있습니다.');
+                emailDuplicateRef.current.style.color = "red";
               } else if (!regexEmail.test(emailRef.current.value)) {
                 setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
+                emailDuplicateRef.current.style.color = "red";
               } else {
                 setEmailDuplicateMessage('사용 가능합니다.');
+                emailDuplicateRef.current.style.color = "blue";
               }
             })
             .catch((error) => {
@@ -270,8 +287,10 @@ const AuthForm = ({ type }) => {
     if(nickNameRef.current.value){
       if (!regexNickName.test(nickNameRef.current.value)) {
         setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
+        nickNameDuplicateRef.current.style.color = "red";
       } else {
         setNickNameRegexMessage('사용 가능합니다.');
+        nickNameDuplicateRef.current.style.color = "blue";
       }
     }else{
       setNickNameRegexMessage('');
@@ -439,7 +458,7 @@ const AuthForm = ({ type }) => {
             onChange={handleNickName}>
           </input>
           </div>
-          <div className={style.nickNameConfirm}>{nickNameRegexMessage}</div>
+          <div ref={nickNameDuplicateRef} className={style.nickNameConfirm}>{nickNameRegexMessage}</div>
         </>
       )}
       <div className={style.inputIdForm}>
@@ -454,7 +473,7 @@ const AuthForm = ({ type }) => {
         onChange={handleId}>
       </input>
       </div>
-      <div className={style.idConfirm}>{idDuplicateMessage}</div>
+      <div ref={idDuplicateRef} className={style.idConfirm}>{idDuplicateMessage}</div>
       <div className={style.inputPwForm}>
       <input 
         className={style.inputPw}
@@ -511,7 +530,7 @@ const AuthForm = ({ type }) => {
             onChange={handlePw}>
           </input>
           </div>
-          <div>{pwConfirmMessage}</div>
+          <div ref={pwDuplicateRef} className={style.pwConfirm}>{pwConfirmMessage}</div>
           <div className={style.inputEmail}>
           <input
            autoComplete="email"
@@ -523,7 +542,7 @@ const AuthForm = ({ type }) => {
            onChange={handleEmail}>
           </input>
           </div>
-          <div className={style.emailConfirm}>{emailDuplicateMessage}</div>
+          <div ref={emailDuplicateRef} className={style.emailConfirm}>{emailDuplicateMessage}</div>
           <div className={style.selectBox}>
           <select className={style.select1} ref={address1} onChange={updateAddressList2}>
             {addressList1.map((item, index) => {
@@ -555,7 +574,7 @@ const AuthForm = ({ type }) => {
         {text}
       </ButtonWithMarginTop>
       {type === 'register' &&
-        (<div>{registerPassMessage}</div>)
+        (<div ref={joinConfirmRef} className={style.joinConfirm}>{registerPassMessage}</div>)
       }
       <Footer>
         {type === 'login' ? (

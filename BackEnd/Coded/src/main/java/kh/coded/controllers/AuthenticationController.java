@@ -150,9 +150,10 @@ public class AuthenticationController {
         if (authorization.length() > 7) {
             String accessToken = authorization.substring("Bearer ".length(), authorization.length());
             if (jwtProvider.validateToken(accessToken)) {
+                int check = jwtProvider.getLoginUserNo(accessToken);
+                System.out.println(check);
                 return ResponseEntity.ok().body(jwtProvider.getLoginUserNo(accessToken));
             }
-            ;
         }
         return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
     }
@@ -455,22 +456,22 @@ public class AuthenticationController {
     }
 
     // 유저 프로필 페이지에서 새 비밀번호 변경 사항 적용
-	@PutMapping("/auth/updatePwAfterPwCheck")
+    @PutMapping("/auth/updatePwAfterPwCheck")
     public ResponseEntity<?> updatePwAfterPwCheck(
             @RequestHeader(value = "authorization") String authorization,
             @RequestParam String currentPw,
-			@RequestParam String pw) {
+            @RequestParam String pw) {
         if (authorization.length() > 7) {
             String accessToken = authorization.substring("Bearer ".length(), authorization.length());
             if (jwtProvider.validateToken(accessToken)) {
                 MemberDTO dto = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
                 if (dto != null) {
-					if(!memberService.checkPw(dto.getUserId(), currentPw)) {
-						return ResponseEntity.ok().body(0);
-					}else{
-						int result = memberService.updatePw(dto.getUserId(), pw);
-						return ResponseEntity.ok().body(1);
-					}
+                    if (!memberService.checkPw(dto.getUserId(), currentPw)) {
+                        return ResponseEntity.ok().body(0);
+                    } else {
+                        int result = memberService.updatePw(dto.getUserId(), pw);
+                        return ResponseEntity.ok().body(1);
+                    }
                 }
             }
         }
@@ -481,24 +482,25 @@ public class AuthenticationController {
     public ResponseEntity<?> deleteMemberWithoutId(
             @RequestHeader(value = "authorization") String authorization,
             @RequestParam String checkPw
-    ){
+    ) {
         if (authorization.length() > 7) {
             String accessToken = authorization.substring("Bearer ".length(), authorization.length());
             if (jwtProvider.validateToken(accessToken)) {
                 MemberDTO dto = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
                 if (dto != null) {
                     int check = memberService.deleteMember(dto.getUserId(), checkPw);
-                        return ResponseEntity.ok().body(check);
-                    }
+                    return ResponseEntity.ok().body(check);
                 }
             }
+        }
         return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
     }
 
     @GetMapping("/auth/selectMyPickPageData")
     public ResponseEntity<?> selectMyPickPageData(
-    ){
-        MyPickPageDTO dto = memberService.selectMyPickPageData();
+            @RequestParam("userNo") int userNo
+    ) {
+        MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }
 }
