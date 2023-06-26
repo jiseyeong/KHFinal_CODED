@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 // import "../styles/common.scss";
 // import "../styles/reset.scss";
 import './Modal.scss';
@@ -6,7 +6,11 @@ import './Modal.scss';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import FeedCommentList from '../../../component/FeedPostDetail/FeedCommentList';
-import {OptionBox,Like, ScrapImage} from '../../../assets/ModalAsset/ModalAsset';
+import {
+  OptionBox,
+  Like,
+  ScrapImage,
+} from '../../../assets/ModalAsset/ModalAsset';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -18,7 +22,7 @@ const ImageLayout = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 function Modal({
   // modalData,
@@ -28,25 +32,24 @@ function Modal({
   feedPost,
   feedLikeCount,
   isLike,
-  setIsLike
+  setIsLike,
 }) {
-
   const carrouselSettings = {
-    dots:true,
+    dots: true,
     infinite: true,
-    speed:500,
+    speed: 500,
     slidesToShow: 1, //한번에 보이는 수
     slidesToScroll: 1, //넘어가는 수
-    centerMode : true,
+    centerMode: true,
     centerPadding: '0px',
     vertical: false,
     arrows: false,
     autoplay: true,
-    autoplaySpeed : 2000,
-    pauseOnFocus : true,
+    autoplaySpeed: 2000,
+    pauseOnFocus: true,
     pauseOnHover: true,
-    fade : false,
-  }
+    fade: false,
+  };
 
   // const [feedPost,setFeedPost] = useState({});
   // const [photoList,setPhotoList] = useState([]);
@@ -55,11 +58,11 @@ function Modal({
   // const [feedLikeCount,setFeedLikeCount] = useState(0);
   // const [isFeedLike,setFeedLike] = useState();
 
-  const [optionBox,setOptionBox] = useState('');
-
   const [userBio, setUserBio] = useState('');
 
   const [imageList, setImageList] = useState([]);
+
+  const [optionListDiv, setOptionListDiv] = useState(false);
 
   // const [comment, setComment] = useState('');
   // const [comments, setComments] = useState([]);
@@ -77,30 +80,54 @@ function Modal({
 
   let num = 0;
 
-  useEffect(()=>{
+  useEffect(() => {
     updateImageList();
-  },[]);
+  }, []);
 
-  function updateImageList(){
+  function updateImageList() {
     axios({
-      method:'get',
-      url:'/photo/feedpost',
-      params:{
-        feedPostId:feedPost.feedPostId,
+      method: 'get',
+      url: '/photo/feedpost',
+      params: {
+        feedPostId: feedPost.feedPostId,
       },
     })
-    .then((response)=>{
-      console.log(response);
-      setImageList((prev)=>{return [...response.data]});
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+      .then((response) => {
+        console.log(response);
+        setImageList((prev) => {
+          return [...response.data];
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  function optionBoxClick () {
-    setOptionBox(true);
+  function optionBoxClick() {
+    console.log('test');
+    setOptionListDiv((prev) => {
+      return !prev;
+    });
   }
+
+  function deleteFeedPost() {
+
+    axios({
+      method:'get',
+      url:'/feedpost/deleteFeedPost',
+      params:{
+        feedPostId: feedPost.feedPostId
+      },
+    }).then(() => {
+       closeModal();
+    })
+      .catch((error) => {
+        console.log(error);
+    })
+      
+  }
+
+
   // function handleClickLike(e) {
   //   e.preventDefault();
   //   if (!isLikeBtn) {
@@ -144,7 +171,7 @@ function Modal({
   //     }
   //   }
   // }
-  
+
   // useEffect(()=>{
   //     axios({
   //       method:'get',
@@ -214,21 +241,21 @@ function Modal({
             <div className="leftWrapper">
               <div className="imgWrapper">
                 <Slider {...carrouselSettings}>
-                  {imageList.map((item, index)=>{
+                  {imageList.map((item, index) => {
                     return (
                       <ImageLayout key={index}>
                         <img
                           src={`/images/${item.sysName}`}
                           style={{
-                            maxWidth:'100%',
-                            height:'100%',
+                            maxWidth: '100%',
+                            height: '100%',
                             objectFit: 'contain',
-                            margin:'auto',
-                            display:'block',
+                            margin: 'auto',
+                            display: 'block',
                           }}
                         />
                       </ImageLayout>
-                    )
+                    );
                   })}
                 </Slider>
                 {/* <img
@@ -243,7 +270,7 @@ function Modal({
                       : 'displayNone'
                   }
                 > */}
-                  {/* <figure className="smallImagesWrapper">
+                {/* <figure className="smallImagesWrapper">
                     <img
                       className="smallImage"
                       src={modalData?.modalData?.modalData?.contentImg[0]}
@@ -263,7 +290,7 @@ function Modal({
                     <img
                       className="commentUserImg"
                       //src={modalData?.modalData?.modalData?.authorImg}
-                      src={"/images/"+feedPost.profileSysName}
+                      src={'/images/' + feedPost.profileSysName}
                       width="40"
                       height="40"
                     />
@@ -280,13 +307,15 @@ function Modal({
                       {userBio}
                     </div>
                   </div>
-                  <div className="optionBox">
-                  <OptionBox className={optionBox ?  'isOptionBox' : 'disOptionBox' } onClick={optionBoxClick}></OptionBox>
-                </div>
-                <div className="optionList">
-                  <div className="optionListDiv">수정하기</div>
-                  <div className="optionListDiv">삭제하기</div>
-                </div>
+                  <div className="optionBox" onClick={optionBoxClick}>
+                    <OptionBox></OptionBox>
+                  </div>
+                  {optionListDiv && (
+                    <div className="optionList">
+                      <div className="optionListDiv"><a>수정하기</a></div>
+                      <div className="optionListDiv"><a onClick={deleteFeedPost}>삭제하기</a></div>
+                    </div>
+                  )}
                 </div>
                 <hr className="hrTag"></hr>
                 <div className="authorDescription">
@@ -302,9 +331,7 @@ function Modal({
             <div className="rightWrapper">
               <div className="authorPopularity">
                 <div className={isLike ? 'likeBox' : 'dislikeBox'}>
-                  <Like
-                    handleClickLike={setIsLike}
-                  />
+                  <Like handleClickLike={setIsLike} />
                 </div>
                 <div className="likeNumBox">
                   <span className="likeNum">
