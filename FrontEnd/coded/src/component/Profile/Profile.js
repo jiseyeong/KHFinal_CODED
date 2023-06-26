@@ -58,6 +58,7 @@ const ProfileTemplate = () => {
   const regexId = /^[A-Za-z0-9_]{7,13}$/;
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
 
   // 수정 버튼을 눌렀을 때 (readonly 적용 해제, css 변경)
   const handleEditing = () => {
@@ -106,6 +107,8 @@ const ProfileTemplate = () => {
               userId,
               userNickName,
               email,
+              bio,
+              userHashtag,
               address1,
               address2,
               sysName,
@@ -117,6 +120,8 @@ const ProfileTemplate = () => {
               pw: '******',
               userNickName: userNickName,
               email: email,
+              bio: bio,
+              userHashtag: userHashtag,
               address1: address1,
               address2: address2,
               sysName: sysName,
@@ -272,7 +277,7 @@ const ProfileTemplate = () => {
         data: formData,
       })
       .then(() => {
-        alert('사진이 변경 되었습니다.');
+        alert('Profile Image Updated!');
       });
   };
 
@@ -292,7 +297,9 @@ const ProfileTemplate = () => {
     if (
       memberInfo.userId === '' ||
       memberInfo.userNickName === '' ||
-      memberInfo.email === ''
+      memberInfo.email === '' ||
+      memberInfo.bio === '' ||
+      memberInfo.userHashtag === ''
     ) {
       alert('모든 입력박스를 입력해주세요.');
       return;
@@ -316,7 +323,7 @@ const ProfileTemplate = () => {
     axios
       .put('/auth/updateMemberByUserNo', memberInfo)
       .then(() => {
-        alert('수정이 완료되었습니다.');
+        alert('Updated!');
         // forceUpdate();
       })
       .catch((error) => {
@@ -393,7 +400,18 @@ const ProfileTemplate = () => {
                     fileInputRef.current.click();
                   }}
                 >
-                  사진 바꾸기
+                  <svg
+                    fill="none"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13.245 2.81706C14.3318 1.73025 16.0939 1.73025 17.1807 2.81706C18.2222 3.85858 18.2656 5.52026 17.3109 6.61346L17.1807 6.75273L7.57485 16.3586C7.36976 16.5636 7.12302 16.7212 6.85215 16.821L6.68687 16.8739L2.6319 17.9798C2.28531 18.0743 1.96524 17.7857 2.00279 17.4452L2.01796 17.3658L3.12386 13.3109C3.20017 13.031 3.33624 12.7718 3.52191 12.5508L3.63917 12.4229L13.245 2.81706ZM12.3848 5.09195L4.34628 13.13C4.25399 13.2223 4.18096 13.3314 4.13089 13.4511L4.08862 13.574L3.21199 16.7847L6.42375 15.9091C6.5077 15.8862 6.58793 15.8526 6.66256 15.8093L6.77006 15.7372L6.86774 15.6515L14.9058 7.61295L12.3848 5.09195ZM16.4736 3.52417C15.816 2.86656 14.7725 2.83003 14.072 3.41457L13.9521 3.52417L13.0918 4.38495L15.6128 6.90595L16.4736 6.04563C17.1312 5.38803 17.1677 4.34455 16.5832 3.64407L16.4736 3.52417Z"
+                      fill="#ffffff"
+                    />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -426,7 +444,7 @@ const ProfileTemplate = () => {
                       name="userId"
                       onChange={handleMemberInfo}
                       value={memberInfo.userId || ''}
-                      readOnly={!editing}
+                      readOnly
                     />
                   </div>
                 </div>
@@ -455,6 +473,36 @@ const ProfileTemplate = () => {
                       name="email"
                       onChange={handleMemberInfo}
                       value={memberInfo.email || ''}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div className={styles.infoBar}>
+                  <div className={styles.infoTitle}>bio</div>
+                  <div className={styles.infoSpace}>:</div>
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="한 줄 소개를 입력해주세요"
+                      name="bio"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.bio || ''}
+                      readOnly={!editing}
+                    />
+                  </div>
+                </div>
+                <div className={styles.infoBar}>
+                  <div className={styles.infoTitle}>hashtag</div>
+                  <div className={styles.infoSpace}>:</div>
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="해시태그를 입력해주세요"
+                      name="hashtag"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.hashtag || ''}
                       readOnly={!editing}
                     />
                   </div>
@@ -492,26 +540,21 @@ const ProfileTemplate = () => {
                       className={styles.EditCancelBtn}
                       onClick={handleEditing}
                     >
-                      수정취소
+                      cancel
                     </button>
                     <button
                       className={styles.EditComBtn}
                       onClick={updateMemberInfo}
                     >
-                      수정완료
+                      complete
                     </button>
                   </div>
                 ) : (
                   <div className={styles.infoBar3}>
                     <button className={styles.EditBtn} onClick={handleEditing}>
-                      수정하기
+                      Edit
                     </button>
-                    <button
-                      className={styles.PwChangeBtn}
-                      onClick={toggleChangePwModal}
-                    >
-                      비밀번호 변경
-                    </button>
+                    <p onClick={toggleChangePwModal}>Change PW</p>
                     {/* <button className={styles.PwChangeBtn} onCLick={removeAccount}>회원 탈퇴</button> */}
                   </div>
                 )}

@@ -5,34 +5,12 @@ import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
 
+
+
+
+
+
 function DMList() {
-
-    const accessToken = useSelector((state) => state.member.access);
-    const loginUserNo = useSelector((state) => state.member.userNo);
-    const [DMRoomList, setDMRoomList] = useState([]);
-
-    useEffect(() => {
-        if (loginUserNo > 0) {
-            axios({
-                method: 'get',
-                url: '/DM/selectChatList',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                params: {
-                    userNo: loginUserNo
-                },
-
-            })
-                .then((resp) => {
-                    console.log(resp.data);
-
-
-                })
-                .catch((error) => console.log(error));
-        }
-    }, [loginUserNo])
-
 
     const DMListOuter = styled('div')`
     margin:auto;
@@ -82,26 +60,138 @@ function DMList() {
             .search:focus{outline:none;}
    
         .chatList{height:88%; width:100%; background-color: lightgray;}
+            .RoomElement{height:80px; width:100%; border:1px solid black; display:flex;}
+                .profilePic{width:30%; height:100%; border:1px solid black; }
+                .profile{width:70%; height:100%; border:1px solid black; }
+                    .roomNo{display:none;}
+                    .roomUserId{width:50%; height:50%;}
+                    .roomUserNickname{width:50%; height:50%;}
+
+        
+
     `
+
+
+
+    const accessToken = useSelector((state) => state.member.access);
+    const loginUserNo = useSelector((state) => state.member.userNo);
+    const [DMRoomList, setDMRoomList] = useState([]);
+    const [DMList, setDMList] = useState([]);
+    const [RoomId, setRoomId] = useState(0);
+
+    useEffect(() => {
+        if (loginUserNo > 0) {
+            axios({
+                method: 'get',
+                url: '/DM/selectChatList',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                params: {
+                    userNo: loginUserNo
+                },
+            })
+                .then((resp) => {
+                    console.log(resp)
+                    setDMRoomList(resp.data);
+                })
+                .catch((error) => console.log(error));
+        }
+    }, [loginUserNo])
+
+
+    // const handleClick = (RoomId) => {
+    //     setRoomId(RoomId);
+    //     console.log(RoomId)
+    // }
+
+    useEffect(() => {
+        axios.request({
+            url: '/DM/selectDMbyRoomid',
+            method: 'get',
+            params: {
+                roomId: RoomId
+            },
+        })
+            .then((resp) => {
+                setDMList(resp.data)
+            })
+    }, [RoomId])
+
 
     return (
         <DMListOuter>
-            <div className='chatBox'>
-                <div className='chatNavBar'></div>
-                <div className='chat'></div>
-                <div className='inputChat'>
-                    <input className='sendChat' type='text'></input>
-                </div>
-            </div>
+            <ChatBox DMList={DMList} loginUserNo={loginUserNo}></ChatBox>
             <div className='List'>
                 <div className='searchBox'>
                     <input className='search' type='text'></input>
                 </div>
                 <div className='chatList'>
-
+                    {DMRoomList.map(dto => <ListElement room={dto} setRoomId={setRoomId} />)}
                 </div>
             </div>
+
         </DMListOuter>
     );
 }
+
+const ChatBox = (props) => {
+
+    const DMList = props.DMList;
+    const loginUserNo = props.loginUserNo;
+
+    return (
+        <div className='chatBox'>
+            <div className='chatNavBar'></div>
+            <div className='DMList'>
+                {DMList.map(DMList=>{return(
+                    
+                    <div className={DMList.userNo==loginUserNo ? 'mySend' : 'other'}>
+                        {DMList.userNo==loginUserNo && (<div className='mySendTime'>{DMList.formedWriteDate}</div>)}
+                        {DMList.message}
+                        {!(DMList.userNo==loginUserNo) && (<div className='otherTime'>{DMList.formedWriteDate}</div>)}
+                    </div>
+
+                );})}
+            </div>
+            <div className='inputChat'>
+                <input className='sendChat' type='text'></input>
+            </div>
+        </div>
+    );
+}
+
+
+const ListElement = (props) => {
+
+    const room = props.room;
+
+    return (
+        <div className='RoomElement' onClick={() => { props.setRoomId(room.roomid);}}>
+            <div className='profilePic'>
+                {room.photoid}
+                {room.oriName}
+                {room.sysName}
+            </div>
+            <div className='profile'>
+                <div className='roomNo'>
+                    {room.userNo}
+                </div>
+                <div className='roomUserId'>
+                    {room.userId}
+                </div>
+                <div className='roomUserNickname'>
+                    {room.userNickname}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+
+
+
+
+
 export default DMList;

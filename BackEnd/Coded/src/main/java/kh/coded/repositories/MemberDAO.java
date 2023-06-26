@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import kh.coded.dto.MemberWithProfileDTO;
+import kh.coded.dto.MyPickPageDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -128,5 +129,9 @@ public class MemberDAO {
 
 	public int updateMemberByUserNo(MemberWithProfileDTO dto) {
 		return mybatis.update("Member.updateMemberByUserNo",dto);
+	}
+
+	public MyPickPageDTO selectMyPickPageData(int userNo) {
+		return mybatis.selectOne("Member.selectMyPickPageData",userNo);
 	}
 }

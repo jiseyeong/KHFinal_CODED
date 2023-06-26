@@ -1,0 +1,93 @@
+
+.idSearchForm{
+    margin-top:150px;
+    width:400px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:150px;
+    background-color:white;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    border-radius:2px;
+    text-align:center;
+    padding-top:70px;
+    padding-bottom:30px;
+
+    .title{
+        font-size:18px;
+        font-weight:bold;
+        margin-bottom:30px;
+    }
+    
+    .idSearchInputBox{
+        border:1px solid silver;
+        border-radius:10px;
+        width:73%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-bottom:2px; 
+        margin-bottom:10px;
+        .idSearchInput{
+            border:none;
+            font-size:13px;
+            height:32px;
+            width:90%;
+        }
+
+    }
+    .pwSearchInputBox1{
+        border:1px solid silver;
+        border-radius:10px;
+        width:73%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-bottom:10px;
+        .pwSearchInputId{
+            border:none;
+            font-size:13px;
+            height:32px;
+            width:90%;
+        }
+    }
+
+    .pwSearchInputBox2{
+        border:1px solid silver;
+        border-radius:10px;
+        width:73%;
+        margin-left:auto;
+        margin-right:auto;
+        margin-bottom:10px;
+        .pwSearchInputNickname{
+            border:none;
+            font-size:13px;
+            height:32px;
+            width:90%;
+        }
+    }
+
+    .searchMessage{
+        font-size:14px;
+        margin-top:20px;
+        margin-bottom:20px;
+    }
+
+    .searchBtn{
+        border: none;
+        border-radius: 20px;
+        height: 43px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+        font-size: 12px;
+        width:300px;
+    }
+    .loginLink{
+        margin-top:50px;
+        margin-right:35px;
+        text-align:right;
+        a:hover{
+            opacity:50%;
+        }
+    }
+}
+
+
