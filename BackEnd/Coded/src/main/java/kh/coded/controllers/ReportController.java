@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.services.FeedReportService;
 
 @RestController
 @RequestMapping("/feedReport/")
@@ -18,16 +19,10 @@ public class ReportController {
 	@Autowired
 	private FeedReportService feedreportService;
 	
-	@GetMapping(value="")
-	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
-		try {
-			List<FeedPostDTO> list = feedpostService.selectFeedList(UserNo);
-			return ResponseEntity.ok().body(list);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	//@GetMapping(value="")
+	
+		
 	}
 	
 	
-	
-}
+
