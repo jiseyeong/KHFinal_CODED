@@ -11,6 +11,7 @@ import {
 } from '../../modules/Redux/navbarSetting';
 import Login from '../../pages/auth/Login/Login';
 import SignUp from '../../pages/auth/SignUp/SignUp';
+import Logo from './navLogo.png';
 
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
@@ -78,8 +79,8 @@ function Navbar() {
         <nav className="topNavBar">
           <div className="leftNavBar">
             <a className="navLogo" href="/">
-              <img src="/images/navLogo.png" />
-              
+              <img src={Logo} className='navLogo'/>
+              <div>CODED</div>
             </a>
             <div className="leftMenuWrapper">
               <ul className="leftMenuList">
