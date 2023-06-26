@@ -25,10 +25,7 @@
 		insert into PostHashs values(PostHashs_seq.nextval,
 		#{feedPostId}, #{tagId})
 	</insert>
-	<select id="selectByUserNoList" resultType="kh.coded.dto.FeedPostDTO">
-		select * from FeedPost where userno = ${userno}
-	</select>
-	
+
 	<select id="selectTestFeedList" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost order by feedpostid desc
 	</select>
@@ -91,5 +88,13 @@
 	<delete id="deleteFeedPost">
 		delete feedpost where feedpostid = ${feedpostid}
 	</delete>
+
+	<select id="selectUserFeedPost" resultType="kh.coded.dto.FeedPostAddDTO">
+		select f.* , m.userNickName, m.sysName as profileSysName, thum.sysName as thumbNailSysName
+		from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost where userNo=${userNo}) f
+		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
+		left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
+		where rn between ${startFeedNum} and ${endFeedNum} order by f.feedpostid desc
+	</select>
 
 </mapper>

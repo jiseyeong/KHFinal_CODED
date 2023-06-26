@@ -82,10 +82,6 @@ public class FeedPostService {
         return feedpostDAO.insertHashTag(HashTag);
     }
 
-    public List<FeedPostDTO> selectFeedList(int UserNo) {
-        return feedpostDAO.selectFeedList(UserNo);
-    }
-    
     public List<FeedPostDTO> selectTestFeedList() {
         return feedpostDAO.selectTestFeedList();
     }
@@ -256,5 +252,13 @@ public class FeedPostService {
     
     public boolean isFeedScrap(int userNo, int feedPostId) {
     	return feedScrapDAO.isFeedScrap(userNo, feedPostId);
+    }
+
+    public List<FeedPostAddDTO> selectUserFeedPost(int userNo, int cpage) {
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+        return feedpostDAO.selectUserFeedPost(userNo, startFeedNum, endFeedNum);
     }
 }
