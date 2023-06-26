@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import LoadingBar from '../Common/LoadingBar';
+import FeedListNavi from './FeedListNavi';
 
 const FeedPostDetail = (props) => {
   const {
@@ -137,11 +138,13 @@ const FeedPostDetail = (props) => {
   const shortCutRef = useRef();
 
   const viewShortCutMenu = () => {
-    shortCutRef.current.style.display = 'block';
+    shortCutRef.current.style.transform = 'translateY(0px)';
+    // shortCutRef.current.style.display = 'block';
   };
 
   const noneShortCutMenu = () => {
-    shortCutRef.current.style.display = 'none';
+    shortCutRef.current.style.transform = 'translateY(60px)';
+    // shortCutRef.current.style.display = 'none';
   };
 
   return (
@@ -153,7 +156,9 @@ const FeedPostDetail = (props) => {
           onMouseOver={viewShortCutMenu}
           onMouseLeave={noneShortCutMenu}
         >
-          <nav className={styles.shortCutMenu} ref={shortCutRef}></nav>
+          <nav className={styles.shortCutMenu} ref={shortCutRef}>
+            <FeedListNavi></FeedListNavi>
+          </nav>
           {feedPost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
