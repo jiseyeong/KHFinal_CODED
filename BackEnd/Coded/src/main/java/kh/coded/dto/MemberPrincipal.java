@@ -2,12 +2,10 @@ package kh.coded.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class MemberPrincipal implements UserDetails{
 	//Our DB User
