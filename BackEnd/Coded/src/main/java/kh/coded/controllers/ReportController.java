@@ -16,18 +16,16 @@ import kh.coded.dto.FeedPostDTO;
 public class ReportController {
 
 	@Autowired
-	private FeedReportService feedreportService;
+	private FeedReportService feedReportService;
 	
 	@GetMapping(value="")
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
 		try {
-			List<FeedPostDTO> list = feedpostService.selectFeedList(UserNo);
+			List<FeedPostDTO> list = feedPostService.selectFeedList(UserNo);
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
-	
-	
+
 }
