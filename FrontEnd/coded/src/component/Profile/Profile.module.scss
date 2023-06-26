@@ -151,9 +151,6 @@
           font-size: 16px;
         }
 
-        .PwChangeBtn {
-        }
-
         .EditBtn {
         }
 
@@ -161,6 +158,14 @@
         }
 
         .EditComBtn {
+        }
+
+        p {
+          margin-left: 30px;
+          cursor: pointer;
+          &:hover {
+            color: #ff5f00;
+          }
         }
       }
 
