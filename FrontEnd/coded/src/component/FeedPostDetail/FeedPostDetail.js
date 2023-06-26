@@ -140,10 +140,19 @@ const FeedPostDetail = (props) => {
     shortCutRef.current.style.display = 'block';
   };
 
+  const noneShortCutMenu = () => {
+    shortCutRef.current.style.display = 'none';
+  };
+
   return (
     <div className={styles.feedInnerParentDiv}>
       <div className={styles.feedInnerLayoutDiv} ref={myRef}>
-        <div className={styles.feedImageDiv} onClick={openModal}>
+        <div
+          className={styles.feedImageDiv}
+          onClick={openModal}
+          onMouseOver={viewShortCutMenu}
+          onMouseLeave={noneShortCutMenu}
+        >
           <nav className={styles.shortCutMenu} ref={shortCutRef}></nav>
           {feedPost.thumbNailSysName != null ? (
             <img
