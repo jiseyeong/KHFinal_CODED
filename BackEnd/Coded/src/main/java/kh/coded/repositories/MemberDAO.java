@@ -110,11 +110,8 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectGoogleTokenByUserNo", userNo);
 	}
 	
-	public int deleteMember(String userId,String pw) { //회원탈퇴
-		Map<String,String> map = new HashMap<>();
-		map.put("userId", userId);
-		map.put("pw", pw);
-		return mybatis.delete("Member.deleteMember",map);
+	public int deleteMember(String userId) { //회원탈퇴
+		return mybatis.delete("Member.deleteMember",userId);
 	}
 
     public List<MemberDTO> selectUserList() {
@@ -123,5 +120,13 @@ public class MemberDAO {
 
 	public List<MemberWithProfileDTO> selectUserListWithProfile() {
 		return mybatis.selectList("Member.selectUserListWithProfile");
+	}
+
+	public MemberWithProfileDTO selectUserWithProfileByUserNo(int userNo) {
+		return mybatis.selectOne("Member.selectUserWithProfileByUserNo",userNo);
+	}
+
+	public int updateMemberByUserNo(MemberWithProfileDTO dto) {
+		return mybatis.update("Member.updateMemberByUserNo",dto);
 	}
 }

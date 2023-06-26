@@ -16,35 +16,71 @@ import java.util.UUID;
 @Service
 public class PhotoService {
 
-	@Autowired
-	private PhotoDAO photoDAO;	
+    @Autowired
+    private PhotoDAO photoDAO;
 
-	public PhotoDTO selectFeedlike(int feedPostId) {
-		return photoDAO.selectFeedlike(feedPostId);
-	}
+    public void insertPhoto(String realPath, List<MultipartFile> files, Map<String, Integer> map) throws IOException {
+        File realPathFile = new File(realPath);
+        if (!realPathFile.exists()) {
+            realPathFile.mkdir();
+        }
 
-	public void insertPhoto(String realPath, List<MultipartFile> files, Map<String, Integer> map) throws IOException {
-		File realPathFile = new File(realPath);
-		if(!realPathFile.exists()){
-			realPathFile.mkdir();
-		}
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (file.isEmpty())
+                    continue;
+                String oriName = file.getOriginalFilename();
+                String sysName = UUID.randomUUID() + oriName;
+                file.transferTo(new File(realPath + "/" + sysName));
+                if (map.get("userNo") != 0)
+                    photoDAO.insertPhoto(new PhotoDTO(0, oriName, sysName, 0, 0, map.get("userNo")));
+                else if (map.get("feedPostId") != 0)
+                    photoDAO.insertPhoto(new PhotoDTO(0, oriName, sysName, map.get("feedPostId"), 0, 0));
+            }
+        }
+    }
 
-		if(files != null){
-			for(MultipartFile file : files){
-				if(file.isEmpty())
-					continue;
-				String oriName = file.getOriginalFilename();
-				String sysName = UUID.randomUUID()+oriName;
-				file.transferTo(new File(realPath+"/"+sysName));
-				if(map.get("userNo")!=0)
-					photoDAO.insertPhoto(new PhotoDTO(0,oriName,sysName,0,0,map.get("userNo")));
-				else if(map.get("feedPostId")!=0)
-					photoDAO.insertPhoto(new PhotoDTO(0,oriName,sysName,map.get("feedPostId"),0,0));
-			}
-		}
-	}
+    public void updatePhoto(String realPath, List<MultipartFile> files, Map<String, Integer> map) throws IOException {
+        File realPathFile = new File(realPath);
+        if (!realPathFile.exists()) {
+            realPathFile.mkdir();
+        }
 
+        // feedPost에 저장된 사진들을 덥데이트 하는 경우
+        // 기존 feedpost에 저장된 사진들을 모두 삭제 후 업데이트 진행
+        if (map.get("feedPostId") != 0) {
+            List<PhotoDTO> oriFileList = photoDAO.selectByFeedpostId(map.get("feedPostId"));
+            for (PhotoDTO dto : oriFileList) {
+                File oriFile = new File(realPath + "/" + dto.getSysName());
+                oriFile.delete();
+            }
+        }
+
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (file.isEmpty())
+                    continue;
+                String oriName = file.getOriginalFilename();
+                String sysName = UUID.randomUUID() + oriName;
+                file.transferTo(new File(realPath + "/" + sysName));
+                if (map.get("userNo") != 0) {
+					// 유저 프로필을 수정하는 경우 기존의 유저 프로필을 삭제 후 진행
+                    PhotoDTO oriDto = photoDAO.selectByUserNo(map.get("userNo"));
+                    File oriFile = new File(realPath + "/" + oriDto.getSysName());
+                    oriFile.delete();
+                    photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, 0, 0, map.get("userNo")));
+                } else if (map.get("feedPostId") != 0) {
+                    photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, map.get("feedPostId"), 0, 0));
+                }
+            }
+        }
+    }
+    
     public List<PhotoDTO> testedBySelectPhoto() {
-		return photoDAO.testedBySelectPhoto();
+        return photoDAO.testedBySelectPhoto();
+    }
+    
+    public List<PhotoDTO> selectByFeedpostId(int feedPostId){
+    	return photoDAO.selectByFeedpostId(feedPostId);
     }
 }

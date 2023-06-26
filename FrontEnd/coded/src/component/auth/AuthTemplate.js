@@ -11,22 +11,28 @@ const AuthTemplateBlock = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top:120px;
+  margin-bottom:120px;
 `;
 
 const WhiteBox = styled.div`
   .logo-area {
     display: block;
     padding-bottom: 2rem;
-    text-align: center;
     font-weight: bold;
     letter-spacing: 2px;
+    margin-top:20px;
+    margin-bottom:20px;
+    font-size:20px;
+    text-align:center;
   }
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
   padding: 2rem;
-  width: 360px;
+  width: 400px;
   background: white;
   border-radius: 2px;
 `;
+
 const AuthTemplate = ({ children }) => {
   return (
     <AuthTemplateBlock>

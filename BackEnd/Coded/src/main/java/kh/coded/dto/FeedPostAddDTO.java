@@ -13,13 +13,13 @@ public class FeedPostAddDTO {
 	private String userNickName;
 	private String profileSysName;
 	private String thumbNailSysName;
-	private String likeCount;
 	public FeedPostAddDTO() {
 		super();
 	}
+	
 
 	public FeedPostAddDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
-			int writeTempRange, String userNickName, String profileSysName, String thumbNailSysName, String likeCount) {
+			int writeTempRange, String userNickName, String profileSysName, String thumbNailSysName) {
 		super();
 		this.feedPostId = feedPostId;
 		this.userNo = userNo;
@@ -30,8 +30,8 @@ public class FeedPostAddDTO {
 		this.userNickName = userNickName;
 		this.profileSysName = profileSysName;
 		this.thumbNailSysName = thumbNailSysName;
-		this.likeCount = likeCount;
 	}
+
 
 	public int getFeedPostId() {
 		return feedPostId;
@@ -86,12 +86,6 @@ public class FeedPostAddDTO {
 	}
 	public void setThumbNailSysName(String thumbNailSysName) {
 		this.thumbNailSysName = thumbNailSysName;
-	}
-	public String getLikeCount() {
-		return likeCount;
-	}
-	public void setLikeCount(String likeCount) {
-		this.likeCount = likeCount;
 	}
 	
 	

@@ -51,10 +51,10 @@ function WeeklyFeedForm() {
   const [needLogin, setNeedLogin] = useState(false);
 
   const [cpage, setCpage] = useState(1);
-  const [thumbNail, setThumbnail] = useState([]);
-  const [member, setMember] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
-  const [hashTagList, setHashTagList] = useState([]);
+  // const [thumbNail, setThumbnail] = useState([]);
+  // const [member, setMember] = useState([]);
+  // const [userProfile, setUserProfile] = useState([]);
+  // const [hashTagList, setHashTagList] = useState([]);
   const feedPostOuterRef = useRef(null);
 
   useEffect(() => {
@@ -97,24 +97,10 @@ function WeeklyFeedForm() {
     })
       .then((response) => {
         setLoading(false);
-        const {
-          feedPostList,
-          thumbNailList,
-          memberList,
-          userProfileList,
-          hashTagLists,
-        } = response.data;
-
         setFeedList((prev) => {
-          return [...prev, ...feedPostList];
+          return [...prev, ...response.data];
         });
-        setThumbnail((prev) => {
-          return [...prev, ...thumbNailList];
-        });
-        setMember((prev) => {
-          return [...prev, ...memberList];
-        });
-        setHashTagList((prev) => [...prev, ...hashTagLists]);
+        //setHashTagList((prev) => [...prev, ...hashTagLists]);
         setCpage((prev) => {
           return prev + 1;
         });
@@ -140,10 +126,10 @@ function WeeklyFeedForm() {
                 // columnHeights={columnHeights}
                 // setColumnHeights={setColumnHeights}
                 feedPost={item}
-                thumbNail={thumbNail[index]}
-                member={member[index]}
-                userProfile={userProfile[index]}
-                hashTagList={hashTagList[index]}
+                // thumbNail={thumbNail[index]}
+                // member={member[index]}
+                // userProfile={userProfile[index]}
+                // hashTagList={hashTagList[index]}
               ></FeedPostDetail>
             </div>
           );

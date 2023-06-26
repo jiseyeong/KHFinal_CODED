@@ -68,7 +68,7 @@ public class WeatherService {
 		String rangeCondition = (max - min) >= 10 ? "T" : "F"; // 비교 연산 결과 불린 연산값이 돌아감.
 		if(max < tempConditions[0]) {
 			condition = tempConditions[0];
-		}else if(max > tempConditions[7]) {
+		}else if(max >= tempConditions[7]) {
 			condition = tempConditions[7];
 		}else {
 			for(int i = 0; i < tempConditions.length-1; i++) {

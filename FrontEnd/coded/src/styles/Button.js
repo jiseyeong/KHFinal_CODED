@@ -4,13 +4,13 @@ import styled, { css } from 'styled-components';
 
 const StyledButton = styled.button`
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: bold;
-  padding: 0.25rem 1rem;
+  border-radius: 20px;
+  height: 35px;
+  background-color: black;
   color: white;
-  outline: none;
+  margin-left: 10px;
   cursor: pointer;
+  font-size: 12px;
 
   ${(props) =>
     props.fullWidth &&

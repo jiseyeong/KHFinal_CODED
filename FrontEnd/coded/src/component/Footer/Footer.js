@@ -7,32 +7,30 @@ class Footer extends Component {
     return (
       <div className="Footer">
         <div className="footerContainer">
-            <div className="left">
-              <Link>
-                <p>회원 탈퇴</p>
-              </Link>
+          <div className="left">
+            <div className="title">
+              <p>members.</p>
             </div>
-            <div className="middle">
-              <div className="title">
-                <p>소개 및 약관 내용</p>
-              </div>
-              <div className="descList">
-                <Link>
-                  <p>소개</p>
-                </Link>
-                <Link>
-                  <p>이용 약관</p>
-                </Link>
-                <Link>
-                  <p>개인정보 취급방침</p>
-                </Link>
-              </div>
+            <Link to="/deleteMember">Delete Account</Link>
+          </div>
+          <div className="middle">
+            <div className="title">
+              <p>us.</p>
             </div>
+            <div className="descList">
+            <Link to="/terms">Terms of Use</Link>
+            <br />
+            <Link to="/privacyPolicy">Privacy Policy</Link>
+            </div>
+          </div>
 
           <div className="right">
-            <p>
-              © 2023 CODED 
-            </p>
+            <div className="title">
+              <p>contact.</p>
+            </div>
+            <div className="descList">
+              <p>coded@official.com</p>
+            </div>
           </div>
         </div>
       </div>

@@ -84,7 +84,7 @@ public class JwtProvider {
 	    }
 	    return false;
 	}
-		
+//		
 //	public Authentication getAuthentication(String token) {
 //		UserDetails member = memberService.loadUserByUsername(this.getLoiginUserID(token));
 //		return new UsernamePasswordAuthenticationToken(member, "", member.getAuthorities());
@@ -105,7 +105,7 @@ public class JwtProvider {
 	
 	//엑세스 토큰에만 사용 가능
 	public String getLoiginUserID(String token) {
-		return this.parseJwtToken(token).get("userID", String.class);
+		return this.parseJwtToken(token).get("userId", String.class);
 	}
 	
 

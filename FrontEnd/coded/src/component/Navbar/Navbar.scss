@@ -1,8 +1,8 @@
-* {
+.navBarWrapper * {
   margin: 0;
   padding: 0;
-  font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -11,11 +11,10 @@
 
 $orange: #ff5f00;
 $white: #ffffff;
-
-$black: #26282b;
+$black: #000000;
 $ootdBorderColor: #e8ebeb;
 $gray: #9ea4aa;
-$yellow: #ffd93d;
+$yellow: #ffbb00;
 $storeBorderColor: #f0f1f4;
 
 .navBarWrapper {
@@ -169,16 +168,39 @@ $storeBorderColor: #f0f1f4;
     .rightNavBar {
       align-items: center;
       right: 80px;
+      margin-left: 300px;
 
       .rightMenuWrapper {
         display: flex;
         align-items: center;
         margin-left: 4px;
-
-        svg {
-          width: 28px;
-          height: 28px;
+        // svg {
+        //   width: 28px;
+        //   height: 28px;
+        //   cursor: pointer;
+        // }
+        .loginBtn {
+          border: none;
+          border-radius: 20px;
+          width: 130px;
+          height: 35px;
+          background-color: black;
+          color: white;
+          margin-left: 10px;
           cursor: pointer;
+          font-size: 12px;
+        }
+
+        .mypage {
+          border: none;
+          border-radius: 20px;
+          width: 90px;
+          height: 35px;
+          background-color: black;
+          color: white;
+          margin-left: 10px;
+          cursor: pointer;
+          font-size: 12px;
         }
       }
     }
@@ -187,7 +209,7 @@ $storeBorderColor: #f0f1f4;
 
 .searchBar {
   margin: 0 auto;
-  transform: translateX(-26%);
+  // transform: translateX(-26%);
   width: 30%;
   height: 40px;
   z-index: 102;
@@ -205,7 +227,8 @@ $storeBorderColor: #f0f1f4;
   transition: background-color 0.25s ease-in-out 0s, color 0.25s 0s;
 
   input {
-    justify-content: center;
+    margin-left: 30px;
+    // justify-content: center;
     appearance: none;
     width: 100%;
     height: 100%;
