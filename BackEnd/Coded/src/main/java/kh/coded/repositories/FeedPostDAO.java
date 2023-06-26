@@ -7,6 +7,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -29,8 +30,8 @@ public class FeedPostDAO {
 	}
 
 //	피드 내 사진 첨부 - 사진을 첨부하여 피드 작성
-	public int insertFeedPhoto(PhotoDTO dto) {
-		return mybatis.insert("FeedPost.insertFeedPhoto", dto);
+	public void insertFeedPhoto(PhotoDTO dto) {
+		mybatis.insert("FeedPost.insertFeedPhoto", dto);
 	}
 	
 ////	피드 내 날씨 해시태그 - 오늘 날씨에 맞는 날씨 해시태그 자동 입력 (뽑기)

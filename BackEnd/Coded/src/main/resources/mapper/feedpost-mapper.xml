@@ -11,7 +11,7 @@
 	</insert>
 	
 	<insert id="insertFeedPhoto">
-		insert into FeedPhoto values(FeedPost_seq.nextval,
+		insert into Photo values(Photo_seq.nextval,
 		#{oriName}, #{sysname}, ${feedPostId},
 		0,0)
 	</insert>

@@ -6,7 +6,8 @@ import { useEffect } from 'react';
 import axios from 'axios';
 
 function ToastUI() {
-  
+
+
   const [file, setFile] = useState(null); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({ display: "inline-block" });

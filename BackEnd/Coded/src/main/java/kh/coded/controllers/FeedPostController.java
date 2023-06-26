@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedPostAddDTO;
@@ -36,11 +38,6 @@ public class FeedPostController {
     private FeedPostService feedpostService;
 
     @Autowired
-    private PhotoService photoService;
-
-    @Autowired
-    private MemberService memberService;
-    @Autowired
     private JwtProvider jwtProvider;
 
     @GetMapping(value = "feedpost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
@@ -57,16 +54,19 @@ public class FeedPostController {
     public ResponseEntity<?> insertFeedPost(
             @RequestParam(value = "fdto") FeedPostDTO fdto,
             @RequestParam(value = "hdto") HashTagDTO hdto,
-            @RequestParam(value = "pdto") PhotoDTO pdto) {
+            @RequestParam(value = "feedPostId", required = false, defaultValue = "0") int feedPostId,
+            @RequestParam("files") List<MultipartFile> files,
+            HttpServletRequest request) {
         try {
             Map<String, Integer> result = new HashMap<>();
+            String realPath = request.getServletContext().getRealPath("images");
             int FeedPost = feedpostService.insertFeedPost(fdto);
             int HashTag = feedpostService.insertHashTag(hdto.getHashTag());
-            int FeedPhoto = feedpostService.insertFeedPhoto(pdto);
             int PostHashs = feedpostService.insertPostHashs(fdto.getUserNo(), hdto.getTagId());
+            feedpostService.insertFeedPhoto(realPath, files, feedPostId);
+            
             result.put("FeedPost", FeedPost);
             result.put("HashTag", HashTag);
-            result.put("FeedPhoto", FeedPhoto);
             result.put("PostHashs", PostHashs);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
