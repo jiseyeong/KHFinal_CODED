@@ -78,6 +78,7 @@ const AuthForm = ({ type }) => {
   const pwRef = useRef(null);
   const pwConfirmRef = useRef(null);
   const [pwConfirmCheck, setPwConfirmCheck] = useState(false);
+  const [pwConfirmMessage, setPwConfirmMessage] = useState('');
   const emailRef = useRef(null);
   const [emailDuplicateChecked, setEmailDuplicateChecked] = useState(false);
   const [emailDuplicateMessage, setEmailDuplicateMessage] = useState('');
@@ -85,6 +86,7 @@ const AuthForm = ({ type }) => {
   const address1 = useRef(null);
   const address2 = useRef(null);
   const [registerPassCheck, setRegisterPassCheck] = useState(false);
+  const [registerPassMessage, setRegisterPassMessage] = useState('');
 
   const [addressList1, setAddressList1] = useState([]);
   const [addressList2, setAddressList2] = useState([]);
@@ -164,8 +166,10 @@ const AuthForm = ({ type }) => {
         !address2.current.value
       ) {
         setRegisterPassCheck(false);
+        setRegisterPassMessage('모든 요소를 기입하시고 조건을 통과해주셔야 회원가입이 가능합니다.');
       } else {
         setRegisterPassCheck(true);
+        setRegisterPassMessage('회원가입이 가능합니다.');
       }
     }
 
@@ -179,25 +183,76 @@ const AuthForm = ({ type }) => {
   function handleId(e) {
     setId(e.target.value);
     if (type === 'register') {
-      //아이디 중복 체크
-      if (!idDupTimer) {
-        idDupTimer = setTimeout(() => {
-          idDupTimer = null;
+      if(idRef.current.value){
+        //아이디 중복 체크
+        if (!idDupTimer) {
+          idDupTimer = setTimeout(() => {
+            idDupTimer = null;
+            axios({
+              method: 'get',
+              url: '/auth/isMember',
+              params: {
+                userId: idRef.current.value,
+              },
+            })
+              .then((response) => {
+                setIdDuplicateChecked(response.data);
+                if (response.data) {
+                  setIdDuplicateMessage('중복된 아이디가 있습니다.');
+                } else if (!regexId.test(idRef.current.value)) {
+                  setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
+                } else {
+                  setIdDuplicateMessage('사용 가능합니다.');
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }, 200);
+        }
+      }else{
+        setIdDuplicateChecked(true);
+        setIdDuplicateMessage('');
+      }
+    }
+  }
+
+  function handlePw(e) {
+    if(pwRef.current.value && pwConfirmRef.current.value){
+      if (pwRef.current.value === pwConfirmRef.current.value) {
+        setPwConfirmCheck(true);
+        setPwConfirmMessage('비밀번호가 일치합니다.');
+      } else {
+        setPwConfirmCheck(false);
+        setPwConfirmMessage('비밀번호가 일치하지 않습니다.');
+      }
+    }else{
+      setPwConfirmCheck(false);
+      setPwConfirmMessage('');
+    }
+  }
+
+  function handleEmail(e) {
+    //setEmail(e.target.value);
+    if(emailRef.current.value){
+      if (!emailDupTimer) {
+        emailDupTimer = setTimeout(() => {
+          emailDupTimer = null;
           axios({
             method: 'get',
-            url: '/auth/isMember',
+            url: '/auth/isMemberByEmail',
             params: {
-              userId: idRef.current.value,
+              email: emailRef.current.value,
             },
           })
             .then((response) => {
-              setIdDuplicateChecked(response.data);
+              setEmailDuplicateChecked(response.data);
               if (response.data) {
-                setIdDuplicateMessage('중복된 아이디가 있습니다.');
-              } else if (!regexId.test(idRef.current.value)) {
-                setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
+                setEmailDuplicateMessage('중복된 이메일이 있습니다.');
+              } else if (!regexEmail.test(emailRef.current.value)) {
+                setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
               } else {
-                setIdDuplicateMessage('사용 가능합니다.');
+                setEmailDuplicateMessage('사용 가능합니다.');
               }
             })
             .catch((error) => {
@@ -205,51 +260,21 @@ const AuthForm = ({ type }) => {
             });
         }, 200);
       }
-    }
-  }
-
-  function handlePw(e) {
-    if (pwRef.current.value === pwConfirmRef.current.value) {
-      setPwConfirmCheck(true);
-    } else {
-      setPwConfirmCheck(false);
-    }
-  }
-
-  function handleEmail(e) {
-    //setEmail(e.target.value);
-    if (!emailDupTimer) {
-      emailDupTimer = setTimeout(() => {
-        emailDupTimer = null;
-        axios({
-          method: 'get',
-          url: '/auth/isMemberByEmail',
-          params: {
-            email: emailRef.current.value,
-          },
-        })
-          .then((response) => {
-            setEmailDuplicateChecked(response.data);
-            if (response.data) {
-              setEmailDuplicateMessage('중복된 이메일이 있습니다.');
-            } else if (!regexEmail.test(emailRef.current.value)) {
-              setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
-            } else {
-              setEmailDuplicateMessage('사용 가능합니다.');
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, 200);
+    }else{
+      setEmailDuplicateChecked(true);
+      setEmailDuplicateMessage('');
     }
   }
 
   function handleNickName(e) {
-    if (!regexNickName.test(nickNameRef.current.value)) {
-      setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
-    } else {
-      setNickNameRegexMessage('사용 가능합니다.');
+    if(nickNameRef.current.value){
+      if (!regexNickName.test(nickNameRef.current.value)) {
+        setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
+      } else {
+        setNickNameRegexMessage('사용 가능합니다.');
+      }
+    }else{
+      setNickNameRegexMessage('');
     }
   }
 
@@ -264,7 +289,7 @@ const AuthForm = ({ type }) => {
       alert('사용할 수 없는 이메일입니다.');
     } else if (!regexNickName.test(nickNameRef.current.value)) {
       alert('사용할 수 없는 닉네임입니다.');
-    } else if (pwRef.current.value !== pwConfirmRef.current.value) {
+    } else if (!pwConfirmCheck) {
       alert('비밀번호들이 일치하지 않습니다.');
     } else if (!address1.current.value || !address2.current.value) {
       alert('주소를 입력해주셔야 합니다.');
@@ -486,11 +511,7 @@ const AuthForm = ({ type }) => {
             onChange={handlePw}>
           </input>
           </div>
-          {pwConfirmCheck ? (
-            <div className={style.pwConfirm}>비밀번호가 일치합니다.</div>
-          ) : (
-            <div className={style.pwConfirm}>비밀번호가 일치하지 않습니다.</div>
-          )}
+          <div>{pwConfirmMessage}</div>
           <div className={style.inputEmail}>
           <input
            autoComplete="email"
@@ -534,11 +555,8 @@ const AuthForm = ({ type }) => {
         {text}
       </ButtonWithMarginTop>
       {type === 'register' &&
-        (registerPassCheck ? (
-          <div className={style.joinConfirm}>회원가입이 가능합니다.</div>
-        ) : (
-          <div className={style.joinConfirm}>모든 요소를 기입하시고 조건을 통과해주셔야 합니다.</div>
-        ))}
+        (<div>{registerPassMessage}</div>)
+      }
       <Footer>
         {type === 'login' ? (
           <Link to="/signup" className={style.signup}>회원가입</Link>
