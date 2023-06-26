@@ -120,6 +120,7 @@ function Modal({
       },
     }).then(() => {
        closeModal();
+       window.location.reload();
     })
       .catch((error) => {
         console.log(error);
