@@ -147,8 +147,8 @@ const ProfileTemplate = () => {
         .then((obj) => initAddress1(obj))
         // 4. 1차 주소를 토대로 2차 주소를 가져옴 (getAddress2와 setAddress2를 매개변수로 구분)
         .then((obj) => getAddress2(obj))
-        // 5. 내 정보에 등록된 2차 기본 주소 지정
-        .then((obj) => initAddress2(obj))
+        // // 5. 내 정보에 등록된 2차 기본 주소 지정
+        // .then((obj) => initAddress2(obj))
         .catch((error) => {
           console.log(error);
         });
@@ -189,11 +189,11 @@ const ProfileTemplate = () => {
         });
         setAddressList2(arrTemp);
         obj = { member: member, addressList: arrTemp };
+        initAddress2(obj);
       })
       .catch((error) => {
         console.log(error);
       });
-    return obj;
   };
 
   // 내 정보에 등록된 2차 기본 주소 지정
@@ -202,7 +202,8 @@ const ProfileTemplate = () => {
     if (addressList.length > 0) {
       addressList.forEach((item, index) => {
         if (item.value === member.address2) {
-          setAddress2Index(index);
+          setAddressIndex2(index);
+          return;
         }
       });
     } else {
