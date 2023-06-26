@@ -39,42 +39,48 @@
 	
 	<select id="selectAllFeedPost" resultType="kh.coded.dto.FeedPostAddDTO">
 		select f.*
-        , m.userNickName,
-        m.sysName as profileSysName,
-        thum.sysName as thumbNailSysName
-		from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost) f
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
-        left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
+		from
+		(select fe.*,row_number() over(order by fe.FeedPostId desc) rn,
+		m.userNickName,
+		m.sysName as profileSysName,
+		thum.sysName as thumbNailSysName
+		from feedPost fe
+		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
+        left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
+		) f
 		where rn between ${startFeedNum} and ${endFeedNum}
 		order by f.feedpostid desc
 	</select>
 	
 	<select id="selectPagingWeatherDiff" resultType="kh.coded.dto.FeedPostAddDTO">
-		select f.*,
-		 m.userNickName,
-		 m.sysName as profileSysName,
-		 thum.sysName as thumbNailSysName
-		from (select feedpost.*,
-				 (select ABS(feedpost.writeTemp - ${targetTemp}) from dual) as writeTempDiff,
-		 		 (select ABS(feedpost.writeTempRange - ${targetTempRange}) from dual) as writeTempRangeDiff,
-		          row_number() over(order by FeedPostId desc) rn
-		          from feedpost
-		          order by writeTempDiff asc, writeTempRangeDiff asc) f
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
-        left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
+		select f.*
+		from (select fe.*,
+				 (select ABS(fe.writeTemp - ${targetTemp}) from dual) as writeTempDiff,
+		 		 (select ABS(fe.writeTempRange - ${targetTempRange}) from dual) as writeTempRangeDiff,
+		          row_number() over(order by fe.FeedPostId desc) rn,
+		          m.userNickName,
+		          m.sysName as profileSysName,
+		          thum.sysName as thumbNailSysName
+		          from feedpost fe
+		          left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
+        		  left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
+		          order by writeTempDiff asc, writeTempRangeDiff asc
+		          ) f
 		where rn between ${startFeedNum} and ${endFeedNum}
 	</select>
 
 	<select id="selectSearchFeedListByHashs" resultType="kh.coded.dto.FeedPostAddDTO">
-		select f.*,
+		select f.*
+		from (select fe.*, row_number() over (order by fe.feedpostid desc) as rn,
 			m.userNickName,
 			m.sysName as profileSysName,
 			thum.sysName as thumbNailSysName
-		from (select feedpost.*, row_number() over (order by feedpostid desc) as rn from
+			from
 		     (select * from (select distinct feedpostid from hashtag join posthashs using (tagid) where hashtag like '%'|| #{keyword} || '%')
-		      join feedpost using (feedpostid)) feedpost) f
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
-        left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
+		      join feedpost using (feedpostid)) fe
+		      left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
+        	  left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
+		      ) f
 		where rn between ${startFeedNum} and ${endFeedNum}
 	</select>
 
