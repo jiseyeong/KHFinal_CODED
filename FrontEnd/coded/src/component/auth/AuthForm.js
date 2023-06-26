@@ -99,6 +99,12 @@ const AuthForm = ({ type }) => {
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
+    const idDuplicateCheckRef = useRef();
+    const nickNameDuplicateCheckRef = useRef();
+    const pwDuplicateCheckRef = useRef();
+    const emailDuplicateCheckRef = useRef();
+
+
   useEffect(()=>{
     if(accessToken){
       navigate("/");
@@ -194,10 +200,14 @@ const AuthForm = ({ type }) => {
               setIdDuplicateChecked(response.data);
               if (response.data) {
                 setIdDuplicateMessage('중복된 아이디가 있습니다.');
+                idDuplicateCheckRef.current.style.color = "red";
+
               } else if (!regexId.test(idRef.current.value)) {
                 setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
+                idDuplicateCheckRef.current.style.color = "red";
               } else {
                 setIdDuplicateMessage('사용 가능합니다.');
+                idDuplicateCheckRef.current.style.color = "blue";
               }
             })
             .catch((error) => {
@@ -232,10 +242,14 @@ const AuthForm = ({ type }) => {
             setEmailDuplicateChecked(response.data);
             if (response.data) {
               setEmailDuplicateMessage('중복된 이메일이 있습니다.');
+              emailDuplicateCheckRef.current.style.color = "red";
+
             } else if (!regexEmail.test(emailRef.current.value)) {
               setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
+              emailDuplicateCheckRef.current.style.color = "red";
             } else {
               setEmailDuplicateMessage('사용 가능합니다.');
+              emailDuplicateCheckRef.current.style.color = "blue";
             }
           })
           .catch((error) => {
@@ -248,8 +262,10 @@ const AuthForm = ({ type }) => {
   function handleNickName(e) {
     if (!regexNickName.test(nickNameRef.current.value)) {
       setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
+      nickNameDuplicateCheckRef.current.style.color = "red";
     } else {
       setNickNameRegexMessage('사용 가능합니다.');
+      nickNameDuplicateCheckRef.current.style.color = "blue";
     }
   }
 
@@ -429,7 +445,7 @@ const AuthForm = ({ type }) => {
         onChange={handleId}>
       </input>
       </div>
-      <div className={style.idConfirm}>{idDuplicateMessage}</div>
+      <div ref={idDuplicateCheckRef} className={style.idConfirm}>{idDuplicateMessage}</div>
       <div className={style.inputPwForm}>
       <input 
         className={style.inputPw}
@@ -446,7 +462,8 @@ const AuthForm = ({ type }) => {
                 });
               }}
             >
-              <EyeImage></EyeImage>
+              {isPwView ? (<EyeImage></EyeImage>) : (<NoneEyeImage></NoneEyeImage>)}
+              
       </button>
       </div>
       {type === 'login' && (
