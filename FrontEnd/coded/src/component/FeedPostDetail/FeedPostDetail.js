@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import LoadingBar from '../Common/LoadingBar';
 import FeedListNavi from './FeedListNavi';
+import { Temperature } from '../../assets/ModalAsset/ModalAsset';
 
 const FeedPostDetail = (props) => {
   const {
@@ -195,6 +196,7 @@ const FeedPostDetail = (props) => {
               )}
             </Link>
             {isProfileLoaded ? null : <LoadingBar />}
+            <div className={styles.likeCountLayout}></div>
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
@@ -224,8 +226,8 @@ const FeedPostDetail = (props) => {
                 )}
               </div>
               <div className={styles.feedWeatherLayout}>
+                <Temperature />
                 <span>{feedPost.writeTemp}º</span>
-                <img src="/images/test.jpg"></img>
               </div>
             </div>
           </div>
