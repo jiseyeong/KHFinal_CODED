@@ -3,6 +3,8 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import FeedComment from "./FeedComment";
 import LoadingBar from "../Common/LoadingBar";
+import style from './FeedCommentList.module.scss';
+import { FeedCommentWrite } from "../../assets/ModalAsset/FeedCommentAsset";
 
 
 
@@ -92,13 +94,12 @@ function FeedCommentList({feedPostId, depth, parentId}){
     }
 
     return (
-        <div>
+        <div className={style.repleWrite}>
             {(depth === 0 && accessToken) && 
                 (
-                    <div>
-                        <div>댓글 쓰기</div>
+                    <div className={style.repleWriteBox}>
                         <div ref={editorRef} contentEditable="true"/>
-                        <button onClick={writeComment}>댓글 전송하기</button>
+                        <button onClick={writeComment}><FeedCommentWrite></FeedCommentWrite></button>
                     </div>
                 )
             }

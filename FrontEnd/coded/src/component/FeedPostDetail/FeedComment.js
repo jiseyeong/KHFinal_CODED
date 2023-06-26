@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import FeedCommentList from './FeedCommentList';
 import axios from 'axios';
+import { styled } from 'styled-components';
+import style from './FeedComment.module.scss';
 
 const HeartIcons = {
   empty: (
@@ -195,32 +197,38 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   }
   return (
     <div>
-      <div>
-        <img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img>
+      <div className={style.feedCommentList}>
+      <div className={style.imageBox}>
+        <img src={`/images/${profileSysName}`}></img>
       </div>
-      <div>nick : {commentInfo.userNickName}</div>
-      <div>id : {commentInfo.userId}</div>
-      <div>content</div>
+      <div className={style.contentsBox}>
+      <div className={style.userInfo}>
+        <span className={style.userNickname}>{commentInfo.userNickName}</span>
+        <span className={style.userId}>{commentInfo.userId}</span>     
+      </div>
       <div
         contentEditable={isUpdate}
         ref={commentRef}
         suppressContentEditableWarning={true}
+        className={style.contents}
         >
           {commentInfo.body}
       </div>
+      </div>
+      </div>
       {(userNo === commentInfo.userNo) && ((isUpdate) ?
-        (<div>
-          <button onClick={updateComment}>확정</button>
-          <button onClick={cancelUpdateComment}>취소</button>
+        (<div className={style.btnBox}>
+          <button className={style.commentBtn} onClick={updateComment}>확정</button>
+          <button className={style.commentBtn} onClick={cancelUpdateComment}>취소</button>
         </div>)
-        : (<button onClick={handleUpdate}>수정</button>))}
-      {(userNo === commentInfo.userNo) && (<button onClick={deleteComment}>삭제</button>)}
+        : (<button className={style.commentBtn} onClick={handleUpdate}>수정</button>))}
+      {(userNo === commentInfo.userNo) && (<button className={style.commentBtn} onClick={deleteComment}>삭제</button>)}
       <div>write date : {commentInfo.formedWriteDate}</div>
       <div onClick={handleIsLike}>
         like : {isLike ? 'heart' : HeartIcons.empty}{likeCount}
       </div>
       {depth < 1 && accessToken && (
-        <button onClick={handleOnReply}>comment</button>
+        <button onClick={handleOnReply}>댓글 달기</button>
       )}
 
       {onReply && (
@@ -229,7 +237,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
           <button onClick={writeComment}>전송</button>
         </div>
       )}
-      <div>
+      <div className={style.nestedComment}>
         {/* 답글 리스트 */}
         <FeedCommentList
           feedPostId={feedPostId}
