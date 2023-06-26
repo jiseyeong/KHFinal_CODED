@@ -145,25 +145,7 @@ public class WeatherService {
 		RestTemplate restTemplate = new RestTemplate();
 
 		try {
-			for(AddressCoordDTO coord : coordList) {						
-				UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst")
-						.queryParam("serviceKey", weatherShortAPIKey)
-						.queryParam("numOfRows", 1500)
-						.queryParam("pageNo", 1)
-						.queryParam("base_date", day)
-						.queryParam("base_time", "0200")
-						.queryParam("nx", coord.getX())
-						.queryParam("ny", coord.getY())
-						.build();
-
-				HttpHeaders header = new HttpHeaders();
-				header.setContentType(MediaType.APPLICATION_JSON);
-				HttpEntity<HttpHeaders> entity = new HttpEntity<>(header);
-
-				String response = restTemplate.getForObject(uri.toUri(), String.class);
-				org.json.JSONObject json = XML.toJSONObject(response);
-
-
+			for(AddressCoordDTO coord : coordList) {
 				List<TodayWeatherDTO> todayList = new ArrayList<>();
 				WeeklyWeatherDTO nextDay = new WeeklyWeatherDTO(0, coord.getAddressID(), 0, 0, 1, 0,0);
 				WeeklyWeatherDTO twoDay = new WeeklyWeatherDTO(0, coord.getAddressID(), 0, 0, 2, 0, 0);
@@ -171,7 +153,35 @@ public class WeatherService {
 					//TodayWeatherID, AddressID, Recent, Min, Max, Time, SKYCode, PTYCode
 					todayList.add(new TodayWeatherDTO(0, coord.getAddressID(), 0, 0, 0, i, 0, 0));
 				}
-				JSONArray jsonArray = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
+				JSONArray jsonArray = null;
+				while(true) {
+					try {
+						UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst")
+								.queryParam("serviceKey", weatherShortAPIKey)
+								.queryParam("numOfRows", 2000)
+								.queryParam("pageNo", 1)
+								.queryParam("base_date", day)
+								.queryParam("base_time", "0200")
+								.queryParam("nx", coord.getX())
+								.queryParam("ny", coord.getY())
+								.build();
+						
+						HttpHeaders header = new HttpHeaders();
+						header.setContentType(MediaType.APPLICATION_JSON);
+						HttpEntity<HttpHeaders> entity = new HttpEntity<>(header);
+						
+						String response = restTemplate.getForObject(uri.toUri(), String.class);
+						org.json.JSONObject json = XML.toJSONObject(response);
+						
+
+						jsonArray = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONArray("item");
+						break;
+					}catch(Exception e) {
+						System.out.println(coord.getAddressID());
+						e.printStackTrace();
+					}
+				}
+				
 				for(int i = 0; i < jsonArray.length(); i++) {
 					String category = jsonArray.getJSONObject(i).getString("category");
 					Date date = formatter.parse(Integer.toString(jsonArray.getJSONObject(i).getInt("fcstDate")));
@@ -283,22 +293,34 @@ public class WeatherService {
 
 		RestTemplate restTemplate = new RestTemplate();
 		try {
-			for(AddressCoordDTO coord : coordList) {						
-				UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa")
-						.queryParam("serviceKey", weatherLongAPIKey)
-						.queryParam("numOfRows", 10)
-						.queryParam("pageNo", 1)
-						.queryParam("regId", coord.getCode())
-						.queryParam("tmFc", day)
-						.build();
-
-				HttpHeaders header = new HttpHeaders();
-				header.setContentType(MediaType.APPLICATION_JSON);
-				HttpEntity<HttpHeaders> entity = new HttpEntity<>(header);
-
-				String response = restTemplate.getForObject(uri.toUri(), String.class);
-				org.json.JSONObject json = XML.toJSONObject(response);
-				JSONObject item = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
+			for(AddressCoordDTO coord : coordList) {
+				UriComponents uri = null;
+				String response = null;
+				org.json.JSONObject json = null;
+				JSONObject item = null;
+					while(true) {
+						try {
+						uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa")
+								.queryParam("serviceKey", weatherLongAPIKey)
+								.queryParam("numOfRows", 10)
+								.queryParam("pageNo", 1)
+								.queryParam("regId", coord.getCode())
+								.queryParam("tmFc", day)
+								.build();
+						
+						HttpHeaders header = new HttpHeaders();
+						header.setContentType(MediaType.APPLICATION_JSON);
+						HttpEntity<HttpHeaders> entity = new HttpEntity<>(header);
+						
+						response = restTemplate.getForObject(uri.toUri(), String.class);
+						json = XML.toJSONObject(response);
+						item = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
+						break;
+					}catch(Exception e) {
+						System.out.println(coord.getAddressID());
+						e.printStackTrace();
+					}
+				}
 				
 				WeeklyWeatherDTO third = new WeeklyWeatherDTO(0, coord.getAddressID(), 0, 0, 3, 0, 0);
 				WeeklyWeatherDTO fourth = new WeeklyWeatherDTO(0, coord.getAddressID(), 0, 0, 4, 0, 0);
@@ -331,16 +353,24 @@ public class WeatherService {
 					code2 = "11" + code2.substring(2, code2.length());
 				}
 
-				uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst")
-						.queryParam("serviceKey", weatherLongAPIKey)
-						.queryParam("numOfRows", 10)
-						.queryParam("pageNo", 1)
-						.queryParam("regId", code2)
-						.queryParam("tmFc", day)
-						.build();
-				response = restTemplate.getForObject(uri.toUri(), String.class);
-				json = XML.toJSONObject(response);
-				item = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
+				while(true) {
+					try {
+						uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst")
+								.queryParam("serviceKey", weatherLongAPIKey)
+								.queryParam("numOfRows", 10)
+								.queryParam("pageNo", 1)
+								.queryParam("regId", code2)
+								.queryParam("tmFc", day)
+								.build();
+						response = restTemplate.getForObject(uri.toUri(), String.class);
+						json = XML.toJSONObject(response);
+						item = json.getJSONObject("response").getJSONObject("body").getJSONObject("items").getJSONObject("item");
+						break;
+					}catch(Exception e) {
+						System.out.println(coord.getAddressID());
+						e.printStackTrace();
+					}
+				}
 				
 				//AM, PM 중 AM만 얻어옴.
 				String weatherMessage = item.getString("wf3Am");
