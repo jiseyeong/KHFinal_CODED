@@ -3,6 +3,7 @@ package kh.coded.services;
 import java.util.List;
 import java.util.Random;
 
+import kh.coded.dto.MyPickPageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -499,5 +500,8 @@ public class MemberService implements UserDetailsService {
 	public boolean checkPw(String userId, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(userId);
 		return passwordEncoder.matches(pw, member.getPw());
+	}
+
+	public MyPickPageDTO selectMyPickPageData() {
 	}
 }
