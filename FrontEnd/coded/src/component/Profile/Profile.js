@@ -331,32 +331,6 @@ const ProfileTemplate = () => {
       });
   };
 
-  // 회원 탈퇴 시
-  const removeAccount = () => {
-    let checkPw = '';
-    if (comfirm('정말로 회원을 탈퇴하시겠습니까?')) {
-      checkPw = prompt('비밀번호를 다시 입력해주세요.');
-    }
-    axios({
-      url: '/auth/deleteMemberWithoutId',
-      method: 'delete',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        checkPw: checkPw,
-      },
-    }).then((resp) => {
-      if (resp.data === 0) {
-        alert('회원 탈퇴가 완료되었습니다.');
-        navi('/');
-      } else {
-        alert('회원 번호가 일치하지 않습니다.');
-        return;
-      }
-    });
-  };
-
   return (
     <ProfileTemplateBlock>
       <WhiteBox>
@@ -555,7 +529,6 @@ const ProfileTemplate = () => {
                       Edit
                     </button>
                     <p onClick={toggleChangePwModal}>Change PW</p>
-                    {/* <button className={styles.PwChangeBtn} onCLick={removeAccount}>회원 탈퇴</button> */}
                   </div>
                 )}
                 {changePwModal && (
