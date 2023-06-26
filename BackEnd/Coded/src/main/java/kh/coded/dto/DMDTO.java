@@ -1,6 +1,7 @@
 package kh.coded.dto;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class DMDTO {
     private int messageId;
@@ -70,4 +71,10 @@ public class DMDTO {
     public void setIsDelete(char isDelete) {
         this.isDelete = isDelete;
     }
+    
+	public String getFormedWriteDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+		return sdf.format(writeDate);
+	}
+    
 }
