@@ -4,10 +4,14 @@ import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 
-const MyPickPage = () => {
-  const accessToken = useSelector((state) => state.member.access);
+const MyPickPage = ({ userNo }) => {
   const [feedPost, setFeedPost] = useState([]);
   const [memberInfo, setMemberInfo] = useState({});
+
+  let accessToken;
+  if (userNo === undefined) {
+    accessToken = useSelector((state) => state.member.access);
+  }
 
   useEffect(() => {
     if (accessToken) {
