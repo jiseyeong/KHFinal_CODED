@@ -58,6 +58,7 @@ const ProfileTemplate = () => {
   const regexId = /^[A-Za-z0-9_]{7,13}$/;
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
 
   // 수정 버튼을 눌렀을 때 (readonly 적용 해제, css 변경)
   const handleEditing = () => {
@@ -106,6 +107,8 @@ const ProfileTemplate = () => {
               userId,
               userNickName,
               email,
+              bio,
+              userHashtag,
               address1,
               address2,
               sysName,
@@ -117,6 +120,8 @@ const ProfileTemplate = () => {
               pw: '******',
               userNickName: userNickName,
               email: email,
+              bio: bio,
+              userHashtag: userHashtag,
               address1: address1,
               address2: address2,
               sysName: sysName,
@@ -292,7 +297,9 @@ const ProfileTemplate = () => {
     if (
       memberInfo.userId === '' ||
       memberInfo.userNickName === '' ||
-      memberInfo.email === ''
+      memberInfo.email === '' ||
+      memberInfo.bio === '' ||
+      memberInfo.userHashtag === ''
     ) {
       alert('모든 입력박스를 입력해주세요.');
       return;
@@ -437,7 +444,7 @@ const ProfileTemplate = () => {
                       name="userId"
                       onChange={handleMemberInfo}
                       value={memberInfo.userId || ''}
-                      readOnly={!editing}
+                      readOnly
                     />
                   </div>
                 </div>
@@ -466,6 +473,36 @@ const ProfileTemplate = () => {
                       name="email"
                       onChange={handleMemberInfo}
                       value={memberInfo.email || ''}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <div className={styles.infoBar}>
+                  <div className={styles.infoTitle}>bio</div>
+                  <div className={styles.infoSpace}>:</div>
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="한 줄 소개를 입력해주세요"
+                      name="bio"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.bio || ''}
+                      readOnly={!editing}
+                    />
+                  </div>
+                </div>
+                <div className={styles.infoBar}>
+                  <div className={styles.infoTitle}>hashtag</div>
+                  <div className={styles.infoSpace}>:</div>
+                  <div className={styles.infoBody}>
+                    <input
+                      type="text"
+                      className="forEdit"
+                      placeholder="해시태그를 입력해주세요"
+                      name="hashtag"
+                      onChange={handleMemberInfo}
+                      value={memberInfo.hashtag || ''}
                       readOnly={!editing}
                     />
                   </div>
@@ -503,13 +540,13 @@ const ProfileTemplate = () => {
                       className={styles.EditCancelBtn}
                       onClick={handleEditing}
                     >
-                      Cancel
+                      cancel
                     </button>
                     <button
                       className={styles.EditComBtn}
                       onClick={updateMemberInfo}
                     >
-                      Complete
+                      complete
                     </button>
                   </div>
                 ) : (
@@ -517,12 +554,7 @@ const ProfileTemplate = () => {
                     <button className={styles.EditBtn} onClick={handleEditing}>
                       Edit
                     </button>
-                    <button
-                      className={styles.PwChangeBtn}
-                      onClick={toggleChangePwModal}
-                    >
-                      Change PW
-                    </button>
+                    <p onClick={toggleChangePwModal}>Change PW</p>
                     {/* <button className={styles.PwChangeBtn} onCLick={removeAccount}>회원 탈퇴</button> */}
                   </div>
                 )}
