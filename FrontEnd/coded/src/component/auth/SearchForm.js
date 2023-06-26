@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import style from './SearchForm.module.scss';
 
 const textMap = {
     id: '아이디 찾기',
@@ -63,38 +64,45 @@ function SearchForm({type}){
     }
 
     return(
-        <div>
-            <h3>{text}</h3>
-            <input 
+        <div className={style.idSearchForm}>
+
+            <div className={style.title}>{text}</div>
+            <div className={style.idSearchInputBox}>
+            <input
+                className={style.idSearchInput}
                 autoComplete="email"
                 type="text"
-                placeholder="input email"
+                placeholder="이메일을 입력해주세요"
                 ref={emailRef}
             />
+             </div>
             {type === "pw" && (
                 <>
-                    <br/>
-                    <input
+                    <div className={style.pwSearchInputBox1}>
+                    <input className={style.pwSearchInputId}
                         autoComplete="username"
                         type="text"
-                        placeholder="input id"
+                        placeholder="아이디를 입력해주세요"
                         ref={idRef}
                     />
-                    <br/>
-                    <input
+                    </div>
+                    <div className={style.pwSearchInputBox2}>
+                    <input className={style.pwSearchInputNickname}
                         autoComplete="name"
                         type="text"
-                        placeholder="input nickname"
+                        placeholder="닉네임을 입력해주세요"
                         ref={nickNameRef}
                     />
+                    </div>
                 </>
             )}
-            <br />
-            <div>{message}</div>
+           
+            <div className={style.searchMessage}>{message}</div>
+            
             {
-                loading ? (<div>진행 중입니다.</div>) : (            <button onClick={type==="id" ? doIdSearch : doPwSearch}>{type==="id" ? "아이디 찾기" : "비밀번호 재발급"}</button>)
+                loading ? (<div>진행 중입니다.</div>) : (<button className={style.searchBtn} onClick={type==="id" ? doIdSearch : doPwSearch}>{type==="id" ? "아이디 찾기" : "비밀번호 재발급"}</button>)
             }
-            <Link to="/login"><button>Login</button></Link>
+            <div className={style.loginLink}><Link to="/login">로그인</Link></div>
         </div>
     );
 }
