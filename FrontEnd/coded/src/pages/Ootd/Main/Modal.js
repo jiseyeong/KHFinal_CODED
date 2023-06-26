@@ -112,7 +112,7 @@ function Modal({
 
   function deleteFeedPost() {
     axios({
-      method: 'get',
+      method: 'delete',
       url: '/feedpost/deleteFeedPost',
       params: {
         feedPostId: feedPost.feedPostId,
@@ -120,6 +120,7 @@ function Modal({
     })
       .then(() => {
         closeModal();
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
