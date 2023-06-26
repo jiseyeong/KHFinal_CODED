@@ -1,21 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setNonMember } from '../../modules/Redux/navbarSetting';
 import axios from 'axios';
 
-const MyPickPage = ({ userNo }) => {
+const MyPickPage = (props) => {
+  let { currentUserNo } = props;
   const [feedPost, setFeedPost] = useState([]);
   const [memberInfo, setMemberInfo] = useState({});
   const cpage = useRef(1);
 
-  let accessToken;
-  if (userNo === undefined) {
-    accessToken = useSelector((state) => state.member.access);
-  }
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.member.access);
+  const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
+  // if (userNo === undefined) {
+  //   accessToken =
+  // }
 
   useEffect(() => {
-    if (userNo != 0) {
+    if (currentUserNo === undefined) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
         axios({
@@ -26,18 +30,20 @@ const MyPickPage = ({ userNo }) => {
           },
         })
           .then((resp) => {
-            userNo = resp.data;
+            currentUserNo = resp.data;
           })
           // 2. 고유 넘버로 유저 정보 반환
           .then(getMyPickData)
           .then(addFeedList)
           .catch((error) => {
-            console.log(error);
+            console.log(error.data);
           });
+      } else {
+        denyAccess();
       }
     } else {
       // 또는 해당 유저 넘버의 유저 정보 반환
-      getMyPickData(userNo);
+      getMyPickData(currentUserNo).then(addFeedList);
     }
     return () => {
       window.onscroll = null;
@@ -49,7 +55,7 @@ const MyPickPage = ({ userNo }) => {
       url: '/auth/selectMyPickPageData',
       method: 'get',
       params: {
-        userNo: userNo,
+        userNo: currentUserNo,
       },
     }).then((resp) => {
       const {
@@ -58,6 +64,7 @@ const MyPickPage = ({ userNo }) => {
         userNickName: userNickname,
         bio: bio,
         hashTag: hashTag,
+        writeDate: writeDate,
         sysName: sysName,
         postCount: postCount,
         followingCount: followingCount,
@@ -70,6 +77,7 @@ const MyPickPage = ({ userNo }) => {
         userNickName: userNickname,
         bio: bio,
         hashTag: hashTag,
+        writeDate: writeDate,
         sysName: sysName,
         postCount: postCount,
         followingCount: followingCount,
@@ -81,9 +89,9 @@ const MyPickPage = ({ userNo }) => {
   const addFeedList = () => {
     axios({
       method: 'GET',
-      url: '/feedpost/selectUserFeedPost/',
+      url: '/feedpost/selectUserFeedPost',
       params: {
-        userNo: userNo,
+        userNo: currentUserNo,
         cpage: cpage.current,
       },
     })
@@ -143,8 +151,11 @@ const MyPickPage = ({ userNo }) => {
         <hr />
 
         <div className="feed">
-          {/* Post 1 */}
-          {/* <FeedPostDetail index={i} feedPost={e}></FeedPostDetail> */}
+          {feedPost.map((e, i) => (
+            <div className="grid-item" key={i}>
+              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+            </div>
+          ))}
         </div>
       </div>
     </div>

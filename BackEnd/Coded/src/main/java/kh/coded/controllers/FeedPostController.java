@@ -75,6 +75,7 @@ public class FeedPostController {
     public ResponseEntity<?> selectFeedList(
             @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
         List<FeedPostAddDTO> data = feedpostService.selectAllFeedPost(cpage);
+        System.out.println("writedate : "+data.get(0).getFormedWriteDate());
         return ResponseEntity.ok().body(data);
     }
 
@@ -335,6 +336,7 @@ public class FeedPostController {
             @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
         try {
             List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo,cpage);
+            System.out.println(data.get(0).getFeedPostId());
             return ResponseEntity.ok().body(data);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
