@@ -10,7 +10,7 @@ import style from './AuthForm.module.scss';
 import kakaoImage from './kakao.png';
 import googleImage from './google.png';
 import naverImage from './naver.png';
-import {EyeImage,NoneEyeImage} from '../../assets/LoginAsset/LoginAsset.js'
+import { EyeImage, NoneEyeImage } from '../../assets/LoginAsset/LoginAsset.js';
 
 /*
     회원가입 또는 로그인 폼
@@ -25,7 +25,7 @@ const AuthFormBlock = styled.div`
   h3 {
     margin: 0;
     margin-bottom: 1rem;
-    text-align:center;
+    text-align: center;
   }
 `;
 
@@ -39,16 +39,16 @@ const Footer = styled.div`
   a {
     text-decoration: none;
     &:hover {
-      opacity:50%;
+      opacity: 50%;
     }
   }
 `;
 
 const ButtonWithMarginTop = styled(Button)`
   margin-top: 1rem;
-  font-size:13px;
-  width:95%;
-  height:43px;
+  font-size: 13px;
+  width: 95%;
+  height: 43px;
 `;
 
 const AuthForm = ({ type }) => {
@@ -107,16 +107,15 @@ const AuthForm = ({ type }) => {
   const emailDuplicateRef = useRef();
   const joinConfirmRef = useRef();
 
-
-  useEffect(()=>{
-    if(accessToken){
-      navigate("/");
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
     }
-  },[accessToken])
+  }, [accessToken]);
 
   useEffect(() => {
     if (searchParams.get('error')) {
-      alert('로그인 후 이용 가능하신 서비스입니다. 먼저 로그인을 해 주세요.');
+      alert('로그인이 필요한 서비스입니다.');
     }
     if (type == 'register') {
       axios({
@@ -173,12 +172,12 @@ const AuthForm = ({ type }) => {
         !address2.current.value
       ) {
         setRegisterPassCheck(false);
-        setRegisterPassMessage('모든 요소를 기입하시고 조건을 통과해주셔야 회원가입이 가능합니다.');
-        joinConfirmRef.current.style.color = "red";
+        setRegisterPassMessage('모든 정보를 기입해주세요.');
+        joinConfirmRef.current.style.color = 'red';
       } else {
         setRegisterPassCheck(true);
         setRegisterPassMessage('회원가입이 가능합니다.');
-        joinConfirmRef.current.style.color = "blue";
+        joinConfirmRef.current.style.color = 'blue';
       }
     }
 
@@ -192,7 +191,7 @@ const AuthForm = ({ type }) => {
   function handleId(e) {
     setId(e.target.value);
     if (type === 'register') {
-      if(idRef.current.value){
+      if (idRef.current.value) {
         //아이디 중복 체크
         if (!idDupTimer) {
           idDupTimer = setTimeout(() => {
@@ -207,14 +206,14 @@ const AuthForm = ({ type }) => {
               .then((response) => {
                 setIdDuplicateChecked(response.data);
                 if (response.data) {
-                  setIdDuplicateMessage('중복된 아이디가 있습니다.');
-                  idDuplicateRef.current.style.color = "red";
+                  setIdDuplicateMessage('이미 존재하는 아이디입니다.');
+                  idDuplicateRef.current.style.color = 'red';
                 } else if (!regexId.test(idRef.current.value)) {
                   setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
-                  idDuplicateRef.current.style.color = "red";
+                  idDuplicateRef.current.style.color = 'red';
                 } else {
-                  setIdDuplicateMessage('사용 가능합니다.');
-                  idDuplicateRef.current.style.color = "blue";
+                  setIdDuplicateMessage('사용 가능한 아이디입니다.');
+                  idDuplicateRef.current.style.color = 'blue';
                 }
               })
               .catch((error) => {
@@ -222,7 +221,7 @@ const AuthForm = ({ type }) => {
               });
           }, 200);
         }
-      }else{
+      } else {
         setIdDuplicateChecked(true);
         setIdDuplicateMessage('');
       }
@@ -230,17 +229,17 @@ const AuthForm = ({ type }) => {
   }
 
   function handlePw(e) {
-    if(pwRef.current.value && pwConfirmRef.current.value){
+    if (pwRef.current.value && pwConfirmRef.current.value) {
       if (pwRef.current.value === pwConfirmRef.current.value) {
         setPwConfirmCheck(true);
         setPwConfirmMessage('비밀번호가 일치합니다.');
-        pwDuplicateRef.current.style.color = "blue";
+        pwDuplicateRef.current.style.color = 'blue';
       } else {
         setPwConfirmCheck(false);
         setPwConfirmMessage('비밀번호가 일치하지 않습니다.');
-        pwDuplicateRef.current.style.color = "red";
+        pwDuplicateRef.current.style.color = 'red';
       }
-    }else{
+    } else {
       setPwConfirmCheck(false);
       setPwConfirmMessage('');
     }
@@ -248,7 +247,7 @@ const AuthForm = ({ type }) => {
 
   function handleEmail(e) {
     //setEmail(e.target.value);
-    if(emailRef.current.value){
+    if (emailRef.current.value) {
       if (!emailDupTimer) {
         emailDupTimer = setTimeout(() => {
           emailDupTimer = null;
@@ -262,14 +261,14 @@ const AuthForm = ({ type }) => {
             .then((response) => {
               setEmailDuplicateChecked(response.data);
               if (response.data) {
-                setEmailDuplicateMessage('중복된 이메일이 있습니다.');
-                emailDuplicateRef.current.style.color = "red";
+                setEmailDuplicateMessage('이미 존재하는 이메일입니다.');
+                emailDuplicateRef.current.style.color = 'red';
               } else if (!regexEmail.test(emailRef.current.value)) {
                 setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
-                emailDuplicateRef.current.style.color = "red";
+                emailDuplicateRef.current.style.color = 'red';
               } else {
-                setEmailDuplicateMessage('사용 가능합니다.');
-                emailDuplicateRef.current.style.color = "blue";
+                setEmailDuplicateMessage('사용 가능한 이메일입니다.');
+                emailDuplicateRef.current.style.color = 'blue';
               }
             })
             .catch((error) => {
@@ -277,31 +276,31 @@ const AuthForm = ({ type }) => {
             });
         }, 200);
       }
-    }else{
+    } else {
       setEmailDuplicateChecked(true);
       setEmailDuplicateMessage('');
     }
   }
 
   function handleNickName(e) {
-    if(nickNameRef.current.value){
+    if (nickNameRef.current.value) {
       if (!regexNickName.test(nickNameRef.current.value)) {
         setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
-        nickNameDuplicateRef.current.style.color = "red";
+        nickNameDuplicateRef.current.style.color = 'red';
       } else {
-        setNickNameRegexMessage('사용 가능합니다.');
-        nickNameDuplicateRef.current.style.color = "blue";
+        setNickNameRegexMessage('사용 가능한 닉네임입니다.');
+        nickNameDuplicateRef.current.style.color = 'blue';
       }
-    }else{
+    } else {
       setNickNameRegexMessage('');
     }
   }
 
   function doRegister(e) {
     if (idDuplicateChecked) {
-      alert('중복된 아이디가 있습니다. 아이디를 변경해주세요.');
+      alert('이미 존재하는 아이디입니다. 아이디를 변경해주세요.');
     } else if (emailDuplicateChecked) {
-      alert('해당 이메일의 계정이 있습니다.');
+      alert('이미 존재하는 이메일입니다.');
     } else if (!regexId.test(id)) {
       alert('사용할 수 없는 아이디입니다.');
     } else if (!regexEmail.test(emailRef.current.value)) {
@@ -309,7 +308,7 @@ const AuthForm = ({ type }) => {
     } else if (!regexNickName.test(nickNameRef.current.value)) {
       alert('사용할 수 없는 닉네임입니다.');
     } else if (!pwConfirmCheck) {
-      alert('비밀번호들이 일치하지 않습니다.');
+      alert('비밀번호가 일치하지 않습니다.');
     } else if (!address1.current.value || !address2.current.value) {
       alert('주소를 입력해주셔야 합니다.');
     } else {
@@ -446,123 +445,151 @@ const AuthForm = ({ type }) => {
       {/* <h3>{text}</h3> */}
       {type === 'register' && (
         <>
-        <div className={style.inputNicknameForm}>
-          <input
-            className={style.inputNickname}
-            type="text"
-            autoComplete="name"
-            name="userNickName"
-            placeholder="닉네임"
-            ref={nickNameRef}
-            // value={nickName}
-            onChange={handleNickName}>
-          </input>
+          <div className={style.inputNicknameForm}>
+            <input
+              className={style.inputNickname}
+              type="text"
+              autoComplete="name"
+              name="userNickName"
+              placeholder="닉네임"
+              ref={nickNameRef}
+              // value={nickName}
+              onChange={handleNickName}
+            ></input>
           </div>
-          <div ref={nickNameDuplicateRef} className={style.nickNameConfirm}>{nickNameRegexMessage}</div>
+          <div ref={nickNameDuplicateRef} className={style.nickNameConfirm}>
+            {nickNameRegexMessage}
+          </div>
         </>
       )}
       <div className={style.inputIdForm}>
-      <input  
-        className={style.inputId}
-        type="text"
-        autoComplete="username"
-        name="userId"
-        placeholder="아이디를 입력해주세요"
-        ref={idRef}
-        value={id}
-        onChange={handleId}>
-      </input>
+        <input
+          className={style.inputId}
+          type="text"
+          autoComplete="username"
+          name="userId"
+          placeholder="아이디를 입력해주세요"
+          ref={idRef}
+          value={id}
+          onChange={handleId}
+        ></input>
       </div>
-      <div ref={idDuplicateRef} className={style.idConfirm}>{idDuplicateMessage}</div>
+      <div ref={idDuplicateRef} className={style.idConfirm}>
+        {idDuplicateMessage}
+      </div>
       <div className={style.inputPwForm}>
-      <input 
-        className={style.inputPw}
-        autoComplete="new-password"
-        name="pw"
-        placeholder="비밀번호를 입력해주세요"
-        type={isPwView ? 'text' : 'password'}
-        ref={pwRef}>
-      </input>
-      <button className={style.eyeBtn}
-              onClick={() => {
-                setIsPwView((prev) => {
-                  return !prev;
-                });
-              }}
-            >
-             {isPwView ? <EyeImage></EyeImage> : <NoneEyeImage></NoneEyeImage>}
-      </button>
+        <input
+          className={style.inputPw}
+          autoComplete="new-password"
+          name="pw"
+          placeholder="비밀번호를 입력해주세요"
+          type={isPwView ? 'text' : 'password'}
+          ref={pwRef}
+        ></input>
+        <button
+          className={style.eyeBtn}
+          onClick={() => {
+            setIsPwView((prev) => {
+              return !prev;
+            });
+          }}
+        >
+          {isPwView ? <EyeImage></EyeImage> : <NoneEyeImage></NoneEyeImage>}
+        </button>
       </div>
       {type === 'login' && (
         <>
           <div className={style.checkBox}>
             <div className={style.checkBox1}>
-            <input
-              type="checkbox"
-              checked={isIdSaveChecked}
-              onChange={() => {
-                setIdSaveChecked((prev) => {
-                  return !prev;
-                });
-              }}
-            />
-            <label>아이디 기억</label>
+              <input
+                type="checkbox"
+                checked={isIdSaveChecked}
+                onChange={() => {
+                  setIdSaveChecked((prev) => {
+                    return !prev;
+                  });
+                }}
+              />
+              <label>Remember ID</label>
             </div>
             <div className={style.checkBox2}>
-            <span><Link to="/idSearch">아이디 찾기</Link></span>  / 
-            <span><Link to="/pwSearch">비밀번호 찾기</Link></span>
+              <span>
+                <Link to="/idSearch">Forget ID</Link>
+              </span>{' '}
+              /
+              <span>
+                <Link to="/pwSearch">Forget PW</Link>
+              </span>
             </div>
           </div>
-          <div>
-        
-          </div>
+          <div></div>
         </>
       )}
       {type === 'register' && (
         <>
           <div className={style.inputNewPw}>
-          <input 
-            autoComplete="new-password"
-            name="pwConfirm"
-            placeholder="비밀번호 확인"
-            type="password"
-            ref={pwConfirmRef}
-            onChange={handlePw}>
-          </input>
+            <input
+              autoComplete="new-password"
+              name="pwConfirm"
+              placeholder="비밀번호 확인"
+              type="password"
+              ref={pwConfirmRef}
+              onChange={handlePw}
+            ></input>
           </div>
-          <div ref={pwDuplicateRef} className={style.pwConfirm}>{pwConfirmMessage}</div>
+          <div ref={pwDuplicateRef} className={style.pwConfirm}>
+            {pwConfirmMessage}
+          </div>
           <div className={style.inputEmail}>
-          <input
-           autoComplete="email"
-           name="e-mail"
-           placeholder="e-mail"
-           type="text"
-           //value={email}
-           ref={emailRef}
-           onChange={handleEmail}>
-          </input>
+            <input
+              autoComplete="email"
+              name="e-mail"
+              placeholder="e-mail"
+              type="text"
+              //value={email}
+              ref={emailRef}
+              onChange={handleEmail}
+            ></input>
           </div>
-          <div ref={emailDuplicateRef} className={style.emailConfirm}>{emailDuplicateMessage}</div>
+          <div ref={emailDuplicateRef} className={style.emailConfirm}>
+            {emailDuplicateMessage}
+          </div>
           <div className={style.selectBox}>
-          <select className={style.select1} ref={address1} onChange={updateAddressList2}>
-            {addressList1.map((item, index) => {
-              return <option key={index}>{item}</option>;
-            })}
-          </select>
-          <select className={style.select2} ref={address2}>
-            {addressList2.map((item, index) => {
-              return <option key={index}>{item}</option>;
-            })}
-          </select>
+            <select
+              className={style.select1}
+              ref={address1}
+              onChange={updateAddressList2}
+            >
+              {addressList1.map((item, index) => {
+                return <option key={index}>{item}</option>;
+              })}
+            </select>
+            <select className={style.select2} ref={address2}>
+              {addressList2.map((item, index) => {
+                return <option key={index}>{item}</option>;
+              })}
+            </select>
           </div>
         </>
       )}
       {type === 'login' && (
         <>
           <div className={style.socialLogin}>
-          <img src={kakaoImage} className={style.kakaoBtn} onClick={doKakaoLogin}></img>
-          <img src={naverImage} className={style.naverBtn} onClick={doNaverLogin}></img>
-          <img src={googleImage} className={style.googleBtn} onClick={doGoogleLogin}></img>
+            <img
+              src={kakaoImage}
+              className={style.kakaoBtn}
+              onClick={doKakaoLogin}
+            ></img>
+            <img
+              src={naverImage}
+              className={style.naverBtn}
+              onClick={doNaverLogin}
+            ></img>
+            <img
+              src={googleImage}
+              className={style.googleBtn}
+              onClick={doGoogleLogin}
+            ></img>
           </div>
         </>
       )}
@@ -573,14 +600,18 @@ const AuthForm = ({ type }) => {
       >
         {text}
       </ButtonWithMarginTop>
-      {type === 'register' &&
-        (<div ref={joinConfirmRef} className={style.joinConfirm}>{registerPassMessage}</div>)
-      }
+      {type === 'register' && (
+        <div ref={joinConfirmRef} className={style.joinConfirm}>
+          {registerPassMessage}
+        </div>
+      )}
       <Footer>
         {type === 'login' ? (
-          <Link to="/signup" className={style.signup}>회원가입</Link>
+          <Link to="/signup" className={style.signup}>
+            SIGN UP
+          </Link>
         ) : (
-          <Link to="/login">로그인</Link>
+          <Link to="/login">LOGIN</Link>
         )}
       </Footer>
     </AuthFormBlock>
