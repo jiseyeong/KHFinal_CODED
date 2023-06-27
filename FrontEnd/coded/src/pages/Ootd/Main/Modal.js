@@ -15,6 +15,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -383,13 +384,15 @@ function Modal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                    <img
-                      className="commentUserImg"
-                      //src={modalData?.modalData?.modalData?.authorImg}
-                      src={'/images/' + feedPost.profileSysName}
-                      width="40"
-                      height="40"
-                    />
+                    <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
+                      <img
+                        className="commentUserImg"
+                        //src={modalData?.modalData?.modalData?.authorImg}
+                        src={'/images/' + feedPost.profileSysName}
+                        width="40"
+                        height="40"
+                      />
+                    </Link>
                   </div>
                   <div className="authorInfomation">
                     <div className="author">

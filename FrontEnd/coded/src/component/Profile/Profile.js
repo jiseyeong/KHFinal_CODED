@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
 import ChangePwModal from './component/ChangePwModal';
 import { useNavigate } from 'react-router-dom';
-import kakaoImage from './image/kakao.png';
-import googleImage from './image/google.png';
-import naverImage from './image/naver.png';
-import kakaoImage_hb from './image/kakao_hb.png';
-import googleImage_hb from './image/google_hb.png';
-import naverImage_hb from './image/naver_hb.png';
+import kakaoImage from '../../assets/imageAsset/kakao.png';
+import kakaoImage_hb from '../../assets/imageAsset/kakao_hb.png';
+import naverImage from '../../assets/imageAsset/naver.png';
+import naverImage_hb from '../../assets/imageAsset/naver_hb.png';
+import googleImage from '../../assets/imageAsset/google.png';
+import googleImage_hb from '../../assets/imageAsset/google_hb.png';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
