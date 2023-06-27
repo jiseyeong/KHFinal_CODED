@@ -46,16 +46,6 @@ public class PhotoService {
             realPathFile.mkdir();
         }
 
-        // feedPost에 저장된 사진들을 덥데이트 하는 경우
-        // 기존 feedpost에 저장된 사진들을 모두 삭제 후 업데이트 진행
-        if (map.get("feedPostId") != 0) {
-            List<PhotoDTO> oriFileList = photoDAO.selectByFeedpostId(map.get("feedPostId"));
-            for (PhotoDTO dto : oriFileList) {
-                File oriFile = new File(realPath + "/" + dto.getSysName());
-                oriFile.delete();
-            }
-        }
-
         if (files != null) {
             for (MultipartFile file : files) {
                 if (file.isEmpty())
@@ -65,12 +55,32 @@ public class PhotoService {
                 file.transferTo(new File(realPath + "/" + sysName));
                 if (map.get("userNo") != 0) {
 					// 유저 프로필을 수정하는 경우 기존의 유저 프로필을 삭제 후 진행
+                    // 기존 프로필이 없을 경우 이 과정을 넘어감
                     PhotoDTO oriDto = photoDAO.selectByUserNo(map.get("userNo"));
-                    File oriFile = new File(realPath + "/" + oriDto.getSysName());
-                    oriFile.delete();
-                    photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, 0, 0, map.get("userNo")));
+                    if(oriDto!=null){
+                        File oriFile = new File(realPath + "/" + oriDto.getSysName());
+                        oriFile.delete();
+                        photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, 0, 0, map.get("userNo")));
+                    }else{
+                        // 기존 프로필이 없을 경우 새로 insert
+                        photoDAO.insertPhoto(new PhotoDTO(0, oriName, sysName, 0, 0, map.get("userNo")));
+                    }
                 } else if (map.get("feedPostId") != 0) {
-                    photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, map.get("feedPostId"), 0, 0));
+                    // feedPost에 저장된 사진들을 업데이트 하는 경우
+                    // 기존 feedpost에 저장된 사진들을 모두 삭제 후 업데이트 진행
+                    List<PhotoDTO> oriFileList = photoDAO.selectByFeedpostId(map.get("feedPostId"));
+                    if(oriFileList.size()!=0){
+                        for (PhotoDTO dto : oriFileList) {
+                            File oriFile = new File(realPath + "/" + dto.getSysName());
+                            oriFile.delete();
+                        }
+                        photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, map.get("feedPostId"), 0, 0));
+                    }else{
+                        // 기존에 저장된 feedpost 사진이 없을 경우 새로 insert
+                        for(MultipartFile file : files){
+                            photoDAO.insertPhoto();
+                        }
+                    }
                 }
             }
         }
