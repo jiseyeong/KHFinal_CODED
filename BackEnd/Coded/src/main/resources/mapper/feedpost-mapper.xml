@@ -86,7 +86,7 @@
 		order by rn asc
 	</select>
 	
-	<select id="selectFeedLike" resultType="kh.coded.dto.FeedPostAddDTO">
+	<select id="selectPopularFeed" resultType="kh.coded.dto.FeedPostAddDTO">
 select f.*
 		from
 		(select fe.*,row_number() over(order by l.likecount desc nulls last, fe.FeedPostId desc) rn,
@@ -99,7 +99,7 @@ select f.*
         left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
 		) f
 		where rn between ${startFeedNum} and ${endFeedNum}
-		order by rn asc;
+		order by rn asc
 	</select>
 
 	<update id="updateFeedPost">
