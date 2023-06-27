@@ -41,7 +41,7 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function Likepeed() {
+function LikeFeed() {
   const [feedPost, setFeedPost] = useState([]);
   const [thumbNail, setThumbnail] = useState([]);
   const [member, setMember] = useState([]);
@@ -145,7 +145,7 @@ function Likepeed() {
   // }
 }
 
-export default Likepeed;
+export default LikeFeed;
 
 // window.innerHeight 실제 보이는 창의 높이
 // window.scrollY 페이지 상단에서부터 스크롤된 값

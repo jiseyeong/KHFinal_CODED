@@ -1,6 +1,7 @@
 .feedCommentList{
     display:flex;
-    margin-top:20px;
+    margin-top:40px;
+    height:50px;
     .imageBox{
         width:40px;
         height:40px;
@@ -15,9 +16,11 @@
     }
     .contentsBox{
         margin-left:10px;
+        flex:5;
         .userInfo{
             font-size:13px;
             margin-right:10px;
+            line-height:23px;
           .userNickname{
                 margin-right:8px;
                 font-weight:bold;
@@ -27,20 +30,33 @@
             font-size:13px;
         }
     }
+    .heartBox{
+        font-size:15px;
+        svg{
+
+        }
+    }
+
+    .btnBox{
+        flex:3;
+        text-align:center;
+    .commentBtn{
+        background-color:white;
+        color:black;
+        height:20px;
+        border-radius:10px;
+        font-size:12px;
+        cursor:pointer;
+        }
+
+        .commentBtn:hover{
+            color:#ff0066;  
+        }
+    }
 }
 
 .nestedComment{
     margin-left:30px;
 }
 
-.btnBox{
-    .commentBtn{
-        background-color:black;
-        color:white;
-        width:55px;
-        height:25px;
-        border-radius:30px;
-        font-size:11px;
-        margin-right:6px;
-    }
-}
+

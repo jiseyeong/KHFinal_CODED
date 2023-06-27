@@ -317,4 +317,12 @@ public class FeedPostService {
 
         return feedpostDAO.selectUserFeedPost(userNo, startFeedNum, endFeedNum);
     }
+    
+    public List<FeedPostAddDTO> selectLikeFeedPost(int cpage) {
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+        return feedpostDAO.selectLikeFeedPost(startFeedNum, endFeedNum);
+    }
 }

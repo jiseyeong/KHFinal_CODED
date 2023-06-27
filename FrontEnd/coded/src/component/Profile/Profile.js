@@ -51,6 +51,9 @@ const ProfileTemplate = () => {
   const fileInputRef = useRef();
   const [changePwModal, setChangePwModal] = useState(false);
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
+  const [isKakao, setIsKakao] = useState(false);
+  const [isNaver, setIsNaver] = useState(false);
+  const [isGoogle, setIsGoogle] = useState(false);
 
   const navi = useNavigate();
 
@@ -108,7 +111,7 @@ const ProfileTemplate = () => {
               userNickName,
               email,
               bio,
-              userHashtag,
+              hashTag,
               address1,
               address2,
               sysName,
@@ -121,7 +124,7 @@ const ProfileTemplate = () => {
               userNickName: userNickName,
               email: email,
               bio: bio,
-              userHashtag: userHashtag,
+              hashTag: hashTag,
               address1: address1,
               address2: address2,
               sysName: sysName,
@@ -239,6 +242,9 @@ const ProfileTemplate = () => {
   // 첫 렌더링, 새로고침 시 초기 데이터 불러오기 작업 시작
   useEffect(() => {
     getInitData();
+    handleKakao();
+    handleNaver();
+    handleGoogle();
   }, [accessToken]);
 
   // 사진 등록 시, 바로 불러오기 기능
@@ -300,7 +306,7 @@ const ProfileTemplate = () => {
       memberInfo.userNickName === '' ||
       memberInfo.email === '' ||
       memberInfo.bio === '' ||
-      memberInfo.userHashtag === ''
+      memberInfo.hashTag === ''
     ) {
       alert('모든 입력박스를 입력해주세요.');
       return;
@@ -331,6 +337,156 @@ const ProfileTemplate = () => {
         console.log(error);
       });
   };
+
+  function handleKakao(){
+    if(accessToken){
+      axios({
+          method:'get',
+          url:'/auth/kakaoToken',
+          headers:{
+            Authorization:`Bearer ${accessToken}`,
+          },
+      })
+      .then((response)=>{
+        setIsKakao(response.data);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    }
+  }
+
+  function handleNaver(){
+    if(accessToken){
+      axios({
+          method:'get',
+          url:'/auth/naverToken',
+          headers:{
+            Authorization:`Bearer ${accessToken}`,
+          },
+      })
+      .then((response)=>{
+        setIsNaver(response.data);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    }
+  }
+
+  function handleGoogle(){
+    if(accessToken){
+      axios({
+          method:'get',
+          url:'/auth/googleToken',
+          headers:{
+            Authorization:`Bearer ${accessToken}`,
+          },
+      })
+      .then((response)=>{
+        setIsGoogle(response.data);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    }
+  }
+
+  function doKakaoLogin() {
+    axios({
+      method: 'get',
+      url: '/login/oauth2/kakao/codeInfo',
+    })
+      .then(function (response) {
+        const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code`;
+        window.location.href = KAKAO_AUTH_URL;
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  }
+
+  function doNaverLogin() {
+    axios({
+      method: 'get',
+      url: '/login/oauth2/naver/codeInfo',
+    })
+      .then(function (response) {
+        const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&state=test`;
+        window.location.href = NAVER_AUTH_URL;
+      })
+      .catch(function (e) {
+        console.log(e);
+      });
+  }
+
+  function doGoogleLogin() {
+    axios({
+      method: 'get',
+      url: '/login/oauth2/google/codeInfo',
+    })
+      .then((response) => {
+        console.log(response);
+        const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
+        window.location.href = GOOGLE_AUTH_URL;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function kakaoUnlink() {
+    if (accessToken) {
+      axios({
+        method: 'put',
+        url: 'auth/kakaoUnlink',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((response)=>{
+        handleKakao();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }
+
+  function naverUnlink() {
+    if (accessToken) {
+      axios({
+        method: 'put',
+        url: 'auth/naverUnlink',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response)=>{
+        handleNaver();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }
+
+  function googleUnlink() {
+    if (accessToken) {
+      axios({
+        method: 'put',
+        url: 'auth/googleUnlink',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((response)=>{
+        handleGoogle();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+  }
 
   return (
     <ProfileTemplateBlock>
@@ -475,9 +631,9 @@ const ProfileTemplate = () => {
                       type="text"
                       className="forEdit"
                       placeholder="해시태그를 입력해주세요"
-                      name="hashtag"
+                      name="hashTag"
                       onChange={handleMemberInfo}
-                      value={memberInfo.hashtag || ''}
+                      value={memberInfo.hashTag || ''}
                       readOnly={!editing}
                     />
                   </div>
@@ -535,6 +691,11 @@ const ProfileTemplate = () => {
                 {changePwModal && (
                   <ChangePwModal toggleChangePwModal={toggleChangePwModal} />
                 )}
+                <div> {/* 소셜 로그인 등록/해제*/}
+                  {isKakao ? (<button onClick={kakaoUnlink}>카카오 연결 해제</button>) : (<button onClick={doKakaoLogin}>카카오 연결</button>)}
+                  {isNaver ? (<button onClick={naverUnlink}>네이버 연결 해제</button>) : (<button onClick={doNaverLogin}>네이버 연결</button>)}
+                  {isGoogle ? (<button onClick={googleUnlink}>구글 연결 해제</button>) : (<button onClick={doGoogleLogin}>구글 연결</button>)}
+                </div>
               </div>
             </div>
           </div>

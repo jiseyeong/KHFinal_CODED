@@ -1,0 +1,43 @@
+.weatherBox {
+    width:300px;
+    margin-left:220px;
+    border:1px solid silver;
+    margin-bottom:10px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:2px 2px 2px 2px rgb(241, 241, 241);
+
+    .weatherBody1{
+        font-size:15px;
+        font-weight:600;
+        margin-bottom:15px;
+    }
+    .weatherBody2{
+        height:45px;
+        display:flex;
+        margin-bottom:15px;
+        .weatherIconBox{
+            margin-right:10px;
+            width:100%;
+            height:100%;
+            flex:2;
+            svg{
+                width:100%;
+                height:100%;
+                filter:drop-shadow(3px 3px 3px rgb(197, 197, 197));
+            }
+        }
+        .weatherDataBox{
+            flex:2;
+           
+            div{
+                font-size:14px;
+                height:50%;
+            }
+        }
+    }
+    .weatherBody3{
+        font-size:14px;
+        text-align:center;
+    }
+}
