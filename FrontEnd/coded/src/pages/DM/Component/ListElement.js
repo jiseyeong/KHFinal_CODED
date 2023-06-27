@@ -1,42 +1,86 @@
+import { useState } from "react";
+import SockJS from "sockjs-client";
 import { styled } from "styled-components";
 
 
 const ListElement = (props) => {
-
     const room = props.room;
+    // console.log(room)
+    const { setRoomId, setDMRoom } = props;
+    const [isWebSocketConnected, setIsWebSocketConnected] = useState(false);
+    const SOCKET_URL = 'http://192.168.50.218:9999';
+
+    const connectWebSocket = () => {
+        const socketUrl = `${SOCKET_URL}/websocket`;
+        const socket = new SockJS(socketUrl);
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, () => {
+            setIsWebSocketConnected(true);
+            console.log('WebSocket connected!');
+            
+        });
+    };
+
+    const disconnectWebSocket = () => {
+        if (isWebSocketConnected) {
+            stompClient.disconnect(() => {
+                setIsWebSocketConnected(false);
+                console.log('WebSocket disconnected!');
+                
+            });
+        }
+    };
+    const handleDMRoom = () => {
+        setRoomId(room.roomid);
+        setDMRoom(room);
+      
+        if (isWebSocketConnected) {
+          disconnectWebSocket();
+        } else {
+          connectWebSocket();
+        }
+      };
+
 
     const RoomElement = styled('div')`
 
-        .RoomElement{height:80px; width:400px; padding:5px; display:flex;}
-        .RoomElement:hover{cursor:pointer;}
-            .profilePic{width:25%; height:100%; border:1px solid black; }
-            .profile{width:75%; height:100%; border:1px solid black; }
-                .roomId{display:none;}
-                .roomUserId{width:50%; height:50%;}
-                .roomUserNickname{width:50%; height:50%;}
+      .RoomElement{height:80px; width:400px; padding:5px; display:flex;}
+      .RoomElement:hover{cursor:pointer;}
+          .profilePic{width:25%; height:100%; border:1px solid black; display:flex; justify-content:center;}
+              .profileImg{height:100%; }
+          .profile{width:75%; height:100%; border:1px solid black; }
+              .roomId{display:none;}
+              .roomUserId{width:50%; height:50%;}
+              .roomUserNickname{width:50%; height:50%;}
 
-    `
+  `
 
     return (
         <RoomElement>
-        <div className='RoomElement' onClick={() => { props.setRoomId(room.roomid); }}>
-            <div className='profilePic'>
-                {room.photoid}
-                {room.oriName}
-                {room.sysName}
+            <div className='RoomElement' onClick={handleDMRoom}>
+                <div className='profilePic'>
+                    {room.sysName != null ? (
+                        <img
+                            src={`/images/${room.sysName}`}
+                        ></img>
+                    ) : (
+                        <img className="profileImg"
+                            src={`/images/test.jpg`}
+                        ></img>)}
+                </div>
+                <div className='profile'>
+                    <div className='roomId'>
+                        {room.userNo}
+                    </div>
+                    <div className='roomUserId'>
+                        {room.userId}
+                    </div>
+                    <div className='roomUserNickname'>
+                        {room.userNickname}
+                    </div>
+                </div>
             </div>
-            <div className='profile'>
-                <div className='roomId'>
-                    {room.userNo}
-                </div>
-                <div className='roomUserId'>
-                    {room.userId}
-                </div>
-                <div className='roomUserNickname'>
-                    {room.userNickname}
-                </div>
-            </div>
-        </div>
         </RoomElement>
     );
 }

@@ -11,6 +11,9 @@ const MyPickPage = (props) => {
   const [memberInfo, setMemberInfo] = useState({});
   const cpage = useRef(1);
 
+  const loginUserNo = useSelector((state) => state.member.userNo);
+  
+
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
@@ -49,6 +52,33 @@ const MyPickPage = (props) => {
       window.onscroll = null;
     };
   }, [accessToken]);
+
+
+  const handleDMButtonClick = () => {
+    if (accessToken) {
+      if (!subscribed) {
+        // 새로 구독
+        // TODO: 구독할 토픽 및 구독 관련 로직 추가
+  
+        // 구독 시작 후 DMList 페이지로 이동
+        setSubscribed(true);
+        history.push('/dm-list');
+      } else {
+        // 이미 구독 중인 경우
+        // DMList 페이지로 이동
+        history.push('/dm-list');
+      }
+    
+      // 토큰이 있을 때의 동작
+      // 구독 상태인지 확인하고, 구독되지 않았을 경우 구독 요청을 보내고 DMList 페이지로 이동
+      // 구독 상태라면 DMList 페이지로 이동
+    } else {
+
+      // 토큰이 없을 때의 동작
+      denyAccess(); 
+    }
+  };
+
 
   const getMyPickData = () => {
     axios({
@@ -144,6 +174,19 @@ const MyPickPage = (props) => {
             </ul>
           </div>
           <div className="btnLayout">
+
+            {currentUserNo !== loginUserNo && (
+            <svg className='DMButton' height="100" viewBox="0 0 20 20" width="100" xmlns="http://www.w3.org/2000/svg" onClick={handleDMButtonClick}>
+            <path d="M10.4809 13.8423H15.4C16.2962 13.8423 17 13.1288 17 12.2764V5.56582C17 4.71348 16.2962 4 15.4 4H4.6C3.70383 
+            4 3 4.71348 3 5.56582V12.2764C3 13.1288 3.70383 13.8423 4.6 13.8423H6.19908L6.2 17L6.20346 16.9997L6.20502 16.9988L10.4809 
+            13.8423ZM6.79895 17.8034C6.35668 18.1298 5.73 18.0406 5.39921 17.6042C5.26989 17.4335 5.2 17.2262 5.2 17.0133L5.19937 
+            14.8423H4.6C3.16406 14.8423 2 13.6935 2 12.2764V5.56582C2 4.14876 3.16406 3 4.6 3H15.4C16.8359 3 18 4.14876 18 5.56582V12.2764C18 
+            13.6935 16.8359 14.8423 15.4 14.8423H10.81L6.79895 17.8034Z" fill="#212121" />
+          </svg>
+            )}
+
+            
+
             <img alt="이미지 아이콘" className="followButton" />
           </div>
         </div>

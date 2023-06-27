@@ -15,7 +15,7 @@ function MenuButton() {
         border:none; background-color:white; border-radius:5px;}
     .moreBtn:hover{cursor:pointer;}
     .ul{list-style: none; background-color:white; margin-left:15px; padding:0px;
-    width:60px; margin-top:30px; border-radius:10px;}
+    width:60px; margin-top:30px; border-radius:10px; position: relative;}
     .li{margin:5px; text-align:center;}
     .li:hover{cursor:pointer;}
     .closeBtn{display:none;}

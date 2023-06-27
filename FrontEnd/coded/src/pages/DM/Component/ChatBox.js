@@ -6,10 +6,12 @@ import React, { useEffect, useRef } from 'react';
 
 const ChatBox = (props) => {
 
+    // console.log(props);
     const DMList = props.DMList;
-    const DMRoomList = props.DMRoomList;
     const loginUserNo = props.loginUserNo;
     const dmListRef = useRef(null);
+    const DMRoom = props.DMRoom;
+    console.log(DMRoom)
 
     useEffect(() => {
         scrollToBottom();
@@ -17,37 +19,60 @@ const ChatBox = (props) => {
 
     const scrollToBottom = () => {
         if (dmListRef.current) {
-          dmListRef.current.scrollTop = dmListRef.current.scrollHeight;
+            dmListRef.current.scrollTop = dmListRef.current.scrollHeight;
         }
-      };
+    };
 
     const ChatBox = styled('div')`
     width:100%; height:100%; 
 
     .chatNavBar{height:10%; width:100%; background-color: lightgray;
         margin-bottom:10px; border: 1px solid black; display:flex;}
-        .otherPhoto{height:100%; width:15%; border:1px solid black;}
+        .otherPhoto{height:100%; width:15%; border:1px solid black; display:flex; justify-content:center;}
+        .profileImg{height:100%;}
         .otherInfo{height:100%; width:70%;}
             .otherId{height:50%; width:100%; border:1px solid black;}
             .otherNickname{height:50%; width:100%; border: 1px solid black;}
     .DMList{height:80%; width:100%; background-color: lightgray; display: flex;
         flex-flow: wrap; overflow-wrap: break-word; overflow: overlay}   
 
-        .msg{}
-
-        .mySend{width:100%; text-align:right; padding:5px; margin-bottom:10px;}
-        .mySendTime{font-size:12px;}
-        .other{width:100%; text-align:left; padding:5px; margin-bottom:10px;}
-        .otherTime{font-size:12px;}
+        .mySend{width: 100%;
+        padding: 5px;
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: center;
+        flex-direction: column;
+        align-items: end;}
+        .other{width: 100%;
+            padding: 5px;
+            display: flex;
+            margin-bottom: 10px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: start;}
+        
+        .myMsg{max-width:400px; text-align:right;}
+        .otherMsg{max-width:400px; text-align:left;}
+        .mySendTime{font-size:12px; text-align:right;}
+        .otherTime{font-size:12px; text-align:left;}
     `
 
     return (
         <ChatBox>
             <div className='chatNavBar'>
-                <div className="otherPhoto">{DMRoomList.photoId}{DMRoomList.oriName}{DMRoomList.sysName}</div>
+                <div className="otherPhoto">
+                    {DMRoom.sysName != null ? (
+                        <img
+                            src={`/images/${DMRoom.sysName}`}
+                        ></img>
+                    ) : (
+                        <img className="profileImg"
+                            src={`/images/test.jpg`}
+                        ></img>)}
+                </div>
                 <div className="otherInfo">
-                    <div className="otherId">{DMRoomList.userId}</div>
-                    <div className="otherNickname">{DMRoomList.userNickname}</div>
+                    <div className="otherId">{DMRoom.userId}</div>
+                    <div className="otherNickname">{DMRoom.userNickname}</div>
                 </div>
                 <MenuButton></MenuButton>
             </div>
@@ -55,9 +80,7 @@ const ChatBox = (props) => {
                 {DMList.map(DMList => {
                     return (
                         <div className={DMList.userNo == loginUserNo ? 'mySend' : 'other'}>
-                            <div className="msg">
-                                {DMList.message}
-                            </div>
+                            <div className={DMList.userNo == loginUserNo ? 'myMsg' : 'otherMsg'}>{DMList.message}</div>
                             {DMList.userNo == loginUserNo && (<div className='mySendTime'>{DMList.formedWriteDate}</div>)}
                             {!(DMList.userNo == loginUserNo) && (<div className='otherTime'>{DMList.formedWriteDate}</div>)}
                         </div>

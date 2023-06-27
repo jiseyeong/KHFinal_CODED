@@ -12,9 +12,10 @@ function DMList() {
 
     const accessToken = useSelector((state) => state.member.access);
     const loginUserNo = useSelector((state) => state.member.userNo);
-    const [DMRoomList, setDMRoomList] = useState([]);
-    const [DMList, setDMList] = useState([]);
-    const [RoomId, setRoomId] = useState(0);
+    const [DMRoomList, setDMRoomList] = useState([]); //채팅중인 모든 방 정보
+    const [DMRoom, setDMRoom] = useState({}); // 클릭한 한사람의 정보
+    const [DMList, setDMList] = useState([]); // 클릭한 사람과의 대화 내용
+    const [RoomId, setRoomId] = useState(0); // 클릭한 사람과의 방 번호
 
     useEffect(() => {
         if (loginUserNo > 0) {
@@ -77,30 +78,23 @@ function DMList() {
             .chatList{height:88%; width:100%; background-color: lightgray; border-radius:10px;}
     `
 
+
     return (
         <DMListOuter>
             <div className='chatBox'>
-                <ChatBox DMList={DMList} loginUserNo={loginUserNo} DMRoomList={DMRoomList}></ChatBox>
+                <ChatBox DMList={DMList} loginUserNo={loginUserNo} DMRoomList={DMRoomList} DMRoom={DMRoom}></ChatBox>
             </div>
             <div className='List'>
                 <div className='searchBox'>
                     <input className='search' type='text'></input>
                 </div>
                 <div className='chatList'>
-                    {DMRoomList.map(dto => <ListElement room={dto} setRoomId={setRoomId} />)}
+                    {DMRoomList.map(dto => <ListElement room={dto} setRoomId={setRoomId} setDMRoom={setDMRoom} />)}
                 </div>
             </div>
 
         </DMListOuter>
     );
 }
-
-
-
-
-
-
-
-
 
 export default DMList;
