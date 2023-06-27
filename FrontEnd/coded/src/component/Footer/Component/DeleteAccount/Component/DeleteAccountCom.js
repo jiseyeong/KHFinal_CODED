@@ -48,9 +48,11 @@ const DeleteAccountCom = () => {
   // 비밀번호 변경 버튼
   const submitInput = () => {
     if (
-      password.currentPw === '' 
+      password.currentPw === '' ||
+      password.pw === '' ||
+      password.repw === ''
     ) {
-      alert('입력 폼을 채워주세요.');
+      alert('입력 폼을 모두 채워주세요.');
       return;
     }
 
@@ -87,7 +89,7 @@ const DeleteAccountCom = () => {
   };
 
   return (
-    <div className="DeleteAccountComWrapper">
+    <div className="DeleteAccountComWrapper"> 
       <div className="mainWrapper">
         <div className="subWrapper">
           <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>

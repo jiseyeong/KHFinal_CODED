@@ -1,5 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
+import { Orbit } from '@uiball/loaders';
 
 const LoadingLayout = styled('div')`
   width: 100%;
