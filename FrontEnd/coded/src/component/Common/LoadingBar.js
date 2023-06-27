@@ -1,6 +1,8 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { Orbit } from '@uiball/loaders';
+import { DotPulse } from '@uiball/loaders';
+
+<DotPulse size={40} speed={1.3} color="black" />;
 
 const LoadingLayout = styled('div')`
   width: 100%;
@@ -13,8 +15,8 @@ const LoadingLayout = styled('div')`
 function LoadingBar() {
   return (
     <LoadingLayout>
-      <div className="preloader">
-        <div className="text">LOADING ... SUNGHA WORKING</div>
+      <div class="dot-pulse">
+        <div class="dot-pulse__dot"></div>
       </div>
     </LoadingLayout>
   );
