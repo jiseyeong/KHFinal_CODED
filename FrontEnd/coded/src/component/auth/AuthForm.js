@@ -115,7 +115,7 @@ const AuthForm = ({ type }) => {
 
   useEffect(() => {
     if (searchParams.get('error')) {
-      alert('로그인이 필요한 서비스입니다.');
+      alert('MEMBER-ONLY SERVICE. Login First!');
     }
     if (type == 'register') {
       axios({

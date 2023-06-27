@@ -294,9 +294,10 @@
         .likeBox {
           @extend %borderBox;
           border-top-left-radius: 6px;
-          border-bottom-left-radius: 6px;
+          border-bottom-left-radius: 6px; 
           color: #ff0066;
           background-color: white;
+
         }
         .disLikeBox {
           @extend %borderBox;
@@ -564,7 +565,7 @@
           .likeRepleBox {
             margin-left: auto;
             svg {
-              fill: #ff5f00;
+              fill: #ff0066;  
             }
           }
           .dislikeRepleBox {

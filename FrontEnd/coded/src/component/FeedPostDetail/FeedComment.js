@@ -78,7 +78,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         })
         .catch((error) => {
           if (error.request.status === 400) {
-            console.log('먼저 로그인을 해주세요.');
+            console.log('Login First!');
           } else {
             console.log(error);
           }
@@ -109,7 +109,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -152,7 +152,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('먼저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -182,7 +182,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('먼저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -208,7 +208,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('먼저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }

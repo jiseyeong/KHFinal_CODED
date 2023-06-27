@@ -114,7 +114,7 @@ function SearchForm({ type }) {
         </button>
       )}
       <div className={style.loginLink}>
-        <Link to="/login">로그인</Link>
+        <Link to="/login">LOGIN</Link>
       </div>
     </div>
   );
