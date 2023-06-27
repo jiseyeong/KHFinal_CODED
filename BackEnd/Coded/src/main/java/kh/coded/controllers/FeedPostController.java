@@ -322,7 +322,6 @@ public class FeedPostController {
 				}
 				return ResponseEntity.ok().body(!isChecked);
 			}
-			;
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
@@ -333,13 +332,14 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(likeCount);
 	}
 
-	@GetMapping(value = "selectUserFeedPost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력 +
-												// (마이픽 페이지 스크롤 적용)
+	// 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력 +
+	// (마이픽 페이지 스크롤 적용)
+	@GetMapping(value = "selectUserFeedPost")
 	public ResponseEntity<?> selectUserFeedPost(@RequestParam(value = "userNo") int userNo,
 			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
 		try {
+			System.out.println("chekced");
 			List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo, cpage);
-			System.out.println(data.get(0).getFeedPostId());
 			return ResponseEntity.ok().body(data);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

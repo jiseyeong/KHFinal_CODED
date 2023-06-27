@@ -113,6 +113,10 @@ public class SecurityConfiguration {
 			"/photo/testedBySelectPhoto",
 			"/feedpost/comment/**",
 			"/photo/feedpost",
+			"/auth/updateMemberByUserNo",
+			"/photo/updatePhoto",
+			"/feedpost/selectUserFeedPost",
+			"/auth/selectMyPickPageData"
 			
 	};
 	private final String[] API_USER_LIST = {
