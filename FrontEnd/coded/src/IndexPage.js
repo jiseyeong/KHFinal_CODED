@@ -1,13 +1,26 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from './modules/Redux/members';
+import Report from './component/Report/Report';
 import axios from 'axios';
+import ReportModal from './component/Report/component/ReportModal';
 
 const IndexPage = () => {
   const dispatch = useDispatch();
+  const [reportView, setReportView] = useState(false);
+  const [reportViewStyle, setReportViewStyle] = useState({
+    width: "480px", 
+    height: "750px", 
+    background: "black",
+    position: ""
+  });
   const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
   const accessToken = useSelector((state) => state.member.access);
+
+  function onReportView() {
+    setReportView(!reportView);
+  }
 
   function doKakaoLogin() {
     axios({
@@ -144,6 +157,9 @@ const IndexPage = () => {
       <Link to="/test/TodayAndAdForm">오늘의 날씨 및 광고 테스트</Link>
       <br />
       <br />
+      <button onClick={onReportView}>신고게시판</button>
+      <br />
+      <br />
       <button onClick={onLogout}>로그아웃</button>
       <br />
       <br />
@@ -155,6 +171,7 @@ const IndexPage = () => {
       <br />
       <button onClick={doGoogleLogin}>구글 소셜 등록</button>
       <button onClick={googleUnlink}>구글 소셜 해제</button>
+      {reportView && <ReportModal onReportView={onReportView}/>}
     </div>
   );
 };

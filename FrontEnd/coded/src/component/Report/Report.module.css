@@ -1,0 +1,9 @@
+
+
+.report{
+    width:480px;
+    height:750px;
+    
+    margin: auto;
+    display: flex;
+  }
