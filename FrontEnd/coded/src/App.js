@@ -27,7 +27,7 @@ import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Footer/Footer';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
-import FeedInsert from './test/FeedInsert';
+import FeedInsert from './pages/Feed/Main/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
@@ -117,7 +117,7 @@ function App() {
           path="/test/feedComment"
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
-        <Route path="/test/FeedInsert" element={<FeedInsert />} />
+        <Route path="/FeedInsert" element={<FeedInsert />} />
         <Route path="/test/TodayAndAdForm" element={<TodayAndAdForm />} />
 
         <Route

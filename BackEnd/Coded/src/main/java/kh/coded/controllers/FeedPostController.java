@@ -51,8 +51,60 @@ public class FeedPostController {
 		}
 	}
 
+	@GetMapping(value = "updatefeed") // 피드 수정하기 전 셀렉 페이지띄우기
+	public ResponseEntity<?> selectOneFeedPost(@RequestParam(value = "userNo") int userNo,
+			@RequestParam(value = "feedpostId") int feedpostId) {
+		try {
+			Map<String, Object> result = feedpostService.selectFeedDetail(feedpostId, userNo);
+
+//			이 3개만 쓰면됨
+//			data.put("feedPost", feedPost); // feedPost 내용
+//			data.put("photoList", photoList); // 사진 리스트
+//			data.put("hashTagList", hashTagList); //해시태그 리스트
+
+			return ResponseEntity.ok().body(result);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@PutMapping(value = "updatefeed") // 피드 수정
+	public ResponseEntity<?> updateFeedPost(
+			@RequestParam int feedpostId, @RequestParam String body,
+			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, 
+			HttpServletRequest request) {
+		try {
+			String realPath = request.getServletContext().getRealPath("images");
+			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0));
+			if (HashTag.size() > 0) {
+				for (String index : HashTag) {
+					int TagId = 0;
+					if (feedpostService.HashTagJB(new HashTagDTO(0, index))!=0) { //해시태그 중복 체크
+						TagId = feedpostService.HashTagJB(new HashTagDTO(0, index));
+					} else {
+						TagId = feedpostService.insertHashTag(new HashTagDTO(0, index));
+					} // 해시 태그 넣기
+					feedpostService.updatePostHashs(feedpostId, TagId);// PostHashs에 저장
+				}
+			}
+			if (files.size() > 0) {
+				feedpostService.updateFeedPhoto(realPath, files, feedpostId);
+			}
+			return ResponseEntity.ok().body(null);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@DeleteMapping("/deleteFeedPost") // 피드 삭제
+	public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
+		feedpostService.deleteFeedPost(feedPostId);
+
+		return ResponseEntity.ok().body(null);
+	}
+
 	@PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
-	//데이터는 다 넘어옴 근데 디비에 안들어감
+	// 데이터는 다 넘어옴 근데 디비에 안들어감
 	public ResponseEntity<?> insertFeedPost(@RequestParam int userNo, @RequestParam String body,
 			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
 		try {
@@ -63,16 +115,18 @@ public class FeedPostController {
 			int feedpostId = feedpostService.insertFeedPost(new FeedPostDTO(0, userNo, body, null, 0, 0));
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
-					System.out.println(index);
-					int TagId = feedpostService.insertHashTag(index);
+					int TagId = 0;
+					if (feedpostService.HashTagJB(new HashTagDTO(0, index))!=0) { //해시태그 중복 체크
+						TagId = feedpostService.HashTagJB(new HashTagDTO(0, index));
+					} else {
+						TagId = feedpostService.insertHashTag(new HashTagDTO(0, index));
+					} // 해시 태그 넣기
 					feedpostService.insertPostHashs(feedpostId, TagId);// PostHashs에 저장
 				}
 			}
-			System.out.println(feedpostId);
-			if (files.size() > 0) {
+			if (files.size() > 0) { // 사진 저장
 				feedpostService.insertFeedPhoto(realPath, files, feedpostId);
 			}
-			
 			return ResponseEntity.ok().body(null);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -129,20 +183,6 @@ public class FeedPostController {
 
 		Map<String, Object> data = feedpostService.selectFeedDetail(feedPostId, userNo);
 		return ResponseEntity.ok().body(data);
-	}
-
-	@PutMapping("/updateFeedPost") // 피드 수정
-	public ResponseEntity<?> updateFeedPost(@RequestParam int feedPostId, @RequestParam String body) {
-		feedpostService.updateFeedPost(feedPostId, body);
-
-		return ResponseEntity.ok().body(null);
-	}
-
-	@DeleteMapping("/deleteFeedPost") // 피드 삭제
-	public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
-		feedpostService.deleteFeedPost(feedPostId);
-
-		return ResponseEntity.ok().body(null);
 	}
 
 	@PostMapping("/insertFeedLike") // 피드 좋아요 입력 & 삭제 (팔로잉 팔로워 참조)

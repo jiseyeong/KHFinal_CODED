@@ -147,7 +147,7 @@ const IndexPage = () => {
       <Link to="/test/feedComment">피드 댓글 테스트</Link>
       <br />
       <br />
-      <Link to="/test/FeedInsert">피드 작성 테스트</Link>
+      <Link to="/FeedInsert">피드 작성 테스트</Link>
       <br />
       <br />
       <Link to="/test/follow">팔로워 팔로잉 리스트 테스트</Link>
