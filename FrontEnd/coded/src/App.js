@@ -48,12 +48,10 @@ const ButtonContainer = styled.div`
 `;
 
 const TopButton = styled.button`
-  font-weight: bold;
-  font-size: 15px;
-  padding: 15px 10px;
-  /* background-color: #000;
-  color:#fff */
-  border: 1px solid black;
+  padding: 10px;
+  background-color: silver;
+  color:#222
+  border: none;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
@@ -126,7 +124,8 @@ function App() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/feedList" element={<FeedList />} />
+        <Route path="/feedList" element={<FeedList type={'recent'}/>} />
+        <Route path="/feedPopularList" element={<FeedList type='popular' />} />
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
         <Route path="/profile" element={<Profile />} />

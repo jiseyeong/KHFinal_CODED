@@ -106,6 +106,7 @@ public class SecurityConfiguration {
 			"/photo/insertPhoto",
 			"/PostHashs/selectAllPostTagNames",
 			"/feedpost/selectSearchHashFeedList/**",
+			"/feedpost/selectPopularFeedPost",
 			
 			"/feedpost/selectfeedlist/",
 			"/auth/selectUserList",

@@ -119,7 +119,10 @@ const IndexPage = () => {
       <Link to="/signup">회원가입 페이지</Link>
       <br />
       <br />
-      <Link to="/feedList">단순 피드 리스트</Link>
+      <Link to="/feedList">단순(최신순) 피드 리스트</Link>
+      <br />
+      <br />
+      <Link to="/feedPopularList">인기순 피드 리스트</Link>
       <br />
       <br />
       <Link to="/profile">마이 프로필 페이지</Link>
