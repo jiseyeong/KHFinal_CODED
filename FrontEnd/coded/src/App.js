@@ -5,6 +5,7 @@ import Login from './pages/auth/Login/Login';
 import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
+import Report from './component/Report/Report';
 import Ootd from './pages/Ootd/Main/Main';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
@@ -24,6 +25,7 @@ import SearchLabelSelect from './test/SearchLabelSelect';
 import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Footer/Footer';
+import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
@@ -37,6 +39,7 @@ import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
+
 
 function App() {
   const dispatch = useDispatch();
@@ -93,6 +96,11 @@ function App() {
         <Route path="/pwSearch" element={<PwSearch />} />
         <Route path="/weekly" element={<WeeklyPage />} />
 
+        <Route path="/report" element={<Report/>}/>
+
+        <Route path="/deleteAccount" element={<DeleteAccount />} />
+
+
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
@@ -100,7 +108,7 @@ function App() {
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
-        <Route path="/test/Follow" element={<Follow/>}/>
+        <Route path="/test/Follow" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route path="/myPickPage" element={<MyPickPage />} />

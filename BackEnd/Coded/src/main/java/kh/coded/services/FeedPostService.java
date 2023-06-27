@@ -200,89 +200,86 @@ public class FeedPostService {
 
 	}
 
-	public List<FeedPostAddDTO> selectSearchFeedListByHashs(int cpage, String keyword) {
-		// 피드 리스트 출력
-		// 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
-		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-		int endFeedNum = cpage * feedCountPerPage;
-		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-		return feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
-	}
+    public List<FeedPostAddDTO> selectSearchFeedListByHashs(int cpage, String keyword) {
+        // 피드 리스트 출력
+        // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        return feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
+    }
+    
+    public int updateFeedPost(int feedPostId,String body) {
+    	return feedpostDAO.updateFeedPost(feedPostId, body);
+    }
+    public int deleteFeedPost(int feedPostId) {
+    	return feedpostDAO.deleteFeedPost(feedPostId);
+    }
+    public int insertComment(FeedCommentDTO dto) {
+    	return commentDAO.insert(dto);
+    }
+    public int insertNestedComment(FeedCommentDTO dto) {
+    	return commentDAO.insertNestedComment(dto);
+    }
+    public void updateComment(int feedCommentId, String body) {
+    	commentDAO.update(feedCommentId, body);
+    }
+    public void deleteComment(int feedCommentId) {
+    	commentDAO.delete(feedCommentId);
+    }
+    public List<FeedCommentAddDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
+    	return commentDAO.selectByFeedPostDepth0(feedPostId);
+    }
+    public List<FeedCommentAddDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
+    	return commentDAO.selectByParentIdAndDepth(parentId, depth);
+    }
+    public boolean selectCommentLikeForChecked(int userNo, int commentId) {
+    	return commentLikeDAO.selectForChecked(userNo, commentId) != null;
+    }
+    public int selectCommentLikeForCount(int commentId) {
+    	return commentLikeDAO.selectForCount(commentId).size();
+    }
+    public void insertCommentLike(int userNo, int commentId) {
+    	FeedCommentLikeDTO dto = new FeedCommentLikeDTO(0, userNo, commentId);
+    	commentLikeDAO.insert(dto);
+    }
+    public void deleteCommentLike(int userNo, int commentId) {
+    	commentLikeDAO.delete(userNo, commentId);
+    }
+    
+    public int insertFeedLike(int userNo,int feedPostId) {
+    	return feedLikeDAO.insertFeedLike(userNo, feedPostId);
+    }
+    
+    public int deleteFeedLike(int userNo,int feedPostId) {
+    	return feedLikeDAO.deleteFeedLike(userNo, feedPostId);
+    }
+    
+    public int selectFeedLike(int feedpostId) {
+    	return feedLikeDAO.selectFeedLike(feedpostId);
+    }
+    
+    public boolean isFeedLike(int userNo, int feedPostId) {
+    	return feedLikeDAO.isFeedLike(userNo, feedPostId);
+    }
+    
+    public int insertFeedScrap(int userNo,int feedPostId) {
+    	return feedScrapDAO.insertFeedScrap(userNo, feedPostId);
+    }
+    
+    public int deleteFeedScrap(int userNo,int feedPostId) {
+    	return feedScrapDAO.deleteFeedScrap(userNo, feedPostId);
+    }
+    
+    public boolean isFeedScrap(int userNo, int feedPostId) {
+    	return feedScrapDAO.isFeedScrap(userNo, feedPostId);
+    }
 
-	public int updateFeedPost(int feedPostId, String body) {
-		return feedpostDAO.updateFeedPost(feedPostId, body);
-	}
+    public List<FeedPostAddDTO> selectUserFeedPost(int userNo, int cpage) {
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
 
-	public int deleteFeedPost(int feedPostId) {
-		return feedpostDAO.deleteFeedPost(feedPostId);
-	}
-
-	public int insertComment(FeedCommentDTO dto) {
-		return commentDAO.insert(dto);
-	}
-
-	public int insertNestedComment(FeedCommentDTO dto) {
-		return commentDAO.insertNestedComment(dto);
-	}
-
-	public void updateComment(int feedCommentId, String body) {
-		commentDAO.update(feedCommentId, body);
-	}
-
-	public void deleteComment(int feedCommentId) {
-		commentDAO.delete(feedCommentId);
-	}
-
-	public List<FeedCommentAddDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId) {
-		return commentDAO.selectByFeedPostDepth0(feedPostId);
-	}
-
-	public List<FeedCommentAddDTO> selectCommentByParentIdAndDepth(int parentId, int depth) {
-		return commentDAO.selectByParentIdAndDepth(parentId, depth);
-	}
-
-	public boolean selectCommentLikeForChecked(int userNo, int commentId) {
-		return commentLikeDAO.selectForChecked(userNo, commentId) != null;
-	}
-
-	public int selectCommentLikeForCount(int commentId) {
-		return commentLikeDAO.selectForCount(commentId).size();
-	}
-
-	public void insertCommentLike(int userNo, int commentId) {
-		FeedCommentLikeDTO dto = new FeedCommentLikeDTO(0, userNo, commentId);
-		commentLikeDAO.insert(dto);
-	}
-
-	public void deleteCommentLike(int userNo, int commentId) {
-		commentLikeDAO.delete(userNo, commentId);
-	}
-
-	public int insertFeedLike(int userNo, int feedPostId) {
-		return feedLikeDAO.insertFeedLike(userNo, feedPostId);
-	}
-
-	public int deleteFeedLike(int userNo, int feedPostId) {
-		return feedLikeDAO.deleteFeedLike(userNo, feedPostId);
-	}
-
-	public int selectFeedLike(int feedpostId) {
-		return feedLikeDAO.selectFeedLike(feedpostId);
-	}
-
-	public boolean isFeedLike(int userNo, int feedPostId) {
-		return feedLikeDAO.isFeedLike(userNo, feedPostId);
-	}
-
-	public int insertFeedScrap(int userNo, int feedPostId) {
-		return feedScrapDAO.insertFeedScrap(userNo, feedPostId);
-	}
-
-	public int deleteFeedScrap(int userNo, int feedPostId) {
-		return feedScrapDAO.deleteFeedScrap(userNo, feedPostId);
-	}
-
-	public boolean isFeedScrap(int userNo, int feedPostId) {
-		return feedScrapDAO.isFeedScrap(userNo, feedPostId);
-	}
+        return feedpostDAO.selectUserFeedPost(userNo, startFeedNum, endFeedNum);
+    }
 }

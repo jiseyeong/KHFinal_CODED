@@ -304,9 +304,25 @@ public class FeedPostController {
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 
-	@GetMapping("comment/likeCount")
-	public ResponseEntity<?> selectCommentLikeCount(@RequestParam(value = "commentId") int commentId) {
-		int likeCount = feedpostService.selectCommentLikeForCount(commentId);
-		return ResponseEntity.ok().body(likeCount);
-	}
+    @GetMapping("comment/likeCount")
+    public ResponseEntity<?> selectCommentLikeCount(
+            @RequestParam(value = "commentId") int commentId
+    ) {
+        int likeCount = feedpostService.selectCommentLikeForCount(commentId);
+        return ResponseEntity.ok().body(likeCount);
+    }
+
+    @GetMapping(value = "selectUserFeedPost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력 + (마이픽 페이지 스크롤 적용)
+    public ResponseEntity<?> selectUserFeedPost(
+            @RequestParam(value = "userNo") int userNo,
+            @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
+        try {
+            List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo,cpage);
+            System.out.println(data.get(0).getFeedPostId());
+            return ResponseEntity.ok().body(data);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

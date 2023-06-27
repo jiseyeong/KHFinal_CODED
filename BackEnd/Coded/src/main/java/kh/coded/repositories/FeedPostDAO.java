@@ -103,4 +103,13 @@ public class FeedPostDAO {
 		return mybatis.delete("FeedPost.deleteFeedPost",feedPostId);
 	}
 
+	//	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
+	public List<FeedPostAddDTO> selectUserFeedPost(int userNo, int startFeedNum, int endFeedNum) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("userNo",userNo);
+		map.put("startFeedNum",startFeedNum);
+		map.put("endFeedNum",endFeedNum);
+		return mybatis.selectList("FeedPost.selectUserFeedPost",map);
+	}
+
 }
