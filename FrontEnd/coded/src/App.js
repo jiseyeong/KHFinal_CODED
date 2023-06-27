@@ -5,6 +5,7 @@ import Login from './pages/auth/Login/Login';
 import SignUp from './pages/auth/SignUp/SignUp';
 import Profile from './component/Profile/Profile';
 import FeedList from './component/FeedList/FeedList';
+import Report from './component/Report/Report';
 import Ootd from './pages/Ootd/Main/Main';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
@@ -38,6 +39,7 @@ import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
+
 
 function App() {
   const dispatch = useDispatch();
@@ -93,7 +95,11 @@ function App() {
         <Route path="/idSearch" element={<IdSearch />} />
         <Route path="/pwSearch" element={<PwSearch />} />
         <Route path="/weekly" element={<WeeklyPage />} />
+
+        <Route path="/report" element={<Report/>}/>
+
         <Route path="/deleteAccount" element={<DeleteAccount />} />
+
 
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
