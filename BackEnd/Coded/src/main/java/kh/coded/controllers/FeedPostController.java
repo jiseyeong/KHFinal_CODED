@@ -161,7 +161,6 @@ public class FeedPostController {
 					return ResponseEntity.ok().body(null);
 				}
 			}
-			;
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
@@ -171,7 +170,7 @@ public class FeedPostController {
 		return ResponseEntity.ok().body(feedpostService.selectFeedLike(feedPostId));
 	}
 
-	@GetMapping("/isLike")
+	@GetMapping("/isLike") // 초기 마운트 시 피드의 좋아요 여부를 확인
 	public ResponseEntity<?> getFeedIsLike(@RequestHeader(value = "authorization") String authorization,
 			@RequestParam(value = "feedPostId") int feedPostId) {
 		if (authorization.length() > 7) {
@@ -180,23 +179,42 @@ public class FeedPostController {
 				int userNo = jwtProvider.getLoginUserNo(accessToken);
 				return ResponseEntity.ok().body(feedpostService.isFeedLike(userNo, feedPostId));
 			}
-			;
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+
+	@GetMapping("/isScrap") // 초기 마운트 시 피드의 스크랩 여부를 확인
+	public ResponseEntity<?> getFeedIsScrap(@RequestHeader(value = "authorization") String authorization,
+										   @RequestParam(value = "feedPostId") int feedPostId) {
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				return ResponseEntity.ok().body(feedpostService.isFeedScrap(userNo, feedPostId));
+			}
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 
 	@PostMapping("/insertFeedScrap") // 피드 스크랩 입력 & 삭제
-	public ResponseEntity<?> insertFeedScrap(@RequestParam int userNo, @RequestParam int feedPostId) {
-		boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
-		if (!result) {
-			return ResponseEntity.ok().body(feedpostService.insertFeedLike(userNo, feedPostId));
-		} else {
-			feedpostService.deleteFeedScrap(userNo, feedPostId);
-			return ResponseEntity.ok().body(null);
+	public ResponseEntity<?> insertFeedScrap(@RequestHeader(value = "authorization") String authorization, @RequestParam int feedPostId) {
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				boolean result = feedpostService.isFeedScrap(userNo, feedPostId);
+				if (!result) {
+					feedpostService.insertFeedScrap(userNo, feedPostId);
+					return ResponseEntity.ok().body(null);
+				} else {
+					feedpostService.deleteFeedScrap(userNo, feedPostId);
+					return ResponseEntity.ok().body(null);
+				}
+			}
 		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 
-	// /feedpost/
 	@PostMapping("comment")
 	public ResponseEntity<?> insertComment(@RequestHeader(value = "authorization") String authorization,
 			@RequestParam(value = "feedPostId") int feedPostId, @RequestParam(value = "body") String body) {
@@ -207,7 +225,6 @@ public class FeedPostController {
 				return ResponseEntity.ok().body(
 						feedpostService.insertComment(new FeedCommentDTO(0, userNo, feedPostId, 0, body, null, 0)));
 			}
-			;
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}

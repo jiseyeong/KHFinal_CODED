@@ -4,12 +4,12 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="FeedScrap">
   	<insert id="insertFeedScrap">
-  		insert into feedscrap values(feedscrap.nextval,${userNo},${feedPostId})
+  		insert into feedscrap values(feedscrapid_seq.nextval,${userNo},${feedPostId})
   	</insert>
   	<delete id="deleteFeedScrap">
-  		delete feedscrap where feedlikeid = ${feedLikeId} and userno = ${userNo}
+  		delete from feedscrap where feedPostId = ${feedPostId} and userNo = ${userNo}
   	</delete>
   	<select id="isFeedScrap" resultType="boolean">
-  		select * from feedscrap where userno = ${userNo} and feedpostid = ${feedPostId}
+  		select * from feedscrap where userno = ${userNo} and feedPostId = ${feedPostId}
   	</select>
   </mapper>
