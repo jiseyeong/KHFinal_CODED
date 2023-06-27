@@ -345,5 +345,11 @@ public class FeedPostController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
+	@GetMapping("selectPopularFeedPost")
+	public ResponseEntity<?> selectLikeFeedPost(@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage){
+		List<FeedPostAddDTO> data = feedpostService.selectLikeFeedPost(cpage);
+		return ResponseEntity.ok().body(data);
+	}
 
 }

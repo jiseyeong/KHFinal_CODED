@@ -43,7 +43,7 @@ const FeedPostOuter = styled('div')`
   }
 `;
 
-function FeedList() {
+function FeedList({ type }) {
   const [feedPost, setFeedPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [scrollWait, setScrollWait] = useState(true);
@@ -56,40 +56,41 @@ function FeedList() {
     if (!pageLoading) {
       console.log(cpage.current);
       setPageLoading(true);
-      axios({
-        method: 'GET',
-        url: '/feedpost/selectAllFeedPost/',
-        params: {
-          cpage: cpage.current,
-        },
-      })
-        .then((resp) => {
-          // const {
-          //   feedPostList,
-          //   // thumbNailList,
-          //   // memberList,
-          //   // userProfileList,
-          //   // hashTagLists,
-          //   // feedLikeList,
-          //   // isFeedLikeList,
-          // } = resp.data;
-
-          console.log(resp.data);
-
-          setFeedPost((prev) => [...prev, ...resp.data]);
-          // setThumbnail((prev) => [...prev, ...thumbNailList]);
-          // setUserProfile((prev) => [...prev, ...userProfileList]);
-          // setMember((prev) => [...prev, ...memberList]);
-          // setHashTagList((prev) => [...prev, ...hashTagLists]);
-          // setFeedLike((prev) => [...prev, ...feedLikeList]);
-          // setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
+      if (type === 'recent') {
+        axios({
+          method: 'GET',
+          url: '/feedpost/selectAllFeedPost/',
+          params: {
+            cpage: cpage.current,
+          },
+        })
+          .then((resp) => {
+            setFeedPost((prev) => [...prev, ...resp.data]);
+            cpage.current = cpage.current + 1;
+            setPageLoading(false);
+          })
+          .catch((error) => {
+            console.log(error);
+            setPageLoading(false);
+          });
+      }else if(type==='popular'){
+        axios({
+          method:'get',
+          url:'/feedpost/selectPopularFeedPost',
+          params:{
+            cpage: cpage.current,
+          }
+        })
+        .then((response)=>{
+          setFeedPost((prev)=> [...prev, ...response.data]);
           cpage.current = cpage.current + 1;
           setPageLoading(false);
         })
-        .catch((error) => {
+        .catch((error)=>{
           console.log(error);
           setPageLoading(false);
-        });
+        })
+      }
     }
   };
   // window.innerHeight 실제 보이는 창의 높이
