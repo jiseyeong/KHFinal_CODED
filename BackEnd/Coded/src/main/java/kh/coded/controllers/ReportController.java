@@ -18,8 +18,8 @@ public class ReportController {
 
 	@Autowired
 	private FeedReportService feedReportService;
-	
-	@GetMapping(value="")
+
+	@GetMapping(value = "")
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
 		try {
 			List<FeedPostDTO> list = feedReportService.selectFeedList(UserNo);
