@@ -17,6 +17,7 @@ import kh.coded.dto.FeedCommentDTO;
 import kh.coded.dto.FeedCommentLikeDTO;
 import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.HashTagDTO;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.PhotoDTO;
 import kh.coded.dto.PostHashsWithHashTagDTO;
@@ -62,10 +63,23 @@ public class FeedPostService {
 		return feedpostDAO.insertFeedPost(dto);
 	}
 
+	// insert feedpost start
 	public int insertFeedPost(FeedPostDTO FeedPost) {
 		return feedpostDAO.insertFeedPost(FeedPost);
 	}
 
+	public int insertPostHashs(int FeedPost, int TagId) {
+		return feedpostDAO.insertPostHashs(FeedPost, TagId);
+	}
+
+	public int insertHashTag(HashTagDTO dto) {
+		return feedpostDAO.insertHashTag(dto);
+	}
+	
+	public int HashTagJB(HashTagDTO dto) {
+		return feedpostDAO.HashTagJB(dto);
+	}
+	
 	public void insertFeedPhoto(String realPath, List<MultipartFile> files, int feedPostId) throws IOException {
 		File realPathFile = new File(realPath);
 		if (!realPathFile.exists()) {
@@ -83,7 +97,36 @@ public class FeedPostService {
 			}
 		}
 	}
+	// insert feedpost end
+	
+	// update feedpost start
+	public int updateFeedPost(FeedPostDTO FeedPost) {
+    	return feedpostDAO.updateFeedPost(FeedPost);
+    }
+	
+	public int updatePostHashs(int FeedPost, int TagId) {
+		return feedpostDAO.updatePostHashs(FeedPost, TagId);
+	}
 
+	public void updateFeedPhoto(String realPath, List<MultipartFile> files, int feedPostId) throws IOException {
+		File realPathFile = new File(realPath);
+		if (!realPathFile.exists()) {
+			realPathFile.mkdir();
+		}
+		if (files != null) {
+			for (MultipartFile file : files) {
+				if (file.isEmpty())
+					continue;
+				String oriName = file.getOriginalFilename();
+				String sysName = UUID.randomUUID() + oriName;
+				file.transferTo(new File(realPath + "/" + sysName));
+				if (feedPostId != 0)
+					feedpostDAO.updateFeedPhoto(new PhotoDTO(0, oriName, sysName, feedPostId, 0, 0));
+			}
+		}
+	}
+	
+	
 	// public TodayWeatherDTO select(int WeatherCode) {
 //		return feedpostDAO.selectTodayWeather(WeatherCode);
 //	}
@@ -91,13 +134,7 @@ public class FeedPostService {
 //	public int insertWeatherCode(int WeatherCode) {
 //		return feedpostDAO.insertWeatherCode(WeatherCode);
 //	}
-	public int insertPostHashs(int FeedPost, int TagId) {
-		return feedpostDAO.insertPostHashs(FeedPost, TagId);
-	}
 
-	public int insertHashTag(String HashTag) {
-		return feedpostDAO.insertHashTag(HashTag);
-	}
 
 	public List<FeedPostDTO> selectFeedList(int UserNo) {
 		return feedpostDAO.selectFeedList(UserNo);
@@ -209,9 +246,7 @@ public class FeedPostService {
         return feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
     }
     
-    public int updateFeedPost(int feedPostId,String body) {
-    	return feedpostDAO.updateFeedPost(feedPostId, body);
-    }
+    
     public int deleteFeedPost(int feedPostId) {
     	return feedpostDAO.deleteFeedPost(feedPostId);
     }
