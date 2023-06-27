@@ -84,6 +84,7 @@ const FeedPostDetail = (props) => {
 
   // 초기 마운트 시 피드 좋아요 카운트 계산
   function getFeedLikeCount() {
+    setFeedLike;
     axios({
       method: 'get',
       url: '/feedpost/likeCount',
@@ -113,6 +114,11 @@ const FeedPostDetail = (props) => {
     })
       .then((resp) => {
         setFeedLikeCount(resp.data);
+        setIsFeedLike(!isFeedLike);
+        setScale(!isFeedLike ? 1.2 : 1);
+        setTimeout(() => {
+          setScale(1);
+        }, 200);
       })
       .catch((error) => {
         if (error.request.status === 400) {
@@ -160,12 +166,7 @@ const FeedPostDetail = (props) => {
   // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
   const [scale, setScale] = useState(1);
   const handleLike = () => {
-    setIsFeedLike(!isFeedLike);
     setFeedLike();
-    setScale(!isFeedLike ? 1.2 : 1);
-    setTimeout(() => {
-      setScale(1);
-    }, 200);
   };
 
   return (
@@ -225,7 +226,7 @@ const FeedPostDetail = (props) => {
                 }`}
                 style={{ transform: `scale(${scale})` }}
               >
-                <Like />
+                <Like isFeedLike={isFeedLike ? styles['liked'] : ''} />
                 {feedLikeCount}
               </span>
             </div>
