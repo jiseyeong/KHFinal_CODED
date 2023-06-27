@@ -36,6 +36,7 @@ $storeBorderColor: #f0f1f4;
   .topNavBar {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     z-index: 2;
     background: $white;
 
@@ -43,21 +44,20 @@ $storeBorderColor: #f0f1f4;
       display: flex;
       -webkit-box-align: center;
       align-items: center;
-      padding-left: 80px;
 
       .navLogo {
         outline: none;
         cursor: pointer;
         text-decoration: none;
-        text-align:center;
+        text-align: center;
 
         img {
           width: 38px;
           height: 38px;
         }
 
-        div{
-          font-weight:bold;
+        div {
+          font-weight: bold;
         }
       }
 
@@ -85,6 +85,7 @@ $storeBorderColor: #f0f1f4;
         font-weight: 400;
         letter-spacing: -0.4px;
         line-height: 1.43;
+        padding-left: 15px;
       }
 
       .leftMenuOotd {
@@ -173,7 +174,6 @@ $storeBorderColor: #f0f1f4;
     .rightNavBar {
       align-items: center;
       right: 80px;
-      margin-left: 300px;
 
       .rightMenuWrapper {
         display: flex;
