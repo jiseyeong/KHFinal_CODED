@@ -1,0 +1,68 @@
+%borderBox {
+  height: 34px;
+  width: 42px;
+  border: 1px solid #c9cdd2;
+  cursor: pointer;
+  transform: none;
+  transition: all 0s ease 0s;
+  background-color: #ffffff;
+  color: #72787f;
+  line-height: 18.2px;
+  text-decoration: none solid rgb(114, 120, 127);
+  text-align: center;
+  vertical-align: middle;
+  word-spacing: 0px;
+}
+
+.reportmodalwrapper * {
+  box-sizing: border-box;
+
+  h3 {
+    margin: 0px;
+  }
+}
+
+.reportmodalwrapper {
+  height: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+
+  .modalWrapper {
+    height: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 101;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+
+    .innerWrapper {
+      display: flex;
+      width: 500px;
+      height: 600px;
+
+      background: #ffffff;
+      color: #454c53;
+      padding: 0;
+      margin-top: 0;
+      border: 0px solid #e8ebed;
+      border-radius: 6px;
+
+      .radioLayout {
+        width: 60%;
+        margin: auto;
+        .radios {
+          label {
+            display: block;
+            text-align: left;
+          }
+        }
+      }
+    }
+  }
+}

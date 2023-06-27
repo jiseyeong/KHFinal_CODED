@@ -7,29 +7,50 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import LoadingBar from '../Common/LoadingBar';
 import FeedListNavi from './FeedListNavi';
+import { Like, Temperature } from '../../assets/ModalAsset/ModalAsset';
 
 const FeedPostDetail = (props) => {
-  const {
-    index,
-    feedPost,
-    // thumbNail,
-    // member,
-    // userProfile,
-    //hashTagList,
-    // feedLike,
-    // isFeedLike,
-    // columnHeights,
-    // setColumnHeights,
-  } = props;
+  const { index, feedPost } = props;
   const [modal, setModal] = useState(false);
-  const [feedLikeCount, setFeedLikeCount] = useState(0);
-  const [isFeedLike, setIsFeedLike] = useState(false);
   const [hashTagList, setHashTagList] = useState([]);
   const [isThumbNailLoaded, setIsTuhmbNailLoaded] = useState(false);
   const [isProfileLoaded, setIsProfileLoaded] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
-
   const myRef = useRef(null);
+
+  // 모달 창 열기
+  const openModal = () => {
+    if (!modal) {
+      setModal(true);
+    }
+  };
+
+  // 모달 창 닫기
+  const closeModal = () => {
+    if (modal) {
+      setModal(false);
+    }
+  };
+
+  function handleThumbNailLoaded() {
+    setIsTuhmbNailLoaded(true);
+  }
+
+  function handleProfileLoaded() {
+    setIsProfileLoaded(true);
+  }
+
+  const shortCutRef = useRef();
+
+  // 마우스 올렸을 때 바로가기 네비 보여기
+  // const viewShortCutMenu = () => {
+  //   shortCutRef.current.style.transform = 'translateY(0px)';
+  // };
+
+  // 마우스 떨어졌을 때 바로가기 네비 숨기기
+  // const noneShortCutMenu = () => {
+  //   shortCutRef.current.style.transform = 'translateY(60px)';
+  // };
 
   useEffect(() => {
     //likeCount 초기값 세팅
@@ -51,10 +72,16 @@ const FeedPostDetail = (props) => {
         console.log(error);
       });
   }, []);
+
+  const [feedLikeCount, setFeedLikeCount] = useState(0);
+  const [isFeedLike, setIsFeedLike] = useState(false);
+  const [scale, setScale] = useState(1);
+
   useEffect(() => {
     //피드 라이크가 변경된다면, likeCount 갱신하기.
     getFeedLikeCount();
   }, [isFeedLike]);
+
   useEffect(() => {
     if (accessToken) {
       //엑세스 토큰이 있다면, 로그인 유저의 isLike 정보 긁어오기
@@ -81,6 +108,7 @@ const FeedPostDetail = (props) => {
     }
   }, [accessToken]);
 
+  // 초기 마운트 시 좋아요 개수 받아오기
   function getFeedLikeCount() {
     axios({
       method: 'get',
@@ -96,56 +124,38 @@ const FeedPostDetail = (props) => {
         console.log(error);
       });
   }
+
+  // 피드의 좋아요 반영 ( 추가 / 삭제 )
   function setFeedLike() {
     axios({
       method: 'post',
-      url: '/feedpost/inserFeedLike',
+      url: '/feedpost/insertFeedLike',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
         feedPostId: feedPost.feedPostId,
       },
-    }).catch((error) => {
-      if (error.request.status === 400) {
-        console.log(error.response.data);
-      } else {
-        console.log(error);
-      }
-    });
+    })
+      .then((resp) => {
+        // 반영된 좋아요 수 저장
+        setFeedLikeCount(resp.data);
+        // 좋아요 상태로 변경
+        setIsFeedLike((prev) => !prev);
+        // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
+        setScale(!isFeedLike ? 1.2 : 1);
+        setTimeout(() => {
+          setScale(1);
+        }, 200);
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log(error.response.data);
+        } else {
+          console.log(error);
+        }
+      });
   }
-
-  const openModal = () => {
-    if (!modal) {
-      setModal(true);
-    }
-  };
-
-  const closeModal = () => {
-    if (modal) {
-      setModal(false);
-    }
-  };
-
-  function handleThumbNailLoaded() {
-    setIsTuhmbNailLoaded(true);
-  }
-
-  function handleProfileLoaded() {
-    setIsProfileLoaded(true);
-  }
-
-  const shortCutRef = useRef();
-
-  const viewShortCutMenu = () => {
-    shortCutRef.current.style.transform = 'translateY(0px)';
-    // shortCutRef.current.style.display = 'block';
-  };
-
-  const noneShortCutMenu = () => {
-    shortCutRef.current.style.transform = 'translateY(60px)';
-    // shortCutRef.current.style.display = 'none';
-  };
 
   return (
     <div className={styles.feedInnerParentDiv}>
@@ -153,8 +163,8 @@ const FeedPostDetail = (props) => {
         <div
           className={styles.feedImageDiv}
           onClick={openModal}
-          onMouseOver={viewShortCutMenu}
-          onMouseLeave={noneShortCutMenu}
+          // onMouseOver={viewShortCutMenu}
+          // onMouseLeave={noneShortCutMenu}
         >
           <nav className={styles.shortCutMenu} ref={shortCutRef}>
             <FeedListNavi></FeedListNavi>
@@ -195,6 +205,20 @@ const FeedPostDetail = (props) => {
               )}
             </Link>
             {isProfileLoaded ? null : <LoadingBar />}
+
+            {/* 좋아요 버튼 */}
+            <div
+              className={`${styles.FeedLikeLayout} ${
+                isFeedLike ? styles['liked'] : ''
+              }`}
+              style={{ transform: `scale(${scale})` }}
+              onClick={setFeedLike}
+            >
+              <span className={`${styles.heartButton}`}>
+                <Like isFeedLike={isFeedLike ? styles['liked'] : ''} />
+              </span>
+              <span>{feedLikeCount}</span>
+            </div>
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
@@ -224,8 +248,8 @@ const FeedPostDetail = (props) => {
                 )}
               </div>
               <div className={styles.feedWeatherLayout}>
+                <Temperature />
                 <span>{feedPost.writeTemp}º</span>
-                <img src="/images/test.jpg"></img>
               </div>
             </div>
           </div>
@@ -236,8 +260,9 @@ const FeedPostDetail = (props) => {
             closeModal={closeModal}
             feedPost={feedPost}
             feedLikeCount={feedLikeCount}
-            isLike={isFeedLike}
-            setIsLike={setFeedLike}
+            setFeedLikeCount={setFeedLikeCount}
+            isFeedLike={isFeedLike}
+            setIsFeedLike={setIsFeedLike}
           />
         )}
       </div>

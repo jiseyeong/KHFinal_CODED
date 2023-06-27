@@ -38,7 +38,11 @@ public class PhotoDAO {
 		return list;
     }
 
-	public void updatePhoto(PhotoDTO photoDTO) {
-		mybatis.update("Photo.updatePhoto",photoDTO);
+	public void updatePhoto(PhotoDTO dto) {
+		mybatis.update("Photo.updatePhoto",dto);
+	}
+
+	public void deletePhoto(int feedPostId) {
+		mybatis.delete("Photo.deletePhoto",feedPostId);
 	}
 }

@@ -57,6 +57,7 @@ function SearchedFeedList() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const keyword = searchParams.get('keyword');
+  let pageLoading = false;
 
   // useEffect(() => {
   //   setkeywordInput();
@@ -79,46 +80,52 @@ function SearchedFeedList() {
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addSearchedFeedList = (keyword) => {
-    axios
-      .request({
-        method: 'GET',
-        url: `/feedpost/selectSearchHashFeedList/${keyword}`,
-        params: {
-          cpage: cpage.current,
-        },
-      })
-      .then((resp) => {
-        // console.log(resp.data);
-        // const {
-        //   feedPostList,
-        //   thumbNailList,
-        //   memberList,
-        //   userProfileList,
-        //   hashTagLists,
-        // } = resp.data;
-
-        // 새로 검색했을 때,
-        if (newSearch) {
-          setFeedPost(() => [...resp.data]);
-          // setThumbnail(() => [...thumbNailList]);
-          // setUserProfile(() => [...userProfileList]);
-          // setMember(() => [...memberList]);
-          // setHashTagList(() => [...hashTagLists]);
-        } else {
-          setFeedPost((prev) => [...prev, ...resp.data]);
-          // setThumbnail((prev) => [...prev, ...thumbNailList]);
-          // setUserProfile((prev) => [...prev, ...userProfileList]);
-          // setMember((prev) => [...prev, ...memberList]);
-          // setHashTagList((prev) => [...prev, ...hashTagLists]);
-        }
-
-        // setCpage((prev) => {
-        //   return (prev + 1);
-        // });
-        console.log(resp.data);
-        cpage.current = cpage.current + 1;
-      })
-      .catch((error) => console.log(error));
+    if(!pageLoading){
+      pageLoading = true;
+      axios
+        .request({
+          method: 'GET',
+          url: `/feedpost/selectSearchHashFeedList/${keyword}`,
+          params: {
+            cpage: cpage.current,
+          },
+        })
+        .then((resp) => {
+          // console.log(resp.data);
+          // const {
+          //   feedPostList,
+          //   thumbNailList,
+          //   memberList,
+          //   userProfileList,
+          //   hashTagLists,
+          // } = resp.data;
+          pageLoading = false;
+          // 새로 검색했을 때,
+          if (newSearch) {
+            setFeedPost(() => [...resp.data]);
+            // setThumbnail(() => [...thumbNailList]);
+            // setUserProfile(() => [...userProfileList]);
+            // setMember(() => [...memberList]);
+            // setHashTagList(() => [...hashTagLists]);
+          } else {
+            setFeedPost((prev) => [...prev, ...resp.data]);
+            // setThumbnail((prev) => [...prev, ...thumbNailList]);
+            // setUserProfile((prev) => [...prev, ...userProfileList]);
+            // setMember((prev) => [...prev, ...memberList]);
+            // setHashTagList((prev) => [...prev, ...hashTagLists]);
+          }
+  
+          // setCpage((prev) => {
+          //   return (prev + 1);
+          // });
+          console.log(resp.data);
+          cpage.current = cpage.current + 1;
+        })
+        .catch((error) =>{
+          console.log(error);
+          pageLoading = false;
+        });
+    }
   };
 
   // window.innerHeight 실제 보이는 창의 높이

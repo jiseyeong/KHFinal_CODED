@@ -25,6 +25,7 @@ const MyPickPage = (props) => {
     if (currentUserNo === undefined) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
+        console.log('getUserNo');
         axios({
           url: '/auth/userNo',
           method: 'get',
@@ -81,6 +82,8 @@ const MyPickPage = (props) => {
 
 
   const getMyPickData = () => {
+    console.log('getmypick');
+    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -88,6 +91,7 @@ const MyPickPage = (props) => {
         userNo: currentUserNo,
       },
     }).then((resp) => {
+      console.log(resp.data);
       const {
         userNo: userNo,
         userId: userId,
@@ -117,6 +121,8 @@ const MyPickPage = (props) => {
   };
 
   const addFeedList = () => {
+    console.log('addfeedList');
+    console.log(memberInfo);
     axios({
       method: 'GET',
       url: '/feedpost/selectUserFeedPost',

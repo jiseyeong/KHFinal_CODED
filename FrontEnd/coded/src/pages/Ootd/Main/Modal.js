@@ -31,8 +31,9 @@ function Modal({
   closeModal,
   feedPost,
   feedLikeCount,
-  isLike,
-  setIsLike,
+  setFeedLikeCount,
+  isFeedLike,
+  setIsFeedLike,
 }) {
   const carrouselSettings = {
     dots: true,
@@ -82,6 +83,8 @@ function Modal({
 
   useEffect(() => {
     updateImageList();
+    // 스크랩 여부 가져오기
+    updateScrap();
   }, []);
 
   function updateImageList() {
@@ -126,6 +129,100 @@ function Modal({
         console.log(error);
       });
   }
+
+  // 좋아요, 스크랩 기능들------------------------
+  const [likeScale, setLikeScale] = useState(1);
+  const [isFeedScrap, setIsFeedScrap] = useState();
+  const [scrapScale, setScrapScale] = useState(1);
+
+  // 초기 마운트 시 스크랩 여부 확인
+  function updateScrap() {
+    axios({
+      method: 'get',
+      url: '/feedpost/isScrap',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        feedPostId: feedPost.feedPostId,
+      },
+    })
+      .then((response) => {
+        console.log(response.data);
+        setIsFeedScrap(response.data);
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log(error.response.data);
+        } else {
+          console.log(error);
+        }
+      });
+  }
+
+  // 피드의 좋아요 반영 ( 추가 / 삭제 )
+  function setFeedLike() {
+    axios({
+      method: 'post',
+      url: '/feedpost/insertFeedLike',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        feedPostId: feedPost.feedPostId,
+      },
+    })
+      .then((resp) => {
+        // 반영된 좋아요 수 저장
+        setFeedLikeCount(resp.data);
+        // 좋아요 상태로 변경
+        setIsFeedLike((prev) => !prev);
+        // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
+        setLikeScale(!isFeedLike ? 1.2 : 1);
+        setTimeout(() => {
+          setLikeScale(1);
+        }, 200);
+      })
+      .catch((error) => {
+        // if (error.request.status === 400) {
+        //   console.log(error.response.data);
+        // } else {
+        console.log(error);
+        // }
+      });
+  }
+
+  // 피드의 스크랩 반영 ( 추가 / 삭제 )
+  function setFeedScrap() {
+    axios({
+      method: 'post',
+      url: '/feedpost/insertFeedScrap',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        feedPostId: feedPost.feedPostId,
+      },
+    })
+      .then((resp) => {
+        // 스크랩 상태로 변경
+        setIsFeedScrap((prev) => !prev);
+        // 스크랩 눌렀을 시 카운트 반영 및 애니메이션
+        setScrapScale(!isFeedScrap ? 1.2 : 1);
+        setTimeout(() => {
+          setScrapScale(1);
+        }, 200);
+      })
+      .catch((error) => {
+        // if (error.request.status === 400) {
+        //   console.log(error.response.data);
+        // } else {
+        console.log(error);
+        // }
+      });
+  }
+
+  //------------------------------------------------
 
   // function handleClickLike(e) {
   //   e.preventDefault();
@@ -312,10 +409,10 @@ function Modal({
                   {optionListDiv && (
                     <div className="optionList">
                       <div className="optionListDiv">
-                        <a>수정하기</a>
+                        <a>edit</a>
                       </div>
                       <div className="optionListDiv">
-                        <a onClick={deleteFeedPost}>삭제하기</a>
+                        <a onClick={deleteFeedPost}>delete</a>
                       </div>
                     </div>
                   )}
@@ -333,19 +430,31 @@ function Modal({
 
             <div className="rightWrapper">
               <div className="authorPopularity">
-                <div className={isLike ? 'likeBox' : 'dislikeBox'}>
-                  <Like handleClickLike={setIsLike} />
+                <div
+                  className="btnLayout"
+                  style={{ transform: `scale(${likeScale})` }}
+                  onClick={setFeedLike}
+                >
+                  <div className={isFeedLike ? 'likeBox' : 'disLikeBox'}>
+                    <Like />
+                  </div>
+                  <div className="likeNumBox">
+                    <span className="likeNum">
+                      {/* {' '} */}
+                      {/* 100 */}
+                      {/* {modalData?.modalData?.modalData?.follower} */}
+                      {feedLikeCount}
+                    </span>
+                  </div>
                 </div>
-                <div className="likeNumBox">
-                  <span className="likeNum">
-                    {/* {' '} */}
-                    {/* 100 */}
-                    {/* {modalData?.modalData?.modalData?.follower} */}
-                    {feedLikeCount}
-                  </span>
-                </div>
-                <div className="scrapBox">
-                  <ScrapImage></ScrapImage>
+                <div
+                  className="btnLayout"
+                  style={{ transform: `scale(${scrapScale})` }}
+                  onClick={setFeedScrap}
+                >
+                  <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}>
+                    <ScrapImage />
+                  </div>
                 </div>
               </div>
 

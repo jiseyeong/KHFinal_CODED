@@ -1,6 +1,6 @@
 .feedCommentList{
     display:flex;
-    margin-top:20px;
+    margin-bottom:20px;
     .imageBox{
         width:40px;
         height:40px;
@@ -15,9 +15,11 @@
     }
     .contentsBox{
         margin-left:10px;
+        flex:5;
         .userInfo{
             font-size:13px;
             margin-right:10px;
+            line-height:23px;
           .userNickname{
                 margin-right:8px;
                 font-weight:bold;
@@ -27,20 +29,82 @@
             font-size:13px;
         }
     }
-}
+    .heartBox{
+        font-size:15px;
+        svg{
+            width:20px;
+            height:20px;
+        }
+    }
 
+}
 .nestedComment{
     margin-left:30px;
 }
 
-.btnBox{
+.feedCommentList2{
+    display:flex;
+    line-height:30px;
+
+
+    .writeDate{
+        font-size:13px;
+        margin-right:10px;
+        flex:1;
+    }
+    .heartCount{
+        font-size:13px;
+        font-weight:600;
+        margin-right:20px;
+    }
+    .repleBtn{
+        flex:3;
+        button{
+            background-color:white;
+            color:rgb(147, 147, 147);
+            font-weight:600;
+            cursor: pointer;
+        }
+        button:hover{
+            opacity:50%;
+        }
+    }
+    .btnBox{
+        justify-content:right;
+        text-align:center;
     .commentBtn{
+        background-color:white;
+        color:black;
+        height:22px;
+        border-radius:10px;
+        font-size:12px;
+        cursor:pointer;
+        border:1px solid silver;
+        width:45px;
+        margin-right:5px;
+        box-shadow:2px 2px 2px rgb(228, 228, 228);
+        }
+        .commentBtn:hover{
+            opacity:50%;
+        }
+    }
+}
+
+.nestedCommentReple{
+    .nestedCommentInput{
+        border-bottom:1px solid silver;
+        height:30px;
+        outline:none;
+    }
+    button{
+        margin-left:345px;
+        margin-top:5px;
+        margin-bottom:15px;
         background-color:black;
         color:white;
-        width:55px;
+        width:40px;
         height:25px;
-        border-radius:30px;
-        font-size:11px;
-        margin-right:6px;
+        border-radius:7px;
+        font-size:12px;
     }
 }

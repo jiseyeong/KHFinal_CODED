@@ -31,6 +31,10 @@ public class FeedScrapDAO {
 		Map<String,Integer> map = new HashMap<>();
 		map.put("userNo", userNo);
 		map.put("feedPostId",feedPostId);
-		return mybatis.selectOne("FeedScrap.isFeedScrap",map);
+		Boolean check = mybatis.selectOne("FeedScrap.isFeedScrap",map);
+		if (check == null)
+			return false;
+		else
+			return check;
 	}
 }
