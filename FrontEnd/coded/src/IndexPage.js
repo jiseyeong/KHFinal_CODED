@@ -2,7 +2,6 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from './modules/Redux/members';
-import Report from './component/Report/Report';
 import axios from 'axios';
 import ReportModal from './component/Report/component/ReportModal';
 
@@ -11,7 +10,7 @@ const IndexPage = () => {
   const [reportView, setReportView] = useState(false);
   const [reportViewStyle, setReportViewStyle] = useState({
     width: "480px", 
-    height: "750px", 
+    height: "770px", 
     background: "black",
     position: ""
   });
@@ -120,7 +119,10 @@ const IndexPage = () => {
       <Link to="/signup">회원가입 페이지</Link>
       <br />
       <br />
-      <Link to="/feedList">단순 피드 리스트</Link>
+      <Link to="/feedList">단순(최신순) 피드 리스트</Link>
+      <br />
+      <br />
+      <Link to="/feedPopularList">인기순 피드 리스트</Link>
       <br />
       <br />
       <Link to="/profile">마이 프로필 페이지</Link>

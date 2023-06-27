@@ -495,7 +495,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/auth/selectMyPickPageData")
-    public ResponseEntity<?> selectMyPickPageData(int userNo) {
+    public ResponseEntity<?> selectMyPickPageData(@RequestParam("userNo") int userNo) {
         MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }

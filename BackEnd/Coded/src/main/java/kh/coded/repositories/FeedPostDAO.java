@@ -111,5 +111,12 @@ public class FeedPostDAO {
 		map.put("endFeedNum",endFeedNum);
 		return mybatis.selectList("FeedPost.selectUserFeedPost",map);
 	}
+	
+	public List<FeedPostAddDTO> selectLikeFeedPost(int startFeedNum, int endFeedNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("startFeedNum", startFeedNum);
+		data.put("endFeedNum", endFeedNum);
+		return mybatis.selectList("FeedPost.selectPopularFeed", data);
+	}
 
 }
