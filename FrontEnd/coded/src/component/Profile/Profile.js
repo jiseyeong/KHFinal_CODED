@@ -108,7 +108,7 @@ const ProfileTemplate = () => {
               userNickName,
               email,
               bio,
-              userHashtag,
+              hashTag,
               address1,
               address2,
               sysName,
@@ -121,7 +121,7 @@ const ProfileTemplate = () => {
               userNickName: userNickName,
               email: email,
               bio: bio,
-              userHashtag: userHashtag,
+              hashTag: hashTag,
               address1: address1,
               address2: address2,
               sysName: sysName,
@@ -300,7 +300,7 @@ const ProfileTemplate = () => {
       memberInfo.userNickName === '' ||
       memberInfo.email === '' ||
       memberInfo.bio === '' ||
-      memberInfo.userHashtag === ''
+      memberInfo.hashTag === ''
     ) {
       alert('모든 입력박스를 입력해주세요.');
       return;
@@ -475,9 +475,9 @@ const ProfileTemplate = () => {
                       type="text"
                       className="forEdit"
                       placeholder="해시태그를 입력해주세요"
-                      name="hashtag"
+                      name="hashTag"
                       onChange={handleMemberInfo}
-                      value={memberInfo.hashtag || ''}
+                      value={memberInfo.hashTag || ''}
                       readOnly={!editing}
                     />
                   </div>

@@ -79,7 +79,7 @@
 	</select>
 
 	<update id="updateMemberByUserNo">
-		update member set userId=#{userId}, userNickName = #{userNickName}, email = #{email},
+		update member set userId=#{userId}, userNickName = #{userNickName}, email = #{email}, bio=#{bio}, hashTag=#{hashTag},
 		address1 = #{address1}, address2 = #{address2} where userNo = ${userNo}
 	</update>
 
