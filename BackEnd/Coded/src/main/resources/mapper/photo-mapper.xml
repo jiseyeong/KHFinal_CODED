@@ -38,6 +38,14 @@
         </choose>
     </insert>
 
+    <delete id="deletePhote">
+        <choose>
+            <when test="feedPostId!=0">
+                delete from photo where feedPostId = ${feedPostId}
+            </when>
+        </choose>
+    </delete>
+
 </mapper>
 
   

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import NoticeBar from './NoticeBar';
 import NoneSearchedBar from './NoneSearchedBar';
 
@@ -80,7 +80,7 @@ function SearchedFeedList() {
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addSearchedFeedList = (keyword) => {
-    if(!pageLoading){
+    if (!pageLoading) {
       pageLoading = true;
       axios
         .request({
@@ -114,14 +114,14 @@ function SearchedFeedList() {
             // setMember((prev) => [...prev, ...memberList]);
             // setHashTagList((prev) => [...prev, ...hashTagLists]);
           }
-  
+
           // setCpage((prev) => {
           //   return (prev + 1);
           // });
           console.log(resp.data);
           cpage.current = cpage.current + 1;
         })
-        .catch((error) =>{
+        .catch((error) => {
           console.log(error);
           pageLoading = false;
         });

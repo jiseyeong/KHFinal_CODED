@@ -24,7 +24,24 @@ const HeartIcons = {
       ></path>
     </svg>
   ),
-  heart: null,
+  heart: (
+    <svg
+      className="like"
+      stroke="currentColor"
+      fill="#ff0066"
+      strokeWidth="0"
+      viewBox="0 0 16 16"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  ),
 };
 
 function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
@@ -221,47 +238,59 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         </div>
         <div className={style.heartBox} onClick={handleIsLike}>
           <div className={style.heartIcon}>
-            {isLike ? 'heart' : HeartIcons.empty}
+            {isLike ? HeartIcons.heart : HeartIcons.empty}
           </div>
-          <div className={style.heartCount}>{likeCount}</div>
         </div>
       </div>
-      <div>write date : {commentInfo.formedWriteDate}</div>
-      {depth < 1 && accessToken && (
-        <button onClick={handleOnReply}>댓글 달기</button>
-      )}
-      {onReply && (
-        <div>
-          <div ref={editorRef} contentEditable="true" />
-          <button onClick={writeComment}>전송</button>
+      <div className={style.feedCommentList2}>
+        <div className={style.writeDate}>
+          {commentInfo.formedWriteDate}
         </div>
-      )}
-      <div className={style.btnBox}>
-        {userNo === commentInfo.userNo &&
-          (isUpdate ? (
-            <div>
-              <button className={style.commentBtn} onClick={updateComment}>
-                확정
-              </button>
-              <button
-                className={style.commentBtn}
-                onClick={cancelUpdateComment}
-              >
-                취소
-              </button>
-            </div>
-          ) : (
-            <>
-              <button className={style.commentBtn} onClick={handleUpdate}>
-                수정
-              </button>
-              <span>／</span>
-            </>
-          ))}
-        {userNo === commentInfo.userNo && (
-          <button className={style.commentBtn} onClick={deleteComment}>
-            삭제
-          </button>
+        <div className={style.heartCount}>좋아요 {likeCount}</div>
+        <div className={style.repleBtn}>
+          {depth < 1 && accessToken && (
+            <button onClick={handleOnReply}>댓글 달기</button>
+          )}
+        </div>
+        <div className={style.btnBox}>
+          {userNo === commentInfo.userNo &&
+            (isUpdate ? (
+              <div>
+                <button className={style.commentBtn} onClick={updateComment}>
+                  확정
+                </button>
+                <button
+                  className={style.commentBtn}
+                  onClick={cancelUpdateComment}
+                >
+                  취소
+                </button>
+              </div>
+            ) : (
+              <>
+                <button className={style.commentBtn} onClick={handleUpdate}>
+                  수정
+                </button>
+                {/* <span>／</span> */}
+              </>
+            ))}
+          {userNo === commentInfo.userNo && (
+            <button className={style.commentBtn} onClick={deleteComment}>
+              삭제
+            </button>
+          )}
+        </div>
+      </div>
+      <div className={style.nestedCommentReple}>
+        {onReply && (
+          <div>
+            <div
+              className={style.nestedCommentInput}
+              ref={editorRef}
+              contentEditable="true"
+            />
+            <button onClick={writeComment}>전송</button>
+          </div>
         )}
       </div>
       <div className={style.nestedComment}>
