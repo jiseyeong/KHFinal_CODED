@@ -194,6 +194,10 @@ public class MemberService implements UserDetailsService {
 	public MemberDTO selectMemberByNaverToken(String token) {
 		return memberDAO.selectMemberByNaverToken(token);
 	}
+	
+	public MemberDTO selectMemberByGoogleToken(String token) {
+		return memberDAO.selectMemberByGoogleToken(token);
+	}
 
 	public MemberDTO selectMemberForPwSend(String userId, String userNickName, String email) {
 		return memberDAO.selectMemberForPwSend(userId, userNickName, email);
@@ -372,7 +376,6 @@ public class MemberService implements UserDetailsService {
 		);
 
 		String responseBody = response.getBody();
-		System.out.println(responseBody);
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 		return jsonNode.get("access_token").asText();
@@ -407,7 +410,8 @@ public class MemberService implements UserDetailsService {
 
 		//토큰으로 구글 API 호출
 		String token = this.getGoogleUserInfo(accessToken);
-		MemberDTO member = this.selectMemberByNaverToken(token);
+		MemberDTO member = this.selectMemberByGoogleToken(token);
+		
 
 		if (member == null) {
 			//등록 하려 누른 것일 것임.
@@ -479,7 +483,6 @@ public class MemberService implements UserDetailsService {
 		);
 
 		String responseBody = response.getBody();
-		System.out.println(responseBody);
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(responseBody);
 

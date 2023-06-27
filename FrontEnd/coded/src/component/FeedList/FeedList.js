@@ -45,54 +45,52 @@ const FeedPostOuter = styled('div')`
 
 function FeedList() {
   const [feedPost, setFeedPost] = useState([]);
-  // const [thumbNail, setThumbnail] = useState([]);
-  // const [member, setMember] = useState([]);
-  // const [userProfile, setUserProfile] = useState([]);
-  // const [hashTagList, setHashTagList] = useState([]);
-  // const [feedLike, setFeedLike] = useState([]);
-  // const [isFeedLike, setIsFeedLike] = useState([]);
   const [loading, setLoading] = useState(false);
   const [scrollWait, setScrollWait] = useState(true);
-  // const [columnHeights, setColumnHeights] = useState([0, 0, 0, 0, 0]);
   const feedPostOuterRef = useRef(null);
-  // const [cpage, setCpage] = useState(1);
   const cpage = useRef(1);
+  const [pageLoading, setPageLoading] = useState(false);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
-    console.log(cpage.current);
-    axios({
-      method: 'GET',
-      url: '/feedpost/selectAllFeedPost/',
-      params: {
-        cpage: cpage.current,
-      },
-    })
-      .then((resp) => {
-        // const {
-        //   feedPostList,
-        //   // thumbNailList,
-        //   // memberList,
-        //   // userProfileList,
-        //   // hashTagLists,
-        //   // feedLikeList,
-        //   // isFeedLikeList,
-        // } = resp.data;
-        
-        console.log(resp.data);
-
-        setFeedPost((prev) => [...prev, ...resp.data]);
-        // setThumbnail((prev) => [...prev, ...thumbNailList]);
-        // setUserProfile((prev) => [...prev, ...userProfileList]);
-        // setMember((prev) => [...prev, ...memberList]);
-        // setHashTagList((prev) => [...prev, ...hashTagLists]);
-        // setFeedLike((prev) => [...prev, ...feedLikeList]);
-        // setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
-        cpage.current = cpage.current + 1;
+    if (!pageLoading) {
+      console.log(cpage.current);
+      setPageLoading(true);
+      axios({
+        method: 'GET',
+        url: '/feedpost/selectAllFeedPost/',
+        params: {
+          cpage: cpage.current,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((resp) => {
+          // const {
+          //   feedPostList,
+          //   // thumbNailList,
+          //   // memberList,
+          //   // userProfileList,
+          //   // hashTagLists,
+          //   // feedLikeList,
+          //   // isFeedLikeList,
+          // } = resp.data;
+
+          console.log(resp.data);
+
+          setFeedPost((prev) => [...prev, ...resp.data]);
+          // setThumbnail((prev) => [...prev, ...thumbNailList]);
+          // setUserProfile((prev) => [...prev, ...userProfileList]);
+          // setMember((prev) => [...prev, ...memberList]);
+          // setHashTagList((prev) => [...prev, ...hashTagLists]);
+          // setFeedLike((prev) => [...prev, ...feedLikeList]);
+          // setIsFeedLike((prev) => [...prev, ...isFeedLikeList]);
+          cpage.current = cpage.current + 1;
+          setPageLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          setPageLoading(false);
+        });
+    }
   };
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값

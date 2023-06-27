@@ -25,7 +25,7 @@ const masonryOptions = {
 };
 
 const FeedPostOuter = styled('div')`
-  margin: auto;
+  margin-left:20px;
   width: 85%;
   display: flex;
   justify-content: center;
@@ -49,12 +49,10 @@ function WeeklyFeedForm() {
   const accessToken = useSelector((state) => state.member.access);
   const [loading, setLoading] = useState(false);
   const [needLogin, setNeedLogin] = useState(false);
+  let pageLoading = false;
 
-  const [cpage, setCpage] = useState(1);
-  // const [thumbNail, setThumbnail] = useState([]);
-  // const [member, setMember] = useState([]);
-  // const [userProfile, setUserProfile] = useState([]);
-  // const [hashTagList, setHashTagList] = useState([]);
+  //const [cpage, setCpage] = useState(1);
+  let cpage = 1;
   const feedPostOuterRef = useRef(null);
 
   useEffect(() => {
@@ -82,33 +80,42 @@ function WeeklyFeedForm() {
   }, []);
 
   function addFeedList() {
-    setLoading(true);
-    axios({
-      method: 'get',
-      url: '/feedpost/weeklyFeed',
-      headers: {
-        Authorization: 'Bearer ' + accessToken,
-      },
-      params: {
-        currentTemp: maxTemp,
-        currentTempRange: tempRange,
-        cpage: cpage,
-      },
-    })
-      .then((response) => {
-        setLoading(false);
-        setFeedList((prev) => {
-          return [...prev, ...response.data];
-        });
-        //setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage((prev) => {
-          return prev + 1;
-        });
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
+    if(!pageLoading){
+      if(accessToken){
+          console.log(cpage);
+          pageLoading = true;
+          setLoading(true);
+          axios({
+            method: 'get',
+            url: '/feedpost/weeklyFeed',
+            headers: {
+              Authorization: 'Bearer ' + accessToken,
+            },
+            params: {
+              currentTemp: maxTemp,
+              currentTempRange: tempRange,
+              cpage: cpage,
+            },
+          })
+            .then((response) => {
+              setFeedList((prev) => {
+                return [...prev, ...response.data];
+              });
+              //setHashTagList((prev) => [...prev, ...hashTagLists]);
+              // setCpage((prev) => {
+              //   return prev + 1;
+              // });
+              cpage = cpage + 1;
+              setLoading(false);
+              pageLoading = false;
+            })
+            .catch((error) => {
+              console.log(error);
+              setLoading(false);
+              pageLoading = false;
+            });
+        }
+      }
   }
 
   if (needLogin) {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IndexPage from './IndexPage';
 import Login from './pages/auth/Login/Login';
@@ -14,7 +14,7 @@ import DMPage from './pages/DM/DMPage';
 import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
 import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from './modules/Redux/members';
 import cookie from 'react-cookies';
 import axios from 'axios';
@@ -38,7 +38,27 @@ import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
+import { styled } from 'styled-components';
 
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  z-index: 1;
+`
+
+const TopButton = styled.button`
+  font-weight: bold;
+  font-size: 15px;
+  padding: 15px 10px;
+  /* background-color: #000;
+  color:#fff */
+  border : 1px solid black;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+`
 
 function App() {
   const dispatch = useDispatch();
@@ -52,6 +72,8 @@ function App() {
     (refreshToken) => dispatch(setRefresh(refreshToken)),
     [dispatch],
   );
+  const accessToken = useSelector((state)=>state.member.access);
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     axios({
@@ -72,10 +94,31 @@ function App() {
         onSetRefresh(refreshToken);
       })
       .catch((error) => {
-        onLogout();
+        if(accessToken){
+          onLogout();
+        }
         console.log(error);
       });
+
+      window.addEventListener("scroll", handleShowTop);
+      return ()=>{
+        window.removeEventListener("scroll", handleShowTop);
+      }
   }, []);
+
+  function toTop(){
+    window.scrollTo({
+      top:0,
+      behavior:'smooth' // or auto
+    })
+  }
+  function handleShowTop(){
+    if(window.scrollY > 500){
+      setShowTop(true);
+    }else{
+      setShowTop(false);
+    }
+  }
 
   return (
     <BrowserRouter>
@@ -131,6 +174,11 @@ function App() {
         {/* <Route path="/likepeed" element={<Likepeed/>} />
         <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>
+      {showTop && (
+        <ButtonContainer>
+          <TopButton onClick={toTop}>Top</TopButton>
+        </ButtonContainer>
+      )}
       <Footer />
     </BrowserRouter>
 

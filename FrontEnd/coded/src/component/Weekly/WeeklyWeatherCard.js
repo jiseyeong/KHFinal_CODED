@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FeedMaxTempContext } from '../../modules/Context/FeedMaxTempContext';
 import { useSelector } from 'react-redux';
 import weatherIcons from '../WeatherCommon/WetherIcons';
+import style from './WeeklyWeatherCard.module.scss';
 
 function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
   const [weatherIcon, setWeatherIcon] = useState('');
@@ -63,19 +64,23 @@ function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
 
   function handleClickCard() {
     setMaxTemp(weeklyData.max);
-    setTempRange(weeklyData.max - weeklyData.min);
+    setTempRange(Math.abs(weeklyData.max - weeklyData.min));
   }
 
   if (!accessToken) {
     return <div>로그인이 필요한 서비스입니다.</div>;
   }
   return (
-    <div onClick={handleClickCard}>
-      <div>{`${year}.${month}.${day} ${week}`}</div>
-      <div>{weatherIcon}</div>
-      <div>H:{weeklyData.max}</div>
-      <div>L:{weeklyData.min}</div>
-      <div>{'>' + weatherMessage}</div>
+    <div className={style.weatherBox} onClick={handleClickCard}>
+      <div className={style.weatherBody1}>{`${year}.${month}.${day} ${week}`}</div>
+      <div className={style.weatherBody2}>
+        <div className={style.weatherIconBox}>{weatherIcon}</div>
+        <div className={style.weatherDataBox}>
+            <div>최고기온 {weeklyData.max}º</div>
+            <div>최저기온 {weeklyData.min}º</div>
+        </div>
+      </div>
+      <div className={style.weatherBody3}>{weatherMessage}</div>
     </div>
   );
 }

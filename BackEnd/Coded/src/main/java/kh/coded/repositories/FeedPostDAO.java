@@ -7,6 +7,7 @@ import java.util.Map;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.coded.dto.FeedPostAddDTO;
 import kh.coded.dto.FeedPostDTO;
@@ -18,14 +19,20 @@ public class FeedPostDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
-//	피드 쓰기 - 피드를 작성 할 수 있는 페이지
+//	마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력
+	public List<FeedPostDTO> selectFeedList(int UserNo) {
+		return mybatis.selectList("FeedPost.selectByUserNo", UserNo);
+	}
+
+//	피드 쓰기 - 피드를 작성 할 수 있는 페이지//feedpostID가져와야됨
 	public int insertFeedPost(FeedPostDTO dto) {
-		return mybatis.insert("FeedPost.insertFeedPost", dto);
+		mybatis.insert("FeedPost.insertFeedPost", dto);
+		return dto.getFeedPostId();
 	}
 
 //	피드 내 사진 첨부 - 사진을 첨부하여 피드 작성
-	public int insertFeedPhoto(PhotoDTO dto) {
-		return mybatis.insert("FeedPost.insertFeedPhoto", dto);
+	public void insertFeedPhoto(PhotoDTO dto) {
+		mybatis.insert("FeedPost.insertFeedPhoto", dto);
 	}
 	
 ////	피드 내 날씨 해시태그 - 오늘 날씨에 맞는 날씨 해시태그 자동 입력 (뽑기)
