@@ -45,7 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 					"/register",
 					"/auth/member",
 					"/auth/login",
-					"/auth/logout",
 					"/auth/oauth/**",
 					"/login/oauth2/**",
 					"/auth/refresh",

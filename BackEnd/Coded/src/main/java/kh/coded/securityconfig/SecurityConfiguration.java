@@ -3,10 +3,14 @@ package kh.coded.securityconfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -54,43 +58,58 @@ public class SecurityConfiguration {
 			"/manifest.json",
 			"/logo192.png",
 			
+			//pages
+			"/login",
+			"/register",
+			"/feedList",
+			"/profile",
+			"/DMPage",
+			"/ootd",
+			"/weekly",
+			"/myPickPage",
+			"/FileUploadTest",
+			"/DMPage",
 			"/error",
-			"/auth/fail",
+			"/HomePage",
+			
+			"/searchBox",
+			"/TestComponent",
+			"/test/feedComment",
+			"/test/FeedInsert",
+			"/test/follow",
+			"/test/TodayAndAdForm",
+			
 			"/auth/userNo",
 			//"/feedList/**",
 			//"/feedpost/**",
 			//"/HomePage/**",
-			"/feedList",
 			"/feepost",
-			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
-			"/MyProfile",
-			"/FileUploadTest",
-			"/DMPage",
-			
-			"/login",
-			"/register",
-			
 			"/auth/member",
 			"/auth/login",
 			"/auth/userNo",
 			"/auth/getAddress1List",
 			"/auth/getAddress2List",
 			"/auth/refresh",
+			"/auth/isMember",
+			"/auth/isMemberByEmail",
 			"/auth/oauth/**",
 			"/login/oauth2/**",
-			
 			"/feedPost/comment/**", //얘들은 단순 select임.
-			
 			"/weather/todayNonMem",
 			"/auth/selectUserListWithProfile",
 			"/PostHashs/selectAllPostTagNames",
 			"/feedpost/selectAllFeedPost/",
 			"/feedpost/likeCount",
 			"/feedpost/hashtagList",
+			"/photo/insertPhoto",
+			"/PostHashs/selectAllPostTagNames",
 			
-
+			"/feedpost/selectfeedlist/",
+			"/auth/selectUserList",
+			"/photo/testedBySelectPhoto",
+			
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
@@ -125,7 +144,7 @@ public class SecurityConfiguration {
 		http.httpBasic(basic -> basic.disable());
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
-		http.addFilterAfter(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		http.authorizeHttpRequests(authorize ->{
 			try {
@@ -183,13 +202,13 @@ public class SecurityConfiguration {
 //		}
 //	});
 		
-//		http.rememberMe(rememberMe -> 
-//							rememberMe
-//								.key("myKey")
-//								.tokenValiditySeconds(60 * 60 * 24 * 7)
-//								.userDetailsService(memberService)
-//								.rememberMeParameter("remember-me")
-//		);
+		http.rememberMe(rememberMe -> 
+							rememberMe
+								.key("myKey")
+								.tokenValiditySeconds(60 * 60 * 24 * 7)
+								.userDetailsService(memberService)
+								.rememberMeParameter("remember-me")
+		);
 		
 		//한 계정 당 하나의 로그인 유지만 가능하도록 하는 설정임.
 		//http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));
@@ -198,17 +217,17 @@ public class SecurityConfiguration {
 		return http.build();
 	}
 	
-//	@Bean
-//	public AuthenticationManager authenticationManager(
-//			HttpSecurity http,
-//			PasswordEncoder passwordEncoder,
-//			UserDetailsService userDetailsService)
-//					throws Exception{
-//		
-//		return http.getSharedObject(AuthenticationManagerBuilder.class)
-//					.userDetailsService(userDetailsService)
-//					.and()
-//					.build();
-//	}
+	@Bean
+	public AuthenticationManager authenticationManager(
+			HttpSecurity http,
+			PasswordEncoder passwordEncoder,
+			UserDetailsService userDetailsService)
+					throws Exception{
+		
+		return http.getSharedObject(AuthenticationManagerBuilder.class)
+					.userDetailsService(userDetailsService)
+					.and()
+					.build();
+	}
 	
 }

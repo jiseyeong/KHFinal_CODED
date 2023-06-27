@@ -69,7 +69,6 @@ function WeeklySideForm() {
               setWeeklyData((prev) => {
                 const newDay = new Date();
                 newDay.setDate(newDay.getDate() + cnt++);
-                console.log(newDay);
                 setDates((prev) => {
                   return [...prev, newDay];
                 });

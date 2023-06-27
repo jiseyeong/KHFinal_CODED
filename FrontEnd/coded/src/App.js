@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import IndexPage from './IndexPage';
 import Login from './pages/auth/Login/Login';
@@ -14,7 +14,7 @@ import DMPage from './pages/DM/DMPage';
 import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
 import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, setRefresh } from './modules/Redux/members';
 import cookie from 'react-cookies';
 import axios from 'axios';
@@ -53,6 +53,7 @@ function App() {
     (refreshToken) => dispatch(setRefresh(refreshToken)),
     [dispatch],
   );
+  const accessToken = useSelector((state)=>state.member.access);
 
   useEffect(() => {
     axios({
@@ -73,7 +74,9 @@ function App() {
         onSetRefresh(refreshToken);
       })
       .catch((error) => {
-        onLogout();
+        if(accessToken){
+          onLogout();
+        }
         console.log(error);
       });
   }, []);
