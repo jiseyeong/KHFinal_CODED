@@ -1,43 +1,13 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import './DeleteAccountCom.scss';
-
-const TemplateBlock = styled.div`
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 120px;
-  margin-bottom: 120px;
-`;
-
-const WhiteBox = styled.div`
-  .logo-area {
-    display: block;
-    padding-bottom: 2rem;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    font-size: 20px;
-    text-align: center;
-  }
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-  padding: 2rem;
-  width: 400px;
-  background: white;
-  border-radius: 2px;
-`;
+import ChangePwModal from '../../../../Profile/component/ChangePwModal';
+import { useSelector } from 'react-redux';
 
 const removeAccount = () => {
   let checkPw = '';
   if (comfirm('정말로 회원을 탈퇴하시겠습니까?')) {
-    checkPw = prompt('비밀번호를 다시 입력해주세요.');
+    checkPw = prompt('비밀번호를 입력해주세요.');
   }
   axios({
     url: '/auth/deleteMemberWithoutId',
@@ -60,49 +30,121 @@ const removeAccount = () => {
 };
 
 const DeleteAccountCom = () => {
+  const accessToken = useSelector((state) => state.member.access);
+
+  const [password, setPassword] = useState({ currentPw: '', pw: '', repw: '' });
+  const [pwConfirmCheck, setPwConfirmCheck] = useState(true);
+  const pwRef1 = useRef();
+  const pwRef2 = useRef();
+
+  // 입력한 비밀번호를 객체에 저장
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setPassword((prev) => ({ ...prev, [name]: value }));
+    console.log(e.target.value);
+    handlePw();
+  };
+
+  // 비밀번호 변경 버튼
+  const submitInput = () => {
+    if (
+      password.currentPw === '' 
+    ) {
+      alert('입력 폼을 채워주세요.');
+      return;
+    }
+
+    axios({
+      url: '/auth/updatePwAfterPwCheck',
+      method: 'put',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        currentPw: password.currentPw,
+        pw: password.pw,
+      },
+    }).then((resp) => {
+      if (resp.data === 0) {
+        alert('현재 비밀번호가 일치하지 않습니다.');
+        setPassword({ currentPw: '', pw: '', repw: '' });
+      } else {
+        alert('변경이 완료되었습니다.');
+      }
+    });
+
+    DeleteAccountCom((prev) => {
+      return !prev;
+    });
+  };
+
+  const handlePw = () => {
+    if (pwRef1.current.value === pwRef2.current.value) {
+      setPwConfirmCheck(true);
+    } else {
+      setPwConfirmCheck(false);
+    }
+  };
+
   return (
-    <TemplateBlock>
-      <WhiteBox>
-        <div className={styles.deleteContainer}>
-          <div className={styles.innerWrapper}>
-          <div className={styles.iconLayout}>
-            <svg
-              className="icon"
-              height="130"
-              viewBox="0 0 20 20"
-              width="130"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 2C14.4183 2 18 5.58172 18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2ZM10 3C6.13401 3 3 6.13401 3 10C3 13.866 6.13401 17 10 17C13.866 17 17 13.866 17 10C17 6.13401 13.866 3 10 3ZM10 12.5C10.4142 12.5 10.75 12.8358 10.75 13.25C10.75 13.6642 10.4142 14 10 14C9.58579 14 9.25 13.6642 9.25 13.25C9.25 12.8358 9.58579 12.5 10 12.5ZM10 6C10.2455 6 10.4496 6.17688 10.4919 6.41012L10.5 6.5V11C10.5 11.2761 10.2761 11.5 10 11.5C9.75454 11.5 9.55039 11.3231 9.50806 11.0899L9.5 11V6.5C9.5 6.22386 9.72386 6 10 6Z"
-                fill="#000000"
-              />
-            </svg>
+    <div className="DeleteAccountComWrapper">
+      <div className="mainWrapper">
+        <div className="subWrapper">
+          <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
+            <button className="closeBtn" onClick={DeleteAccountCom}>
+              x
+            </button>
+            <div className="blankWrapper1"></div>
+            <div className="infoWrapper">
+              <div className="iconLayout">
+                <svg
+                  className="icon"
+                  height="150"
+                  viewBox="0 0 20 20"
+                  width="150"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 4C12.4646 4 13.8627 5.5736 14.066 7.47399L14.1282 7.47399C15.7143 7.47399 17 8.71103 17 10.237C17 11.763 15.7143 13 14.1282 13L12.626 12.9993C12.6427 13.0492 12.6518 13.1027 12.6518 13.1583C12.6518 13.4344 12.428 13.6583 12.1518 13.6583C11.8757 13.6583 11.6518 13.4344 11.6518 13.1583C11.6518 13.1027 11.6609 13.0492 11.6776 12.9993L7.441 12.999L5.94503 15.7454C5.81287 15.9879 5.50918 16.0773 5.26672 15.9451C5.05119 15.8277 4.95659 15.5747 5.03105 15.3496L5.06699 15.2668L6.302 12.999L5.87179 13C4.28575 13 3 11.763 3 10.237C3 8.71103 4.28575 7.47399 5.87181 7.47399L5.93399 7.47399C6.13851 5.56111 7.53544 4 10 4ZM11.5 15C11.7761 15 12 15.2239 12 15.5C12 15.7761 11.7761 16 11.5 16C11.2239 16 11 15.7761 11 15.5C11 15.2239 11.2239 15 11.5 15ZM9.30172 14.0602C9.51724 14.176 9.61184 14.4253 9.53738 14.6471L9.50144 14.7287L8.93911 15.743C8.80696 15.9819 8.50327 16.0701 8.2608 15.9398C8.04528 15.824 7.95068 15.5747 8.02514 15.3529L8.06107 15.2713L8.62341 14.257C8.75556 14.0181 9.05925 13.9299 9.30172 14.0602ZM13.5 14C13.7761 14 14 14.2239 14 14.5C14 14.7761 13.7761 15 13.5 15C13.2239 15 13 14.7761 13 14.5C13 14.2239 13.2239 14 13.5 14ZM10 5C8.35056 5 6.9129 6.2703 6.9129 8.02495C6.9129 8.30297 6.65891 8.52113 6.36808 8.52112L5.81818 8.5211C4.81403 8.5211 4 9.29988 4 10.2606C4 11.2212 4.81403 12 5.81818 12H14.1818C15.186 12 16 11.2212 16 10.2606C16 9.29988 15.186 8.5211 14.1818 8.5211L13.6319 8.52112C13.3411 8.52113 13.0871 8.30297 13.0871 8.02495C13.0871 6.24779 11.6494 5 10 5Z"
+                    fill="#000000"
+                  />
+                </svg>
+              </div>
+              <h2>WE"LL MISS YOU</h2>
+              <h4>
+                그동안 이용해주셔서 감사합니다.
+                <br />
+                CODI가 고민된다면,
+                <br />
+                CODED를 다시 찾아주세요!
+              </h4>
             </div>
-            <h2>WE'LL MISS YOU</h2>
-            <h4>아래에 현재 비밀번호를 입력해주세요.</h4>
-          </div>
-          <div className={styles.inputWrapper}>
-            <div className={styles.inputLayout}>
-              <input
-                type="password"
-                placeholder="현재 비밀번호"
-                name="currentPw"
-                value={password.currentPw || ''}
-                onChange={handleInput}
-              />
-            </div>
-            <div className={styles.buttonLayout}>
-              {
-                <button className={styles.DeleteAccountComBtn} onCLick={removeAccount}>
+            <div className="inputWrapper">
+              <div className="inputLayout">
+                <input
+                  type="password"
+                  placeholder="현재 비밀번호"
+                  name="currentPw"
+                  value={password.currentPw || ''}
+                  onChange={handleInput}
+                />
+                {pwConfirmCheck ? (
+                  <div className="checkpw">비밀번호가 일치합니다.</div>
+                ) : (
+                  <div className="checkpw">비밀번호가 일치하지 않습니다.</div>
+                )}
+              </div>
+              <div className="btnLayout">
+                <button className="DeleteAccountComBtn" onCLick={removeAccount}>
                   byebye..
                 </button>
-              }
+              </div>
             </div>
+            <div className="blankWrapper2"></div>
           </div>
         </div>
-      </WhiteBox>
-    </TemplateBlock>
+      </div>
+    </div>
   );
 };
 
