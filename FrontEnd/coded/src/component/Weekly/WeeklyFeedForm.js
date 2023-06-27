@@ -119,7 +119,7 @@ function WeeklyFeedForm() {
   }
 
   if (needLogin) {
-    return <div>MEMBER-ONLY SERVICE. Login First!</div>;
+    return <div>로그인이 필요한 서비스입니다. 먼저 로그인을 해주세요!</div>;
   }
 
   return (

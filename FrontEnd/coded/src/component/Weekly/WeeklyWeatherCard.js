@@ -68,7 +68,7 @@ function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
   }
 
   if (!accessToken) {
-    return <div>MEMBER-ONLY SERVICE</div>;
+    return <div>로그인이 필요한 서비스입니다.</div>;
   }
   return (
     <div className={style.weatherBox} onClick={handleClickCard}>
