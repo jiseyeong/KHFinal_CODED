@@ -11,14 +11,14 @@ function WeeklyPage(){
         <>
             {accessToken ? (
                 <FeedMaxTempProvider>
-                <div>
-                    <div>
-                        <WeeklySideForm />
+                    <div style={{display:'flex'}}>
+                        <div style={{flex:1}}>
+                            <WeeklySideForm />
+                        </div>
+                        <div style={{flex:3}}>
+                            <WeeklyFeedForm/>
+                        </div>
                     </div>
-                    <div>
-                        <WeeklyFeedForm/>
-                    </div>
-                </div>
                 </FeedMaxTempProvider>
             ): (<div>로그인 후 이용이 가능한 서비스입니다.</div>)}
         </>
