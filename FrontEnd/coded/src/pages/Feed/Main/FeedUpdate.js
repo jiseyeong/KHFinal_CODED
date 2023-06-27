@@ -38,8 +38,10 @@ const FeedUpdate = ({ clickdata }) => {
         // console.log(data.photoList); //아무것도 안넣었기 때문에 빈배열
 
         data.hashTagList.forEach((item) => {
-            setOptions((selectedOptions) => [...selectedOptions, item.hashTag]);
+            let temp = {value:item.hashTag, label:item.hashTag};
+            setSelectedOptions((preview) => [...preview, temp]);
           });
+
         // data.hashTagList.forEach((index) => {
         //   setSelectedOptions[index.hashTag];
         // });
@@ -59,7 +61,7 @@ const FeedUpdate = ({ clickdata }) => {
       });
   }, []);
 
-  //  토큰 가져오는거
+  //  토큰 가져오는거 1
   useEffect(() => {
     if (accessToken) {
       // 1. 토큰 값으로 나의 고유 넘버를 반환
@@ -263,7 +265,7 @@ const FeedUpdate = ({ clickdata }) => {
             });
           }}
         >
-          {/* {contentbody} */}
+          {contentbody}
         </div>
         <br />
         <CreatableSelect
@@ -272,6 +274,7 @@ const FeedUpdate = ({ clickdata }) => {
           ref={selectRef}
           onChange={(value) => setSelectedOptions(value)}
           className={Styled.select}
+          defaultValue={selectedOptions}
         />
         <br />
       </div>
