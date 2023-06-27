@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import LoadingBar from '../Common/LoadingBar';
 import FeedListNavi from './FeedListNavi';
+import { Like, Temperature } from '../../assets/ModalAsset/ModalAsset';
 
 const FeedPostDetail = (props) => {
   const {
@@ -81,6 +82,7 @@ const FeedPostDetail = (props) => {
     }
   }, [accessToken]);
 
+  // 초기 마운트 시 피드 좋아요 카운트 계산
   function getFeedLikeCount() {
     axios({
       method: 'get',
@@ -96,31 +98,39 @@ const FeedPostDetail = (props) => {
         console.log(error);
       });
   }
+
+  // 피드의 좋아요 반영 ( 추가 / 삭제 )
   function setFeedLike() {
     axios({
       method: 'post',
-      url: '/feedpost/inserFeedLike',
+      url: '/feedpost/insertFeedLike',
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
         feedPostId: feedPost.feedPostId,
       },
-    }).catch((error) => {
-      if (error.request.status === 400) {
-        console.log(error.response.data);
-      } else {
-        console.log(error);
-      }
-    });
+    })
+      .then((resp) => {
+        setFeedLikeCount(resp.data);
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log(error.response.data);
+        } else {
+          console.log(error);
+        }
+      });
   }
 
+  // 모달 창 열기
   const openModal = () => {
     if (!modal) {
       setModal(true);
     }
   };
 
+  // 모달 창 닫기
   const closeModal = () => {
     if (modal) {
       setModal(false);
@@ -137,14 +147,25 @@ const FeedPostDetail = (props) => {
 
   const shortCutRef = useRef();
 
+  // 마우스 올렸을 때 바로가기 네비 보여기
   const viewShortCutMenu = () => {
     shortCutRef.current.style.transform = 'translateY(0px)';
-    // shortCutRef.current.style.display = 'block';
   };
 
+  // 마우스 떨어졌을 때 바로가기 네비 숨기기
   const noneShortCutMenu = () => {
     shortCutRef.current.style.transform = 'translateY(60px)';
-    // shortCutRef.current.style.display = 'none';
+  };
+
+  // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
+  const [scale, setScale] = useState(1);
+  const handleLike = () => {
+    setIsFeedLike(!isFeedLike);
+    setFeedLike();
+    setScale(!isFeedLike ? 1.2 : 1);
+    setTimeout(() => {
+      setScale(1);
+    }, 200);
   };
 
   return (
@@ -153,8 +174,8 @@ const FeedPostDetail = (props) => {
         <div
           className={styles.feedImageDiv}
           onClick={openModal}
-          onMouseOver={viewShortCutMenu}
-          onMouseLeave={noneShortCutMenu}
+          // onMouseOver={viewShortCutMenu}
+          // onMouseLeave={noneShortCutMenu}
         >
           <nav className={styles.shortCutMenu} ref={shortCutRef}>
             <FeedListNavi></FeedListNavi>
@@ -195,6 +216,19 @@ const FeedPostDetail = (props) => {
               )}
             </Link>
             {isProfileLoaded ? null : <LoadingBar />}
+
+            {/* 좋아요 버튼 */}
+            <div className={styles.FeedLikeLayout} onClick={handleLike}>
+              <span
+                className={`${styles.heartButton} ${
+                  isFeedLike ? styles['liked'] : ''
+                }`}
+                style={{ transform: `scale(${scale})` }}
+              >
+                <Like />
+                {feedLikeCount}
+              </span>
+            </div>
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
@@ -224,8 +258,8 @@ const FeedPostDetail = (props) => {
                 )}
               </div>
               <div className={styles.feedWeatherLayout}>
+                <Temperature />
                 <span>{feedPost.writeTemp}º</span>
-                <img src="/images/test.jpg"></img>
               </div>
             </div>
           </div>
