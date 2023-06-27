@@ -74,6 +74,7 @@ function App() {
     [dispatch],
   );
   const accessToken = useSelector((state)=>state.member.access);
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     axios({
@@ -99,6 +100,11 @@ function App() {
         }
         console.log(error);
       });
+
+      window.addEventListener("scroll", handleShowTop);
+      return ()=>{
+        window.removeEventListener("scroll", handleShowTop);
+      }
   }, []);
 
   function toTop(){
@@ -106,6 +112,13 @@ function App() {
       top:0,
       behavior:'smooth' // or auto
     })
+  }
+  function handleShowTop(){
+    if(window.scrollY > 500){
+      setShowTop(true);
+    }else{
+      setShowTop(false);
+    }
   }
 
   return (
@@ -166,9 +179,11 @@ function App() {
         {/* <Route path="/likepeed" element={<Likepeed/>} />
         <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>
-      <ButtonContainer>
-        <TopButton onClick={toTop}>Top</TopButton>
-      </ButtonContainer>
+      {showTop && (
+        <ButtonContainer>
+          <TopButton onClick={toTop}>Top</TopButton>
+        </ButtonContainer>
+      )}
       <Footer />
     </BrowserRouter>
   );
