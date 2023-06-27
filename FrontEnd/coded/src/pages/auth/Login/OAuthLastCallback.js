@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../modules/Redux/members';
 
 function LastCallbackPage() {
@@ -18,9 +18,10 @@ function LastCallbackPage() {
     const paramMessage = searchParams.get('message');
     if (paramMessage != 'T' && paramMessage != 'F' && paramMessage != 'FF') {
       onLogin(paramMessage);
-      navigate('/');
+      navigate("/");
     } else if (paramMessage == 'T') {
-      setMessage('등록되었습니다.');
+      // setMessage('등록되었습니다.');
+      navigate("/profile");
     } else if (paramMessage == 'F') {
       setMessage(
         '회원가입 및 로그인 후 등록을 먼저 해주셔야 이용하실 수 있습니다.',
