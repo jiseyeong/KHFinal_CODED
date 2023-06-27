@@ -61,7 +61,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         })
         .catch((error) => {
           if (error.request.status === 400) {
-            console.log('먼저 로그인을 해주세요.');
+            console.log('Login First!');
           } else {
             console.log(error);
           }
@@ -92,7 +92,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -135,7 +135,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('먼저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -165,7 +165,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('먼저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -191,7 +191,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       })
       .catch((error) => {
         if (error.request.status === 400) {
-          console.log('먼저 로그인을 해주세요.');
+          console.log('Login First!');
         } else {
           console.log(error);
         }
@@ -220,9 +220,11 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
           </div>
         </div>
         <div className={style.heartBox} onClick={handleIsLike}>
-        <div className={style.heartIcon}>{isLike ? 'heart' : HeartIcons.empty}</div>
-        <div className={style.heartCount}>{likeCount}</div>
-      </div>
+          <div className={style.heartIcon}>
+            {isLike ? 'heart' : HeartIcons.empty}
+          </div>
+          <div className={style.heartCount}>{likeCount}</div>
+        </div>
       </div>
       <div>write date : {commentInfo.formedWriteDate}</div>
       {depth < 1 && accessToken && (
@@ -243,7 +245,8 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
               </button>
               <button
                 className={style.commentBtn}
-                onClick={cancelUpdateComment}>
+                onClick={cancelUpdateComment}
+              >
                 취소
               </button>
             </div>

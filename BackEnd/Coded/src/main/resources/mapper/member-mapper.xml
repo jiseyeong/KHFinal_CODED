@@ -31,7 +31,7 @@
   		select * from Member where GoogleToken=${googleToken}
   	</select>
   	<select id="selectKakaoTokenByUserNo" resultType="String">
-  		select NakaoToken from Member where UserNo=${userNo}
+  		select KakaoToken from Member where UserNo=${userNo}
   	</select>
   	<select id="selectNaverTokenByUserNo" resultType="String">
   		select NaverToken from Member where UserNo=${userNo}

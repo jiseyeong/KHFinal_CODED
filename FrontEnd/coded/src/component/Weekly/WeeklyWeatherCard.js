@@ -68,16 +68,18 @@ function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
   }
 
   if (!accessToken) {
-    return <div>로그인이 필요한 서비스입니다.</div>;
+    return <div>MEMBER-ONLY SERVICE. Login First!</div>;
   }
   return (
     <div className={style.weatherBox} onClick={handleClickCard}>
-      <div className={style.weatherBody1}>{`${year}.${month}.${day} ${week}`}</div>
+      <div
+        className={style.weatherBody1}
+      >{`${year}.${month}.${day} ${week}`}</div>
       <div className={style.weatherBody2}>
         <div className={style.weatherIconBox}>{weatherIcon}</div>
         <div className={style.weatherDataBox}>
-            <div>최고기온 {weeklyData.max}º</div>
-            <div>최저기온 {weeklyData.min}º</div>
+          <div>최고기온 {weeklyData.max}º</div>
+          <div>최저기온 {weeklyData.min}º</div>
         </div>
       </div>
       <div className={style.weatherBody3}>{weatherMessage}</div>

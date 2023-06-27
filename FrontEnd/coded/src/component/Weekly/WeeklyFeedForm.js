@@ -25,7 +25,7 @@ const masonryOptions = {
 };
 
 const FeedPostOuter = styled('div')`
-  margin-left:20px;
+  margin-left: 20px;
   width: 85%;
   display: flex;
   justify-content: center;
@@ -80,46 +80,46 @@ function WeeklyFeedForm() {
   }, []);
 
   function addFeedList() {
-    if(!pageLoading){
-      if(accessToken){
-          console.log(cpage);
-          pageLoading = true;
-          setLoading(true);
-          axios({
-            method: 'get',
-            url: '/feedpost/weeklyFeed',
-            headers: {
-              Authorization: 'Bearer ' + accessToken,
-            },
-            params: {
-              currentTemp: maxTemp,
-              currentTempRange: tempRange,
-              cpage: cpage,
-            },
-          })
-            .then((response) => {
-              setFeedList((prev) => {
-                return [...prev, ...response.data];
-              });
-              //setHashTagList((prev) => [...prev, ...hashTagLists]);
-              // setCpage((prev) => {
-              //   return prev + 1;
-              // });
-              cpage = cpage + 1;
-              setLoading(false);
-              pageLoading = false;
-            })
-            .catch((error) => {
-              console.log(error);
-              setLoading(false);
-              pageLoading = false;
+    if (!pageLoading) {
+      if (accessToken) {
+        console.log(cpage);
+        pageLoading = true;
+        setLoading(true);
+        axios({
+          method: 'get',
+          url: '/feedpost/weeklyFeed',
+          headers: {
+            Authorization: 'Bearer ' + accessToken,
+          },
+          params: {
+            currentTemp: maxTemp,
+            currentTempRange: tempRange,
+            cpage: cpage,
+          },
+        })
+          .then((response) => {
+            setFeedList((prev) => {
+              return [...prev, ...response.data];
             });
-        }
+            //setHashTagList((prev) => [...prev, ...hashTagLists]);
+            // setCpage((prev) => {
+            //   return prev + 1;
+            // });
+            cpage = cpage + 1;
+            setLoading(false);
+            pageLoading = false;
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading(false);
+            pageLoading = false;
+          });
       }
+    }
   }
 
   if (needLogin) {
-    return <div>로그인이 필요한 서비스입니다. 먼저 로그인을 해주세요!</div>;
+    return <div>MEMBER-ONLY SERVICE. Login First!</div>;
   }
 
   return (

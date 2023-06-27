@@ -37,6 +37,7 @@ const Reportdiv = styled('div')`
   font-weight: bold;
   margin: 3rem;
 `;
+
 const Reportdiv2 = styled('div')`
   font-size: 15px;
   font-weight: bold;
@@ -106,8 +107,8 @@ function ReportModal({ onReportView }) {
             </div>
             <div>
               <Reportdiv2>
-                허위신고를 할 경우 신고자의 활동에 제한을 받을 수 있습니다.
-                <br></br>이 점 유의해 주시기 바랍니다.
+                허위신고를 할 경우 신고자의 활동에 제한을 받을 수 있습니다.{' '}
+                <br />이 점 유의해 주시기 바랍니다.
               </Reportdiv2>
               <br></br>
               <br></br>
