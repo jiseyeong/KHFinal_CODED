@@ -16,13 +16,11 @@ function FeedInsert() {
   const [FeedPostUpdateOpen, setFeedPostUpdateOpen] = useState(false);
 
   const [insertButtonClick, setinsertButtonClick] = useState(false);
-
   const [updateButtonClick, setupdateButtonClick] = useState(false);
 
   const insertfeed = () => {
     setinsertButtonClick(true);
   };
-
   const updatefeed = () => {
     setupdateButtonClick(true);
   };
