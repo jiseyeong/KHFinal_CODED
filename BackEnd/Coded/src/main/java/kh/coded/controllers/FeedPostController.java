@@ -1,21 +1,13 @@
 package kh.coded.controllers;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -105,14 +97,18 @@ public class FeedPostController {
 
 	@PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	// 데이터는 다 넘어옴 근데 디비에 안들어감
-	public ResponseEntity<?> insertFeedPost(@RequestParam int userNo, @RequestParam String body,
+	public ResponseEntity<?> insertFeedPost(
+//			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
+			@ModelAttribute FeedPostDTO dto,
 			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
 		try {
-			System.out.println("유저 넘버 :" + userNo + " 메세지 : " + body);
+			System.out.println("dto"+dto);
+//			System.out.println("유저 넘버 :" + userNo + " 메세지 : " + body + " 일자 : "+writeDate);
 			System.out.println(HashTag.get(0) + " : " + HashTag.get(1));
+			System.out.println(files.get(0).getOriginalFilename());
 			String realPath = request.getServletContext().getRealPath("images");
 			System.out.println(realPath);
-			int feedpostId = feedpostService.insertFeedPost(new FeedPostDTO(0, userNo, body, null, 0, 0));
+//			int feedpostId = feedpostService.insertFeedPost(new FeedPostDTO(0, userNo, body, null, 0, 0));
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
 					int TagId = 0;
@@ -121,11 +117,11 @@ public class FeedPostController {
 					} else {
 						TagId = feedpostService.insertHashTag(new HashTagDTO(0, index));
 					} // 해시 태그 넣기
-					feedpostService.insertPostHashs(feedpostId, TagId);// PostHashs에 저장
+//					feedpostService.insertPostHashs(feedpostId, TagId);// PostHashs에 저장
 				}
 			}
 			if (files.size() > 0) { // 사진 저장
-				feedpostService.insertFeedPhoto(realPath, files, feedpostId);
+//				feedpostService.insertFeedPhoto(realPath, files, feedpostId);
 			}
 			return ResponseEntity.ok().body(null);
 		} catch (Exception e) {

@@ -45,8 +45,6 @@ const ProfileTemplate = () => {
   const [addressList2, setAddressList2] = useState([]);
   const [addressIndex1, setAddressIndex1] = useState(-1);
   const [addressIndex2, setAddressIndex2] = useState(-1);
-  const address1 = useRef();
-  const address2 = useRef();
   // useSelector로 토큰 값 가져오기
   // 토큰 값을 활용하여 유저 DTO 정보를 가져오기
   // 로그인 정보 출력
@@ -141,7 +139,6 @@ const ProfileTemplate = () => {
               sysName: sysName,
             };
 
-            console.log(member);
             let address = [];
             resp2.data.forEach((addressData) => {
               address = address.concat({
@@ -259,7 +256,6 @@ const ProfileTemplate = () => {
   }, [accessToken]);
 
   // 사진 등록 시, 바로 불러오기 기능
-
   const handleChangeFile = (event) => {
     console.log(event.target.files);
     setImgBase64([]);
@@ -659,7 +655,7 @@ const ProfileTemplate = () => {
                         <Select
                           ref={address1}
                           options={addressList1}
-                          defaultValue={addressList1[0]}
+                          defaultValue={addressList1[addressIndex1]}
                           onChange={setAddress2}
                           isDisabled={!editing}
                         />
@@ -684,7 +680,7 @@ const ProfileTemplate = () => {
                     <img
                       src={kakaoImage}
                       className={styles.socialBtn}
-                      onClick={doKakaoLogin}
+                      onClick={kakaoUnlink}
                     ></img>
                   ) : (
                     <img
@@ -697,7 +693,7 @@ const ProfileTemplate = () => {
                     <img
                       src={naverImage}
                       className={styles.socialBtn}
-                      onClick={doNaverLogin}
+                      onClick={naverUnlink}
                     ></img>
                   ) : (
                     <img
@@ -710,7 +706,7 @@ const ProfileTemplate = () => {
                     <img
                       src={googleImage}
                       className={styles.socialBtn}
-                      onClick={doGoogleLogin}
+                      onClick={googleUnlink}
                     ></img>
                   ) : (
                     <img
