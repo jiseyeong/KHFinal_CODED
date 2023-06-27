@@ -378,7 +378,7 @@ public class AuthenticationController {
                 return ResponseEntity.ok().body(memberService.selectKakaoTokenByUserNo(userNo));
             }
         }
-        return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+        return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했습니다.");
     }
 
     @GetMapping(value = "/auth/naverToken")
@@ -393,7 +393,7 @@ public class AuthenticationController {
                 return ResponseEntity.ok().body(memberService.selectNaverTokenByUserNo(userNo));
             }
         }
-        return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+        return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했습니다.");
     }
 
     @GetMapping(value = "/auth/googleToken")
@@ -408,7 +408,7 @@ public class AuthenticationController {
                 return ResponseEntity.ok().body(memberService.selectGoogleTokenByUserNo(userNo));
             }
         }
-        return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했거나 없는 유저입니다.");
+        return ResponseEntity.badRequest().body("유효하지 않은 토큰을 사용했습니다.");
     }
 
     // 테스트 용도 (피드 작성 폼 구성 시 삭제 예정)
@@ -495,7 +495,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/auth/selectMyPickPageData")
-    public ResponseEntity<?> selectMyPickPageData(int userNo) {
+    public ResponseEntity<?> selectMyPickPageData(@RequestParam("userNo") int userNo) {
         MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }

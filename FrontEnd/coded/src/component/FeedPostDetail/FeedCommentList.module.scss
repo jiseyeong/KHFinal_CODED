@@ -3,9 +3,10 @@
   .repleWriteBox {
     display: flex;
     border-radius: 15px;
-
     border: 1px solid silver;
     padding: 3px;
+    margin-top:10px;
+    margin-bottom:15px;
     div {
       width: 90%;
       outline: none;
@@ -13,9 +14,9 @@
       font-size: 14px;
     }
     button {
-      width: 10%;
+      width: 9%;
       background-color: white;
-      padding: 0;
+      padding: 3px;
     }
   }
 }

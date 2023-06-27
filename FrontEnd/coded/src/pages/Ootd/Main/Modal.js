@@ -409,10 +409,10 @@ function Modal({
                   {optionListDiv && (
                     <div className="optionList">
                       <div className="optionListDiv">
-                        <a>수정하기</a>
+                        <a>edit</a>
                       </div>
                       <div className="optionListDiv">
-                        <a onClick={deleteFeedPost}>삭제하기</a>
+                        <a onClick={deleteFeedPost}>delete</a>
                       </div>
                     </div>
                   )}

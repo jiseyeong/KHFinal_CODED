@@ -26,7 +26,7 @@ const ImageLayout = styled('div')`
 
 const ReportH3 = styled('h3')`
   width: 100%;
-  
+  text-align: center;
   font-size: 26px;
   color: white;
   background-color:black;
@@ -66,9 +66,7 @@ const Buttonok2 = styled('button')`
   height: 27px;
   `
 
-  const css2 = styled()`
-
-  `
+ 
 
 
 function ReportModal({ onReportView }) {

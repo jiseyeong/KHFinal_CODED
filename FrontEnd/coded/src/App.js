@@ -26,39 +26,35 @@ import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Footer/Footer';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
-import FeedInsert from './test/FeedInsert';
+import FeedInsert from './pages/Feed/Main/FeedInsert';
 import DMList from './pages/DM/DMList';
 import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
 
-import Likefeed from './component/FeedList/LikeFeed';
 import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
 import { styled } from 'styled-components';
-
+import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 
 const ButtonContainer = styled.div`
   position: fixed;
   right: 5%;
   bottom: 5%;
   z-index: 1;
-`
+`;
 
 const TopButton = styled.button`
-  font-weight: bold;
-  font-size: 15px;
-  padding: 15px 10px;
-  /* background-color: #000;
-  color:#fff */
-  border : 1px solid black;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border: none;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
-`
+`;
 
 function App() {
   const dispatch = useDispatch();
@@ -72,7 +68,7 @@ function App() {
     (refreshToken) => dispatch(setRefresh(refreshToken)),
     [dispatch],
   );
-  const accessToken = useSelector((state)=>state.member.access);
+  const accessToken = useSelector((state) => state.member.access);
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
@@ -94,28 +90,28 @@ function App() {
         onSetRefresh(refreshToken);
       })
       .catch((error) => {
-        if(accessToken){
+        if (accessToken) {
           onLogout();
         }
         console.log(error);
       });
 
-      window.addEventListener("scroll", handleShowTop);
-      return ()=>{
-        window.removeEventListener("scroll", handleShowTop);
-      }
+    window.addEventListener('scroll', handleShowTop);
+    return () => {
+      window.removeEventListener('scroll', handleShowTop);
+    };
   }, []);
 
-  function toTop(){
+  function toTop() {
     window.scrollTo({
-      top:0,
-      behavior:'smooth' // or auto
-    })
+      top: 0,
+      behavior: 'smooth', // or auto
+    });
   }
-  function handleShowTop(){
-    if(window.scrollY > 500){
+  function handleShowTop() {
+    if (window.scrollY > 500) {
       setShowTop(true);
-    }else{
+    } else {
       setShowTop(false);
     }
   }
@@ -127,7 +123,8 @@ function App() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/feedList" element={<FeedList />} />
+        <Route path="/feedList" element={<FeedList type={'recent'} />} />
+        <Route path="/feedPopularList" element={<FeedList type="popular" />} />
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
         <Route path="/profile" element={<Profile />} />
@@ -137,7 +134,7 @@ function App() {
         <Route path="/idSearch" element={<IdSearch />} />
         <Route path="/pwSearch" element={<PwSearch />} />
         <Route path="/weekly" element={<WeeklyPage />} />
-        
+        <Route path="/deleteAccount" element={<DeleteAccount />} />
 
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
@@ -146,7 +143,7 @@ function App() {
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
-        <Route path="/test/Follow" element={<Follow/>}/>
+        <Route path="/test/Follow" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route path="/myPickPage" element={<MyPickPage />} />
@@ -155,7 +152,7 @@ function App() {
           path="/test/feedComment"
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
-        <Route path="/test/FeedInsert" element={<FeedInsert />} />
+        <Route path="/FeedInsert" element={<FeedInsert />} />
         <Route path="/test/TodayAndAdForm" element={<TodayAndAdForm />} />
 
         <Route
@@ -176,15 +173,23 @@ function App() {
       </Routes>
       {showTop && (
         <ButtonContainer>
-          <TopButton onClick={toTop}>Top</TopButton>
+          <TopButton onClick={toTop}>
+            <svg
+              height="20"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4.14708 12.3544C3.95147 12.1594 3.9509 11.8429 4.14582 11.6472L9.6108 6.16276C9.82574 5.94705 10.1751 5.94705 10.39 6.16276L15.855 11.6472C16.0499 11.8429 16.0493 12.1594 15.8537 12.3544C15.6581 12.5493 15.3415 12.5487 15.1466 12.3531L10.0004 7.18851L4.85418 12.3531C4.65927 12.5487 4.34269 12.5493 4.14708 12.3544Z"
+                fill="#222"
+              />
+            </svg>
+          </TopButton>
         </ButtonContainer>
       )}
       <Footer />
     </BrowserRouter>
-
-        
-
-    
   );
 }
 export default App;

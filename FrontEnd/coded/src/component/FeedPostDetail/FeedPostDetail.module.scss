@@ -43,8 +43,8 @@
 
       .thumbNail {
         width: 250px;
-        min-height: 150px;
-        max-height: 350px;
+        min-height: 250px;
+        max-height: 400px;
         object-fit: cover;
         overflow: hidden;
       }
@@ -93,7 +93,7 @@
           }
 
           &.liked {
-            background-color: #ff5f00;
+            background-color: #ff0066; 
           }
 
           span {

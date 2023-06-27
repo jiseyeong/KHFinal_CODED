@@ -106,12 +106,17 @@ public class SecurityConfiguration {
 			"/photo/insertPhoto",
 			"/PostHashs/selectAllPostTagNames",
 			"/feedpost/selectSearchHashFeedList/**",
+			"/feedpost/selectPopularFeedPost",
 			
 			"/feedpost/selectfeedlist/",
 			"/auth/selectUserList",
 			"/photo/testedBySelectPhoto",
 			"/feedpost/comment/**",
 			"/photo/feedpost",
+			"/auth/updateMemberByUserNo",
+			"/photo/updatePhoto",
+			"/feedpost/selectUserFeedPost",
+			"/auth/selectMyPickPageData"
 			
 	};
 	private final String[] API_USER_LIST = {
