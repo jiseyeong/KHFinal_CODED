@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import FeedCommentList from './FeedCommentList';
 import axios from 'axios';
+import { styled } from 'styled-components';
+import style from './FeedComment.module.scss';
 
 const HeartIcons = {
   empty: (
@@ -32,15 +34,15 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   );
   const editorRef = useRef(null);
   const accessToken = useSelector((state) => state.member.access);
-  const userNo = useSelector((state)=>state.member.userNo);
+  const userNo = useSelector((state) => state.member.userNo);
   const [isLike, setIsLike] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const commentRef = useRef(null);
   const [isUpdate, setIsUpdate] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     handleLikeCount();
-  },[])
+  }, []);
 
   useEffect(() => {
     if (accessToken) {
@@ -97,20 +99,20 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       });
   }
 
-  function handleLikeCount(){
+  function handleLikeCount() {
     axios({
-      method:'get',
-      url:'/feedpost/comment/likeCount',
-      params:{
+      method: 'get',
+      url: '/feedpost/comment/likeCount',
+      params: {
         commentId: commentInfo.feedCommentId,
       },
     })
-    .then((response)=>{
-      setLikeCount(response.data);
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+      .then((response) => {
+        setLikeCount(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function writeComment() {
@@ -140,87 +142,111 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       });
   }
 
-  function handleUpdate(){
-    setIsUpdate((prev)=>{return !prev});
-  }
-  function updateComment(){
-    handleUpdate();
-    axios({
-      method:'Put',
-      url:'/feedpost/comment',
-      params:{
-        feedCommentId:commentInfo.feedCommentId,
-        body:commentRef.current.innerText,
-      },
-      headers:{
-        Authorization:`Bearer ${accessToken}`
-      }
-    })
-    .then((response)=>{
-      readComments();
-    })
-    .catch((error) => {
-      if (error.request.status === 400) {
-        console.log('먼저 로그인을 해주세요.');
-      } else {
-        console.log(error);
-      }
+  function handleUpdate() {
+    setIsUpdate((prev) => {
+      return !prev;
     });
   }
-  function cancelUpdateComment(){
+  function updateComment() {
+    handleUpdate();
+    axios({
+      method: 'Put',
+      url: '/feedpost/comment',
+      params: {
+        feedCommentId: commentInfo.feedCommentId,
+        body: commentRef.current.innerText,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        readComments();
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log('먼저 로그인을 해주세요.');
+        } else {
+          console.log(error);
+        }
+      });
+  }
+  function cancelUpdateComment() {
     handleUpdate();
     commentRef.current.innerText = commentInfo.body;
   }
-  function deleteComment(){
+  function deleteComment() {
     axios({
-      method:'Delete',
-      url:'/feedpost/comment',
-      headers:{
-        Authorization:`Bearer ${accessToken}`
+      method: 'Delete',
+      url: '/feedpost/comment',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-      params:{
-        feedCommentId:commentInfo.feedCommentId,
+      params: {
+        feedCommentId: commentInfo.feedCommentId,
       },
     })
-    .then((response)=>{
-      readComments();
-    })
-    .catch((error) => {
-      if (error.request.status === 400) {
-        console.log('먼저 로그인을 해주세요.');
-      } else {
-        console.log(error);
-      }
-    });
+      .then((response) => {
+        readComments();
+      })
+      .catch((error) => {
+        if (error.request.status === 400) {
+          console.log('먼저 로그인을 해주세요.');
+        } else {
+          console.log(error);
+        }
+      });
   }
   return (
     <div>
-      <div>
-        <img src={`/images/${profileSysName}`} alt="유저 프로필 사진"></img>
+      <div className={style.feedCommentList}>
+        <div className={style.imageBox}>
+          <img src={`/images/${profileSysName}`}></img>
+        </div>
+        <div className={style.contentsBox}>
+          <div className={style.userInfo}>
+            <span className={style.userNickname}>
+              {commentInfo.userNickName}
+            </span>
+            <span className={style.userId}>{commentInfo.userId}</span>
+          </div>
+          <div
+            contentEditable={isUpdate}
+            ref={commentRef}
+            suppressContentEditableWarning={true}
+            className={style.contents}
+          >
+            {commentInfo.body}
+          </div>
+        </div>
       </div>
-      <div>nick : {commentInfo.userNickName}</div>
-      <div>id : {commentInfo.userId}</div>
-      <div>content</div>
-      <div
-        contentEditable={isUpdate}
-        ref={commentRef}
-        suppressContentEditableWarning={true}
-        >
-          {commentInfo.body}
-      </div>
-      {(userNo === commentInfo.userNo) && ((isUpdate) ?
-        (<div>
-          <button onClick={updateComment}>확정</button>
-          <button onClick={cancelUpdateComment}>취소</button>
-        </div>)
-        : (<button onClick={handleUpdate}>수정</button>))}
-      {(userNo === commentInfo.userNo) && (<button onClick={deleteComment}>삭제</button>)}
+      {userNo === commentInfo.userNo &&
+        (isUpdate ? (
+          <div className={style.btnBox}>
+            <button className={style.commentBtn} onClick={updateComment}>
+              확정
+            </button>
+            <button className={style.commentBtn} onClick={cancelUpdateComment}>
+              취소
+            </button>
+          </div>
+        ) : (
+          <button className={style.commentBtn} onClick={handleUpdate}>
+            수정
+          </button>
+        ))}
+      {userNo === commentInfo.userNo && (
+        <button className={style.commentBtn} onClick={deleteComment}>
+          삭제
+        </button>
+      )}
       <div>write date : {commentInfo.formedWriteDate}</div>
       <div onClick={handleIsLike}>
-        like : {isLike ? 'heart' : HeartIcons.empty}{likeCount}
+        like : {isLike ? 'heart' : HeartIcons.empty}
+        {likeCount}
       </div>
       {depth < 1 && accessToken && (
-        <button onClick={handleOnReply}>comment</button>
+        <button onClick={handleOnReply}>댓글 달기</button>
       )}
 
       {onReply && (
@@ -229,7 +255,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
           <button onClick={writeComment}>전송</button>
         </div>
       )}
-      <div>
+      <div className={style.nestedComment}>
         {/* 답글 리스트 */}
         <FeedCommentList
           feedPostId={feedPostId}

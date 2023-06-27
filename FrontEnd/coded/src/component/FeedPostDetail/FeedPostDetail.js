@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import LoadingBar from '../Common/LoadingBar';
+import FeedListNavi from './FeedListNavi';
 
 const FeedPostDetail = (props) => {
   const {
@@ -25,93 +26,94 @@ const FeedPostDetail = (props) => {
   const [isFeedLike, setIsFeedLike] = useState(false);
   const [hashTagList, setHashTagList] = useState([]);
   const [isThumbNailLoaded, setIsTuhmbNailLoaded] = useState(false);
-  const [isProfileLoaded, setIsProfileLoaded] = useState(false); 
-  const accessToken = useSelector((state)=>state.member.access);
-  
+  const [isProfileLoaded, setIsProfileLoaded] = useState(false);
+  const accessToken = useSelector((state) => state.member.access);
+
   const myRef = useRef(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     //likeCount 초기값 세팅
     getFeedLikeCount();
     //hashTagList 초기값 세팅
     axios({
-      method:'get',
-      url:'/feedpost/hashtagList',
-      params:{
-        feedPostId:feedPost.feedPostId
+      method: 'get',
+      url: '/feedpost/hashtagList',
+      params: {
+        feedPostId: feedPost.feedPostId,
       },
     })
-    .then((response)=>{
-        setHashTagList((prev)=>{return [...prev, ...response.data]});
+      .then((response) => {
+        setHashTagList((prev) => {
+          return [...prev, ...response.data];
+        });
       })
-    .catch((error)=>{
-      console.log(error);
-    })
-  },[]);
-  useEffect(()=>{
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
     //피드 라이크가 변경된다면, likeCount 갱신하기.
     getFeedLikeCount();
   }, [isFeedLike]);
-  useEffect(()=>{
-    if(accessToken){
+  useEffect(() => {
+    if (accessToken) {
       //엑세스 토큰이 있다면, 로그인 유저의 isLike 정보 긁어오기
       axios({
-        method:'get',
-        url:'/feedpost/isLike',
-        headers:{
-          Authorization:`Bearer ${accessToken}`
+        method: 'get',
+        url: '/feedpost/isLike',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-        params:{
-          feedPostId:feedPost.feedPostId
-        }
+        params: {
+          feedPostId: feedPost.feedPostId,
+        },
       })
-      .then((response)=>{
-        setIsFeedLike(response.data);
-      })
-      .catch((error)=>{
-        if (error.request.status === 400) {
-          console.log(error.response.data);
-        } else {
-          console.log(error);
-        }
-      });
+        .then((response) => {
+          setIsFeedLike(response.data);
+        })
+        .catch((error) => {
+          if (error.request.status === 400) {
+            console.log(error.response.data);
+          } else {
+            console.log(error);
+          }
+        });
     }
   }, [accessToken]);
 
-  function getFeedLikeCount(){
+  function getFeedLikeCount() {
     axios({
-      method:'get',
-      url:'/feedpost/likeCount',
-      params:{
-        feedPostId:feedPost.feedPostId
-      }
+      method: 'get',
+      url: '/feedpost/likeCount',
+      params: {
+        feedPostId: feedPost.feedPostId,
+      },
     })
-    .then((response)=>{
-      setFeedLikeCount(response.data);
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+      .then((response) => {
+        setFeedLikeCount(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
-  function setFeedLike(){
+  function setFeedLike() {
     axios({
-      method:'post',
-      url:'/feedpost/inserFeedLike',
-      headers:{
-        Authorization:`Bearer ${accessToken}`
+      method: 'post',
+      url: '/feedpost/inserFeedLike',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-      params:{
-        feedPostId:feedPost.feedPostId
+      params: {
+        feedPostId: feedPost.feedPostId,
       },
-    })
-    .catch((error)=>{
+    }).catch((error) => {
       if (error.request.status === 400) {
         console.log(error.response.data);
       } else {
         console.log(error);
       }
     });
-  };
+  }
 
   const openModal = () => {
     if (!modal) {
@@ -125,35 +127,38 @@ const FeedPostDetail = (props) => {
     }
   };
 
-  function handleThumbNailLoaded(){
+  function handleThumbNailLoaded() {
     setIsTuhmbNailLoaded(true);
-  };
+  }
 
-  function handleProfileLoaded(){
+  function handleProfileLoaded() {
     setIsProfileLoaded(true);
   }
 
-  // useEffect(() => {
-  //   // 피드 내 정렬 설정
-  //   const sort = () => {
-  //     const columnIndex = index % 5; // 다섯 개의 컬럼 번갈아가며 배치
-  //     const currentColumnHeight = columnHeights[columnIndex];
-  //     myRef.current.style.marginTop = currentColumnHeight + 'px'; // 현재 컬럼의 높이만큼 marginTop 설정
-  //     // myRef.current.style.marginLeft =
-  //     const cardHeight = myRef.current.offsetHeight; // 카드의 세로 길이
-  //     setColumnHeights((prev) => {
-  //       const newArray = [...prev];
-  //       newArray[index] = columnHeights[columnIndex] + cardHeight;
-  //       return newArray;
-  //     });
+  const shortCutRef = useRef();
 
-  //   };
-  // }, [columnHeights]);
+  const viewShortCutMenu = () => {
+    shortCutRef.current.style.transform = 'translateY(0px)';
+    // shortCutRef.current.style.display = 'block';
+  };
+
+  const noneShortCutMenu = () => {
+    shortCutRef.current.style.transform = 'translateY(60px)';
+    // shortCutRef.current.style.display = 'none';
+  };
 
   return (
     <div className={styles.feedInnerParentDiv}>
       <div className={styles.feedInnerLayoutDiv} ref={myRef}>
-        <div className={styles.feedImageDiv} onClick={openModal}>
+        <div
+          className={styles.feedImageDiv}
+          onClick={openModal}
+          onMouseOver={viewShortCutMenu}
+          onMouseLeave={noneShortCutMenu}
+        >
+          <nav className={styles.shortCutMenu} ref={shortCutRef}>
+            <FeedListNavi></FeedListNavi>
+          </nav>
           {feedPost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
@@ -162,30 +167,34 @@ const FeedPostDetail = (props) => {
               onError={handleThumbNailLoaded}
             ></img>
           ) : (
-            <img className={styles.thumbNail} src={`/images/test.jpg`} onLoad={handleThumbNailLoaded}></img>
+            <img
+              className={styles.thumbNail}
+              src={`/images/test.jpg`}
+              onLoad={handleThumbNailLoaded}
+            ></img>
           )}
-          {isThumbNailLoaded ? null : (<LoadingBar />)}
+          {isThumbNailLoaded ? null : <LoadingBar />}
         </div>
         <div className={styles.feedInfoDiv}>
           <div className={styles.userProfileLayout}>
             {/* 해당 유저의 마이픽 페이지로 이동 */}
             <Link to="#">
-            {feedPost.userProfileSysName != null ? (
+              {feedPost.userProfileSysName != null ? (
                 <img
                   className={styles.userProfile}
                   src={`/images/${feedPost.profileSysName}`}
                   onLoad={handleProfileLoaded}
                   onError={handleProfileLoaded}
                 ></img>
-            ) : (
-              <img
-                className={styles.userProfile}
-                src={`/images/test.jpg`}
-                onLoad={handleProfileLoaded}
-              ></img>
-            )}
+              ) : (
+                <img
+                  className={styles.userProfile}
+                  src={`/images/test.jpg`}
+                  onLoad={handleProfileLoaded}
+                ></img>
+              )}
             </Link>
-            {isProfileLoaded ? null : (<LoadingBar />)}
+            {isProfileLoaded ? null : <LoadingBar />}
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
@@ -195,23 +204,29 @@ const FeedPostDetail = (props) => {
                   {feedPost.userNickName}
                 </span>
               </Link>
-              <div className={styles.feedPostIdLayout}>
-                {feedPost.feedPostId}
+              <div className={styles.feedWriteDateLayout}>
+                {feedPost.formedWriteDate}
               </div>
             </div>
-            <div className={styles.userHashTagLayout}>
-              {hashTagList.length > 0 ? (
-                hashTagList.map((e, i) => (
-                  <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
-                    <span>
-                      #{e.hashTag}
-                      &nbsp;&nbsp;
-                    </span>
-                  </Link>
-                ))
-              ) : (
-                <span>태그 없음</span>
-              )}
+            <div className={styles.feedBottomLayout}>
+              <div className={styles.feedHashTagLayout}>
+                {hashTagList.length > 0 ? (
+                  hashTagList.map((e, i) => (
+                    <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                      <span>
+                        #{e.hashTag}
+                        &nbsp;&nbsp;
+                      </span>
+                    </Link>
+                  ))
+                ) : (
+                  <span>태그 없음</span>
+                )}
+              </div>
+              <div className={styles.feedWeatherLayout}>
+                <span>{feedPost.writeTemp}º</span>
+                <img src="/images/test.jpg"></img>
+              </div>
             </div>
           </div>
         </div>

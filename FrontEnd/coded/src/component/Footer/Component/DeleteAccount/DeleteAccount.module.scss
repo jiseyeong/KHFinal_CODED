@@ -1,0 +1,79 @@
+.deleteContainer {
+    width:100%;
+    height: 600px;
+    padding-top: 3rem;
+    padding-right: 3rem;
+    padding-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+
+    .innerWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .iconLayout {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          
+          .icon {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        h2 {
+            color: #72787f;
+            line-height: 18.2px;
+            text-decoration: none solid rgb(114, 120, 127);
+            text-align: center;
+            vertical-align: middle;
+            word-spacing: 0px;
+        }
+
+        h4 {
+            margin: 0.5rem;
+            color: silver;
+            margin-bottom: 30px;
+            font-size: 15px;
+            text-align: center;
+          }
+
+          .btnLayout {
+            width: 100%;
+            height: 40px;
+            margin-top: 15px;
+            justify-content: space-evenly;
+            display: flex;
+            align-items: center;
+      
+              button {
+                border: none;
+                border-radius: 20px;
+                width: 130px;
+                height: 40px;
+                background-color: black;
+                color: white;
+                cursor: pointer;
+                font-size: 16px;
+              }
+      
+              .DeleteCanBtn {
+              }
+      
+              .DeleteComBtn {
+              }
+    
+            }
+      }
+    }
+   
+  // font-size: 24px;
+  // font-family: news-gothic-std, sans-serif;
+  // font-style: normal;
+  // font-weight: 600;
+  // letter-spacing: 5px;
+  // margin-bottom: 40px;

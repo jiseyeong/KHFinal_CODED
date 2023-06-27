@@ -25,6 +25,7 @@ import SearchLabelSelect from './test/SearchLabelSelect';
 import SearchBox from './component/Search/SearchBox';
 import Navbar from './component/Navbar/Navbar';
 import Footer from './component/Footer/Footer';
+import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 import SearchedFeedList from './component/FeedList/SearchedFeedList';
 import FeedInsert from './test/FeedInsert';
 import DMList from './pages/DM/DMList';
@@ -94,7 +95,11 @@ function App() {
         <Route path="/idSearch" element={<IdSearch />} />
         <Route path="/pwSearch" element={<PwSearch />} />
         <Route path="/weekly" element={<WeeklyPage />} />
+
         <Route path="/report" element={<Report/>}/>
+
+        <Route path="/deleteAccount" element={<DeleteAccount />} />
+
 
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
@@ -103,7 +108,7 @@ function App() {
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
-        <Route path="/test/Follow" element={<Follow/>}/>
+        <Route path="/test/Follow" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route path="/myPickPage" element={<MyPickPage />} />

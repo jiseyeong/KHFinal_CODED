@@ -21,7 +21,7 @@ const Like = (handleClickLike) => {
   return (
     <svg
       className="like"
-      onClick={handleClickLike}
+      // onClick={handleClickLike}
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"
@@ -41,38 +41,38 @@ const Like = (handleClickLike) => {
 
 const ScrapImage = () => {
   return (
-  <svg
-    className="scrapImage"
-    fill="black"
-    viewBox="0 0 48 48"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M34 6H14c-2.21 0-3.98 1.79-3.98 4L10 42l14-6 14 6V10c0-2.21-1.79-4-4-4zm0 30l-10-4.35L14 36V10h20v26z" />
-    <path d="M0 0h48v48H0z" fill="none" />
-  </svg>
-  )
+    <svg
+      className="scrapImage"
+      fill="black"
+      viewBox="0 0 48 48"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M34 6H14c-2.21 0-3.98 1.79-3.98 4L10 42l14-6 14 6V10c0-2.21-1.79-4-4-4zm0 30l-10-4.35L14 36V10h20v26z" />
+      <path d="M0 0h48v48H0z" fill="none" />
+    </svg>
+  );
 };
 
 const RepleImage = () => {
-  return(
-  <svg
-    className="repleLike"
-    onClick={handleRepleLike}
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 16 16"
-    height="1em"
-    width="1em"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      fillRule="evenodd"
-      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
-      clipRule="evenodd"
-    ></path>
-  </svg>
-  )
+  return (
+    <svg
+      className="repleLike"
+      onClick={handleRepleLike}
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 16 16"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  );
 };
 
 const ModalAsset = () => {
@@ -80,4 +80,4 @@ const ModalAsset = () => {
 };
 
 export default ModalAsset;
-export { OptionBox, Like, ScrapImage, RepleImage};
+export { OptionBox, Like, ScrapImage, RepleImage };

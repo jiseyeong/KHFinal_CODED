@@ -14,8 +14,14 @@ public class DMDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 
+	//방 만드는 select
 	public List<DMDTO> selectDMRoomList(int roomId) {
 		return mybatis.selectList("DM.selectDMRoomList",roomId);
+	}
+
+	//roomId로 채팅내역 조회하는 select
+	public List<DMDTO> selectDMbyRoomid(int roomId) {
+		return mybatis.selectList("DM.selectDMbyRoomid",roomId);
 	}
 	
 	

@@ -2,7 +2,7 @@ package kh.coded.dto;
 
 public class DMRoomListDTO {
 	
-	private int roomid;
+	private int roomId;
 	private int userNo;
 	private String userId;
 	private String userNickname;
@@ -15,7 +15,7 @@ public class DMRoomListDTO {
 	public DMRoomListDTO(int roomid, int userNo, String userId, String userNickname, int photoId, String oriName,
 			String sysName) {
 		super();
-		this.roomid = roomid;
+		this.roomId = roomId;
 		this.userNo = userNo;
 		this.userId = userId;
 		this.userNickname = userNickname;
@@ -24,10 +24,10 @@ public class DMRoomListDTO {
 		this.sysName = sysName;
 	}
 	public int getRoomid() {
-		return roomid;
+		return roomId;
 	}
-	public void setRoomid(int roomid) {
-		this.roomid = roomid;
+	public void setRoomid(int roomId) {
+		this.roomId = roomId;
 	}
 	public int getUserNo() {
 		return userNo;
@@ -67,7 +67,7 @@ public class DMRoomListDTO {
 	}
 	@Override
 	public String toString() {
-		return "DMRoomListDTO [roomid=" + roomid + ", userNo=" + userNo + ", userId=" + userId + ", userNickname="
+		return "DMRoomListDTO [roomId=" + roomId + ", userNo=" + userNo + ", userId=" + userId + ", userNickname="
 				+ userNickname + ", photoId=" + photoId + ", oriName=" + oriName + ", sysName=" + sysName + "]";
 	}
 	
