@@ -1,6 +1,7 @@
 package kh.coded.dto;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class FeedCommentAddDTO {
     private int feedCommentId;
@@ -112,6 +113,22 @@ public class FeedCommentAddDTO {
 
 	public void setSysName(String sysName) {
 		this.sysName = sysName;
+	}
+	
+	public String getFormedWriteDate() {
+		long diff_date = (System.currentTimeMillis() - this.writeDate.getTime())/1000;
+		
+		if(diff_date < 60) {
+			return "방금 전";
+		}else if(diff_date < 60 * 5) {
+			return "5분 이내";
+		}else if(diff_date < 60 * 60) {
+			return "1시간 이내";
+		}else if(diff_date < 60 * 60 * 24) {
+			return Long.toString(diff_date / (60 * 60)) + "시간 이내"; 
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yy년 MM월 dd일");
+		return sdf.format(writeDate);
 	}
     
 }
