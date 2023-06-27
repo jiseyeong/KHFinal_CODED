@@ -1,6 +1,6 @@
 .feedCommentList{
     display:flex;
-    margin-bottom:20px;
+    margin-bottom:5px;
     .imageBox{
         width:40px;
         height:40px;
@@ -38,27 +38,23 @@
     }
 
 }
-.nestedComment{
-    margin-left:30px;
-}
 
 .feedCommentList2{
     display:flex;
     line-height:30px;
-
+    margin-bottom:15px;
 
     .writeDate{
-        font-size:13px;
-        margin-right:10px;
-        flex:1;
+        font-size:11px;
+        width:20%;
     }
     .heartCount{
-        font-size:13px;
-        font-weight:600;
+        width:13%;
+        font-size:11px;
         margin-right:20px;
     }
     .repleBtn{
-        flex:3;
+        width:20%;
         button{
             background-color:white;
             color:rgb(147, 147, 147);
@@ -70,8 +66,8 @@
         }
     }
     .btnBox{
-        justify-content:right;
-        text-align:center;
+        text-align:right;
+        width:47%;
     .commentBtn{
         background-color:white;
         color:black;
@@ -107,4 +103,8 @@
         border-radius:7px;
         font-size:12px;
     }
+}
+
+.nestedComment{
+    padding-left:20px;
 }

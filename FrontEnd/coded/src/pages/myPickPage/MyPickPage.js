@@ -3,10 +3,10 @@ import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
-const MyPickPage = (props) => {
-  let { currentUserNo } = props;
+const MyPickPage = () => {
   const [feedPost, setFeedPost] = useState([]);
   const [memberInfo, setMemberInfo] = useState({});
   const cpage = useRef(1);
@@ -17,15 +17,16 @@ const MyPickPage = (props) => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
-  // if (userNo === undefined) {
-  //   accessToken =
-  // }
+
+  // 쿼리스트링으로 해당 유저의 userNo를 가져옴
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  let currentUserNo = searchParams.get('userNo');
 
   useEffect(() => {
-    if (currentUserNo === undefined) {
+    if (currentUserNo === null) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
-        console.log('getUserNo');
         axios({
           url: '/auth/userNo',
           method: 'get',
@@ -38,16 +39,15 @@ const MyPickPage = (props) => {
           })
           // 2. 고유 넘버로 유저 정보 반환
           .then(getMyPickData)
-          .then(addFeedList)
           .catch((error) => {
-            console.log(error.data);
+            console.log(error);
           });
       } else {
         denyAccess();
       }
     } else {
       // 또는 해당 유저 넘버의 유저 정보 반환
-      getMyPickData(currentUserNo).then(addFeedList);
+      getMyPickData(currentUserNo);
     }
     return () => {
       window.onscroll = null;
@@ -82,42 +82,42 @@ const MyPickPage = (props) => {
 
 
   const getMyPickData = () => {
-    console.log('getmypick');
-    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
       params: {
         userNo: currentUserNo,
       },
-    }).then((resp) => {
-      console.log(resp.data);
-      const {
-        userNo: userNo,
-        userId: userId,
-        userNickName: userNickname,
-        bio: bio,
-        hashTag: hashTag,
-        writeDate: writeDate,
-        sysName: sysName,
-        postCount: postCount,
-        followingCount: followingCount,
-        followerCount: followerCount,
-      } = resp.data;
+    })
+      .then((resp) => {
+        console.log(resp.data);
+        const {
+          userNo: userNo,
+          userId: userId,
+          userNickName: userNickname,
+          bio: bio,
+          hashTag: hashTag,
+          writeDate: writeDate,
+          sysName: sysName,
+          postCount: postCount,
+          followingCount: followingCount,
+          followerCount: followerCount,
+        } = resp.data;
 
-      setMemberInfo({
-        userNo: userNo,
-        userId: userId,
-        userNickName: userNickname,
-        bio: bio,
-        hashTag: hashTag,
-        writeDate: writeDate,
-        sysName: sysName,
-        postCount: postCount,
-        followingCount: followingCount,
-        followerCount: followerCount,
-      });
-    });
+        setMemberInfo({
+          userNo: userNo,
+          userId: userId,
+          userNickName: userNickname,
+          bio: bio,
+          hashTag: hashTag,
+          writeDate: writeDate,
+          sysName: sysName,
+          postCount: postCount,
+          followingCount: followingCount,
+          followerCount: followerCount,
+        });
+      })
+      .then(addFeedList);
   };
 
   const addFeedList = () => {
@@ -156,8 +156,17 @@ const MyPickPage = (props) => {
           <div className="profileInfo">
             <h1>{memberInfo.userNickName}</h1>
             <div>@{memberInfo.userId}</div>
-            <div>여름시러{memberInfo.bio}</div>
-            <div>#{memberInfo.hashTag}</div>
+            <div>{memberInfo.bio}</div>
+            {memberInfo.bio !== '' ? (
+              <div className="bio">{memberInfo.bio}</div>
+            ) : (
+              <div className="bio">한줄 소개 없음</div>
+            )}
+            {memberInfo.hashTag !== '' ? (
+              <div className="hashTag">#{memberInfo.hashTag}</div>
+            ) : (
+              <div className="hashTag">해시 태그 없음</div>
+            )}
           </div>
           <div className="profileStatsLayout">
             <ul className="profileStats">
