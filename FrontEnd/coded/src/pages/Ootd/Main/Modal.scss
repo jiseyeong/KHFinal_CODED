@@ -294,9 +294,10 @@
         .likeBox {
           @extend %borderBox;
           border-top-left-radius: 6px;
-          border-bottom-left-radius: 6px;
-          color: white;
-          background-color: #ff0066;  
+          border-bottom-left-radius: 6px; 
+          color: #ff0066;
+          background-color: white;
+
         }
         .disLikeBox {
           @extend %borderBox;
@@ -335,8 +336,9 @@
           @extend %borderBox;
           border-radius: 6px;
           margin-left: 8px;
-          color: white;
-          background-color: #ff0066;  
+          color: #ff0066;
+          background-color:white;
+          padding-top:3px;
         }
 
         .disScrapBox {
@@ -344,6 +346,7 @@
           border-radius: 6px;
           margin-left: 8px;
           background-color: white;
+          padding-top:3px;
         }
         .scrapImage {
           width: 93%;
