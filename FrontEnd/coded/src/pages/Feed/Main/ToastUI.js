@@ -8,8 +8,6 @@ import { useSelector } from 'react-redux';
 
 function ToastUI({clickdata}) {
 
-
-
   const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({ display: "inline-block" });
