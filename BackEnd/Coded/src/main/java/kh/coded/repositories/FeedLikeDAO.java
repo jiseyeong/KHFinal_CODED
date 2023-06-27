@@ -14,7 +14,7 @@ public class FeedLikeDAO {
     private SqlSessionTemplate mybatis;
 
     public int insertFeedLike(int userNo, int feedPostId) {
-        Map<String, Integer> map = new HashMap<>();>
+        Map<String, Integer> map = new HashMap<>();
                 map.put("userNo", userNo);
         map.put("feedPostId", feedPostId);
         if (mybatis.insert("FeedLike.insertFeedLike", map)>0)
@@ -27,7 +27,7 @@ public class FeedLikeDAO {
         Map<String, Integer> map = new HashMap<>();
         map.put("userNo", userNo);
         map.put("feedPostId", feedPostId);
-        if (mybatis.delete("FeedLike.deleteFeedLike", map)0)
+        if (mybatis.delete("FeedLike.deleteFeedLike", map)>0)
             return mybatis.selectOne("FeedLike.selectFeedLike", feedPostId);
         else
             return 0;
