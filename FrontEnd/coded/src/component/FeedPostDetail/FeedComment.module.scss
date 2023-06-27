@@ -1,6 +1,6 @@
 .feedCommentList{
     display:flex;
-    margin-bottom:20px;
+    margin-bottom:5px;
     .imageBox{
         width:40px;
         height:40px;
@@ -38,13 +38,11 @@
     }
 
 }
-.nestedComment{
-    margin-left:30px;
-}
 
 .feedCommentList2{
     display:flex;
     line-height:30px;
+    margin-bottom:15px;
 
 
     .writeDate{
@@ -107,4 +105,8 @@
         border-radius:7px;
         font-size:12px;
     }
+}
+
+.nestedComment{
+    padding-left:20px;
 }

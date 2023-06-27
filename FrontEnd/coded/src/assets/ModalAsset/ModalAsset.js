@@ -111,7 +111,7 @@ const Temperature = () => {
           <path d="M13,13 L18,13" id="Path-21" strokeLinecap="round" />
         </g>
         <g
-          fill="#CCCCCC"
+          fill="red"
           id="Group-2"
           transform="translate(10.000000, 12.000000)"
         >
