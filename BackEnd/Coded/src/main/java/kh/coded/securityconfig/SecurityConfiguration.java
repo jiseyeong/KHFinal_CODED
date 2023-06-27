@@ -105,10 +105,13 @@ public class SecurityConfiguration {
 			"/feedpost/hashtagList",
 			"/photo/insertPhoto",
 			"/PostHashs/selectAllPostTagNames",
+			"/feedpost/selectSearchHashFeedList/**",
 			
 			"/feedpost/selectfeedlist/",
 			"/auth/selectUserList",
 			"/photo/testedBySelectPhoto",
+			"/feedpost/comment/**",
+			"/photo/feedpost",
 			
 	};
 	private final String[] API_USER_LIST = {
