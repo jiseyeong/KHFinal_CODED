@@ -48,12 +48,10 @@ const ButtonContainer = styled.div`
 `;
 
 const TopButton = styled.button`
-  font-weight: bold;
-  font-size: 15px;
-  padding: 15px 10px;
-  /* background-color: #000;
-  color:#fff */
-  border: 1px solid black;
+  padding: 10px;
+  background-color: silver;
+  color:#222
+  border: none;
   border-radius: 50%;
   outline: none;
   cursor: pointer;
