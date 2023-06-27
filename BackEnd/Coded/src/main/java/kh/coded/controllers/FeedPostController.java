@@ -72,7 +72,7 @@ public class FeedPostController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-
+	
 	@GetMapping("/hashtagList")
 	public ResponseEntity<?> getHashTagLists(@RequestParam(value = "feedPostId") int feedPostId) {
 		return ResponseEntity.ok().body(feedpostService.selectHashTagList(feedPostId));
