@@ -511,25 +511,34 @@ const ProfileTemplate = () => {
                 </div>
                 {editing ? (
                   <div className={styles.infoBar3}>
-                    <button
-                      className={styles.EditCancelBtn}
-                      onClick={handleEditing}
-                    >
-                      cancel
-                    </button>
-                    <button
-                      className={styles.EditComBtn}
-                      onClick={updateMemberInfo}
-                    >
-                      complete
-                    </button>
+                    <div className={styles.btnLayout}>
+                      <button
+                        className={styles.EditCancelBtn}
+                        onClick={handleEditing}
+                      >
+                        cancel
+                      </button>
+                      <button
+                        className={styles.EditComBtn}
+                        onClick={updateMemberInfo}
+                      >
+                        complete
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <div className={styles.infoBar3}>
-                    <button className={styles.EditBtn} onClick={handleEditing}>
-                      Edit
-                    </button>
-                    <p onClick={toggleChangePwModal}>Change PW</p>
+                    <div className={styles.btnLayout}>
+                      <button
+                        className={styles.EditBtn}
+                        onClick={handleEditing}
+                      >
+                        Edit
+                      </button>
+                    </div>
+                    <div className={styles.pLayout}>
+                      <p onClick={toggleChangePwModal}>Change PW</p>
+                    </div>
                   </div>
                 )}
                 {changePwModal && (

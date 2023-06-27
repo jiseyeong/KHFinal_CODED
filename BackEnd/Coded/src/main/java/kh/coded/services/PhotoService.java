@@ -66,8 +66,10 @@ public class PhotoService {
                 if (map.get("userNo") != 0) {
 					// 유저 프로필을 수정하는 경우 기존의 유저 프로필을 삭제 후 진행
                     PhotoDTO oriDto = photoDAO.selectByUserNo(map.get("userNo"));
-                    File oriFile = new File(realPath + "/" + oriDto.getSysName());
-                    oriFile.delete();
+                    if (oriDto != null) {
+                        File oriFile = new File(realPath + "/" + oriDto.getSysName());
+                        oriFile.delete();
+                    }
                     photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, 0, 0, map.get("userNo")));
                 } else if (map.get("feedPostId") != 0) {
                     photoDAO.updatePhoto(new PhotoDTO(0, oriName, sysName, map.get("feedPostId"), 0, 0));
