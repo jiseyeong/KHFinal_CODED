@@ -280,7 +280,7 @@
       padding: 20px 15px 15px 20px;
 
       .authorPopularity {
-        width: 95%;
+        width: 100%;
         display: flex;
         padding-top: 15px;
         padding-bottom: 15px;
@@ -296,7 +296,7 @@
           border-top-left-radius: 6px;
           border-bottom-left-radius: 6px;
           color: white;
-          background-color: #ff5f00;
+          background-color: #ff0066;  
         }
         .disLikeBox {
           @extend %borderBox;
@@ -336,7 +336,7 @@
           border-radius: 6px;
           margin-left: 8px;
           color: white;
-          background-color: #ff5f00;
+          background-color: #ff0066;  
         }
 
         .disScrapBox {
@@ -562,7 +562,7 @@
           .likeRepleBox {
             margin-left: auto;
             svg {
-              fill: #ff5f00;
+              fill: #ff0066;  
             }
           }
           .dislikeRepleBox {
