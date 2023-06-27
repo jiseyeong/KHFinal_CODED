@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DeleteAccountCom from './Component/DeleteAccountCom';
-import Footer from './../../Footer';
 import styles from './DeleteAccount.module.scss';
 import ChangePwModal from '../../../Profile/component/ChangePwModal';
+import { useNavigate } from 'react-router-dom';
 
 const DeleteTemplateBlock = styled.div`
   display: flex;
@@ -32,6 +32,9 @@ const DeleteFormBlock = styled.div`
 
 const DeleteAccount = () => {
   const [changePwModal, setChangePwModal] = useState(false);
+
+  // no를 누를 경우 이전 페이지로 이동하도록 지정
+  const navi = useNavigate();
 
   // 모달창 열고 닫기 적용
   const toggleChangePwModal = () => {
@@ -69,7 +72,12 @@ const DeleteAccount = () => {
               <br />
               <h4>그래도 정말 탈퇴하시겠어요???</h4>
               <div className={styles.btnLayout}>
-                <button className={styles.DeleteCanBtn} onClick={Footer}>
+                <button
+                  className={styles.DeleteCanBtn}
+                  onClick={() => {
+                    navi('/');
+                  }}
+                >
                   no
                 </button>
                 <button

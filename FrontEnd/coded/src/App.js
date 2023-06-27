@@ -33,12 +33,12 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
 
-import Likefeed from './component/FeedList/LikeFeed';
 import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
 import { styled } from 'styled-components';
+import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -136,7 +136,6 @@ function App() {
         <Route path="/idSearch" element={<IdSearch />} />
         <Route path="/pwSearch" element={<PwSearch />} />
         <Route path="/weekly" element={<WeeklyPage />} />
-        <Route path="/report" element={<Report />} />
         <Route path="/deleteAccount" element={<DeleteAccount />} />
 
         <Route path="/testComponent" element={<TestComponent />} />
