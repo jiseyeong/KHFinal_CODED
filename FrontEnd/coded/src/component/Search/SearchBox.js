@@ -18,9 +18,9 @@ const UserList = ({ userId, userNickName, sysName }) => {
         </div>
         <div className={styles.userMiddleSide1}>{userNickName}</div>
         <div className={styles.userMiddleSide2}>{userId}</div>
-        <div className={styles.userRightSide}>
+        {/* <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
-        </div>
+        </div> */}
       </a>
     </li>
   );
@@ -33,13 +33,12 @@ const HashTagList = ({ hashTag }) => {
       <a href="#">
         <div className={styles.userLeftSide}>
           {/* 해시태그 아이콘 등록해주세요 */}
-          <img src="" alt="해시태그 아이콘"></img>
+          <img src="" alt=""></img>
         </div>
         <div className={styles.userMiddleSide}>{hashTag}</div>
-        <div className={styles.userRightSide}>
-          {/* 다른 기타 아이콘(화살표 아이콘?? 등)넣어주세요 */}
+        {/* <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
-        </div>
+        </div> */}
       </a>
     </li>
   );
