@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,7 +25,8 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		System.out.println(request.getRequestURI() + "is UnAuthorized");
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
+		System.out.println(request.getRequestURI() + " is UnAuthorized");
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+		//response.sendRedirect("/");
 	}
 }

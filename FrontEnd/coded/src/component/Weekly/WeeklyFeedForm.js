@@ -82,33 +82,35 @@ function WeeklyFeedForm() {
   }, []);
 
   function addFeedList() {
-    setLoading(true);
-    axios({
-      method: 'get',
-      url: '/feedpost/weeklyFeed',
-      headers: {
-        Authorization: 'Bearer ' + accessToken,
-      },
-      params: {
-        currentTemp: maxTemp,
-        currentTempRange: tempRange,
-        cpage: cpage,
-      },
-    })
-      .then((response) => {
-        setLoading(false);
-        setFeedList((prev) => {
-          return [...prev, ...response.data];
-        });
-        //setHashTagList((prev) => [...prev, ...hashTagLists]);
-        setCpage((prev) => {
-          return prev + 1;
-        });
+    if(accessToken){
+      setLoading(true);
+      axios({
+        method: 'get',
+        url: '/feedpost/weeklyFeed',
+        headers: {
+          Authorization: 'Bearer ' + accessToken,
+        },
+        params: {
+          currentTemp: maxTemp,
+          currentTempRange: tempRange,
+          cpage: cpage,
+        },
       })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
+        .then((response) => {
+          setLoading(false);
+          setFeedList((prev) => {
+            return [...prev, ...response.data];
+          });
+          //setHashTagList((prev) => [...prev, ...hashTagLists]);
+          setCpage((prev) => {
+            return prev + 1;
+          });
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.log(error);
+        });
+    }
   }
 
   if (needLogin) {
