@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import DeleteAccountCom from './Component/DeleteAccountCom';
 import Footer from './../../Footer';
 import styles from './DeleteAccount.module.scss';
+import ChangePwModal from '../../../Profile/component/ChangePwModal';
 
 const DeleteTemplateBlock = styled.div`
   display: flex;
@@ -30,6 +31,13 @@ const DeleteFormBlock = styled.div`
 `;
 
 const DeleteAccount = () => {
+  const [changePwModal, setChangePwModal] = useState(false);
+
+  // 모달창 열고 닫기 적용
+  const toggleChangePwModal = () => {
+    setChangePwModal((prev) => !prev);
+  };
+
   return (
     <DeleteTemplateBlock>
       <WhiteBox>
@@ -66,11 +74,14 @@ const DeleteAccount = () => {
                 </button>
                 <button
                   className={styles.DeleteComBtn}
-                  onClick={DeleteAccountCom}
+                  onClick={toggleChangePwModal}
                 >
                   yes
                 </button>
               </div>
+              {changePwModal && (
+                <DeleteAccountCom toggleChangePwModal={toggleChangePwModal} />
+              )}
             </div>
           </div>
         </DeleteFormBlock>

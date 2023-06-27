@@ -5,20 +5,23 @@
 <mapper namespace="FeedPost">
 
 	<insert id="insertFeedPost">
-		insert into FeedPost values(FeedPost_seq.nextval, ${userNo},
+	<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+	select FeedPost_seq.nextval from dual
+	</selectKey>
+		insert into FeedPost values(${seq}, ${userNo},
 		#{body}, sysdate,
 		${writeTemp}, ${writeTempRange})
 	</insert>
 	
 	<insert id="insertFeedPhoto">
-		insert into FeedPhoto values(FeedPost_seq.nextval,
+		insert into Photo values(Photo_seq.nextval,
 		#{oriName}, #{sysname}, ${feedPostId},
 		0,0)
 	</insert>
 
 	<insert id="insertHashTag">
 		insert into HashTag values(Hashtag_seq.nextval,
-		#{hashTag})
+		#{HashTag})
 	</insert>
 
 	<insert id="insertPostHashs">

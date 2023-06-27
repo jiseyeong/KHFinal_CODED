@@ -1,12 +1,16 @@
 package kh.coded.services;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kh.coded.dto.FeedCommentAddDTO;
 import kh.coded.dto.FeedCommentDTO;
@@ -29,67 +33,84 @@ import utils.StaticValue;
 @Service
 public class FeedPostService {
 
-    @Autowired
-    private FeedPostDAO feedpostDAO;
+	@Autowired
+	private FeedPostDAO feedpostDAO;
 
-    @Autowired
-    private PostHashsDAO postHashsDAO;
+	@Autowired
+	private PostHashsDAO postHashsDAO;
 
-    @Autowired
-    private MemberDAO memberDAO;
-    @Autowired
-    private MemberService memberService;
+	@Autowired
+	private MemberDAO memberDAO;
+	@Autowired
+	private MemberService memberService;
 
-    @Autowired
-    private PhotoDAO photoDAO;
-    
-    @Autowired
-    private FeedCommentDAO commentDAO;
-    @Autowired
-    private FeedCommentLikeDAO commentLikeDAO;
-    
-    @Autowired
-    private FeedLikeDAO feedLikeDAO;
-    
-    @Autowired
-    private FeedScrapDAO feedScrapDAO;
+	@Autowired
+	private PhotoDAO photoDAO;
 
-    
-    public int insertTest(FeedPostDTO dto) {
-        return feedpostDAO.insertFeedPost(dto);
-    }
+	@Autowired
+	private FeedCommentDAO commentDAO;
+	@Autowired
+	private FeedCommentLikeDAO commentLikeDAO;
 
-    public int insertFeedPost(FeedPostDTO dto) {
-        return feedpostDAO.insertFeedPost(dto);
-    }
+	@Autowired
+	private FeedLikeDAO feedLikeDAO;
 
-    public int insertFeedPhoto(PhotoDTO dto) {
-        return feedpostDAO.insertFeedPhoto(dto);
-    }
+	@Autowired
+	private FeedScrapDAO feedScrapDAO;
 
-    //	public TodayWeatherDTO select(int WeatherCode) {
+	public int insertTest(FeedPostDTO dto) {
+		return feedpostDAO.insertFeedPost(dto);
+	}
+
+	public int insertFeedPost(FeedPostDTO FeedPost) {
+		return feedpostDAO.insertFeedPost(FeedPost);
+	}
+
+	public void insertFeedPhoto(String realPath, List<MultipartFile> files, int feedPostId) throws IOException {
+		File realPathFile = new File(realPath);
+		if (!realPathFile.exists()) {
+			realPathFile.mkdir();
+		}
+		if (files != null) {
+			for (MultipartFile file : files) {
+				if (file.isEmpty())
+					continue;
+				String oriName = file.getOriginalFilename();
+				String sysName = UUID.randomUUID() + oriName;
+				file.transferTo(new File(realPath + "/" + sysName));
+				if (feedPostId != 0)
+					feedpostDAO.insertFeedPhoto(new PhotoDTO(0, oriName, sysName, feedPostId, 0, 0));
+			}
+		}
+	}
+
+	// public TodayWeatherDTO select(int WeatherCode) {
 //		return feedpostDAO.selectTodayWeather(WeatherCode);
 //	}
 //	
 //	public int insertWeatherCode(int WeatherCode) {
 //		return feedpostDAO.insertWeatherCode(WeatherCode);
 //	}
-    public int insertPostHashs(int FeedPost, int TagId) {
-        return feedpostDAO.insertPostHashs(FeedPost, TagId);
-    }
+	public int insertPostHashs(int FeedPost, int TagId) {
+		return feedpostDAO.insertPostHashs(FeedPost, TagId);
+	}
 
-    public int insertHashTag(String HashTag) {
-        return feedpostDAO.insertHashTag(HashTag);
-    }
+	public int insertHashTag(String HashTag) {
+		return feedpostDAO.insertHashTag(HashTag);
+	}
 
-    public List<FeedPostDTO> selectTestFeedList() {
-        return feedpostDAO.selectTestFeedList();
-    }
-    
-    public List<PostHashsWithHashTagDTO> selectHashTagList(int feedPostId){
-    	return postHashsDAO.selectAllTagIdByFeedPostId(feedPostId);
-    }
-    
+	public List<FeedPostDTO> selectFeedList(int UserNo) {
+		return feedpostDAO.selectFeedList(UserNo);
+	}
+
+	public List<FeedPostDTO> selectTestFeedList() {
+		return feedpostDAO.selectTestFeedList();
+	}
+
+	public List<PostHashsWithHashTagDTO> selectHashTagList(int feedPostId) {
+		return postHashsDAO.selectAllTagIdByFeedPostId(feedPostId);
+	}
+
 //    // 고도화 작업 요구
 //    public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
 //        // 피드 리스트 출력
@@ -133,18 +154,18 @@ public class FeedPostService {
 //        
 //        return map;
 //    }
-    
-    public List<FeedPostAddDTO> selectAllFeedPost(int cpage){
-        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-        int endFeedNum = cpage * feedCountPerPage;
-        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-        
-        return feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
-    }
-    
-    public Map<String, Object> selectFeedDetail(int feedPostId,int userNo) { 
-    	// 피드 상세페이지 출력
-    	//출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수, 
+
+	public List<FeedPostAddDTO> selectAllFeedPost(int cpage) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+		return feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
+	}
+
+	public Map<String, Object> selectFeedDetail(int feedPostId, int userNo) {
+		// 피드 상세페이지 출력
+		// 출력내용 -> 글 정보, 사진, 작성자 정보, 작성자 프로필 사진, 해시태그, 좋아요 갯수,
 		FeedPostDTO feedPost = feedpostDAO.searchByFeedPost(feedPostId); // 글 정보
 		List<PhotoDTO> photoList = photoDAO.selectByFeedpostId(feedPostId); // 사진
 		MemberDTO writeMember = memberDAO.selectMemberByUserNo(feedPost.getUserNo()); // 작성자 정보
@@ -153,8 +174,8 @@ public class FeedPostService {
 		PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo()); // 유저 프로필
 		int feedLikeCount = feedLikeDAO.selectFeedLike(feedPostId); // 좋아요 갯수
 		boolean isFeedLike = feedLikeDAO.isFeedLike(userNo, feedPostId);
-				
-		Map<String,Object> data = new HashMap<>();
+
+		Map<String, Object> data = new HashMap<>();
 		data.put("feedPost", feedPost);
 		data.put("photoList", photoList);
 		data.put("writeMember", writeMember);
@@ -162,22 +183,22 @@ public class FeedPostService {
 		data.put("userProfile", userProfile);
 		data.put("feedLikeCount", feedLikeCount);
 		data.put("isFeedLike", isFeedLike);
-		
-		return data; 
-    }
-    
-    public FeedPostDTO selectByUserNo(int userNo) {
-        return feedpostDAO.selectByUserNo(userNo);
-    }
 
-    public List<FeedPostAddDTO> selectWeeklyFeed(int currentTemp, int currentTempRange, int cpage){
-    	int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-    	int endFeedNum = cpage * feedCountPerPage;
-    	int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-    	
-    	return feedpostDAO.selectWeeklyFeed(currentTemp, currentTempRange, startFeedNum, endFeedNum);
-    	
-    }
+		return data;
+	}
+
+	public FeedPostDTO selectByUserNo(int userNo) {
+		return feedpostDAO.selectByUserNo(userNo);
+	}
+
+	public List<FeedPostAddDTO> selectWeeklyFeed(int currentTemp, int currentTempRange, int cpage) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+		return feedpostDAO.selectWeeklyFeed(currentTemp, currentTempRange, startFeedNum, endFeedNum);
+
+	}
 
     public List<FeedPostAddDTO> selectSearchFeedListByHashs(int cpage, String keyword) {
         // 피드 리스트 출력

@@ -2,41 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import ToastUI from './ToastUI';
-
-// function FeedInsert() {
-//   const modalStyle = {
-//     content: {
-//       margin: 'auto',
-//       width: '500px',
-//       height: '565px',
-//     },
-//   };
-//   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-//   const insertfeed=()=>{
-
-//   }
-//   return (
-//     <div className="container" style={{ textAlign: 'center' }}>
-//       <button onClick={() => setModalIsOpen(true)}>글쓰기 버튼</button>
-//       <div>
-//         <Modal isOpen={modalIsOpen} style={modalStyle}>
-//           <div>
-//             <ToastUI />
-//           </div>
-//           <div style={{ textAlign: 'right' }}>
-//             <button onClick={() => setModalIsOpen(false)}>글쓰기 취소</button>
-//             &nbsp;
-//             <button onClick={insertfeed}>완료</button>
-//           </div>
-//         </Modal>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default FeedInsert;
-
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function FeedInsert() {
   const modalStyle = {
@@ -48,33 +15,18 @@ function FeedInsert() {
   };
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const insertfeed=()=>{
+  const [isButtonClick, setisButtonClick] = useState(false);
 
-  }
+  const insertfeed = () => {
+    setisButtonClick(true);
+  };
+
   return (
-    // <div className="container" style={{ textAlign: 'center' }}>
-    //   <button onClick={() => setModalIsOpen(true)}>글쓰기 버튼</button>
-    //   <div>
-    //     <Modal isOpen={modalIsOpen} style={modalStyle}>
-    //       <div>
-    //         <ToastUI />
-    //       </div>
-    //       <div style={{ textAlign: 'right' }}>
-    //         <button onClick={() => setModalIsOpen(false)}>글쓰기 취소</button>
-    //         &nbsp;
-    //         <button onClick={insertfeed}>완료</button>
-    //       </div>
-    //     </Modal>
-    //   </div>
-    // </div>
-
-
-
     <div className="container" style={{ textAlign: 'center' }}>
       <button onClick={() => setModalIsOpen(true)}>글쓰기 버튼</button>
       <div>
         <Modal isOpen={modalIsOpen} style={modalStyle}>
-            <ToastUI />
+          <ToastUI clickdata={isButtonClick} />
           <div style={{ textAlign: 'right' }}>
             <button onClick={() => setModalIsOpen(false)}>글쓰기 취소</button>
             &nbsp;
@@ -83,7 +35,6 @@ function FeedInsert() {
         </Modal>
       </div>
     </div>
-    
   );
 }
 
