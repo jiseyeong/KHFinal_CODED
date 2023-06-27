@@ -39,7 +39,27 @@ import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
+import { styled } from 'styled-components';
 
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  z-index: 1;
+`
+
+const TopButton = styled.button`
+  font-weight: bold;
+  font-size: 15px;
+  padding: 15px 10px;
+  /* background-color: #000;
+  color:#fff */
+  border : 1px solid black;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+`
 
 function App() {
   const dispatch = useDispatch();
@@ -80,6 +100,13 @@ function App() {
         console.log(error);
       });
   }, []);
+
+  function toTop(){
+    window.scrollTo({
+      top:0,
+      behavior:'smooth' // or auto
+    })
+  }
 
   return (
     <BrowserRouter>
@@ -139,6 +166,9 @@ function App() {
         {/* <Route path="/likepeed" element={<Likepeed/>} />
         <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>
+      <ButtonContainer>
+        <TopButton onClick={toTop}>Top</TopButton>
+      </ButtonContainer>
       <Footer />
     </BrowserRouter>
   );
