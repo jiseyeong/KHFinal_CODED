@@ -109,6 +109,8 @@ public class SecurityConfiguration {
 			"/feedpost/selectfeedlist/",
 			"/auth/selectUserList",
 			"/photo/testedBySelectPhoto",
+			"/feedpost/comment/**",
+			"/photo/feedpost",
 			
 	};
 	private final String[] API_USER_LIST = {

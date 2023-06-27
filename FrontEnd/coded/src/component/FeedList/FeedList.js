@@ -60,7 +60,6 @@ function FeedList() {
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addFeedList = () => {
-    console.log(cpage.current);
     axios({
       method: 'GET',
       url: '/feedpost/selectAllFeedPost/',
@@ -78,8 +77,6 @@ function FeedList() {
         //   // feedLikeList,
         //   // isFeedLikeList,
         // } = resp.data;
-        
-        console.log(resp.data);
 
         setFeedPost((prev) => [...prev, ...resp.data]);
         // setThumbnail((prev) => [...prev, ...thumbNailList]);
