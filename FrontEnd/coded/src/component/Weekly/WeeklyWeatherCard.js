@@ -63,7 +63,7 @@ function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {
 
   function handleClickCard() {
     setMaxTemp(weeklyData.max);
-    setTempRange(weeklyData.max - weeklyData.min);
+    setTempRange(Math.abs(weeklyData.max - weeklyData.min));
   }
 
   if (!accessToken) {

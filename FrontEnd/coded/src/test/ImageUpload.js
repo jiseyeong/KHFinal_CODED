@@ -14,6 +14,8 @@ const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
       method: 'GET',
     }).then((resp) => {
       setFeedList(resp.data);
+    }).catch((error)=>{
+      console.log(error);
     });
   }, []);
 
