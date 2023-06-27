@@ -4,15 +4,48 @@ import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-function ToastUI() {
+function ToastUI({clickdata}) {
 
 
-  const [file, setFile] = useState(null); //파일
+
+  const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({ display: "inline-block" });
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [feedpost, setFeedPost] = useState({});
+
+
+  const accessToken = useSelector((state) => state.member.access);
+  
+  useEffect(() => {
+      if (accessToken) {
+        // 1. 토큰 값으로 나의 고유 넘버를 반환
+        axios({
+          url: '/auth/userNo',
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+          // 2. 고유 넘버로 유저 정보 반환
+          .then((resp) => {
+            console.log(resp.data);
+            setFeedPost(()=>{return{...feedpost, userNo : resp.data}});
+            // userNo = resp.data;
+            // return userNo;
+          })
+          // .then(getUserData(userNo))
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+  }, [accessToken]);
+
 
   const handleChangeFile = (event) => {
+    
     setFile(event.target.files); //파일 갯수 추가
 
     if (imgBase64.length + event.target.files.length == 10) {
@@ -58,6 +91,35 @@ function ToastUI() {
   const selectRef = useRef();
   const contentRef = useRef();
   const [options, setOptions] = useState([]);
+
+  //데이터 서버로 보내는거
+  useEffect(()=>{
+    const formData = new FormData();
+    if(clickdata){
+      console.log(contentRef.current.innerText)
+      console.log(imgBase64.length)
+      selectedOptions.forEach((option) => {
+        formData.append("HashTag", option.value)
+        console.log(option.value);
+      });
+      console.log(feedpost)
+      formData.append("userNo", feedpost.userNo);
+      formData.append("body", feedpost.body);
+      for (var i = 0; i < file.length; i++) {
+        formData.append('files', file[i]);
+      }
+      axios({
+        method: 'POST',
+        url: '/feedpost/feedpost',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData
+      })
+        .then((resp) => {})
+        .catch((error) => {});
+      }
+  },[clickdata])
 
   useEffect(() => {
     axios
@@ -153,12 +215,16 @@ function ToastUI() {
           placeholder="내용을 입력해주세요"
           contentEditable="true"
           ref={contentRef}
+          onInput={(e)=>{
+            setFeedPost(()=>{return {...feedpost, body:e.target.innerText}})
+          }}
         ></div>
         <br />
         <CreatableSelect
           isMulti
           options={options}
           ref={selectRef}
+          onChange={(value) => setSelectedOptions(value)}
           className={Styled.select}
         />
         <br />

@@ -24,9 +24,10 @@ public class FeedPostDAO {
 		return mybatis.selectList("FeedPost.selectByUserNo", UserNo);
 	}
 
-//	피드 쓰기 - 피드를 작성 할 수 있는 페이지
+//	피드 쓰기 - 피드를 작성 할 수 있는 페이지//feedpostID가져와야됨
 	public int insertFeedPost(FeedPostDTO dto) {
-		return mybatis.insert("FeedPost.insertFeedPost", dto);
+		mybatis.insert("FeedPost.insertFeedPost", dto);
+		return dto.getFeedPostId();
 	}
 
 //	피드 내 사진 첨부 - 사진을 첨부하여 피드 작성

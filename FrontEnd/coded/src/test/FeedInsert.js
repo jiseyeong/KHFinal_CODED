@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 import ToastUI from './ToastUI';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function FeedInsert() {
   const modalStyle = {
@@ -14,29 +15,18 @@ function FeedInsert() {
   };
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const [isButtonClick, setisButtonClick] = useState(false);
+
   const insertfeed = () => {
-    axios({
-      method: 'POST',
-      url: '/feedpost/feedpost',
-      params: {
-        fdto: 피드,
-        hdto: 해시태그,
-        files: 사진
-      },
-    })
-      .then((resp) => {
-      })
-      .catch((error) => {
-      });
-    }
-  
+    setisButtonClick(true);
+  };
 
   return (
     <div className="container" style={{ textAlign: 'center' }}>
       <button onClick={() => setModalIsOpen(true)}>글쓰기 버튼</button>
       <div>
         <Modal isOpen={modalIsOpen} style={modalStyle}>
-          <ToastUI />
+          <ToastUI clickdata={isButtonClick} />
           <div style={{ textAlign: 'right' }}>
             <button onClick={() => setModalIsOpen(false)}>글쓰기 취소</button>
             &nbsp;
