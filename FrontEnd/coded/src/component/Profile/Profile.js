@@ -7,6 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
 import ChangePwModal from './component/ChangePwModal';
 import { useNavigate } from 'react-router-dom';
+import kakaoImage from './image/kakao.png';
+import googleImage from './image/google.png';
+import naverImage from './image/naver.png';
+import kakaoImage_hb from './image/kakao_hb.png';
+import googleImage_hb from './image/google_hb.png';
+import naverImage_hb from './image/naver_hb.png';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -63,6 +69,9 @@ const ProfileTemplate = () => {
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
 
+  //계정 연동 창
+  const accountLinkRef = useRef();
+
   // 수정 버튼을 눌렀을 때 (readonly 적용 해제, css 변경)
   const handleEditing = () => {
     let edit = document.getElementsByClassName('forEdit');
@@ -72,6 +81,7 @@ const ProfileTemplate = () => {
       Array.from(edit).forEach((item) => {
         item.style.border = '1px solid silver';
       });
+      accountLinkRef.current.style.display = 'none';
       setEditing((prev) => {
         return !prev;
       });
@@ -80,6 +90,7 @@ const ProfileTemplate = () => {
       Array.from(edit).forEach((item) => {
         item.style.border = 'none';
       });
+      accountLinkRef.current.style.display = '';
       setEditing((prev) => {
         return !prev;
       });
@@ -338,57 +349,57 @@ const ProfileTemplate = () => {
       });
   };
 
-  function handleKakao(){
-    if(accessToken){
+  function handleKakao() {
+    if (accessToken) {
       axios({
-          method:'get',
-          url:'/auth/kakaoToken',
-          headers:{
-            Authorization:`Bearer ${accessToken}`,
-          },
+        method: 'get',
+        url: '/auth/kakaoToken',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .then((response)=>{
-        setIsKakao(response.data);
-      })
-      .catch((error)=>{
-        console.log(error);
-      });
+        .then((response) => {
+          setIsKakao(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
-  function handleNaver(){
-    if(accessToken){
+  function handleNaver() {
+    if (accessToken) {
       axios({
-          method:'get',
-          url:'/auth/naverToken',
-          headers:{
-            Authorization:`Bearer ${accessToken}`,
-          },
+        method: 'get',
+        url: '/auth/naverToken',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .then((response)=>{
-        setIsNaver(response.data);
-      })
-      .catch((error)=>{
-        console.log(error);
-      });
+        .then((response) => {
+          setIsNaver(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
-  function handleGoogle(){
-    if(accessToken){
+  function handleGoogle() {
+    if (accessToken) {
       axios({
-          method:'get',
-          url:'/auth/googleToken',
-          headers:{
-            Authorization:`Bearer ${accessToken}`,
-          },
+        method: 'get',
+        url: '/auth/googleToken',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
-      .then((response)=>{
-        setIsGoogle(response.data);
-      })
-      .catch((error)=>{
-        console.log(error);
-      });
+        .then((response) => {
+          setIsGoogle(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
@@ -443,12 +454,13 @@ const ProfileTemplate = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }).then((response)=>{
-        handleKakao();
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          handleKakao();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
@@ -461,12 +473,12 @@ const ProfileTemplate = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response)=>{
-        handleNaver();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          handleNaver();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
@@ -479,12 +491,12 @@ const ProfileTemplate = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then((response)=>{
-        handleGoogle();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          handleGoogle();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
@@ -547,7 +559,7 @@ const ProfileTemplate = () => {
               </div>
             </div>
             <div className={styles.info}>
-              <div className={styles.space}></div>
+              {/* <div className={styles.space}></div> */}
               <div className={styles.infoLayout}>
                 <div className={styles.infoBar}>
                   <div className={styles.infoTitle}>nickname</div>
@@ -665,6 +677,49 @@ const ProfileTemplate = () => {
                     </div>
                   </div>
                 </div>
+                <div className={styles.accountLinkBtn} ref={accountLinkRef}>
+                  <div className={styles.socialTitle}>계정 연동</div>
+                  {/* 소셜 로그인 등록/해제*/}
+                  {isKakao ? (
+                    <img
+                      src={kakaoImage}
+                      className={styles.socialBtn}
+                      onClick={doKakaoLogin}
+                    ></img>
+                  ) : (
+                    <img
+                      src={kakaoImage_hb}
+                      className={styles.socialBtn}
+                      onClick={doKakaoLogin}
+                    ></img>
+                  )}
+                  {isNaver ? (
+                    <img
+                      src={naverImage}
+                      className={styles.socialBtn}
+                      onClick={doNaverLogin}
+                    ></img>
+                  ) : (
+                    <img
+                      src={naverImage_hb}
+                      className={styles.socialBtn}
+                      onClick={doNaverLogin}
+                    ></img>
+                  )}
+                  {isGoogle ? (
+                    <img
+                      src={googleImage}
+                      className={styles.socialBtn}
+                      onClick={doGoogleLogin}
+                    ></img>
+                  ) : (
+                    <img
+                      src={googleImage_hb}
+                      className={styles.socialBtn}
+                      onClick={doGoogleLogin}
+                    ></img>
+                  )}
+                </div>
                 {editing ? (
                   <div className={styles.infoBar3}>
                     <div className={styles.btnLayout}>
@@ -700,11 +755,6 @@ const ProfileTemplate = () => {
                 {changePwModal && (
                   <ChangePwModal toggleChangePwModal={toggleChangePwModal} />
                 )}
-                <div> {/* 소셜 로그인 등록/해제*/}
-                  {isKakao ? (<button onClick={kakaoUnlink}>카카오 연결 해제</button>) : (<button onClick={doKakaoLogin}>카카오 연결</button>)}
-                  {isNaver ? (<button onClick={naverUnlink}>네이버 연결 해제</button>) : (<button onClick={doNaverLogin}>네이버 연결</button>)}
-                  {isGoogle ? (<button onClick={googleUnlink}>구글 연결 해제</button>) : (<button onClick={doGoogleLogin}>구글 연결</button>)}
-                </div>
               </div>
             </div>
           </div>
