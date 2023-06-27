@@ -1,0 +1,72 @@
+/* .yscroll{
+    border: 1px solid black;
+    height: 300px;
+}
+
+.yscroll[placeholder]:empty:before {
+    content: attr(placeholder);
+    color: #555; 
+} */
+
+// .yscroll {
+//   border: 1px solid black;
+//   width: 90%;
+//   height: 90%;
+// }
+
+// .yscroll[placeholder]:empty:before {
+//   content: attr(placeholder);
+//   color: #555;
+// }
+
+// .select {
+//   width: 100%;
+// }
+
+.toastUIContainer {
+  margin: auto;
+  width: 90%;
+  height: 90%;
+
+  .topLayout {
+    width: 100%;
+    height: 70%;
+  }
+
+  .bottomLayout {
+    width: 100%;
+    height: 30%;
+  }
+
+  .ImageLayout {
+    float: left;
+    width: 30%;
+    height: 100%;
+  }
+
+  .imagePreview {
+    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+
+    label {
+      border: 1px solid black;
+      height: 150px;
+      width: 100%;
+      text-align: center;
+      line-height: 150px;
+    }
+  }
+
+  .PostInfoLayout {
+    float: right;
+    width: 40%;
+    height: 100%;
+
+    .post {
+      width: 100%;
+      height: 80%;
+    }
+  }
+}

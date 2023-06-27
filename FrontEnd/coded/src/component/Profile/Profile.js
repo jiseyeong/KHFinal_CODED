@@ -659,7 +659,7 @@ const ProfileTemplate = () => {
                         <Select
                           ref={address1}
                           options={addressList1}
-                          defaultValue={addressList1[addressIndex1]}
+                          defaultValue={addressList1[0]}
                           onChange={setAddress2}
                           isDisabled={!editing}
                         />

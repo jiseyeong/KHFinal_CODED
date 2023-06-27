@@ -8,8 +8,8 @@ function FeedInsert() {
   const modalStyle = {
     content: {
       margin: 'auto',
-      width: '800px',
-      height: '565px',
+      width: '900px',
+      height: '600px',
     },
   };
   const [FeedPostInsertOpen, setFeedPostInsertOpen] = useState(false);
