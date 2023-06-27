@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import WeeklyWeatherCard from './WeeklyWeatherCard';
 import LoadingBar from '../Common/LoadingBar';
 import { FeedMaxTempContext } from '../../modules/Context/FeedMaxTempContext';
+import { styled } from 'styled-components';
+import style from './WeeklySideForm.module.scss';
 
 function WeeklySideForm() {
   const [weeklyData, setWeeklyData] = useState([
@@ -102,7 +104,7 @@ function WeeklySideForm() {
 
   return (
     <div>
-      <div>{`${address1}, ${address2}의 주간 날씨`}</div>
+      <div className={style.weatherTitle}>{`${address1}, ${address2}의 주간 날씨`}</div>
       {weeklyData.map((item, index) => {
         return (
           <WeeklyWeatherCard

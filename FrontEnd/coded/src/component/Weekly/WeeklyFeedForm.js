@@ -25,7 +25,7 @@ const masonryOptions = {
 };
 
 const FeedPostOuter = styled('div')`
-  margin: auto;
+  margin-left:20px;
   width: 85%;
   display: flex;
   justify-content: center;
