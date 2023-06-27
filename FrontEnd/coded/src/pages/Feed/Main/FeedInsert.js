@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import Modal from 'react-modal';
 import ToastUI from './ToastUI';
+import FeedUpdate from './FeedUpdate';
 
 function FeedInsert() {
   const modalStyle = {
@@ -14,14 +15,16 @@ function FeedInsert() {
   const [FeedPostInsertOpen, setFeedPostInsertOpen] = useState(false);
   const [FeedPostUpdateOpen, setFeedPostUpdateOpen] = useState(false);
 
-  const [isButtonClick, setisButtonClick] = useState(false);
+  const [insertButtonClick, setinsertButtonClick] = useState(false);
+
+  const [updateButtonClick, setupdateButtonClick] = useState(false);
 
   const insertfeed = () => {
-    setisButtonClick(true);
+    setinsertButtonClick(true);
   };
 
   const updatefeed = () => {
-    setisButtonClick(true);
+    setupdateButtonClick(true);
   };
 
   return (
@@ -29,7 +32,7 @@ function FeedInsert() {
       <button onClick={() => setFeedPostInsertOpen(true)}>글쓰기 버튼</button>
       <div>
         <Modal isOpen={FeedPostInsertOpen} style={modalStyle}>
-          <ToastUI clickdata={isButtonClick} />
+          <ToastUI clickdata={insertButtonClick} />
           <div style={{ textAlign: 'right' }}>
             <button onClick={() => setFeedPostInsertOpen(false)}>
               글쓰기 취소
@@ -43,7 +46,7 @@ function FeedInsert() {
       <button onClick={() => setFeedPostUpdateOpen(true)}>글수정 버튼</button>
       <div>
         <Modal isOpen={FeedPostUpdateOpen} style={modalStyle}>
-          <ToastUI clickdata={isButtonClick} />
+          <FeedUpdate clickdata={updateButtonClick} />
           <div style={{ textAlign: 'right' }}>
             <button onClick={() => setFeedPostUpdateOpen(false)}>
               글수정 취소
