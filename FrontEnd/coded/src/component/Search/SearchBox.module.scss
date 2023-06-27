@@ -60,7 +60,7 @@
     z-index: 4;
     //letter-spacing: 2px;
     &:hover {
-      background-color: #edf5f5;
+      background-color: #f2f2f2;
       cursor: pointer;
     }
 
@@ -89,7 +89,6 @@
       // 단일 사용 시
       .userMiddleSide {
         width: 80%;
-        padding-left: 20px;
         justify-content: left;
       }
       // 여러개 나누어 사용 시
