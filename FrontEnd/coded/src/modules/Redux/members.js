@@ -24,11 +24,14 @@ function tokenReducer(state = initialState, action){
             state = {...state, refresh : action.payload};
             return state;
         case LOGOUT :
-            state = {access:"", refresh:"", userId:"", userNo:0};
             axios({
                 method:"get",
                 url:"/auth/logout",
+                headers:{
+                    Authorization:`Bearer ${state.access}`
+                }
             })
+            state = {access:"", refresh:"", userId:"", userNo:0};
             return state;
         default:
             return state;

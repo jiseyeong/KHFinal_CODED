@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		System.out.println(request.getRequestURI() + "is UnAuthorized");
+		System.out.println(request.getRequestURI() + " is UnAuthorized");
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "UnAuthorized");
 	}
 }

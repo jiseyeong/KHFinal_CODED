@@ -48,7 +48,6 @@ public class SecurityConfiguration {
 			"/error",
 	};
 	private final String[] API_WHITE_LIST = {
-			"/**",
 			"/index.html",
 			"/",
 			"/images/**",
@@ -58,11 +57,11 @@ public class SecurityConfiguration {
 			"/error",
 			"/auth/fail",
 			"/auth/userNo",
-			"/feedList/**",
-			"/feedpost/**",
-			"/HomePage/**",
+			//"/feedList/**",
+			//"/feedpost/**",
+			//"/HomePage/**",
 			"/feedList",
-			"/feedost",
+			"/feepost",
 			"/HomePage",
 			"/weather/today",
 			"/weather/weekly",
@@ -85,11 +84,19 @@ public class SecurityConfiguration {
 			"/feedPost/comment/**", //얘들은 단순 select임.
 			
 			"/weather/todayNonMem",
+			"/auth/selectUserListWithProfile",
+			"/PostHashs/selectAllPostTagNames",
+			"/feedpost/selectAllFeedPost/",
+			"/feedpost/likeCount",
+			"/feedpost/hashtagList",
+			
 
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
-			"/feedPost/comment"
+			"/feedPost/comment",
+			"/auth/logout",
+			"/feedpost/isLike",
 	};
 	private final String[] API_ADMIN_LIST = {
 			
