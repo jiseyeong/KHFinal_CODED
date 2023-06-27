@@ -52,27 +52,33 @@ public class FeedPostController {
 	}
 
 	@PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
+	//데이터는 다 넘어옴 근데 디비에 안들어감
 	public ResponseEntity<?> insertFeedPost(@RequestParam int userNo, @RequestParam String body,
 			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
 		try {
-			Map<String, Integer> result = new HashMap<>();
+			System.out.println("유저 넘버 :" + userNo + " 메세지 : " + body);
+			System.out.println(HashTag.get(0) + " : " + HashTag.get(1));
 			String realPath = request.getServletContext().getRealPath("images");
-			for (String index : HashTag) {
-//            	feedpostService.insertHashTag(HashTag.get(i));
-				System.out.println(index);
-			}
-			System.out.println(userNo);
-			System.out.println(body);
+			System.out.println(realPath);
 			int feedpostId = feedpostService.insertFeedPost(new FeedPostDTO(0, userNo, body, null, 0, 0));
-
-			feedpostService.insertFeedPhoto(realPath, files, feedpostId); // feedpost_nextval 가져와서 넣어야됨
-
-			return ResponseEntity.ok().body(result);
+			if (HashTag.size() > 0) {
+				for (String index : HashTag) {
+					System.out.println(index);
+					int TagId = feedpostService.insertHashTag(index);
+					feedpostService.insertPostHashs(feedpostId, TagId);// PostHashs에 저장
+				}
+			}
+			System.out.println(feedpostId);
+			if (files.size() > 0) {
+				feedpostService.insertFeedPhoto(realPath, files, feedpostId);
+			}
+			
+			return ResponseEntity.ok().body(null);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/hashtagList")
 	public ResponseEntity<?> getHashTagLists(@RequestParam(value = "feedPostId") int feedPostId) {
 		return ResponseEntity.ok().body(feedpostService.selectHashTagList(feedPostId));
@@ -304,25 +310,23 @@ public class FeedPostController {
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
 
-    @GetMapping("comment/likeCount")
-    public ResponseEntity<?> selectCommentLikeCount(
-            @RequestParam(value = "commentId") int commentId
-    ) {
-        int likeCount = feedpostService.selectCommentLikeForCount(commentId);
-        return ResponseEntity.ok().body(likeCount);
-    }
+	@GetMapping("comment/likeCount")
+	public ResponseEntity<?> selectCommentLikeCount(@RequestParam(value = "commentId") int commentId) {
+		int likeCount = feedpostService.selectCommentLikeForCount(commentId);
+		return ResponseEntity.ok().body(likeCount);
+	}
 
-    @GetMapping(value = "selectUserFeedPost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력 + (마이픽 페이지 스크롤 적용)
-    public ResponseEntity<?> selectUserFeedPost(
-            @RequestParam(value = "userNo") int userNo,
-            @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
-        try {
-            List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo,cpage);
-            System.out.println(data.get(0).getFeedPostId());
-            return ResponseEntity.ok().body(data);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+	@GetMapping(value = "selectUserFeedPost") // 마이 피드 리스트 - 본인이 작성한 피드 리스트 출력, 다른 유저의 마이 피드 리스트 - 다른 유저의 피드 리스트만 출력 +
+												// (마이픽 페이지 스크롤 적용)
+	public ResponseEntity<?> selectUserFeedPost(@RequestParam(value = "userNo") int userNo,
+			@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
+		try {
+			List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo, cpage);
+			System.out.println(data.get(0).getFeedPostId());
+			return ResponseEntity.ok().body(data);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
 }
