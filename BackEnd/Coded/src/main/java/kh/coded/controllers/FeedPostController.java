@@ -142,11 +142,11 @@ public class FeedPostController {
                 int userNo = jwtProvider.getLoginUserNo(accessToken);
                 boolean result = feedpostService.isFeedLike(userNo, feedPostId);
                 if (!result) {
-                    feedpostService.insertFeedLike(userNo, feedPostId);
-                    return ResponseEntity.ok().body(null);
+                    int feedLikeCount = feedpostService.insertFeedLike(userNo, feedPostId);
+                    return ResponseEntity.ok().body(feedLikeCount);
                 } else {
-                    feedpostService.deleteFeedLike(userNo, feedPostId);
-                    return ResponseEntity.ok().body(null);
+                    int feedLikeCount = feedpostService.deleteFeedLike(userNo, feedPostId);
+                    return ResponseEntity.ok().body(feedLikeCount);
                 }
             }
             ;
