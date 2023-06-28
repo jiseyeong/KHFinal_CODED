@@ -92,8 +92,8 @@ function Navbar() {
                     onClick={handleClickOotd}
                   >
                     #OOTD
+                    <hr/>
                   </span>
-                  <hr/>
                 </li>
                 {accessToken && (
                   <li value="feed" className="leftMenu">
@@ -104,8 +104,8 @@ function Navbar() {
                       onClick={handleClickWeekly}
                     >
                       #WEEKLY
+                      <hr/>
                     </span>
-                    <hr/>
                   </li>
                 )}
               </ul>
