@@ -209,15 +209,15 @@ const MyPickPage = () => {
                   />
                 </svg>
               </div>
+              )}
             </div>
-            )}
             <div className="followBtnLayout">
               <button className="followButton">Follow</button>
             </div>
-
           </div>
         </div>
         <hr />
+        
 
         <div className="feed">
           {feedPost.map((e, i) => (
