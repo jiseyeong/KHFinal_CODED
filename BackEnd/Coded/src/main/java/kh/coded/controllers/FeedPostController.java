@@ -98,16 +98,23 @@ public class FeedPostController {
 	@PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	// 데이터는 다 넘어옴 근데 디비에 안들어감
 	public ResponseEntity<?> insertFeedPost(
-			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
+//			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
 			@ModelAttribute FeedPostDTO dto,
 			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
 		try {
 			System.out.println("dto"+dto);
-//			System.out.println("유저 넘버 :" + userNo + " 메세지 : " + body + " 일자 : "+writeDate);
-			System.out.println(HashTag.get(0) + " : " + HashTag.get(1));
-			System.out.println(files.get(0).getOriginalFilename());
+			System.out.println("피드id : "+dto.getFeedPostId());
+			System.out.println("유저넘버 : "+dto.getUserNo());
+			System.out.println("내용 : "+dto.getBody());
+			System.out.println("작성일자 : "+dto.getWriteDate());
+			System.out.println("기온 : "+dto.getWriteTemp());
+			System.out.println("기온2 : "+dto.getWriteTempRange());
+			System.out.println("강우? : "+dto.getWritePtyCode());
+			System.out.println("스카이코드 : "+dto.getWrtieSkyCode());
+			System.out.println("해시코드 : " + HashTag.get(0));
+			System.out.println("파일명 : "+files.get(0).getOriginalFilename());
+
 			String realPath = request.getServletContext().getRealPath("images");
-			System.out.println(realPath);
 //			int feedpostId = feedpostService.insertFeedPost(new FeedPostDTO(0, userNo, body, null, 0, 0));
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
@@ -381,7 +388,8 @@ public class FeedPostController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
+	// 인기순 정렬 피드 리스트
 	@GetMapping("selectPopularFeedPost")
 	public ResponseEntity<?> selectLikeFeedPost(@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage){
 		List<FeedPostAddDTO> data = feedpostService.selectLikeFeedPost(cpage);

@@ -3,7 +3,7 @@ import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 const MyPickPage = () => {
@@ -12,24 +12,19 @@ const MyPickPage = () => {
   const cpage = useRef(1);
 
   const loginUserNo = useSelector((state) => state.member.userNo);
-
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const [currentUserNo, setCurrentUserNo] = useState(
-    searchParams.get('userNo')
-  );
+  const navi = useNavigate();
 
-  // useEffect(() => {
-  //   setCurrentUserNo(searchParams.get('userno'));
-  // });
+  const [currentUserNo, setCurrentUserNo] = useState(
+    searchParams.get('userNo'),
+  );
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
-
-    // let currentUserNo = searchParams.get('userNo');
     if (currentUserNo === null) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
@@ -51,9 +46,6 @@ const MyPickPage = () => {
       } else {
         denyAccess();
       }
-    } else {
-      // 또는 해당 유저 넘버의 유저 정보 반환
-      // getMyPickData();
     }
     return () => {
       window.onscroll = null;
@@ -84,11 +76,11 @@ const MyPickPage = () => {
     }
   };
 
-  useEffect(()=>{
-    if(currentUserNo){
+  useEffect(() => {
+    if (currentUserNo) {
       getMyPickData();
     }
-  }, [currentUserNo])
+  }, [currentUserNo]);
 
   const getMyPickData = () => {
     axios({
@@ -130,8 +122,6 @@ const MyPickPage = () => {
   };
 
   const addFeedList = () => {
-    console.log('addfeedList');
-    console.log(memberInfo);
     axios({
       method: 'GET',
       url: '/feedpost/selectUserFeedPost',
@@ -156,7 +146,7 @@ const MyPickPage = () => {
   };
 
   const Profile = () => {
-    document.location.href('/profile');
+    navi('/profile');
   };
 
   return (
@@ -173,7 +163,6 @@ const MyPickPage = () => {
           <div className="profileInfo">
             <h1>{memberInfo.userNickName}</h1>
             <div className="id">@{memberInfo.userId}</div>
-            <div>{memberInfo.bio}</div>
             {memberInfo.bio !== '' ? (
               <div className="bio">{memberInfo.bio}</div>
             ) : (
@@ -248,7 +237,6 @@ const MyPickPage = () => {
           </div>
         </div>
         <hr />
-
         <div className="feed">
           {feedPost.map((e, i) => (
             <div className="grid-item" key={i}>

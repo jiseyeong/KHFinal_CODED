@@ -356,22 +356,26 @@ const AuthForm = ({ type }) => {
       timeout: 5000,
     })
       .then(function (response) {
-        let refreshToken = cookie.load('CodedRefreshToken');
-        refreshToken = refreshToken.substr(
-          'Bearer '.length,
-          refreshToken.length,
-        );
-        onLogin(
-          response.data.accessToken,
-          response.data.userId,
-          response.data.userNo,
-        );
-        onSetRefresh(refreshToken);
-        navigate('/');
+        console.log(response);
+        if(response.status == 202){
+          alert(response.data)
+        }else{
+          let refreshToken = cookie.load('CodedRefreshToken');
+          refreshToken = refreshToken.substr(
+            'Bearer '.length,
+            refreshToken.length,
+          );
+          onLogin(
+            response.data.accessToken,
+            response.data.userId,
+            response.data.userNo,
+          );
+          onSetRefresh(refreshToken);
+          navigate('/');
+        }
       })
       .catch(function (e) {
-        console.log(e);
-        onLogout();
+          console.log(e);
       });
   }
 
