@@ -75,6 +75,13 @@ $storeBorderColor: #f0f1f4;
         margin-inline-start: 0px;
         margin-inline-end: 0px;
         padding-inline-start: 10px;
+
+        hr{
+          border:1px solid #ff0066;
+          width:55px;
+          margin-left:8px;
+          
+        }
       }
 
       .leftMenu {
@@ -96,7 +103,7 @@ $storeBorderColor: #f0f1f4;
         cursor: pointer;
         border: 0px;
         background: transparent;
-        padding: 10px 12px;
+        padding: 5px 5px;
         outline: none;
         font-size: 14px;
         line-height: 1.43;
@@ -114,9 +121,8 @@ $storeBorderColor: #f0f1f4;
         font-weight: 700;
         color: rgb(27, 29, 31);
         cursor: pointer;
-        border-bottom: 1px solid black;
         background: transparent;
-        padding: 10px 12px;
+        padding: 5px 5px;
         outline: none;
         font-size: 14px;
         line-height: 1.43;
@@ -134,9 +140,9 @@ $storeBorderColor: #f0f1f4;
         font-weight: 700;
         color: rgb(27, 29, 31);
         cursor: pointer;
-        border-bottom: 1px solid black;
+        width:80%;
         background: transparent;
-        padding: 10px 12px;
+        padding: 5px 5px;
         outline: none;
         font-size: 14px;
         line-height: 1.43;
@@ -155,7 +161,7 @@ $storeBorderColor: #f0f1f4;
         color: rgb(27, 29, 31);
         cursor: pointer;
         background: transparent;
-        padding: 10px 12px;
+        padding: 5px 5px;
         outline: none;
         font-size: 14px;
         line-height: 1.43;

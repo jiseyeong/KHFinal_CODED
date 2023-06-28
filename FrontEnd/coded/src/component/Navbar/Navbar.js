@@ -93,6 +93,7 @@ function Navbar() {
                   >
                     #OOTD
                   </span>
+                  <hr/>
                 </li>
                 {accessToken && (
                   <li value="feed" className="leftMenu">
@@ -104,6 +105,7 @@ function Navbar() {
                     >
                       #WEEKLY
                     </span>
+                    <hr/>
                   </li>
                 )}
               </ul>
