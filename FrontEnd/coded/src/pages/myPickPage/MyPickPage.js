@@ -15,6 +15,7 @@ const MyPickPage = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const navi = useNavigate();
