@@ -215,7 +215,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       });
   }
   return (
-    <div>
+    <div className={style.feedCommentBox}>
       <div className={style.feedCommentList}>
         <div className={style.imageBox}>
           <img src={`/images/${profileSysName}`}></img>
