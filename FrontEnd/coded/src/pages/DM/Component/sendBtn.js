@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 
 function SendBtn() {
-    const [inputValue, setInputValue] = useState('');
     const loginUserNo = useSelector((state) => state.member.userNo);
     const [RoomId, setRoomId] = useState(0);
 
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
-    };
+    const sendRef = useRef(null);
 
     const sendToServer = () => {
         // 서버로 데이터 전송
@@ -20,19 +17,21 @@ function SendBtn() {
                 method: 'post',
                 params: {
                     roomId: RoomId,
-                    userNo:loginUserNo,
+                    userNo: loginUserNo,
+                    msg: sendRef.current.value
                 },
             })
             .then(resp => {
-                console.log(resp.data);
+
             })
             .catch((error) => console.log(error));
     };
 
-    const SendBtn = styled('div')`
+    const SendBtn = styled.div`
     height:8%; width:100%; display:flex;
-  .sendChat{
-        width:85%; height:30px;
+    `
+    const SendChat = styled.input`
+    width:85%; height:30px;
         margin-left:10px;
         margin-top:10px;
         font-size: 15px;
@@ -41,17 +40,19 @@ function SendBtn() {
         background: lightgray;
         border-radius:5px;
         padding:10px;
-    }
-    .sendChat:focus{outline:none;}
-    .send{margin-top:10px; margin-left:15px; width:50px; height:30px;
-        border:none; background-color:lightgray; border-radius:5px;}
-    .send:hover{cursor:pointer;}
-  `
+        &:focus{outline:none;}
+    `
+
+    const Send = styled.button`
+    margin-top:10px; margin-left:15px; width:50px; height:30px;
+    border:none; background-color:lightgray; border-radius:5px;
+    &:hover{cursor:pointer;}
+    `
 
     return (
         <SendBtn>
-            <input className='sendChat' type="text" value={inputValue} onChange={handleInputChange} />
-            <button className='send' onClick={sendToServer}>Send</button>
+            <SendChat type="text" ref={sendRef}/>
+            <Send onClick={sendToServer}>Send</Send>
         </SendBtn>
     );
 }

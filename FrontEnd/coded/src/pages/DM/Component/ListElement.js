@@ -45,14 +45,14 @@ const ListElement = (props) => {
 
     const RoomElement = styled('div')`
 
-      .RoomElement{height:80px; width:400px; padding:5px; display:flex;}
-      .RoomElement:hover{cursor:pointer;}
-          .profilePic{width:25%; height:100%; border:1px solid black; display:flex; justify-content:center;}
+      .RoomElement{height:80px; width:100%; padding:5px; display:flex;}
+      .RoomElement:hover{cursor:pointer; background-color:white;}
+          .profilePic{width:25%; height:100%; display:flex; justify-content:center;}
               .profileImg{height:100%; }
-          .profile{width:75%; height:100%; border:1px solid black; }
-              .roomId{display:none;}
-              .roomUserId{width:50%; height:50%;}
-              .roomUserNickname{width:50%; height:50%;}
+          .profile{width:75%; height:100%;}
+              .roomId{display:none; padding:5px;}
+              .roomUserId{width:50%; height:50%; padding:5px;}
+              .roomUserNickname{width:50%; height:50%; padding:5px;}
 
   `
 

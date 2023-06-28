@@ -23,17 +23,17 @@ const ChatBox = (props) => {
         }
     };
 
-    const ChatBox = styled('div')`
+    const ChatBox = styled.div`
     width:100%; height:100%; 
 
     .chatNavBar{height:10%; width:100%; background-color: lightgray;
-        margin-bottom:10px; border: 1px solid black; display:flex;}
-        .otherPhoto{height:100%; width:15%; border:1px solid black; display:flex; justify-content:center;}
+        margin-bottom:10px; border-radius:5px; display:flex;}
+        .otherPhoto{height:100%; width:15%; display:flex; justify-content:center;}
         .profileImg{height:100%;}
         .otherInfo{height:100%; width:70%;}
-            .otherId{height:50%; width:100%; border:1px solid black;}
-            .otherNickname{height:50%; width:100%; border: 1px solid black;}
-    .DMList{height:80%; width:100%; background-color: lightgray; display: flex;
+            .otherId{height:50%; width:100%; padding:5px;}
+            .otherNickname{height:50%; width:100%; padding:5px;}
+    .DMList{height:80%; width:100%; background-color: lightgray; display: flex; border-radius:5px;
         flex-flow: wrap; overflow-wrap: break-word; overflow: overlay}   
 
         .mySend{width: 100%;
@@ -86,7 +86,6 @@ const ChatBox = (props) => {
                         </div>
                     );
                 })}
-                <div ref={dmListRef}></div>
             </div>
             <div className='inputChat'>
                 <SendBtn></SendBtn>
