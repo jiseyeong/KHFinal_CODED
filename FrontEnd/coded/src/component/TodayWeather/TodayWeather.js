@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import weatherIcons from '../WeatherCommon/WetherIcons';
-import './TodayWeather.scss'
+import './TodayWeather.scss';
 
 function TodayCard() {
   const [weatherIcon, setWeatherIcon] = useState('');
@@ -94,18 +94,20 @@ function TodayCard() {
 
   return (
     <div className="TodayCardWrapper">
-      <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
-        <button className="closeBtn" onClick={DeleteAccountCom}>
-          x
-        </button>
-        <div className="blankWrapper1"></div>
-        <div className="infoWrapper">
-          <div>{`${address1}, ${address2} 의 날씨`}</div>
-          <div>{weatherIcon}</div>
-          <div>{recentTemp}</div>
-          <div>H:{maxTemp}</div>
-          <div>L:{minTemp}</div>
-          <div>{'>' + weatherMessage}</div>
+      <div className="mainWrapper">
+        <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
+          <button className="closeBtn" onClick={DeleteAccountCom}>
+            x
+          </button>
+          <div className="blankWrapper"></div>
+          <div className="infoWrapper">
+            <div>{`${address1}, ${address2} 의 날씨`}</div>
+            <div>{weatherIcon}</div>
+            <div>{recentTemp}</div>
+            <div>H:{maxTemp}</div>
+            <div>L:{minTemp}</div>
+            <div>{'>' + weatherMessage}</div>
+          </div>
         </div>
       </div>
     </div>

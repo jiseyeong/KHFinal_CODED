@@ -1,5 +1,5 @@
 .profileContainer {
-  height: 640px;
+  height: 660px;
   padding-top: 3rem;
   padding-right: 3rem;
   padding-bottom: 3rem;
@@ -159,9 +159,9 @@
         .pLayout {
           display: flex;
           justify-content: right;
-          align-items: flex-end;
-
+          
           p {
+            margin-top: 0;
             cursor: pointer;
             &:hover {
               color: #ff0066;
