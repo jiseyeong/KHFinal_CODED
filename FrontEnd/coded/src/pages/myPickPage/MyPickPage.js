@@ -151,7 +151,11 @@ const MyPickPage = () => {
       <div className="profile">
         <div className="profileHeader">
           <div className="imageLayout">
-            <img src="/images/test.jpg" alt="Profile Picture" />
+            {memberInfo.sysName ? (
+              <img src={`/images/${memberInfo.sysName}`} />
+            ) : (
+              <img src="/images/test.jpg" />
+            )}
           </div>
           <div className="profileInfo">
             <h1>{memberInfo.userNickName}</h1>
