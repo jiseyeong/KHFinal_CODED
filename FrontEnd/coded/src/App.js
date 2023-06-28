@@ -33,12 +33,12 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
 
-import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
 import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
+import TodayWeatherForm from './component/TodayWeather/TodayWeatherForm';
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -155,7 +155,7 @@ function App() {
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
         <Route path="/FeedInsert" element={<FeedInsert />} />
-        <Route path="/test/TodayAndAdForm" element={<TodayAndAdForm />} />
+        <Route path="/test/TodayWeatherForm" element={<TodayWeatherForm />} />
 
         <Route
           path="/login/oauth2/code/kakao"
