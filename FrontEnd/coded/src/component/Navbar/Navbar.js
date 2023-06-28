@@ -1,6 +1,13 @@
 import React, { Component, useCallback, useEffect, useState } from 'react';
 import './Navbar.scss';
-import { BrowserRouter, Route, Router, Routes, useNavigate, withRouter } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  Router,
+  Routes,
+  useNavigate,
+  withRouter,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import SearchBox from '../Search/SearchBox';
@@ -64,14 +71,13 @@ function Navbar() {
     navigate('/weekly');
   }
 
-  function loginPage () {
+  function loginPage() {
     navigate('/login');
   }
 
-  function myPage() {
-    navigate('/profile');
-  }
-
+  // function myPage() {
+  //   navigate('/profile');
+  // }
 
   return (
     <>
@@ -79,7 +85,7 @@ function Navbar() {
         <nav className="topNavBar">
           <div className="leftNavBar">
             <a className="navLogo" href="/">
-              <img src={Logo} className='navLogo'/>
+              <img src={Logo} className="navLogo" />
               <div>CODED</div>
             </a>
             <div className="leftMenuWrapper">
@@ -92,7 +98,7 @@ function Navbar() {
                     onClick={handleClickOotd}
                   >
                     #OOTD
-                    <hr/>
+                    <hr />
                   </span>
                 </li>
                 {accessToken && (
@@ -104,7 +110,7 @@ function Navbar() {
                       onClick={handleClickWeekly}
                     >
                       #WEEKLY
-                      <hr/>
+                      <hr />
                     </span>
                   </li>
                 )}
@@ -119,8 +125,10 @@ function Navbar() {
 
           <div className="rightNavBar">
             <div className="rightMenuWrapper">
-             <button onClick={loginPage} className='loginBtn'>로그인 / 회원가입</button>
-              <button onClick={myPage} className='mypage'>마이페이지</button>
+              <button onClick={loginPage} className="loginBtn">
+                로그인 / 회원가입
+              </button>
+              {/* <button onClick={myPage} className='mypage'>마이페이지</button> */}
               {/* <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -133,7 +141,6 @@ function Navbar() {
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
               </svg> */}
             </div>
-        
           </div>
         </nav>
         {navbarType === 'Mem' && (
@@ -161,7 +168,7 @@ function Navbar() {
         )}
         {navbarType === 'Weekly' && (
           <nav className="bottomNavBar">
-            <p className={isHomeBorder ? 'isHomeBorder' : ''}>User's Choice!</p>
+            <p className={isHomeBorder ? 'isHomeBorder' : ''}>USER'S CODI!</p>
           </nav>
         )}
       </div>
