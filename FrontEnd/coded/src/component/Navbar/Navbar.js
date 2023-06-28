@@ -23,7 +23,7 @@ import Logo from './navLogo.png';
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
   const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
-  const [isListOotdBorder, setListOotdBorder] = useState(1);
+  const [listOotdBorder, setListOotdBorder] = useState(1);
   const [isHomeBorder, setIsHomeBorder] = useState(true);
   const accessToken = useSelector((state) => state.member.access);
   const navbarType = useSelector((state) => state.navbarSetting.type);
@@ -82,6 +82,7 @@ function Navbar() {
   // 상단 네비의 카테고리 클릭 시 적용
   const handleClickCategory = (e) => {
     e.preventDefault();
+
     setListOotdBorder(e.target.value);
 
     if (e.target.value === 1) {
@@ -93,7 +94,7 @@ function Navbar() {
     } else if (e.target.value === 4) {
       navigate('/myPickPage');
     } else if (e.target.value === 5) {
-      navigate('/feedPopularList');
+      navigate('/feedScrapList');
     }
   };
 
@@ -166,35 +167,35 @@ function Navbar() {
             <ul className="categories">
               <li
                 value="1"
-                className={isListOotdBorder === 1 ? 'isListOotdBorder' : ''}
+                className={listOotdBorder === 1 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Hot
               </li>
               <li
                 value="2"
-                className={isListOotdBorder === 2 ? 'isListOotdBorder' : ''}
+                className={listOotdBorder === 2 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 New
               </li>
               <li
                 value="3"
-                className={isListOotdBorder === 3 ? 'isListOotdBorder' : ''}
+                className={listOotdBorder === 3 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Following
               </li>
               <li
                 value="4"
-                className={isListOotdBorder === 4 ? 'isListOotdBorder' : ''}
+                className={listOotdBorder === 4 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 MyPick
               </li>
               <li
                 value="5"
-                className={isListOotdBorder === 5 ? 'isListOotdBorder' : ''}
+                className={listOotdBorder === 5 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Scrap
@@ -205,10 +206,20 @@ function Navbar() {
         {navbarType === 'NonMem' && (
           <nav className="bottomNavBar">
             <ul className="categories">
-              <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>
+              <li
+                value="1"
+                className={listOotdBorder === 1 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
                 Hot
               </li>
-              <li>New</li>
+              <li
+                value="2"
+                className={listOotdBorder === 2 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
+                New
+              </li>
             </ul>
           </nav>
         )}
