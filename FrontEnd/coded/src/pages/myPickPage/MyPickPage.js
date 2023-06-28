@@ -19,18 +19,17 @@ const MyPickPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const [currentUserNo, setCurrentUserNo] = useState(
-    searchParams.get('userNo'),
+    searchParams.get('userNo')
   );
 
-  useEffect(() => {
-    setCurrentUserNo(searchParams.get('userno'));
-  });
+  // useEffect(() => {
+  //   setCurrentUserNo(searchParams.get('userno'));
+  // });
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
 
     // let currentUserNo = searchParams.get('userNo');
-
     if (currentUserNo === null) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
@@ -42,10 +41,10 @@ const MyPickPage = () => {
           },
         })
           .then((resp) => {
-            currentUserNo = resp.data;
+            setCurrentUserNo(resp.data);
           })
           // 2. 고유 넘버로 유저 정보 반환
-          .then(getMyPickData)
+          // .then(getMyPickData)
           .catch((error) => {
             console.log(error);
           });
@@ -54,7 +53,7 @@ const MyPickPage = () => {
       }
     } else {
       // 또는 해당 유저 넘버의 유저 정보 반환
-      getMyPickData();
+      // getMyPickData();
     }
     return () => {
       window.onscroll = null;
@@ -84,6 +83,12 @@ const MyPickPage = () => {
       denyAccess();
     }
   };
+
+  useEffect(()=>{
+    if(currentUserNo){
+      getMyPickData();
+    }
+  }, [currentUserNo])
 
   const getMyPickData = () => {
     axios({
