@@ -31,6 +31,9 @@ function tokenReducer(state = initialState, action){
                     Authorization:`Bearer ${state.access}`
                 }
             })
+            .catch((error)=>{
+                console.log(error);
+            })
             state = {access:"", refresh:"", userId:"", userNo:0};
             return state;
         default:

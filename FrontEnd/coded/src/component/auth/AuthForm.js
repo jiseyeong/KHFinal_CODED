@@ -39,7 +39,7 @@ const Footer = styled.div`
   a {
     text-decoration: none;
     &:hover {
-      opacity: 50%;
+      color:#ff0066;
     }
   }
 `;
@@ -356,22 +356,26 @@ const AuthForm = ({ type }) => {
       timeout: 5000,
     })
       .then(function (response) {
-        let refreshToken = cookie.load('CodedRefreshToken');
-        refreshToken = refreshToken.substr(
-          'Bearer '.length,
-          refreshToken.length,
-        );
-        onLogin(
-          response.data.accessToken,
-          response.data.userId,
-          response.data.userNo,
-        );
-        onSetRefresh(refreshToken);
-        navigate('/');
+        console.log(response);
+        if(response.status == 202){
+          alert(response.data)
+        }else{
+          let refreshToken = cookie.load('CodedRefreshToken');
+          refreshToken = refreshToken.substr(
+            'Bearer '.length,
+            refreshToken.length,
+          );
+          onLogin(
+            response.data.accessToken,
+            response.data.userId,
+            response.data.userNo,
+          );
+          onSetRefresh(refreshToken);
+          navigate('/');
+        }
       })
       .catch(function (e) {
-        console.log(e);
-        onLogout();
+          console.log(e);
       });
   }
 
@@ -606,13 +610,15 @@ const AuthForm = ({ type }) => {
         </div>
       )}
       <Footer>
+        <div className={style.loginLink}>
         {type === 'login' ? (
-          <Link to="/signup" className={style.signup}>
+          <Link to="/signup" className={style.signUp}>
             SIGN UP
           </Link>
         ) : (
           <Link to="/login">LOGIN</Link>
         )}
+        </div>
       </Footer>
     </AuthFormBlock>
   );
