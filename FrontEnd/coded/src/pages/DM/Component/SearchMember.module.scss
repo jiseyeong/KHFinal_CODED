@@ -5,7 +5,7 @@
         border-radius: 5px;
         margin-left: 10px;
     }
-    input {
+    .search-member {
         margin-left: 10px;
         width:95%;
         height:100%;
@@ -14,7 +14,7 @@
         border-radius:5px;
         font-size:15px;
     }
-    input:focus{outline:none;}
+    .search-member:focus{outline:none;}
 
     .searchResultContainer {
         z-index: 3;
