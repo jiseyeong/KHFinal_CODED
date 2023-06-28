@@ -95,6 +95,8 @@ public class SecurityConfiguration {
 			"/auth/isMember",
 			"/auth/isMemberByEmail",
 			"/auth/oauth/**",
+			"/auth/memberIdByEmail",
+			"/auth/send-mail/pw",
 			"/login/oauth2/**",
 			"/feedPost/comment/**", //얘들은 단순 select임.
 			"/weather/todayNonMem",
@@ -123,9 +125,32 @@ public class SecurityConfiguration {
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
-			"/feedPost/comment",
+			
 			"/auth/logout",
+			"/auth/userDTO",
+			"/auth/userNo",
+			"/auth/kakaoUnlink",
+			"/auth/naverUnlink",
+			"/auth/googleUnlink",
+			"/auth/kakaoToken",
+			"/auth/naverToken",
+			"/auth/googleToken",
+			"/auth/userWithProfileDTO",
+			"/auth/updatePwAfterPwCheck",
+			"/auth/deleteMemberWithoutId",
+			
+			"/feedpost/insertFeedLike",
 			"/feedpost/isLike",
+			"/feedpost/isScrap",
+			"/feedpost/insertFeedScrap",
+			"/feedpost/comment",
+			"/feedpost/nestedComment",
+			"/feedpost/comment/like",
+			
+			"/mypick/selectMember",
+			"/mypick/selectFeedPost",
+			
+			
 	};
 	private final String[] API_ADMIN_LIST = {
 			

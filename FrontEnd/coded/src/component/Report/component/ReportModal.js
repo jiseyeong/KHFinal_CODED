@@ -41,7 +41,7 @@ const Reportdiv = styled('div')`
 const Reportdiv2 = styled('div')`
   margin-top: 20px;
   color: #ff0066;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
 `;
 
@@ -52,13 +52,15 @@ const EtcArea = styled('textarea')`
 
 const Buttonok = styled('button')`
   font-size: 13px;
-  font-weight: bold;
-  border-color: gray;
-  border-radius: 8px;
+  border-radius: 13px;
   position: relative;
   margin-right: 8px;
-  width: 57px;
-  height: 27px;
+  width: 72px;
+  height: 30px;
+  background-color:black;
+  border:none;
+  color:white;
+  cursor:pointer;
 `;
 
 function ReportModal({ onReportView }) {
@@ -188,7 +190,7 @@ function ReportModal({ onReportView }) {
             </div>
             <br />
             <div>
-              <Buttonok>확인</Buttonok>
+              <Buttonok>submit</Buttonok>
               <br />
               <br />
               <Reportdiv2>
