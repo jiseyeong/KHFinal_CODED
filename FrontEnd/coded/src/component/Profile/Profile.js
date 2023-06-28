@@ -60,6 +60,8 @@ const ProfileTemplate = () => {
   const [isGoogle, setIsGoogle] = useState(false);
 
   const navi = useNavigate();
+  const address1 = useRef();
+  const address2 = useRef();
 
   // 정규식 적용
   const regexId = /^[A-Za-z0-9_]{7,13}$/;
