@@ -217,6 +217,7 @@ const MyPickPage = () => {
           </div>
         </div>
         <hr />
+        
 
         <div className="feed">
           {feedPost.map((e, i) => (
