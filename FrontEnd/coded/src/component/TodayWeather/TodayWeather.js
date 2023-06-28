@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import weatherIcons from '../WeatherCommon/WetherIcons';
-import './TodayCard.scss';
+import './TodayWeather.scss'
 
 function TodayCard() {
   const [weatherIcon, setWeatherIcon] = useState('');
