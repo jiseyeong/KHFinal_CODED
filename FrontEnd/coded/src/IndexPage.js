@@ -70,7 +70,7 @@ const IndexPage = () => {
       <Link to="/test/follow">팔로워 팔로잉 리스트 테스트</Link>
       <br />
       <br />
-      <Link to="/test/TodayAndAdForm">오늘의 날씨 및 광고 테스트</Link>
+      <Link to="/todayWeather">오늘의 날씨</Link>
       <br />
       <br />
       <button onClick={onReportView}>신고게시판</button>
