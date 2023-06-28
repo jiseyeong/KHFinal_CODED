@@ -97,8 +97,8 @@ const SearchBox = () => {
     return (
         <form className={styled.searchForm} ref={autoSearchRef}>
             <input
-                className={styled.search-member}
-                id="search-member"
+                className={styled.searchmember}
+                id="searchmember"
                 type="search"
                 value={searchInput}
                 autoComplete="off"

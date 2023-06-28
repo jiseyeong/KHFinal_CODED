@@ -73,7 +73,7 @@ public class DMDTO {
     }
     
 	public String getFormedWriteDate() {
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return sdf.format(writeDate);
 	}
     
