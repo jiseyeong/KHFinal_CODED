@@ -705,19 +705,19 @@ const ProfileTemplate = () => {
                   )}
                   {isGoogle ? (
                     <div className={styles.googleBtn}>
-                    <img
-                      src={googleImage}
-                      className={styles.socialBtn3}
-                      onClick={googleUnlink}
-                    ></img>
+                      <img
+                        src={googleImage}
+                        className={styles.socialBtn3}
+                        onClick={googleUnlink}
+                      ></img>
                     </div>
                   ) : (
                     <div className={styles.googleBtn}>
-                    <img
-                      src={googleImage_hb}
-                      className={styles.socialBtn3}
-                      onClick={doGoogleLogin}
-                    ></img>
+                      <img
+                        src={googleImage_hb}
+                        className={styles.socialBtn3}
+                        onClick={doGoogleLogin}
+                      ></img>
                     </div>
                   )}
                 </div>
@@ -749,7 +749,7 @@ const ProfileTemplate = () => {
                       </button>
                     </div>
                     <div className={styles.pLayout}>
-                      <p onClick={toggleChangePwModal}>Change PW</p>
+                      <p onClick={toggleChangePwModal}>CHANGE PW</p>
                     </div>
                   </div>
                 )}

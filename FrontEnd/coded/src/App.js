@@ -38,7 +38,7 @@ import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
 import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
-// import TodayWeatherForm from './component/TodayWeather/TodayWeatherForm';
+import TodayWeatherForm from './component/TodayWeather/TodayWeatherForm';
 
 const ButtonContainer = styled.div`
   position: fixed;
