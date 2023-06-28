@@ -676,46 +676,49 @@ const ProfileTemplate = () => {
                   </div>
                 </div>
                 <div className={styles.accountLinkBtn} ref={accountLinkRef}>
-                  <div className={styles.socialTitle}>계정 연동</div>
                   {/* 소셜 로그인 등록/해제*/}
                   {isKakao ? (
                     <img
                       src={kakaoImage}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn1}
                       onClick={kakaoUnlink}
                     ></img>
                   ) : (
                     <img
                       src={kakaoImage_hb}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn1}
                       onClick={doKakaoLogin}
                     ></img>
                   )}
                   {isNaver ? (
                     <img
                       src={naverImage}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn2}
                       onClick={naverUnlink}
                     ></img>
                   ) : (
                     <img
                       src={naverImage_hb}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn2}
                       onClick={doNaverLogin}
                     ></img>
                   )}
                   {isGoogle ? (
+                    <div className={styles.googleBtn}>
                     <img
                       src={googleImage}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn3}
                       onClick={googleUnlink}
                     ></img>
+                    </div>
                   ) : (
+                    <div className={styles.googleBtn}>
                     <img
                       src={googleImage_hb}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn3}
                       onClick={doGoogleLogin}
                     ></img>
+                    </div>
                   )}
                 </div>
                 {editing ? (
