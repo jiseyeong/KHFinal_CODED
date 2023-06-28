@@ -52,7 +52,7 @@ const ScrapImage = () => {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 };
 
 const RepleImage = () => {
@@ -80,6 +80,7 @@ const RepleImage = () => {
 const Temperature = () => {
   return (
     <svg
+      className="temperature"
       height="32px"
       version="1.1"
       viewBox="0 0 32 32"
@@ -110,11 +111,7 @@ const Temperature = () => {
           <path d="M13,9 L18,9" id="Path-20" strokeLinecap="round" />
           <path d="M13,13 L18,13" id="Path-21" strokeLinecap="round" />
         </g>
-        <g
-          fill="#CCCCCC"
-          id="Group-2"
-          transform="translate(10.000000, 12.000000)"
-        >
+        <g fill="red" id="Group-2" transform="translate(10.000000, 12.000000)">
           <circle cx="3" cy="12" id="Oval" r="3" />
           <rect height="11" id="Rectangle-2" rx="1" width="2" x="2" y="0" />
         </g>

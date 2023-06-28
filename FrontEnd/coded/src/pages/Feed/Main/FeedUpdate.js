@@ -1,82 +1,158 @@
 import CreatableSelect from 'react-select/creatable';
-import Styled from './ToastUI.module.css';
+import './ToastUI.scss';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 
-const FeedUpdate = () => {
-    
-    useEffect(()=>{
-        axios({
-            url: '/feedpost/updatefeed',
-            method: 'get',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          })
-            // 2. 고유 넘버로 유저 정보 반환
-            .then((resp) => {
-              console.log(resp.data);
-              setFeedPost(()=>{return{...feedpost, userNo : resp.data}});
-              // userNo = resp.data;
-              // return userNo;
-            })
-            // .then(getUserData(userNo))
-            .catch((error) => {
-              console.log(error);
-            });
-    })
-
-
+const FeedUpdate = ({ clickdata }) => {
   const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
-  const [inputFileButtonStyle, setInputFileButtonStyle] = useState({ display: "inline-block" });
+  const [CopyimgBase64, setCopyImgBase64] = useState([]); // 파일 보여지는것만
+  const [contentbody, setContentbody] = useState();
+  const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
+    display: 'inline-block',
+  });
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [feedpost, setFeedPost] = useState({});
-
+  const [options, setOptions] = useState([]);
+  const selectRef = useRef();
+  const contentRef = useRef();
 
   const accessToken = useSelector((state) => state.member.access);
-  
+
+  //   /feedpost/updatefeed 데이터를 가져와야됨
   useEffect(() => {
-      if (accessToken) {
-        // 1. 토큰 값으로 나의 고유 넘버를 반환
-        axios({
-          url: '/auth/userNo',
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-          // 2. 고유 넘버로 유저 정보 반환
-          .then((resp) => {
-            console.log(resp.data);
-            setFeedPost(()=>{return{...feedpost, userNo : resp.data}});
-            // userNo = resp.data;
-            // return userNo;
-          })
-          // .then(getUserData(userNo))
-          .catch((error) => {
-            console.log(error);
+    axios({
+      url: '/feedpost/updatefeed',
+      method: 'get',
+      params: {
+        userNo: 18,
+        feedpostId: 295,
+      },
+    })
+      .then((resp) => {
+        const data = resp.data;
+        // console.log(data);
+        // console.log(data.photoList); //아무것도 안넣었기 때문에 빈배열
+
+        data.hashTagList.forEach((item) => {
+          let temp = { value: item.hashTag, label: item.hashTag };
+          setSelectedOptions((preview) => [...preview, temp]);
+        });
+
+        // data.hashTagList.forEach((index) => {
+        //   setSelectedOptions[index.hashTag];
+        // });
+
+        // selectedOptions.forEach((option) => {
+        //     console.log(option.value);
+        //   });
+
+        // console.log(data.hashTagList[0].hashTag); //test
+
+        // console.log(data.feedPost); //객체로 나옴
+        // console.log(data.feedPost.body); //test
+        setContentbody(data.feedPost.body);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  //  토큰 가져오는거 1
+  useEffect(() => {
+    if (accessToken) {
+      // 1. 토큰 값으로 나의 고유 넘버를 반환
+      axios({
+        url: '/auth/userNo',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        // 2. 고유 넘버로 유저 정보 반환
+        .then((resp) => {
+          //   console.log(resp.data);
+          setFeedPost(() => {
+            return { ...feedpost, userNo: resp.data };
           });
-      }
+          // userNo = resp.data;
+          // return userNo;
+        })
+        // .then(getUserData(userNo))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [accessToken]);
 
+  // 데이터 서버로 보내는거
+  useEffect(() => {
+    const formData = new FormData();
+    if (clickdata) {
+      console.log(contentRef.current.innerText);
+      console.log(imgBase64.length);
+      selectedOptions.forEach((option) => {
+        formData.append('HashTag', option.value);
+        console.log(option.value);
+      });
+      console.log(feedpost);
+      formData.append('userNo', feedpost.userNo);
+      formData.append('body', feedpost.body);
+      for (var i = 0; i < file.length; i++) {
+        formData.append('files', file[i]);
+      }
+      axios({
+        method: 'Put',
+        url: '/feedpost/updatefeed',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formData,
+      })
+        .then((resp) => {
+          resp.data;
+        })
+        .catch((error) => {});
+    }
+  }, [clickdata]);
+
+  //   태그네임 가져오는거
+  useEffect(() => {
+    axios
+      .request({
+        url: '/PostHashs/selectAllPostTagNames',
+        type: 'get',
+      })
+      .then((resp) => {
+        const HashTagNameList = resp.data;
+        let arrTemp = [];
+        HashTagNameList.forEach((hashTag, index) => {
+          arrTemp = arrTemp.concat({
+            value: hashTag.hashTag,
+            label: hashTag.hashTag,
+          });
+          setOptions([...options, ...arrTemp]);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const handleChangeFile = (event) => {
-    
     setFile(event.target.files); //파일 갯수 추가
 
     if (imgBase64.length + event.target.files.length == 10) {
-      setInputFileButtonStyle({ display: "none" });
+      setInputFileButtonStyle({ display: 'none' });
     }
-    
 
     if (imgBase64.length + event.target.files.length > 10) {
       alert('사진은 최대 10개까지 밖에 안들어갑니다.');
       setImgBase64([...imgBase64]);
-      console.log(imgBase64.length + event.target.files.length)
+      console.log(imgBase64.length + event.target.files.length);
       return;
     } else {
       for (var i = 0; i < event.target.files.length; i++) {
@@ -104,67 +180,9 @@ const FeedUpdate = () => {
     updatedImgBase64.splice(index, 1);
     setImgBase64(updatedImgBase64);
     if (updatedImgBase64.length < 10) {
-      setInputFileButtonStyle({ display: "inline-block" });
+      setInputFileButtonStyle({ display: 'inline-block' });
     }
   };
-
-  const selectRef = useRef();
-  const contentRef = useRef();
-  const [options, setOptions] = useState([]);
-
-  //데이터 서버로 보내는거
-  useEffect(()=>{
-    const formData = new FormData();
-    if(clickdata){
-      console.log(contentRef.current.innerText)
-      console.log(imgBase64.length)
-      selectedOptions.forEach((option) => {
-        formData.append("HashTag", option.value)
-        console.log(option.value);
-      });
-      console.log(feedpost)
-      formData.append("userNo", feedpost.userNo);
-      formData.append("body", feedpost.body);
-      for (var i = 0; i < file.length; i++) {
-        formData.append('files', file[i]);
-      }
-      axios({
-        method: 'Put',
-        url: '/feedpost/updatefeed',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        data: formData
-      })
-        .then((resp) => {
-            resp.data
-
-        })
-        .catch((error) => {});
-      }
-  },[clickdata])
-
-  useEffect(() => {
-    axios
-      .request({
-        url: '/PostHashs/selectAllPostTagNames',
-        type: 'get',
-      })
-      .then((resp) => {
-        const HashTagNameList = resp.data;
-        let arrTemp = [];
-        HashTagNameList.forEach((hashTag, index) => {
-          arrTemp = arrTemp.concat({
-            value: hashTag.hashTag,
-            label: hashTag.hashTag,
-          });
-          setOptions([...options, ...arrTemp]);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
   return (
     <div>
@@ -179,7 +197,7 @@ const FeedUpdate = () => {
           }}
         >
           {/* imgBase64 사진들 */}
-          {imgBase64.map((item, index) => {
+          {CopyimgBase64.map((item, index) => {
             return (
               <div>
                 <button
@@ -209,7 +227,10 @@ const FeedUpdate = () => {
               ...inputFileButtonStyle,
               border: '1px solid black',
               height: '150px',
-              display: inputFileButtonStyle.display !== 'none' ? 'inline-block' : 'none',
+              display:
+                inputFileButtonStyle.display !== 'none'
+                  ? 'inline-block'
+                  : 'none',
               width: '100%',
               textAlign: 'center',
               lineHeight: '150px',
@@ -234,26 +255,31 @@ const FeedUpdate = () => {
       {/* 우측창 게시글 내용 및 해시태그 */}
       <div style={{ float: 'right', width: '67%', height: '459px' }}>
         <div
-          className={Styled.yscroll}
+          // className={Styled.yscroll}
           placeholder="내용을 입력해주세요"
-          contentEditable="true"
+          contentEditable
           ref={contentRef}
-          onInput={(e)=>{
-            setFeedPost(()=>{return {...feedpost, body:e.target.innerText}})
+          onInput={(e) => {
+            setFeedPost(() => {
+              return { ...feedpost, body: e.target.innerText };
+            });
           }}
-        ></div>
+        >
+          {contentbody}
+        </div>
         <br />
         <CreatableSelect
           isMulti
           options={options}
           ref={selectRef}
           onChange={(value) => setSelectedOptions(value)}
-          className={Styled.select}
+          // className={Styled.select}
+          defaultValue={selectedOptions}
         />
         <br />
       </div>
     </div>
   );
-}
+};
 
 export default FeedUpdate;

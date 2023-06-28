@@ -116,8 +116,10 @@ public class SecurityConfiguration {
 			"/auth/updateMemberByUserNo",
 			"/photo/updatePhoto",
 			"/feedpost/selectUserFeedPost",
-			"/auth/selectMyPickPageData"
-			
+			"/auth/selectMyPickPageData",
+			"/feedpost/updatefeed",
+			"/test.jpg",
+			"/feedpost/feedpost"
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",

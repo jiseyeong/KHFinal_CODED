@@ -15,8 +15,8 @@ const LoadingLayout = styled('div')`
 function LoadingBar() {
   return (
     <LoadingLayout>
-      <div class="dot-pulse">
-        <div class="dot-pulse__dot"></div>
+      <div className="dot-pulse">
+        <div className="dot-pulse__dot"></div>
       </div>
     </LoadingLayout>
   );

@@ -244,7 +244,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       </div>
       <div className={style.feedCommentList2}>
         <div className={style.writeDate}>
-          write date : {commentInfo.formedWriteDate}
+          {commentInfo.formedWriteDate}
         </div>
         <div className={style.heartCount}>좋아요 {likeCount}</div>
         <div className={style.repleBtn}>
