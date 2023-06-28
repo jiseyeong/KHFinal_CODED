@@ -19,7 +19,7 @@
 
   h3 {
     margin-top: 50px;
-    color: #72787f;
+    color:black;
     line-height: 18.2px;
     text-decoration: none solid rgb(114, 120, 127);
     text-align: center;
@@ -50,7 +50,7 @@
     .innerWrapper {
       display: flex;
       width: 500px;
-      height: 600px;
+
 
       background: #ffffff;
       color: #454c53;
@@ -74,6 +74,7 @@
       .radioLayout {
         width: 60%;
         margin: auto;
+        margin-bottom:20px;
         .radios {
           label {
             display: block;
