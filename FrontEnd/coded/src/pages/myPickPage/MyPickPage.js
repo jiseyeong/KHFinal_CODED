@@ -3,8 +3,15 @@ import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import axios from 'axios';
+import Modal from 'react-modal';
+import FollowerList from '../../component/FollowList/FollowList';
 
 const MyPickPage = () => {
   const [feedPost, setFeedPost] = useState([]);
@@ -12,6 +19,7 @@ const MyPickPage = () => {
   const cpage = useRef(1);
 
   const loginUserNo = useSelector((state) => state.member.userNo);
+
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
@@ -23,6 +31,21 @@ const MyPickPage = () => {
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
   );
+
+  // 팔로우/팔로워 모달창 세팅
+  const modalStyle = {
+    content: {
+      margin: 'auto',
+      width: '400px',
+      height: '400px',
+      border: '1px solid silver',
+      borderRadius: '10px',
+      padding: '0',
+    },
+  };
+
+  const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
+  const [followModalMode, setFollowModalMode] = useState(true);
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
@@ -146,10 +169,6 @@ const MyPickPage = () => {
     }
   };
 
-  const Profile = () => {
-    navi('/profile');
-  };
-
   return (
     <div className="myPickPageLayout">
       <div className="profile">
@@ -183,13 +202,25 @@ const MyPickPage = () => {
                   <strong className="statsCount">{memberInfo.postCount}</strong>
                   <div className="statsTitle">Posts</div>
                 </li>
-                <li>
+                <li
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setFollowerIsOpen(true);
+                    setFollowModalMode(true);
+                  }}
+                >
                   <strong className="statsCount">
                     {memberInfo.followerCount}
                   </strong>
                   <div className="statsTitle">Followers</div>
                 </li>
-                <li>
+                <li
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setFollowerIsOpen(true);
+                    setFollowModalMode(false);
+                  }}
+                >
                   <strong className="statsCount">
                     {memberInfo.followingCount}
                   </strong>
@@ -231,9 +262,9 @@ const MyPickPage = () => {
               )}
             </div>
             <div className="editBtnLayout">
-              <button className="editButton" onClick={Profile}>
-                Edit
-              </button>
+              <Link to="/profile">
+                <button className="editButton">Edit</button>
+              </Link>
             </div>
           </div>
         </div>
@@ -245,6 +276,13 @@ const MyPickPage = () => {
             </div>
           ))}
         </div>
+        <Modal isOpen={FollowerIsOpen} style={modalStyle}>
+          <FollowerList
+            setFollowerIsOpen={setFollowerIsOpen}
+            followModalMode={followModalMode}
+            userNo={currentUserNo}
+          />
+        </Modal>
       </div>
     </div>
   );
