@@ -67,7 +67,7 @@ public class FeedPostController {
 			HttpServletRequest request) {
 		try {
 			String realPath = request.getServletContext().getRealPath("images");
-			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0));
+			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
 					int TagId = 0;
@@ -98,7 +98,7 @@ public class FeedPostController {
 	@PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
 	// 데이터는 다 넘어옴 근데 디비에 안들어감
 	public ResponseEntity<?> insertFeedPost(
-//			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
+			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
 			@ModelAttribute FeedPostDTO dto,
 			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
 		try {

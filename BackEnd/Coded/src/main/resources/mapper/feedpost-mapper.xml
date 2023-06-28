@@ -45,11 +45,13 @@
 		(select fe.*,row_number() over(order by
 		fe.FeedPostId desc) rn,
 		m.userNickName,
+		m.address1,
+		m.address2,
 		m.sysName as profileSysName,
 		thum.sysName as thumbNailSysName
 		from feedPost fe
 		left join (select
-		mem.userNo, mem.userNickName, prof.SysName from member mem left join
+		mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member mem left join
 		photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
 		left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER()
 		over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo
@@ -69,10 +71,12 @@
 		writeTempRangeDiff,
 		row_number() over(order by fe.FeedPostId desc) rn,
 		m.userNickName,
+		m.address1,
+		m.address2,
 		m.sysName as profileSysName,
 		thum.sysName as thumbNailSysName
 		from feedpost fe
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member
+		left join (select mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member
 		mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo =
 		m.userNo
 		left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER()
@@ -91,13 +95,15 @@
 		from (select fe.*, row_number() over (order by
 		fe.feedpostid desc) as rn,
 		m.userNickName,
+		m.address1,
+		m.address2,
 		m.sysName as profileSysName,
 		thum.sysName as thumbNailSysName
 		from
 		(select * from (select distinct feedpostid from hashtag join posthashs using
 		(tagid) where hashtag like '%'|| #{keyword} || '%')
 		join feedpost using (feedpostid)) fe
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member
+		left join (select mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member
 		mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo =
 		m.userNo
 		left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER()
@@ -114,11 +120,13 @@ select f.*
 		from
 		(select fe.*,row_number() over(order by l.likecount desc nulls last, fe.FeedPostId desc) rn,
 		m.userNickName,
+		m.address1,
+		m.address2,
 		m.sysName as profileSysName,
 		thum.sysName as thumbNailSysName
 		from feedPost fe
         left join (select feedPostId, Count(feedPostId) as likecount from feedLike group by feedpostid) l on fe.feedPostId = l.feedPostId
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
+		left join (select mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
         left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
 		) f
 		where rn between ${startFeedNum} and ${endFeedNum}
@@ -145,9 +153,9 @@ select f.*
 	</delete>
 
 	<select id="selectUserFeedPost" resultType="kh.coded.dto.FeedPostAddDTO">
-		select f.* , m.userNickName, m.sysName as profileSysName, thum.sysName as thumbNailSysName
+		select f.* , m.userNickName, m.address1, m.address2, m.sysName as profileSysName, thum.sysName as thumbNailSysName
 		from (select feedPost.*, row_number() over(order by FeedPostId desc) rn from feedPost where userNo=${userNo}) f
-		left join (select mem.userNo, mem.userNickName, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
+		left join (select mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on f.UserNo = m.userNo
 		left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on f.feedPostId = thum.feedPostId
 		where rn between ${startFeedNum} and ${endFeedNum} order by rn asc
 	</select>
