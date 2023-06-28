@@ -39,7 +39,7 @@ const Footer = styled.div`
   a {
     text-decoration: none;
     &:hover {
-      opacity: 50%;
+      color:#ff0066;
     }
   }
 `;
@@ -606,13 +606,15 @@ const AuthForm = ({ type }) => {
         </div>
       )}
       <Footer>
+        <div className={style.loginLink}>
         {type === 'login' ? (
-          <Link to="/signup" className={style.signup}>
+          <Link to="/signup" className={style.signUp}>
             SIGN UP
           </Link>
         ) : (
           <Link to="/login">LOGIN</Link>
         )}
+        </div>
       </Footer>
     </AuthFormBlock>
   );
