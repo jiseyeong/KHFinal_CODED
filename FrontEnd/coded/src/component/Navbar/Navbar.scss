@@ -9,7 +9,7 @@
   box-sizing: border-box;
 }
 
-$hotpink: #ff0066;  
+$hotpink: #ff0066;
 $white: #ffffff;
 $black: #000000;
 $ootdBorderColor: #e8ebeb;
@@ -103,9 +103,9 @@ $storeBorderColor: #f0f1f4;
         cursor: pointer;
         transform: translateZ(0);
         transition: transform 0.25s ease-out;
-        margin-bottom:5px;
-        hr{
-          display:none;
+        margin-bottom: 5px;
+        hr {
+          display: none;
         }
         &:hover {
           transform: scale(1.05);
@@ -127,12 +127,11 @@ $storeBorderColor: #f0f1f4;
         transform: translateZ(0);
         transition: transform 0.25s ease-out;
 
-        hr{
-          border:1px solid #ff0066;
-          width:55px;
-          margin-left:3px;
-          margin-top:5px;
-          
+        hr {
+          border: 1px solid #ff0066;
+          width: 55px;
+          margin-left: 3px;
+          margin-top: 5px;
         }
 
         &:hover {
@@ -146,7 +145,7 @@ $storeBorderColor: #f0f1f4;
         font-weight: 700;
         color: rgb(27, 29, 31);
         cursor: pointer;
-        width:80%;
+        width: 80%;
         background: transparent;
         padding: 5px 5px;
         outline: none;
@@ -156,14 +155,13 @@ $storeBorderColor: #f0f1f4;
         transform: translateZ(0);
         transition: transform 0.25s ease-out;
 
-        hr{
-          border:1px solid #ff0066;
-          width:55px;
-          margin-left:3px;
-          margin-top:5px;
-          
+        hr {
+          border: 1px solid #ff0066;
+          width: 55px;
+          margin-left: 3px;
+          margin-top: 5px;
         }
-        
+
         &:hover {
           transform: scale(1.05);
         }
@@ -183,9 +181,9 @@ $storeBorderColor: #f0f1f4;
         cursor: pointer;
         transform: translateZ(0);
         transition: transform 0.25s ease-out;
-        margin-bottom:5px;
-        hr{
-          display:none;
+        margin-bottom: 5px;
+        hr {
+          display: none;
         }
         &:hover {
           transform: scale(1.05);
@@ -294,7 +292,7 @@ $storeBorderColor: #f0f1f4;
     li {
       display: inline-block;
       vertical-align: middle;
-      margin-right:30px;
+      margin-right: 30px;
       cursor: pointer;
       transform: translateZ(0);
       transition: transform 0.25s ease-out;
@@ -304,9 +302,7 @@ $storeBorderColor: #f0f1f4;
     }
   }
 
-
-
   .isListOotdBorder {
-    border-bottom: 1px solid #ff0066;  
+    border-bottom: 1px solid #ff0066;
   }
 }
