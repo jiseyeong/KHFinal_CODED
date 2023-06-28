@@ -17,13 +17,21 @@ const MyPickPage = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
-
-  // 쿼리스트링으로 해당 유저의 userNo를 가져옴
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  let currentUserNo = searchParams.get('userNo');
+  const [currentUserNo, setCurrentUserNo] = useState(
+    searchParams.get('userNo'),
+  );
 
   useEffect(() => {
+    setCurrentUserNo(searchParams.get('userno'));
+  });
+
+  useEffect(() => {
+    // 쿼리스트링으로 해당 유저의 userNo를 가져옴
+
+    // let currentUserNo = searchParams.get('userNo');
+
     if (currentUserNo === null) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
@@ -47,7 +55,7 @@ const MyPickPage = () => {
       }
     } else {
       // 또는 해당 유저 넘버의 유저 정보 반환
-      getMyPickData(currentUserNo);
+      getMyPickData();
     }
     return () => {
       window.onscroll = null;
