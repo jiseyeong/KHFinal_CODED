@@ -6,11 +6,18 @@
     padding:20px;
     border-radius:10px;
     box-shadow:2px 2px 2px 2px rgb(241, 241, 241);
+    &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
 
     .weatherBody1{
         font-size:15px;
         font-weight:600;
         margin-bottom:15px;
+        &:hover {
+            color:#ff0066;
+          }
     }
     .weatherBody2{
         height:45px;
