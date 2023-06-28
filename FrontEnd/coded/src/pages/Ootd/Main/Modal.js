@@ -448,6 +448,7 @@ function Modal({
                     <div className="writeTemp">{feedPost.writeTemp}º</div>
                   </div>
                 </div>
+                <div className="hashTagBody">해쉬태그</div>
               </div>
             </div>
 

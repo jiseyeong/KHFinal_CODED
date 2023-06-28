@@ -122,7 +122,11 @@ public class SecurityConfiguration {
 			"/feedpost/updatefeed",
 			"/test.jpg",
 			"/feedpost/feedpost",
+
+			"/ReportOk"
+
 			"/ws/info"
+
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
