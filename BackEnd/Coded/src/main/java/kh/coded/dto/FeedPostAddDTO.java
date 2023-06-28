@@ -10,6 +10,8 @@ public class FeedPostAddDTO {
 	private Timestamp writeDate;
 	private int writeTemp;
 	private int writeTempRange;
+	private int writePtyCode;
+	private int wrtieSkyCode;
 
 	private String userNickName;
 	private String profileSysName;
@@ -18,9 +20,11 @@ public class FeedPostAddDTO {
 		super();
 	}
 	
+	
 
 	public FeedPostAddDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
-			int writeTempRange, String userNickName, String profileSysName, String thumbNailSysName) {
+			int writeTempRange, int writePtyCode, int wrtieSkyCode, String userNickName, String profileSysName,
+			String thumbNailSysName) {
 		super();
 		this.feedPostId = feedPostId;
 		this.userNo = userNo;
@@ -28,10 +32,13 @@ public class FeedPostAddDTO {
 		this.writeDate = writeDate;
 		this.writeTemp = writeTemp;
 		this.writeTempRange = writeTempRange;
+		this.writePtyCode = writePtyCode;
+		this.wrtieSkyCode = wrtieSkyCode;
 		this.userNickName = userNickName;
 		this.profileSysName = profileSysName;
 		this.thumbNailSysName = thumbNailSysName;
 	}
+
 
 
 	public int getFeedPostId() {
@@ -91,6 +98,30 @@ public class FeedPostAddDTO {
 	}
 	public void setThumbNailSysName(String thumbNailSysName) {
 		this.thumbNailSysName = thumbNailSysName;
+	}
+
+
+
+	public int getWritePtyCode() {
+		return writePtyCode;
+	}
+
+
+
+	public void setWritePtyCode(int writePtyCode) {
+		this.writePtyCode = writePtyCode;
+	}
+
+
+
+	public int getWrtieSkyCode() {
+		return wrtieSkyCode;
+	}
+
+
+
+	public void setWrtieSkyCode(int wrtieSkyCode) {
+		this.wrtieSkyCode = wrtieSkyCode;
 	}
 	
 	

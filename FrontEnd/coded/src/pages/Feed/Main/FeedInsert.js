@@ -85,17 +85,25 @@ function FeedInsert() {
         {/* ariaHideApp 추가(console에러를 없애기 위함)=> 바깥 요소를 숨기지 않음 */}
         <Modal
           isOpen={FeedPostUpdateOpen}
-          style={modalStyle}
+          style={insertModalStyle}
           ariaHideApp={false}
         >
-          <FeedUpdate clickdata={updateButtonClick} />
-          <div style={{ textAlign: 'right' }}>
+          <CloseBtn
+            customStyle={customStyle}
+            onClick={() => {
+              setFeedPostUpdateOpen(false);
+            }}
+          />
+          <FeedUpdate clickdata={updateButtonClick}
+          setFeedPostUpdateOpen={setFeedPostUpdateOpen}
+          />
+          {/* <div style={{ textAlign: 'right' }}>
             <button onClick={() => setFeedPostUpdateOpen(false)}>
               글수정 취소
             </button>
             &nbsp;
             <button onClick={updatefeed}>완료</button>
-          </div>
+          </div> */}
         </Modal>
       </div>
     </div>
