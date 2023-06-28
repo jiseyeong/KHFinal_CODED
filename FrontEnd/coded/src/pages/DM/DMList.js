@@ -9,8 +9,6 @@ import ListElement from './Component/ListElement';
 
 function DMList() {
 
-
-
     const accessToken = useSelector((state) => state.member.access);
     const loginUserNo = useSelector((state) => state.member.userNo);
     const [DMRoomList, setDMRoomList] = useState([]); //채팅중인 모든 방 정보
@@ -59,12 +57,11 @@ function DMList() {
             .catch((error) => console.log(error));
     }, [RoomId])
 
-    const DMListOuter = styled('div')`
+    const DMListOuter = styled.div`
     padding-top:10px;
     margin:auto; width:1000px; height:600px;
     display:flex;
 
-    
         .chatBox{height:100%; width:60%; padding:5px;}
         .List{height: 100%; width:40%; border-radius:20px; padding:5px;}
             .searchBox{height:10%; width:100%; background-color: lightgray; border-radius:5px;
@@ -72,7 +69,6 @@ function DMList() {
             .chatList{height:88%; width:100%; background-color: lightgray; border-radius:5px;}
             
     `
-
 
     return (
         <DMListOuter>

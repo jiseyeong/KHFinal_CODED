@@ -54,7 +54,13 @@ public class ChatController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-
+	
+	// 채팅방번호를 통한 채팅내역 불러오기
+	@GetMapping("selectDMbyRoomid")
+	public ResponseEntity<?> selectDMbyRoomid (@RequestParam(value = "roomId") int roomId){
+		List<DMDTO> list = DMService.selectDMbyRoomid(roomId);
+		return ResponseEntity.ok().body(list);
+	}
 
 
 	// -- 이하 STOMP 구독 및 메세지 송신 --
