@@ -18,18 +18,16 @@ const MyPickPage = () => {
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const [currentUserNo, setCurrentUserNo] = useState(
-    searchParams.get('userNo'),
-  );
-
-  useEffect(() => {
-    setCurrentUserNo(searchParams.get('userno'));
-  });
+  // const [currentUserNo, setCurrentUserNo] = useState(
+  //   searchParams.get('userNo'),
+  // );
+  // useEffect(() => {
+  //   setCurrentUserNo(searchParams.get('userno'));
+  // });
+  let currentUserNo = searchParams.get('userNo');
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
-
-    // let currentUserNo = searchParams.get('userNo');
 
     if (currentUserNo === null) {
       if (accessToken) {

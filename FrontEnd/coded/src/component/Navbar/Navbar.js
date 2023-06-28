@@ -79,12 +79,20 @@ function Navbar() {
     navigate('/profile');
   }
 
+  // 상단 네비의 카테고리 클릭 시 적용
   const handleClickCategory = (e) => {
     e.preventDefault();
     setListOotdBorder(e.target.value);
+
     if (e.target.value === 1) {
       navigate('/feedList');
     } else if (e.target.value === 2) {
+      navigate('/feedPopularList');
+    } else if (e.target.value === 3) {
+      navigate('/feedFollowingList');
+    } else if (e.target.value === 4) {
+      navigate('/myPickPage');
+    } else if (e.target.value === 5) {
       navigate('/feedPopularList');
     }
   };
