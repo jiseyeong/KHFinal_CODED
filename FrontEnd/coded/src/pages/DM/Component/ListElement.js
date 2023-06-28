@@ -29,6 +29,7 @@ const ListElement = (props) => {
           setSubscription(newSubscription);
         });
       };
+
         const disconnectWebSocket = () => {
             if (isWebSocketConnected) {
                 stompClient.disconnect(() => {
@@ -38,6 +39,7 @@ const ListElement = (props) => {
                 });
             }
         };
+
         const handleDMRoom = () => {
             setRoomId(room.roomid);
             setDMRoom(room);
@@ -60,8 +62,7 @@ const ListElement = (props) => {
               .roomId{display:none; padding:5px;}
               .roomUserId{width:50%; height:50%; padding:5px;}
               .roomUserNickname{width:50%; height:50%; padding:5px;}
-
-  `
+    `
 
         return (
             <RoomElement>

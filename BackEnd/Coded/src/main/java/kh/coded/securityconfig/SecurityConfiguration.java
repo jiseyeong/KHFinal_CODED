@@ -69,8 +69,10 @@ public class SecurityConfiguration {
 			"/myPickPage",
 			"/FileUploadTest",
 			"/DMPage",
+			"/DMList",
 			"/error",
 			"/HomePage",
+			
 			
 			"/searchBox",
 			"/TestComponent",
@@ -122,10 +124,10 @@ public class SecurityConfiguration {
 			"/feedpost/updatefeed",
 			"/test.jpg",
 			"/feedpost/feedpost",
+			"/ws/**",
+			"/ReportOk"
 
-			"/ReportOk",
 
-			"/ws/**"
 
 	};
 	private final String[] API_USER_LIST = {
@@ -157,6 +159,7 @@ public class SecurityConfiguration {
 			"/mypick/selectMember",
 			"/mypick/selectFeedPost",
 			
+			"v/**",
 			"/DM/**",
 			"/topic/**",
 			"/ws/**",
