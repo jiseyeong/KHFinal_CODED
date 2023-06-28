@@ -26,24 +26,30 @@ const ImageLayout = styled('div')`
 
 const ReportH3 = styled('h3')`
   width: 100%;
-  text-align: center;
   font-size: 26px;
-  color: white;
-  background-color: black;
 `;
 
 const Reportdiv = styled('div')`
+  margin: 0.5rem;
+  color: #222;
   font-size: 20px;
   font-weight: bold;
+  color: silver;
+  text-align: center;
 `;
+
 const Reportdiv2 = styled('div')`
-  font-size: 15px;
-  font-weight: bold;
+  margin-top: 20px;
+  color: #ff0066;
+  font-size: 16px;
+  font-weight: 500;
 `;
+
 const EtcArea = styled('textarea')`
   padding: 4px;
   resize: none;
 `;
+
 const Buttonok = styled('button')`
   font-size: 13px;
   font-weight: bold;
@@ -51,17 +57,6 @@ const Buttonok = styled('button')`
   border-radius: 8px;
   position: relative;
   margin-right: 8px;
-  width: 57px;
-  height: 27px;
-  color: black;
-`;
-const Buttonok2 = styled('button')`
-  font-size: 13px;
-  font-weight: bold;
-  margin-left: 48px;
-  position: relative;
-  border-color: gray;
-  border-radius: 8px;
   width: 57px;
   height: 27px;
   color: black;
@@ -94,14 +89,12 @@ function ReportModal({ onReportView }) {
             style={{ flexDirection: 'column' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <ReportH3>신고하기</ReportH3>
-            <br></br>
-            <br></br>
-            <br></br>
-            <Reportdiv>신고하는 이유를 선택해주세요.</Reportdiv>
-            <br></br>
-           
-            <br></br>
+            <button className="closeBtn" onClick={onReportView}>
+              x
+            </button>
+            <ReportH3>REPORT</ReportH3>
+            <Reportdiv>신고사유를 선택해주세요</Reportdiv>
+
             <div className="radioLayout">
               <div className="radios">
                 <p>
@@ -179,7 +172,6 @@ function ReportModal({ onReportView }) {
                 </div>
               </div>
             </div>
-            <br></br>
             <div>
               {reportType === 'e' ? (
                 <EtcArea
@@ -199,22 +191,18 @@ function ReportModal({ onReportView }) {
                 />
               )}
             </div>
-            <br></br>
-            
+            <br />
             <div>
-              <Buttonok >확인</Buttonok>
-              <Buttonok2 onClick={handlePopupCancel}>취소</Buttonok2>
-            
-              <br></br>
+              <Buttonok>확인</Buttonok>
+              <br />
+              <br />
               <Reportdiv2>
-                {' '}
-                <br></br>
-                허위신고를 할 경우 신고자의 활동에 제한을 받을 수 있습니다.{' '}
-                <br></br>이 점 유의해 주시기 바랍니다.
+                허위신고를 할 경우 활동에 제한을 받을 수 있습니다. <br />이 점
+                유의해주시기 바랍니다.
               </Reportdiv2>
-              <br></br>
-              <br></br>
-              <br></br>
+              <br />
+              <br />
+              <br />
             </div>
           </div>
         </div>
