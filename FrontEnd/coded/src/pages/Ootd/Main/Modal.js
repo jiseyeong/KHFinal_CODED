@@ -16,7 +16,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
-import weatherIcons from '../../../component/WeatherCommon/WetherIcons';
+import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -53,7 +53,6 @@ function Modal({
     pauseOnHover: true,
     fade: false,
   };
-
 
   // const [feedPost,setFeedPost] = useState({});
   // const [photoList,setPhotoList] = useState([]);
@@ -104,7 +103,6 @@ function Modal({
         setWeatherIcon(weatherIcons.cloud);
       }
     }
-
   }, []);
 
   function updateImageList() {
@@ -403,14 +401,14 @@ function Modal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
-                    <img
-                      className="commentUserImg"
-                      //src={modalData?.modalData?.modalData?.authorImg}
-                      src={'/images/' + feedPost.profileSysName}
-                      width="40"
-                      height="40"
-                    />
+                    <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
+                      <img
+                        className="commentUserImg"
+                        //src={modalData?.modalData?.modalData?.authorImg}
+                        src={'/images/' + feedPost.profileSysName}
+                        width="40"
+                        height="40"
+                      />
                     </Link>
                   </div>
                   <div className="authorInfomation">
@@ -426,9 +424,9 @@ function Modal({
                     </div>
                   </div>
                   {feedPost.userNo === userNo && (
-                  <div className="optionBox" onClick={optionBoxClick}>
-                    <OptionBox></OptionBox>
-                  </div>
+                    <div className="optionBox" onClick={optionBoxClick}>
+                      <OptionBox></OptionBox>
+                    </div>
                   )}
                   {optionListDiv && (
                     <div className="optionList">
@@ -443,13 +441,11 @@ function Modal({
                 </div>
                 {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
-                    <div className="feedPostBody">
-                    {feedPost.body}
-                    </div>
-                    <div className="feedPostWeather">
-                      <div className='weatherIcon'>{weatherIcon}</div>
-                      <div className='writeTemp'>{feedPost.writeTemp}º</div>
-                    </div>
+                  <div className="feedPostBody">{feedPost.body}</div>
+                  <div className="feedPostWeather">
+                    <div className="weatherIcon">{weatherIcon}</div>
+                    <div className="writeTemp">{feedPost.writeTemp}º</div>
+                  </div>
                 </div>
               </div>
             </div>
