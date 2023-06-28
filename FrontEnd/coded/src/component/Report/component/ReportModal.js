@@ -53,6 +53,7 @@ const Buttonok = styled('button')`
   margin-right: 8px;
   width: 57px;
   height: 27px;
+  color: black;
 `;
 const Buttonok2 = styled('button')`
   font-size: 13px;
@@ -63,6 +64,7 @@ const Buttonok2 = styled('button')`
   border-radius: 8px;
   width: 57px;
   height: 27px;
+  color: black;
 `;
 
 function ReportModal({ onReportView }) {
@@ -78,6 +80,10 @@ function ReportModal({ onReportView }) {
     setText(ev.target.value);
     console.log(ev.target.value);
   };
+
+  const handlePopupCancel = () => {
+    onReportView();
+  }
 
   return (
     <div className="reportmodalwrapper">
@@ -196,8 +202,8 @@ function ReportModal({ onReportView }) {
             <br></br>
             
             <div>
-              <Buttonok>확인</Buttonok>
-              <Buttonok2>취소</Buttonok2>
+              <Buttonok >확인</Buttonok>
+              <Buttonok2 onClick={handlePopupCancel}>취소</Buttonok2>
             
               <br></br>
               <Reportdiv2>
