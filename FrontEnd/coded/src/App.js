@@ -57,6 +57,8 @@ const TopButton = styled.button`
 `;
 
 function App() {
+  // Modal.setAppElement('#root');
+
   const dispatch = useDispatch();
   const onLogin = useCallback(
     (accessToken, userId, userNo) =>

@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setNonMember } from '../../modules/Redux/navbarSetting';
 import ChangePwModal from './component/ChangePwModal';
 import { useNavigate } from 'react-router-dom';
-import kakaoImage from './image/kakao.png';
-import googleImage from './image/google.png';
-import naverImage from './image/naver.png';
-import kakaoImage_hb from './image/kakao_hb.png';
-import googleImage_hb from './image/google_hb.png';
-import naverImage_hb from './image/naver_hb.png';
+import kakaoImage from '../../assets/imageAsset/kakao.png';
+import kakaoImage_hb from '../../assets/imageAsset/kakao_hb.png';
+import naverImage from '../../assets/imageAsset/naver.png';
+import naverImage_hb from '../../assets/imageAsset/naver_hb.png';
+import googleImage from '../../assets/imageAsset/google.png';
+import googleImage_hb from '../../assets/imageAsset/google_hb.png';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -45,8 +45,6 @@ const ProfileTemplate = () => {
   const [addressList2, setAddressList2] = useState([]);
   const [addressIndex1, setAddressIndex1] = useState(-1);
   const [addressIndex2, setAddressIndex2] = useState(-1);
-  const address1 = useRef();
-  const address2 = useRef();
   // useSelector로 토큰 값 가져오기
   // 토큰 값을 활용하여 유저 DTO 정보를 가져오기
   // 로그인 정보 출력
@@ -62,6 +60,8 @@ const ProfileTemplate = () => {
   const [isGoogle, setIsGoogle] = useState(false);
 
   const navi = useNavigate();
+  const address1 = useRef();
+  const address2 = useRef();
 
   // 정규식 적용
   const regexId = /^[A-Za-z0-9_]{7,13}$/;
@@ -141,7 +141,6 @@ const ProfileTemplate = () => {
               sysName: sysName,
             };
 
-            console.log(member);
             let address = [];
             resp2.data.forEach((addressData) => {
               address = address.concat({
@@ -259,7 +258,6 @@ const ProfileTemplate = () => {
   }, [accessToken]);
 
   // 사진 등록 시, 바로 불러오기 기능
-
   const handleChangeFile = (event) => {
     console.log(event.target.files);
     setImgBase64([]);
@@ -678,46 +676,49 @@ const ProfileTemplate = () => {
                   </div>
                 </div>
                 <div className={styles.accountLinkBtn} ref={accountLinkRef}>
-                  <div className={styles.socialTitle}>계정 연동</div>
                   {/* 소셜 로그인 등록/해제*/}
                   {isKakao ? (
                     <img
                       src={kakaoImage}
-                      className={styles.socialBtn}
-                      onClick={doKakaoLogin}
+                      className={styles.socialBtn1}
+                      onClick={kakaoUnlink}
                     ></img>
                   ) : (
                     <img
                       src={kakaoImage_hb}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn1}
                       onClick={doKakaoLogin}
                     ></img>
                   )}
                   {isNaver ? (
                     <img
                       src={naverImage}
-                      className={styles.socialBtn}
-                      onClick={doNaverLogin}
+                      className={styles.socialBtn2}
+                      onClick={naverUnlink}
                     ></img>
                   ) : (
                     <img
                       src={naverImage_hb}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn2}
                       onClick={doNaverLogin}
                     ></img>
                   )}
                   {isGoogle ? (
+                    <div className={styles.googleBtn}>
                     <img
                       src={googleImage}
-                      className={styles.socialBtn}
-                      onClick={doGoogleLogin}
+                      className={styles.socialBtn3}
+                      onClick={googleUnlink}
                     ></img>
+                    </div>
                   ) : (
+                    <div className={styles.googleBtn}>
                     <img
                       src={googleImage_hb}
-                      className={styles.socialBtn}
+                      className={styles.socialBtn3}
                       onClick={doGoogleLogin}
                     ></img>
+                    </div>
                   )}
                 </div>
                 {editing ? (

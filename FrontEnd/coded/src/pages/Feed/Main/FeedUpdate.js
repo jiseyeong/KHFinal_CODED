@@ -1,5 +1,5 @@
 import CreatableSelect from 'react-select/creatable';
-import Styled from './ToastUI.module.css';
+import './ToastUI.scss';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
@@ -38,9 +38,9 @@ const FeedUpdate = ({ clickdata }) => {
         // console.log(data.photoList); //아무것도 안넣었기 때문에 빈배열
 
         data.hashTagList.forEach((item) => {
-            let temp = {value:item.hashTag, label:item.hashTag};
-            setSelectedOptions((preview) => [...preview, temp]);
-          });
+          let temp = { value: item.hashTag, label: item.hashTag };
+          setSelectedOptions((preview) => [...preview, temp]);
+        });
 
         // data.hashTagList.forEach((index) => {
         //   setSelectedOptions[index.hashTag];
@@ -74,7 +74,7 @@ const FeedUpdate = ({ clickdata }) => {
       })
         // 2. 고유 넘버로 유저 정보 반환
         .then((resp) => {
-        //   console.log(resp.data);
+          //   console.log(resp.data);
           setFeedPost(() => {
             return { ...feedpost, userNo: resp.data };
           });
@@ -255,7 +255,7 @@ const FeedUpdate = ({ clickdata }) => {
       {/* 우측창 게시글 내용 및 해시태그 */}
       <div style={{ float: 'right', width: '67%', height: '459px' }}>
         <div
-          className={Styled.yscroll}
+          // className={Styled.yscroll}
           placeholder="내용을 입력해주세요"
           contentEditable
           ref={contentRef}
@@ -273,7 +273,7 @@ const FeedUpdate = ({ clickdata }) => {
           options={options}
           ref={selectRef}
           onChange={(value) => setSelectedOptions(value)}
-          className={Styled.select}
+          // className={Styled.select}
           defaultValue={selectedOptions}
         />
         <br />
