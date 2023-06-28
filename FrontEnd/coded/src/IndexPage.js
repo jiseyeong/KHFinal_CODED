@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { logout } from './modules/Redux/members';
 import axios from 'axios';
 import ReportModal from './component/Report/component/ReportModal';
+import { color } from 'framer-motion';
 
 const IndexPage = () => {
   const [reportView, setReportView] = useState(false);
@@ -70,10 +71,13 @@ const IndexPage = () => {
       <Link to="/test/follow">팔로워 팔로잉 리스트 테스트</Link>
       <br />
       <br />
-      <Link to="/test/TodayAndAdForm">오늘의 날씨 및 광고 테스트</Link>
+      <Link to="/todayWeather">오늘의 날씨</Link>
       <br />
       <br />
-      <button onClick={onReportView}>신고게시판</button>
+      {/* <Link to="/confirmDialog">로그인안내창</Link> */}
+      <br />
+      <br />
+      <button onClick={onReportView}>신고하기</button>
       <br />
       <br />
       <button onClick={onLogout}>로그아웃</button>

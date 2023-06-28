@@ -13,12 +13,12 @@ function SendBtn() {
         // 서버로 데이터 전송
         axios
             .request({
-                url: '/DM/send',
+                url: '/app/${roomId}',
                 method: 'post',
                 params: {
                     roomId: RoomId,
                     userNo: loginUserNo,
-                    msg: sendRef.current.value
+                    message: sendRef.current.value
                 },
             })
             .then(resp => {

@@ -112,7 +112,7 @@ public class AuthenticationController {
             data.put("userId", id);
             return ResponseEntity.ok().body(data);
         }
-        return ResponseEntity.badRequest().body("Login Failed");
+        return ResponseEntity.accepted().body("Login Failed");
     }
 
     //여기서조차 badRequest 시 login 페이지로 넘겨주면 됨.
@@ -487,6 +487,7 @@ public class AuthenticationController {
                 MemberDTO dto = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
                 if (dto != null) {
                     int check = memberService.deleteMember(dto.getUserId(), checkPw);
+                    System.out.println(check);
                     return ResponseEntity.ok().body(check);
                 }
             }
