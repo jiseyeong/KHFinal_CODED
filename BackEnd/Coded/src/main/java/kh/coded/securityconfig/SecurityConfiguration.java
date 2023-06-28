@@ -95,6 +95,8 @@ public class SecurityConfiguration {
 			"/auth/isMember",
 			"/auth/isMemberByEmail",
 			"/auth/oauth/**",
+			"/auth/memberIdByEmail",
+			"/auth/send-mail/pw",
 			"/login/oauth2/**",
 			"/feedPost/comment/**", //얘들은 단순 select임.
 			"/weather/todayNonMem",
