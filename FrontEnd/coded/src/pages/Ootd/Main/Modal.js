@@ -36,6 +36,7 @@ function Modal({
   setFeedLikeCount,
   isFeedLike,
   setIsFeedLike,
+  hashTagList,
 }) {
   const carrouselSettings = {
     dots: true,
@@ -446,6 +447,21 @@ function Modal({
                     <div className="weatherIcon">{weatherIcon}</div>
                     <div className="writeTemp">{feedPost.writeTemp}º</div>
                   </div>
+                </div>
+                <div className="hashTagBody">
+                  {' '}
+                  {hashTagList.length > 0 ? (
+                    hashTagList.map((e, i) => (
+                      <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                        <span>
+                          #{e.hashTag}
+                          &nbsp;&nbsp;
+                        </span>
+                      </Link>
+                    ))
+                  ) : (
+                    <span>태그 없음</span>
+                  )}
                 </div>
               </div>
             </div>
