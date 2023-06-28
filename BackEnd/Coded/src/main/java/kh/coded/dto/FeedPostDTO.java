@@ -10,11 +10,16 @@ public class FeedPostDTO {
 	private Timestamp writeDate;
 	private int writeTemp;
 	private int writeTempRange;
+	private int writePtyCode;
+	private int wrtieSkyCode;
+	
 	public FeedPostDTO() {
 		super();
 	}
-	public FeedPostDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
-			int writeTempRange) {
+	
+
+	public FeedPostDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp, int writeTempRange,
+			int writePtyCode, int wrtieSkyCode) {
 		super();
 		this.feedPostId = feedPostId;
 		this.userNo = userNo;
@@ -22,7 +27,11 @@ public class FeedPostDTO {
 		this.writeDate = writeDate;
 		this.writeTemp = writeTemp;
 		this.writeTempRange = writeTempRange;
+		this.writePtyCode = writePtyCode;
+		this.wrtieSkyCode = wrtieSkyCode;
 	}
+
+
 	public int getFeedPostId() {
 		return feedPostId;
 	}
@@ -59,5 +68,26 @@ public class FeedPostDTO {
 	public void setWriteTempRange(int writeTempRange) {
 		this.writeTempRange = writeTempRange;
 	}
+
+
+	public int getWritePtyCode() {
+		return writePtyCode;
+	}
+
+
+	public void setWritePtyCode(int writePtyCode) {
+		this.writePtyCode = writePtyCode;
+	}
+
+
+	public int getWrtieSkyCode() {
+		return wrtieSkyCode;
+	}
+
+
+	public void setWrtieSkyCode(int wrtieSkyCode) {
+		this.wrtieSkyCode = wrtieSkyCode;
+	}
+	
 	
 }
