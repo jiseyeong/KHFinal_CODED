@@ -1,9 +1,9 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
+import React, { Component, useCallback, useEffect, useRef, useState } from 'react';
 // import "../styles/common.scss";
 // import "../styles/reset.scss";
 import './ReportModal.scss';
 //import Image from "../image/326548_bookmark_icon.png";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import FeedCommentList from '../../FeedPostDetail/FeedCommentList';
 import {
@@ -15,6 +15,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
+import { setNonMember } from '../../../modules/Redux/navbarSetting';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -55,18 +56,26 @@ const Buttonok = styled('button')`
   border-radius: 13px;
   position: relative;
   margin-right: 8px;
+
   width: 72px;
   height: 30px;
   background-color:black;
   border:none;
   color:white;
   cursor:pointer;
+
 `;
+
+
 
 function ReportModal({ onReportView }) {
   const textread = useRef();
   const [text, setText] = useState('');
   const [reportType, setReportType] = useState('a');
+
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.member.access);
+  const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
 
   const handleReportNumber = (ev) => {
     setReportType(ev.target.value);
@@ -76,6 +85,65 @@ function ReportModal({ onReportView }) {
     setText(ev.target.value);
     console.log(ev.target.value);
   };
+
+  const handlePopupCancel = () => {
+    onReportView();
+  }
+
+
+
+  useEffect(() => {
+      if (accessToken) {
+        // 1. 토큰 값으로 나의 고유 넘버를 반환
+        axios({
+          url: '/auth/userNo',
+          method: 'get',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+          .then((resp) => {
+          })
+          // 2. 고유 넘버로 유저 정보 반환
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        denyAccess();
+      }
+  }, [accessToken]);
+
+
+
+
+  const handlePopupok = () => {
+    console.log("abc")
+    axios({
+      url: '/ReportOk',
+      method: 'post',
+      data: {
+        type:reportType,
+        text:text
+      },
+    }).then((resp) => {
+      
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
+  const Buttonok2 = styled('button')`
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 48px;
+  position: relative;
+  border-color: gray;
+  border-radius: 8px;
+  width: 57px;
+  height: 27px;
+  color: black;
+`;
+ 
 
   return (
     <div className="reportmodalwrapper">
@@ -190,9 +258,12 @@ function ReportModal({ onReportView }) {
             </div>
             <br />
             <div>
-              <Buttonok>submit</Buttonok>
-              <br />
-              <br />
+
+            <Buttonok onClick={handlePopupok}>확인</Buttonok>
+            <Buttonok2 onClick={handlePopupCancel}>취소</Buttonok2>
+              <br/>
+              <br/>
+
               <Reportdiv2>
                 허위신고를 할 경우 활동에 제한을 받을 수 있습니다. <br />이 점
                 유의해주시기 바랍니다.
