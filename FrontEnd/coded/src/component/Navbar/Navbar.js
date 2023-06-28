@@ -92,6 +92,7 @@ function Navbar() {
                     onClick={handleClickOotd}
                   >
                     #OOTD
+                    <hr/>
                   </span>
                 </li>
                 {accessToken && (
@@ -103,6 +104,7 @@ function Navbar() {
                       onClick={handleClickWeekly}
                     >
                       #WEEKLY
+                      <hr/>
                     </span>
                   </li>
                 )}
