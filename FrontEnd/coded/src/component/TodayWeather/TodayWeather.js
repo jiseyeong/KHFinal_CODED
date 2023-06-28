@@ -46,6 +46,7 @@ function TodayCard() {
           } else {
             if (response.data.today.skyCode == 1) {
               setWeatherIcon(weatherIcons.sun);
+
             } else {
               setWeatherIcon(weatherIcons.cloud);
             }

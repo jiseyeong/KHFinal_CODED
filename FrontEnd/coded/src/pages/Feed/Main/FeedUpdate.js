@@ -10,7 +10,6 @@ import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
 import weatherIcons from '../../../component/WeatherCommon/WetherIcons';
 
-
 const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
@@ -25,7 +24,7 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   const [addressList2, setAddressList2] = useState([]);
   const [addressIndex1, setAddressIndex1] = useState(-1);
   const [addressIndex2, setAddressIndex2] = useState(-1);
-  const address2 = useRef();
+  const address = useRef();
 
   const selectRef = useRef();
   const contentRef = useRef();
@@ -34,132 +33,352 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   const accessToken = useSelector((state) => state.member.access);
   const bodyImageRef = useRef();
 
+  // 날씨
+  const [weatherIcon, setWeatherIcon] = useState('');
+  const [weatherMessage, setWeatherMessage] = useState('');
+  const [minTemp, setMinTemp] = useState(0);
+  const [maxTemp, setMaxTemp] = useState(0);
+  const [recentTemp, setRecentTemp] = useState(0);
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [weatherName, setWeatherName] = useState('');
 
-
-
-
-
-  // 현재 날짜 데이터 받아오기
-  function getCurrentDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1, 두 자리 숫자로 맞추기 위해 padStart 사용
-    const day = String(today.getDate()).padStart(2, '0'); // 두 자리 숫자로 맞추기 위해 padStart 사용
-    return `${year}-${month}-${day}`;
-  }
-
-  // 첫 마운트 시 초기 데이터 받아오기
   useEffect(() => {
-    if (accessToken) {
+    if(accessToken){
+      axios({
+        url: '/feedpost/updatefeed',
+        method: 'get',
+        params: {
+          userNo: 18,
+          feedpostId: 295,
+        },
+      })
+        .then((resp) => {
+          const data = resp.data;
+  
+          console.log(data)
+          data.hashTagList.forEach((item) => {
+            let temp = { value: item.hashTag, label: item.hashTag };
+            setSelectedOptions((preview) => [...preview, temp]);
+          });
+  
+          data.photoList.forEach((item) => {
+            setCopyImgBase64((preview) => [...preview, item]);
+          });        
+          // 지역, 날짜, 기온, 날씨 데이터 가져와야됨
+  
+          setContentbody(data.feedPost.body);
+     axios({
+          method: 'get',
+          url: '/weather/today',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            time: new Date().getTime(),
+          },
+        })
+          .then((response) => {
+            setAddress1(response.data.address1);
+            setAddress2(response.data.address2);
+            setWeatherMessage(response.data.message); //메세지
+            setRecentTemp(response.data.today.recent); //평균기온
+            setMinTemp(response.data.today.min); //최소기온
+            setMaxTemp(response.data.today.max); //최대기온
+            if (
+              response.data.today.ptyCode == 1 ||
+              response.data.today.ptyCode == 2
+            ) {
+              setWeatherIcon(weatherIcons.rain);
+              setWeatherName('비');
+            } else if (response.data.today.ptyCode == 3) {
+              setWeatherIcon(weatherIcons.snow);
+              setWeatherName('눈');
+            } else if (response.data.today.ptyCode == 4) {
+              setWeatherIcon(weatherIcons.heavyRain);
+              setWeatherName('소나기');
+            } else {
+              if (response.data.today.skyCode == 1) {
+                setWeatherIcon(weatherIcons.sun);
+                setWeatherName('맑음');
+              } else {
+                setWeatherIcon(weatherIcons.cloud);
+                setWeatherName('구름많음');
+              }
+            }
+          })
       // 1. 토큰 값으로 나의 고유 넘버를 반환
-      // + DB 내 1차 주소들을 가져옴
-      axios
-        .all([
-          axios.get('/auth/userDTO', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }),
-          axios.get('/auth/getAddress1List'),
-          axios.get('/PostHashs/selectAllPostTagNames'),
-        ])
-        // 2. 고유 넘버로 유저 정보 반환 후 저장
-        // + 1차 주소들 저장
-
-        // 3. 해시 태그의 기존 데이터들 반환
-        .then(
-          axios.spread((resp1, resp2, resp3) => {
-            // 내 정보 + 피드 정보
-            const { userNo, address1, address2 } = resp1.data;
-
-            const feedPost = {
-              userNo: userNo,
-              address1: address1,
-              address2: address2,
-              writeDate: getCurrentDate(),
-            };
-
-            setFeedPost((prev) => {
-              return {
-                ...prev,
-                ...feedPost,
+        // + DB 내 1차 주소들을 가져옴
+        axios
+          .all([
+            axios.get('/auth/userDTO', {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }),
+            axios.get('/auth/getAddress1List'),
+            axios.get('/PostHashs/selectAllPostTagNames'),
+          ])
+          // 2. 고유 넘버로 유저 정보 반환 후 저장
+          // + 1차 주소들 저장
+  
+          // 3. 해시 태그의 기존 데이터들 반환
+          .then(
+            axios.spread((resp1, resp2, resp3) => {
+              // 내 정보 + 피드 정보
+              const { userNo, address1, address2 } = resp1.data;
+  
+              const feedPost = {
+                userNo: userNo,
+                address1: address1,
+                address2: address2,
+                // writeDate: date,
               };
-            });
-
-            // 주소 데이터
-            let address = [];
-            resp2.data.forEach((addressData) => {
-              address = address.concat({
-                value: addressData,
-                label: addressData,
+  
+              setFeedPost((prev) => {
+                return {
+                  ...prev,
+                  ...feedPost,
+                };
               });
-            });
-            setAddressList1(address);
-
-            // 해시태그 데이터
-            const HashTagNameList = resp3.data;
-            let arrTemp = [];
-            HashTagNameList.forEach((hashTag) => {
-              arrTemp = arrTemp.concat({
-                value: hashTag.hashTag,
-                label: hashTag.hashTag,
+  
+              // 주소 데이터
+              let address = [];
+              resp2.data.forEach((addressData) => {
+                address = address.concat({
+                  value: addressData,
+                  label: addressData,
+                });
               });
-              setOptions([...options, ...arrTemp]);
-            });
-
-            // 객체로 리턴
-            const obj = { feedpost: feedPost, addressList: address };
-            return obj;
-          }),
-          // 3. 내 정보에 등록된 1차 기본 주소 지정
-        )
-        .then((obj) => initAddress1(obj))
-        .then((obj) => getAddress2(obj))
+              setAddressList1(address);
+  
+              // 해시태그 데이터
+              const HashTagNameList = resp3.data;
+              let arrTemp = [];
+              HashTagNameList.forEach((hashTag) => {
+                arrTemp = arrTemp.concat({
+                  value: hashTag.hashTag,
+                  label: hashTag.hashTag,
+                });
+                setOptions([...options, ...arrTemp]);
+              });
+  
+              // 객체로 리턴
+              const obj = { feedpost: feedPost, addressList: address };
+              return obj;
+            }),
+            // 3. 내 정보에 등록된 1차 기본 주소 지정
+          )
+          .then((obj) => initAddress1(obj))
+          .then((obj) => getAddress2(obj))
+        })
         .catch((error) => {
           console.log(error);
         });
-    }
-  }, [accessToken]);
+     }
+    }, [accessToken]);
 
-  //   /feedpost/updatefeed 데이터를 가져와야됨 세번째
-  useEffect(() => {
-    axios({
-      url: '/feedpost/updatefeed',
-      method: 'get',
-      params: {
-        userNo: 18,
-        feedpostId: 295,
-      },
-    })
-      .then((resp) => {
-        const data = resp.data;
-        // console.log(data);
-        // console.log(data.photoList); //아무것도 안넣었기 때문에 빈배열
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     axios({
+  //       method: 'get',
+  //       url: '/weather/today',
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       params: {
+  //         time: new Date().getTime(),
+  //       },
+  //     })
+  //       .then((response) => {
+  //         setAddress1(response.data.address1);
+  //         setAddress2(response.data.address2);
+  //         setWeatherMessage(response.data.message); //메세지
+  //         setRecentTemp(response.data.today.recent); //평균기온
+  //         setMinTemp(response.data.today.min); //최소기온
+  //         setMaxTemp(response.data.today.max); //최대기온
+  //         if (
+  //           response.data.today.ptyCode == 1 ||
+  //           response.data.today.ptyCode == 2
+  //         ) {
+  //           setWeatherIcon(weatherIcons.rain);
+  //           setWeatherName('비');
+  //         } else if (response.data.today.ptyCode == 3) {
+  //           setWeatherIcon(weatherIcons.snow);
+  //           setWeatherName('눈');
+  //         } else if (response.data.today.ptyCode == 4) {
+  //           setWeatherIcon(weatherIcons.heavyRain);
+  //           setWeatherName('소나기');
+  //         } else {
+  //           if (response.data.today.skyCode == 1) {
+  //             setWeatherIcon(weatherIcons.sun);
+  //             setWeatherName('맑음');
+  //           } else {
+  //             setWeatherIcon(weatherIcons.cloud);
+  //             setWeatherName('구름많음');
+  //           }
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   } else {
+  //     console.log("2")
+  //     axios({
+  //       method: 'get',
+  //       url: '/weather/todayNonMem',
+  //       params: {
+  //         time: new Date().getTime(),
+  //       },
+  //     })
+  //       .then((response) => {
+  //         setAddress1(response.data.address1);
+  //         setAddress2(response.data.address2);
+  //         setWeatherMessage(response.data.message);
+  //         setRecentTemp(response.data.today.recent);
+  //         setMinTemp(response.data.today.min);
+  //         setMaxTemp(response.data.today.max);
+  //         if (
+  //           response.data.today.ptyCode == 1 ||
+  //           response.data.today.ptyCode == 2
+  //         ) {
+  //           setWeatherIcon(weatherIcons.rain);
+  //         } else if (response.data.today.ptyCode == 3) {
+  //           setWeatherIcon(weatherIcons.snow);
+  //         } else if (response.data.today.ptyCode == 4) {
+  //           setWeatherIcon(weatherIcons.heavyRain);
+  //         } else {
+  //           if (response.data.today.skyCode == 1) {
+  //             setWeatherIcon(weatherIcons.sun);
+  //           } else {
+  //             setWeatherIcon(weatherIcons.cloud);
+  //           }
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }, [accessToken]);
 
-        data.hashTagList.forEach((item) => {
-          let temp = { value: item.hashTag, label: item.hashTag };
-          setSelectedOptions((preview) => [...preview, temp]);
-        });
+  // // 현재 날짜 데이터 받아오기
+  // function getCurrentDate() {
+  //   const today = new Date();
+  //   const year = today.getFullYear();
+  //   const month = String(today.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1, 두 자리 숫자로 맞추기 위해 padStart 사용
+  //   const day = String(today.getDate()).padStart(2, '0'); // 두 자리 숫자로 맞추기 위해 padStart 사용
+  //   return `${year}년 ${month}월 ${day}일`;
+  // }
 
-        data.photoList.forEach((item) => {
-          setCopyImgBase64((preview) => [...preview, item]);
-          setImgBase64((preview) => [...preview, item]);
-        });
+  // // 첫 마운트 시 초기 데이터 받아오기
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     // 1. 토큰 값으로 나의 고유 넘버를 반환
+  //     // + DB 내 1차 주소들을 가져옴
+  //     axios
+  //       .all([
+  //         axios.get('/auth/userDTO', {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         }),
+  //         axios.get('/auth/getAddress1List'),
+  //         axios.get('/PostHashs/selectAllPostTagNames'),
+  //       ])
+  //       // 2. 고유 넘버로 유저 정보 반환 후 저장
+  //       // + 1차 주소들 저장
 
-        //도시1
-        //도시2
+  //       // 3. 해시 태그의 기존 데이터들 반환
+  //       .then(
+  //         axios.spread((resp1, resp2, resp3) => {
+  //           // 내 정보 + 피드 정보
+  //           const { userNo, address1, address2 } = resp1.data;
 
+  //           const feedPost = {
+  //             userNo: userNo,
+  //             address1: address1,
+  //             address2: address2,
+  //             writeDate: getCurrentDate(),
+  //           };
 
-        // 지역, 날짜, 기온, 날씨 데이터 가져와야됨
-        // console.log(data.feedPost); //객체로 나옴
-        // console.log(data.feedPost.body); //test
-        setContentbody(data.feedPost.body);
-        console.log('3');
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  //           setFeedPost((prev) => {
+  //             return {
+  //               ...prev,
+  //               ...feedPost,
+  //             };
+  //           });
+
+  //           // 주소 데이터
+  //           let address = [];
+  //           resp2.data.forEach((addressData) => {
+  //             address = address.concat({
+  //               value: addressData,
+  //               label: addressData,
+  //             });
+  //           });
+  //           setAddressList1(address);
+
+  //           // 해시태그 데이터
+  //           const HashTagNameList = resp3.data;
+  //           let arrTemp = [];
+  //           HashTagNameList.forEach((hashTag) => {
+  //             arrTemp = arrTemp.concat({
+  //               value: hashTag.hashTag,
+  //               label: hashTag.hashTag,
+  //             });
+  //             setOptions([...options, ...arrTemp]);
+  //           });
+
+  //           // 객체로 리턴
+  //           const obj = { feedpost: feedPost, addressList: address };
+  //           return obj;
+  //         }),
+  //         // 3. 내 정보에 등록된 1차 기본 주소 지정
+  //       )
+  //       .then((obj) => initAddress1(obj))
+  //       .then((obj) => getAddress2(obj))
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // }, [accessToken]);
+
+  // //   /feedpost/updatefeed 데이터를 가져와야됨 세번째
+  // useEffect(() => {
+  //   axios({
+  //     url: '/feedpost/updatefeed',
+  //     method: 'get',
+  //     params: {
+  //       userNo: 18,
+  //       feedpostId: 295,
+  //     },
+  //   })
+  //     .then((resp) => {
+  //       const data = resp.data;
+  //       // console.log(data);
+  //       // console.log(data.photoList); //아무것도 안넣었기 때문에 빈배열
+
+  //       data.hashTagList.forEach((item) => {
+  //         let temp = { value: item.hashTag, label: item.hashTag };
+  //         setSelectedOptions((preview) => [...preview, temp]);
+  //       });
+
+  //       data.photoList.forEach((item) => {
+  //         setCopyImgBase64((preview) => [...preview, item]);
+  //       });
+
+  //       console.log(data.feedPost)
+        
+
+  //       // 지역, 날짜, 기온, 날씨 데이터 가져와야됨
+  //       // console.log(data.feedPost); //객체로 나옴
+  //       // console.log(data.feedPost.body); //test
+  //       setContentbody(data.feedPost.body);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   // 내 정보에 등록된 1차 기본 주소 지정
   const initAddress1 = (obj) => {
@@ -217,7 +436,7 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   };
 
   // 1차 주소 지정에 따른 2차 주소 지정 (target을 통한 지정된 내용 불러오기)
-  const setAddress2 = (target) => {
+  const setAddress = (target) => {
     setFeedPost((prev) => ({ ...prev, address1: target.value }));
     axios
       .get('/auth/getAddress2List', {
@@ -233,7 +452,7 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
             label: addressData,
           });
         });
-        address2.current.setValue('');
+        address.current.setValue('');
         setAddressList2(arrTemp);
       })
       .catch((error) => {
@@ -303,9 +522,12 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   // 데이터 서버로 보내는거
   const complate = () => {
     const formData = new FormData();
+    setImgBase64([...CopyimgBase64]);
     delete feedpost.address1;
     delete feedpost.address2;
     console.log(feedpost);
+    console.log(file.length)
+    console.log(imgBase64.length)
     formData.append('dto', feedpost);
     // formData.append('userNo', feedpost.userNo);
     // formData.append('body', feedpost.body);
@@ -432,11 +654,12 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
                   return { ...feedpost, body: e.target.value };
                 });
               }}
-              value={contentbody}
+              defaultValue={contentbody}
             ></textarea>
           </div>
           <div className="hashLayout">
             <CreatableSelect
+            className='Select'
               placeholder="해시태그 추가"
               isMulti
               options={options}
@@ -445,58 +668,14 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
               value={selectedOptions}
             />
           </div>
-          <div className="weatherSelectLayout">
-            <div className="select1">
-              {addressList1.length > 0 && (
-                <Select
-                  options={addressList1}
-                  defaultValue={addressList1[addressIndex1]}
-                  onChange={setAddress2}
-                  isDisabled
-                />
-              )}
-            </div>
-            <div className="select2">
-              {addressList2.length > 0 && (
-                <Select
-                  ref={address2}
-                  options={addressList2}
-                  defaultValue={addressList2[addressIndex2]}
-                  onChange={(target) => {
-                    setAddress2((prev) => ({
-                      ...prev,
-                      address2: target.value,
-                    }));
-                  }}isDisabled
-                />
-              )}
-            </div>
-          </div>
-          <div className="dateLayout">
-            {feedpost.writeDate !== undefined && (
-              <input
-                type="date"
-                value={feedpost.writeDate}
-                onChange={(e) => {
-                  setFeedPost((prev) => ({
-                    ...prev,
-                    writeDate: e.target.value,
-                  }));
-                }}
-                style={{margin:"0px"}}
-                readOnly
-              />
-            )}
-          </div>
 
           <div className="weatherResultLayout">
-          <WeeklyWeatherCard
-            key={index}
-            weeklyData={item.weekly}
-            weatherMessage={item.message}
-            date={dates[index]}
-            index={index}
-          />
+            <div className="todayName">{`${feedpost.writeDate} ${address1}, ${address2} 날씨`}</div>
+            <div className="todaySky">{weatherIcon} {weatherName}</div>
+            <div className="todayTemp">
+              <div className="maxTemp">최고기온 : {maxTemp}°</div>
+              <div className="minTemp">{weatherMessage}</div>
+            </div>
           </div>
 
           <div className="btnWrapper">

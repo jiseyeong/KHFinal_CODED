@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
+import weatherIcons from '../../../component/WeatherCommon/WetherIcons';
 
 function ToastUI({ clickdata, setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
@@ -21,7 +22,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
   const [addressList2, setAddressList2] = useState([]);
   const [addressIndex1, setAddressIndex1] = useState(-1);
   const [addressIndex2, setAddressIndex2] = useState(-1);
-  const address2 = useRef();
+  const address = useRef();
 
   const selectRef = useRef();
   const contentRef = useRef();
@@ -30,13 +31,105 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
   const accessToken = useSelector((state) => state.member.access);
   const bodyImageRef = useRef();
 
+  //날씨
+  const [weatherIcon, setWeatherIcon] = useState('');
+  const [weatherMessage, setWeatherMessage] = useState('');
+  const [minTemp, setMinTemp] = useState(0);
+  const [maxTemp, setMaxTemp] = useState(0);
+  const [recentTemp, setRecentTemp] = useState(0);
+  const [address1, setAddress1] = useState('');
+  const [address2, setAddress2] = useState('');
+  const [weatherName, setWeatherName] = useState('');
+
+  useEffect(() => {
+    if (accessToken) {
+      axios({
+        method: 'get',
+        url: '/weather/today',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          time: new Date().getTime(),
+        },
+      })
+        .then((response) => {
+          setAddress1(response.data.address1);
+          setAddress2(response.data.address2);
+          setWeatherMessage(response.data.message);
+          setRecentTemp(response.data.today.recent);
+          setMinTemp(response.data.today.min);
+          setMaxTemp(response.data.today.max);
+          if (
+            response.data.today.ptyCode == 1 ||
+            response.data.today.ptyCode == 2
+          ) {
+            setWeatherIcon(weatherIcons.rain);
+            setWeatherName('비');
+          } else if (response.data.today.ptyCode == 3) {
+            setWeatherIcon(weatherIcons.snow);
+            setWeatherName('눈');
+          } else if (response.data.today.ptyCode == 4) {
+            setWeatherIcon(weatherIcons.heavyRain);
+            setWeatherName('소나기');
+          } else {
+            if (response.data.today.skyCode == 1) {
+              setWeatherIcon(weatherIcons.sun);
+              setWeatherName('맑음');
+            } else {
+              setWeatherIcon(weatherIcons.cloud);
+              setWeatherName('구름많음');
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios({
+        method: 'get',
+        url: '/weather/todayNonMem',
+        params: {
+          time: new Date().getTime(),
+        },
+      })
+        .then((response) => {
+          setAddress1(response.data.address1);
+          setAddress2(response.data.address2);
+          setWeatherMessage(response.data.message);
+          setRecentTemp(response.data.today.recent);
+          setMinTemp(response.data.today.min);
+          setMaxTemp(response.data.today.max);
+          if (
+            response.data.today.ptyCode == 1 ||
+            response.data.today.ptyCode == 2
+          ) {
+            setWeatherIcon(weatherIcons.rain);
+          } else if (response.data.today.ptyCode == 3) {
+            setWeatherIcon(weatherIcons.snow);
+          } else if (response.data.today.ptyCode == 4) {
+            setWeatherIcon(weatherIcons.heavyRain);
+          } else {
+            if (response.data.today.skyCode == 1) {
+              setWeatherIcon(weatherIcons.sun);
+            } else {
+              setWeatherIcon(weatherIcons.cloud);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [accessToken]);
+
   // 현재 날짜 데이터 받아오기
   function getCurrentDate() {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1, 두 자리 숫자로 맞추기 위해 padStart 사용
     const day = String(today.getDate()).padStart(2, '0'); // 두 자리 숫자로 맞추기 위해 padStart 사용
-    return `${year}-${month}-${day}`;
+    return `${year}년 ${month}월 ${day}일`;
   }
 
   // 첫 마운트 시 초기 데이터 받아오기
@@ -168,7 +261,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
   };
 
   // 1차 주소 지정에 따른 2차 주소 지정 (target을 통한 지정된 내용 불러오기)
-  const setAddress2 = (target) => {
+  const setAddress = (target) => {
     setFeedPost((prev) => ({ ...prev, address1: target.value }));
     axios
       .get('/auth/getAddress2List', {
@@ -184,7 +277,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
             label: addressData,
           });
         });
-        address2.current.setValue('');
+        address.current.setValue('');
         setAddressList2(arrTemp);
       })
       .catch((error) => {
@@ -259,6 +352,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
     // formData.append('writeDate', feedpost.writeDate);
     selectRef.current.getValue().forEach((item) => {
       formData.append('HashTag', item.value);
+      console.log(item.value);
     });
     for (var i = 0; i < file.length; i++) {
       formData.append('files', file[i]);
@@ -278,43 +372,14 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
       .catch((error) => {});
   };
 
-  //데이터 서버로 보내는거 (insert)
-  useEffect(() => {
-    const formData = new FormData();
-    if (clickdata) {
-      selectedOptions.forEach((option) => {
-        formData.append('HashTag', option.value);
-      });
-      formData.append('userNo', feedpost.userNo);
-      formData.append('body', feedpost.body);
-      for (var i = 0; i < file.length; i++) {
-        formData.append('files', file[i]);
-      }
-      axios({
-        method: 'POST',
-        url: '/feedpost/feedpost',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        data: formData,
-      })
-        .then((resp) => {})
-        .catch((error) => {});
-    }
-  }, [clickdata]);
-
   return (
     <div className="toastUIContainer">
       <div className="leftWrapper">
         <div className="bodyImageLayout">
-        {bodyImage && bodyImage !== '' ? (
+          {bodyImage && bodyImage !== '' ? (
             <img ref={bodyImageRef} className="bodyImage" src={bodyImage} />
           ) : imgBase64.length > 0 ? (
-            <img
-              ref={bodyImageRef}
-              className="bodyImage"
-              src={imgBase64[0]}
-            />
+            <img ref={bodyImageRef} className="bodyImage" src={imgBase64[0]} />
           ) : (
             <div>이미지를 넣어주세요</div>
           )}
@@ -392,7 +457,8 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
               // onChange={(value) => setSelectedOptions(value)}
             />
           </div>
-          <div className="weatherSelectLayout">
+
+          {/* <div className="weatherSelectLayout">
             <div className="select1">
               {addressList1.length > 0 && (
                 <Select
@@ -422,6 +488,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
               )}
             </div>
           </div>
+
           <div className="dateLayout">
             {feedpost.writeDate !== undefined && (
               <input
@@ -435,20 +502,17 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
                 }}
               />
             )}
-          </div>
+          </div> */}
 
           <div className="weatherResultLayout">
-            <div className="iconLayout">
-              <Rain className="icon" />
+            <div className="todayName">{`${feedpost.writeDate} ${address1}, ${address2} 날씨`}</div>
+            <div className="todaySky">
+              {weatherIcon} {weatherName}
             </div>
-            <div className="tempLayout">
-              <Temperature />
-              <span>20º</span>
+            <div className="todayTemp">
+              <div className="maxTemp">최고기온 : {maxTemp}°</div>
+              <div className="minTemp">{weatherMessage}</div>
             </div>
-          </div>
-
-          <div className="messageLayout">
-            <div>날씨 테스트2</div>
           </div>
 
           <div className="btnWrapper">
