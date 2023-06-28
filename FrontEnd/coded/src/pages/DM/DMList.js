@@ -16,6 +16,8 @@ function DMList() {
   const [DMList, setDMList] = useState([]); // 클릭한 사람과의 대화 내용
   const [RoomId, setRoomId] = useState(0); // 클릭한 사람과의 방 번호
 
+
+
   useEffect(() => {
     if (loginUserNo > 0) {
       axios({
@@ -42,10 +44,14 @@ function DMList() {
   // }
 
   useEffect(() => {
+    if(accessToken){
     axios
       .request({
         url: '/DM/selectDMbyRoomid',
         method: 'get',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
         params: {
           roomId: RoomId,
         },
@@ -54,7 +60,9 @@ function DMList() {
         setDMList(resp.data);
       })
       .catch((error) => console.log(error));
-  }, [RoomId]);
+    }
+    }, [RoomId]);
+  
 
   const DMListOuter = styled('div')`
     padding-top: 10px;
