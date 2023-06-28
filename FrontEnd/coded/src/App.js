@@ -125,8 +125,20 @@ function App() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/feedList" element={<FeedList type={'recent'} />} />
-        <Route path="/feedPopularList" element={<FeedList type="popular" />} />
+        <Route path="/feedList" element={<FeedList type="recent" key={1} />} />
+        <Route
+          path="/feedPopularList"
+          element={<FeedList type="popular" key={2} />}
+        />
+        <Route
+          path="/feedFollowingList"
+          element={<FeedList type="following" key={3} />}
+        />
+        <Route path="/myPickPage/" element={<MyPickPage />} key={4} />
+        <Route
+          path="/feedScrapList"
+          element={<FeedList type="popular" key={5} />}
+        />
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
         <Route path="/profile" element={<Profile />} />
@@ -147,8 +159,6 @@ function App() {
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
         <Route path="/test/Follow" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
-
-        <Route path="/myPickPage" element={<MyPickPage />} />
 
         <Route
           path="/test/feedComment"
