@@ -123,9 +123,32 @@ public class SecurityConfiguration {
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
-			"/feedPost/comment",
+			
 			"/auth/logout",
+			"/auth/userDTO",
+			"/auth/userNo",
+			"/auth/kakaoUnlink",
+			"/auth/naverUnlink",
+			"/auth/googleUnlink",
+			"/auth/kakaoToken",
+			"/auth/naverToken",
+			"/auth/googleToken",
+			"/auth/userWithProfileDTO",
+			"/auth/updatePwAfterPwCheck",
+			"/auth/deleteMemberWithoutId",
+			
+			"/feedpost/insertFeedLike",
 			"/feedpost/isLike",
+			"/feedpost/isScrap",
+			"/feedpost/insertFeedScrap",
+			"/feedpost/comment",
+			"/feedpost/nestedComment",
+			"/feedpost/comment/like",
+			
+			"/mypick/selectMember",
+			"/mypick/selectFeedPost",
+			
+			
 	};
 	private final String[] API_ADMIN_LIST = {
 			
