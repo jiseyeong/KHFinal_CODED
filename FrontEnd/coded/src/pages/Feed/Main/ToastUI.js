@@ -400,6 +400,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
                   options={addressList1}
                   defaultValue={addressList1[addressIndex1]}
                   onChange={setAddress2}
+                  isDisabled
                 />
               )}
             </div>
@@ -416,6 +417,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
                       address2: target.value,
                     }));
                   }}
+                  isDisabled
                 />
               )}
             </div>
