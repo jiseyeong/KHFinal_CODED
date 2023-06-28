@@ -22,7 +22,59 @@ const FeedUpdate = ({ clickdata }) => {
 
   const accessToken = useSelector((state) => state.member.access);
 
-  //   /feedpost/updatefeed 데이터를 가져와야됨
+  //  토큰 가져오는거 첫번째로
+  useEffect(() => {
+    if (accessToken) {
+      // 1. 토큰 값으로 나의 고유 넘버를 반환
+      axios({
+        url: '/auth/userNo',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        // 2. 고유 넘버로 유저 정보 반환
+        .then((resp) => {
+          //   console.log(resp.data);
+          setFeedPost(() => {
+            return { ...feedpost, userNo: resp.data };
+          });
+          // userNo = resp.data;
+          // return userNo;
+          console.log('1');
+        })
+        // .then(getUserData(userNo))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [accessToken]);
+
+  //   태그네임 가져오는거 두번째
+  useEffect(() => {
+    axios
+      .request({
+        url: '/PostHashs/selectAllPostTagNames',
+        type: 'get',
+      })
+      .then((resp) => {
+        const HashTagNameList = resp.data;
+        let arrTemp = [];
+        HashTagNameList.forEach((hashTag, index) => {
+          arrTemp = arrTemp.concat({
+            value: hashTag.hashTag,
+            label: hashTag.hashTag,
+          });
+          setOptions([...options, ...arrTemp]);
+        });
+        console.log('2');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  //   /feedpost/updatefeed 데이터를 가져와야됨 세번째
   useEffect(() => {
     axios({
       url: '/feedpost/updatefeed',
@@ -38,61 +90,33 @@ const FeedUpdate = ({ clickdata }) => {
         // console.log(data.photoList); //아무것도 안넣었기 때문에 빈배열
 
         data.hashTagList.forEach((item) => {
-            let temp = {value:item.hashTag, label:item.hashTag};
-            setSelectedOptions((preview) => [...preview, temp]);
-          });
+          let temp = { value: item.hashTag, label: item.hashTag };
+          setSelectedOptions((preview) => [...preview, temp]);
+        });
 
-        // data.hashTagList.forEach((index) => {
-        //   setSelectedOptions[index.hashTag];
-        // });
+        data.photoList
+          .forEach((item) => {
+            setCopyImgBase64((preview) => [...preview, item]);
+            setImgBase64((preview) => [...preview, item]);
+          })
 
-        // selectedOptions.forEach((option) => {
-        //     console.log(option.value);
-        //   });
-
-        // console.log(data.hashTagList[0].hashTag); //test
-
-        // console.log(data.feedPost); //객체로 나옴
-        // console.log(data.feedPost.body); //test
-        setContentbody(data.feedPost.body);
+          // console.log(data.feedPost); //객체로 나옴
+          // console.log(data.feedPost.body); //test
+          setContentbody(data.feedPost.body);
+        console.log('3');
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  //  토큰 가져오는거 1
-  useEffect(() => {
-    if (accessToken) {
-      // 1. 토큰 값으로 나의 고유 넘버를 반환
-      axios({
-        url: '/auth/userNo',
-        method: 'get',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-        // 2. 고유 넘버로 유저 정보 반환
-        .then((resp) => {
-        //   console.log(resp.data);
-          setFeedPost(() => {
-            return { ...feedpost, userNo: resp.data };
-          });
-          // userNo = resp.data;
-          // return userNo;
-        })
-        // .then(getUserData(userNo))
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [accessToken]);
-
   // 데이터 서버로 보내는거
   useEffect(() => {
     const formData = new FormData();
     if (clickdata) {
+      setImgBase64([...CopyimgBase64]);
       console.log(contentRef.current.innerText);
+      console.log(CopyimgBase64.length)
       console.log(imgBase64.length);
       selectedOptions.forEach((option) => {
         formData.append('HashTag', option.value);
@@ -119,29 +143,6 @@ const FeedUpdate = ({ clickdata }) => {
     }
   }, [clickdata]);
 
-  //   태그네임 가져오는거
-  useEffect(() => {
-    axios
-      .request({
-        url: '/PostHashs/selectAllPostTagNames',
-        type: 'get',
-      })
-      .then((resp) => {
-        const HashTagNameList = resp.data;
-        let arrTemp = [];
-        HashTagNameList.forEach((hashTag, index) => {
-          arrTemp = arrTemp.concat({
-            value: hashTag.hashTag,
-            label: hashTag.hashTag,
-          });
-          setOptions([...options, ...arrTemp]);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   const handleChangeFile = (event) => {
     setFile(event.target.files); //파일 갯수 추가
 
@@ -167,7 +168,11 @@ const FeedUpdate = ({ clickdata }) => {
               // 문자 형태로 저장
               var base64Sub = base64.toString();
               // 배열 state 업데이트
-              setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
+              setCopyImgBase64((CopyimgBase64) => [
+                ...CopyimgBase64,
+                base64Sub,
+              ]);
+              //   setImgBase64((imgBase64) => [...imgBase64, base64Sub]); // 찐데이터
             }
           };
         }
@@ -176,9 +181,9 @@ const FeedUpdate = ({ clickdata }) => {
   };
 
   const Cancelpicture = (index) => {
-    const updatedImgBase64 = [...imgBase64];
+    const updatedImgBase64 = [...CopyimgBase64];
     updatedImgBase64.splice(index, 1);
-    setImgBase64(updatedImgBase64);
+    setCopyImgBase64(updatedImgBase64);
     if (updatedImgBase64.length < 10) {
       setInputFileButtonStyle({ display: 'inline-block' });
     }
@@ -196,7 +201,7 @@ const FeedUpdate = ({ clickdata }) => {
             overflowY: 'scroll',
           }}
         >
-          {/* imgBase64 사진들 */}
+          {/* imgBase64확인되면 삭제 CopyimgBase64보여지는거 사진들 */}
           {CopyimgBase64.map((item, index) => {
             return (
               <div>
@@ -274,7 +279,7 @@ const FeedUpdate = ({ clickdata }) => {
           ref={selectRef}
           onChange={(value) => setSelectedOptions(value)}
           className={Styled.select}
-          defaultValue={selectedOptions}
+          value={selectedOptions}
         />
         <br />
       </div>
