@@ -146,9 +146,7 @@ function Navbar() {
               <button onClick={loginPage} className="loginBtn">
                 로그인 / 회원가입
               </button>
-              <button onClick={myPage} className="mypage">
-                마이페이지
-              </button>
+              {/* <button onClick={myPage} className='mypage'>마이페이지</button> */}
               {/* <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -216,7 +214,7 @@ function Navbar() {
         )}
         {navbarType === 'Weekly' && (
           <nav className="bottomNavBar">
-            <p className={isHomeBorder ? 'isHomeBorder' : ''}>User's Choice!</p>
+            <p className={isHomeBorder ? 'isHomeBorder' : ''}>USER'S CODI!</p>
           </nav>
         )}
       </div>

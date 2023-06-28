@@ -395,5 +395,37 @@ public class FeedPostController {
 		List<FeedPostAddDTO> data = feedpostService.selectLikeFeedPost(cpage);
 		return ResponseEntity.ok().body(data);
 	}
+	
+	@GetMapping("selectFollowingFeedPost")
+	public ResponseEntity<?> selectFollowingFeedPost(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				List<FeedPostAddDTO> data = feedpostService.selectFollowingFeedPost(userNo, cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+	
+	@GetMapping("selectScrapFeedPost")
+	public ResponseEntity<?> selectScrapFeedPost(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				List<FeedPostAddDTO> data = feedpostService.selectScrapFeedPost(userNo, cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 
 }

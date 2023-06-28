@@ -143,6 +143,8 @@ public class SecurityConfiguration {
 			"/feedpost/isLike",
 			"/feedpost/isScrap",
 			"/feedpost/insertFeedScrap",
+			"/feedpost/selectFollowingFeedPost",
+			"/feedpost/selectScrapFeedPost",
 			"/feedpost/comment",
 			"/feedpost/nestedComment",
 			"/feedpost/comment/like",

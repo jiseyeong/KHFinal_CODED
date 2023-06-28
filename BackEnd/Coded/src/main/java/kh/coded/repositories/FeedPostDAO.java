@@ -140,5 +140,21 @@ public class FeedPostDAO {
 		data.put("endFeedNum", endFeedNum);
 		return mybatis.selectList("FeedPost.selectPopularFeed", data);
 	}
+	
+	public List<FeedPostAddDTO> selectFollowingFeedPost(int userNo, int startFeedNum, int endFeedNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("userNo", userNo);
+		data.put("startFeedNum", startFeedNum);
+		data.put("endFeedNum", endFeedNum);
+		return mybatis.selectList("FeedPost.selectFollowingFeedPost", data);
+	}
+	
+	public List<FeedPostAddDTO> selectScrapFeedPost(int userNo, int startFeedNum, int endFeedNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("userNo", userNo);
+		data.put("startFeedNum", startFeedNum);
+		data.put("endFeedNum", endFeedNum);
+		return mybatis.selectList("FeedPost.selectScrapFeedPost", data);
+	}
 
 }

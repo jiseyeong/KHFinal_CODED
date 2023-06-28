@@ -38,7 +38,7 @@ import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
 import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
-import TodayWeatherForm from './component/TodayWeather/TodayWeatherForm';
+import TodayWeather from './component/TodayWeather/TodayWeather';
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -165,7 +165,7 @@ function App() {
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
         <Route path="/FeedInsert" element={<FeedInsert />} />
-        {/* <Route path="/test/TodayWeatherForm" element={<TodayWeatherForm />} /> */}
+        <Route path="/todayWeather" element={<TodayWeather />} />
 
         <Route
           path="/login/oauth2/code/kakao"

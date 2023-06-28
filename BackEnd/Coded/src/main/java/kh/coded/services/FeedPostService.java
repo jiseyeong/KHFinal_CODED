@@ -325,4 +325,20 @@ public class FeedPostService {
 
         return feedpostDAO.selectLikeFeedPost(startFeedNum, endFeedNum);
     }
+    
+    public List<FeedPostAddDTO> selectFollowingFeedPost(int userNo, int cpage){
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        
+        return feedpostDAO.selectFollowingFeedPost(userNo, startFeedNum, endFeedNum);
+    }
+    
+    public List<FeedPostAddDTO> selectScrapFeedPost(int userNo, int cpage){
+        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+        int endFeedNum = cpage * feedCountPerPage;
+        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+        
+        return feedpostDAO.selectScrapFeedPost(userNo, startFeedNum, endFeedNum);
+    }
 }
