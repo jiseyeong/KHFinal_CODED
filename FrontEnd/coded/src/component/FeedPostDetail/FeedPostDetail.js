@@ -263,6 +263,7 @@ const FeedPostDetail = (props) => {
             setFeedLikeCount={setFeedLikeCount}
             isFeedLike={isFeedLike}
             setIsFeedLike={setIsFeedLike}
+            hashTagList={hashTagList}
           />
         )}
       </div>
