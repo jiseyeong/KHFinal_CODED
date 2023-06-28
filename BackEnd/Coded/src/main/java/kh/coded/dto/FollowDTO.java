@@ -3,37 +3,42 @@ package kh.coded.dto;
 public class FollowDTO {
 
 	private int id;
-	private int toUserId;
-	private int fromUserId;
+	private int toUserNo;
+	private int fromUserNo;
 	
 	public FollowDTO() {
 		super();
 	}
-	
-	public FollowDTO(int id, int toUserId, int fromUserId) {
+
+	public FollowDTO(int id, int toUserNo, int fromUserNo) {
 		super();
 		this.id = id;
-		this.toUserId = toUserId;
-		this.fromUserId = fromUserId;
+		this.toUserNo = toUserNo;
+		this.fromUserNo = fromUserNo;
 	}
 
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getToUserId() {
-		return toUserId;
+
+	public int getToUserNo() {
+		return toUserNo;
 	}
-	public void setToUserId(int toUserId) {
-		this.toUserId = toUserId;
+
+	public void setToUserNo(int toUserNo) {
+		this.toUserNo = toUserNo;
 	}
-	public int getFromUserId() {
-		return fromUserId;
+
+	public int getFromUserNo() {
+		return fromUserNo;
 	}
-	public void setFromUserId(int fromUserId) {
-		this.fromUserId = fromUserId;
+
+	public void setFromUserNo(int fromUserNo) {
+		this.fromUserNo = fromUserNo;
 	}
 	
 }

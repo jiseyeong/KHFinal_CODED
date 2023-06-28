@@ -18,14 +18,15 @@ const MyPickPage = () => {
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
+
   // const [currentUserNo, setCurrentUserNo] = useState(
   //   searchParams.get('userNo'),
   // );
   // useEffect(() => {
   //   setCurrentUserNo(searchParams.get('userno'));
   // });
-  let currentUserNo = searchParams.get('userNo');
 
+  let currentUserNo = searchParams.get('userNo');
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
 
@@ -43,7 +44,7 @@ const MyPickPage = () => {
             currentUserNo = resp.data;
           })
           // 2. 고유 넘버로 유저 정보 반환
-          .then(getMyPickData)
+          // .then(getMyPickData)
           .catch((error) => {
             console.log(error);
           });
@@ -52,7 +53,7 @@ const MyPickPage = () => {
       }
     } else {
       // 또는 해당 유저 넘버의 유저 정보 반환
-      getMyPickData();
+      // getMyPickData();
     }
     return () => {
       window.onscroll = null;
@@ -82,6 +83,12 @@ const MyPickPage = () => {
       denyAccess();
     }
   };
+
+  useEffect(() => {
+    if (currentUserNo) {
+      getMyPickData();
+    }
+  }, [currentUserNo]);
 
   const getMyPickData = () => {
     axios({
@@ -148,6 +155,10 @@ const MyPickPage = () => {
     }
   };
 
+  const Profile = () => {
+    document.location.href('/profile');
+  };
+
   return (
     <div className="myPickPageLayout">
       <div className="profile">
@@ -195,7 +206,7 @@ const MyPickPage = () => {
                   <div className="statsTitle">Following</div>
                 </li>
               </ul>
-              {currentUserNo !== loginUserNo && (
+              {currentUserNo !== loginUserNo ? (
                 <div className="dmBtnLayout">
                   <svg
                     className="dmBtnSvg"
@@ -211,10 +222,28 @@ const MyPickPage = () => {
                     />
                   </svg>
                 </div>
+              ) : (
+                <div className="writeBtnLayout">
+                  <svg
+                    className="writeBtnSvg"
+                    height="40"
+                    viewBox="0 0 20 20"
+                    width="30"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      className="writeButton"
+                      d="M13.9988 7.4995C13.9988 8.32784 13.3273 8.99934 12.499 8.99934C11.6706 8.99934 10.9991 8.32784 10.9991 7.4995C10.9991 6.67117 11.6706 5.99967 12.499 5.99967C13.3273 5.99967 13.9988 6.67117 13.9988 7.4995ZM12.9989 7.4995C12.9989 7.22339 12.7751 6.99956 12.499 6.99956C12.2228 6.99956 11.999 7.22339 11.999 7.4995C11.999 7.77562 12.2228 7.99945 12.499 7.99945C12.7751 7.99945 12.9989 7.77562 12.9989 7.4995ZM3 5.99967C3 4.343 4.343 3 5.99967 3H13.9988C15.6555 3 16.9985 4.343 16.9985 5.99967V9.00234C16.6571 9.0179 16.3179 9.0941 15.9986 9.23094V5.99967C15.9986 4.89522 15.1032 3.99989 13.9988 3.99989H5.99967C4.89522 3.99989 3.99989 4.89522 3.99989 5.99967V13.9988C3.99989 14.3714 4.10179 14.7202 4.27923 15.0188L8.94803 10.4312C9.53155 9.85784 10.4669 9.85784 11.0504 10.4312L12.7951 12.1455L12.088 12.8526L10.3496 11.1444C10.1551 10.9533 9.84333 10.9533 9.64883 11.1444L4.98802 15.7242C5.2848 15.8986 5.63056 15.9986 5.99967 15.9986H9.47395C9.45833 16.0499 9.44398 16.1017 9.43092 16.1539L9.21979 16.9985H5.99967C4.343 16.9985 3 15.6555 3 13.9988V5.99967ZM10.9789 15.3758L15.8078 10.5469C16.538 9.81666 17.722 9.81666 18.4523 10.5469C19.1826 11.2772 19.1826 12.4612 18.4523 13.1915L13.6234 18.0204C13.3419 18.3019 12.9891 18.5016 12.6028 18.5982L11.1051 18.9726C10.4537 19.1355 9.86376 18.5455 10.0266 17.8942L10.401 16.3964C10.4976 16.0101 10.6973 15.6574 10.9789 15.3758Z"
+                      fill="#222"
+                    />
+                  </svg>
+                </div>
               )}
             </div>
-            <div className="followBtnLayout">
-              <button className="followButton">Follow</button>
+            <div className="editBtnLayout">
+              <button className="editButton" onClick={Profile}>
+                Edit
+              </button>
             </div>
           </div>
         </div>
