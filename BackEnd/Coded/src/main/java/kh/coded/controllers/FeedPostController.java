@@ -381,7 +381,8 @@ public class FeedPostController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	
+
+	// 인기순 정렬 피드 리스트
 	@GetMapping("selectPopularFeedPost")
 	public ResponseEntity<?> selectLikeFeedPost(@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage){
 		List<FeedPostAddDTO> data = feedpostService.selectLikeFeedPost(cpage);
