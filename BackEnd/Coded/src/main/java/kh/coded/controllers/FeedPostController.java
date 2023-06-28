@@ -67,7 +67,7 @@ public class FeedPostController {
 			HttpServletRequest request) {
 		try {
 			String realPath = request.getServletContext().getRealPath("images");
-			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0));
+			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
 					int TagId = 0;
