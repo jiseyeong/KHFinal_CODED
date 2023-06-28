@@ -137,7 +137,7 @@ function App() {
         <Route path="/myPickPage/" element={<MyPickPage />} key={4} />
         <Route
           path="/feedScrapList"
-          element={<FeedList type="popular" key={5} />}
+          element={<FeedList type="scrap" key={5} />}
         />
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}

@@ -52,12 +52,16 @@ function WeeklyFeedForm() {
   let pageLoading = false;
 
   //const [cpage, setCpage] = useState(1);
-  let cpage = 1;
+  //let cpage = 1;
+  const cpage = useRef(1);
   const feedPostOuterRef = useRef(null);
 
   useEffect(() => {
     if (!(maxTemp === -9999 || tempRange === -9999)) {
       setNeedLogin(false);
+      //setCpage(1);
+      cpage.current = 1;
+      setFeedList([]);
       addFeedList();
     } else {
       setNeedLogin(true);
@@ -94,7 +98,7 @@ function WeeklyFeedForm() {
           params: {
             currentTemp: maxTemp,
             currentTempRange: tempRange,
-            cpage: cpage,
+            cpage: cpage.current,
           },
         })
           .then((response) => {
@@ -105,7 +109,9 @@ function WeeklyFeedForm() {
             // setCpage((prev) => {
             //   return prev + 1;
             // });
-            cpage = cpage + 1;
+            //cpage = cpage + 1;
+            //setCpage(cpage + 1);
+            cpage.current = cpage.current + 1;
             setLoading(false);
             pageLoading = false;
           })
