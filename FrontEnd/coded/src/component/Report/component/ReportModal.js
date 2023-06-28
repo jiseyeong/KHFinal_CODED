@@ -26,21 +26,23 @@ const ImageLayout = styled('div')`
 
 const ReportH3 = styled('h3')`
   width: 100%;
-  text-align: center;
   font-size: 26px;
-  color: white;
-  background-color: black;
 `;
 
 const Reportdiv = styled('div')`
+  color: #222;
   font-size: 20px;
   font-weight: bold;
-  margin: 3rem;
+
+  color: silver;
+  text-align: center;
 `;
 
 const Reportdiv2 = styled('div')`
-  font-size: 15px;
-  font-weight: bold;
+  margin-top: 20px;
+  color: #ff0066;
+  font-size: 16px;
+  font-weight: 500;
 `;
 
 function ReportModal({ onReportView }) {
@@ -57,8 +59,11 @@ function ReportModal({ onReportView }) {
             style={{ flexDirection: 'column' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <ReportH3>신고하기</ReportH3>
-            <Reportdiv>신고하는 이유를 선택해주세요.</Reportdiv>
+            <button className="closeBtn" onClick={onReportView}>
+              x
+            </button>
+            <ReportH3>REPORT</ReportH3>
+            <Reportdiv>신고사유를 선택해주세요</Reportdiv>
             <div className="radioLayout">
               <div className="radios">
                 <p>
@@ -101,14 +106,13 @@ function ReportModal({ onReportView }) {
                 </p>
               </div>
             </div>
-            <br></br>
             <div>
               <textarea rows="7" cols="50" value={text} />
             </div>
             <div>
               <Reportdiv2>
-                허위신고를 할 경우 신고자의 활동에 제한을 받을 수 있습니다.{' '}
-                <br />이 점 유의해 주시기 바랍니다.
+                허위신고를 할 경우 활동에 제한을 받을 수 있습니다. <br />이 점
+                유의해주시기 바랍니다.
               </Reportdiv2>
               <br></br>
               <br></br>
