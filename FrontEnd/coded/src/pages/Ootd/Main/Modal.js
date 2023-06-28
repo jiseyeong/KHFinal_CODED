@@ -79,6 +79,7 @@ function Modal({
   // ); // 그냥 modalData?.follower로 바꿔볼 것.
   // const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
+  const userNo = useSelector((state) => state.member.userNo);
 
   let num = 0;
 
@@ -384,14 +385,14 @@ function Modal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                    <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
-                      <img
-                        className="commentUserImg"
-                        //src={modalData?.modalData?.modalData?.authorImg}
-                        src={'/images/' + feedPost.profileSysName}
-                        width="40"
-                        height="40"
-                      />
+                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
+                    <img
+                      className="commentUserImg"
+                      //src={modalData?.modalData?.modalData?.authorImg}
+                      src={'/images/' + feedPost.profileSysName}
+                      width="40"
+                      height="40"
+                    />
                     </Link>
                   </div>
                   <div className="authorInfomation">
@@ -406,9 +407,11 @@ function Modal({
                       {userBio}
                     </div>
                   </div>
+                  {feedPost.userNo === userNo && (
                   <div className="optionBox" onClick={optionBoxClick}>
                     <OptionBox></OptionBox>
                   </div>
+                  )}
                   {optionListDiv && (
                     <div className="optionList">
                       <div className="optionListDiv">
