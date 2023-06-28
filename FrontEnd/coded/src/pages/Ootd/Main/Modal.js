@@ -36,6 +36,7 @@ function Modal({
   setFeedLikeCount,
   isFeedLike,
   setIsFeedLike,
+  hashTagList,
 }) {
   const carrouselSettings = {
     dots: true,
