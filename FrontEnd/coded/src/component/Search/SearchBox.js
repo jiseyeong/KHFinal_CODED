@@ -2,44 +2,64 @@ import React, { useState, useRef, useEffect } from 'react';
 import { styled } from 'styled-components';
 import styles from './SearchBox.module.scss';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Hashtag } from '../../assets/ModalAsset/IconAsset';
 
 // UserList Li
-const UserList = ({ userId, userNickName, sysName }) => {
+const UserList = ({
+  userNo,
+  userId,
+  userNickName,
+  sysName,
+  setIsAutoCompleteOpen,
+  toSearch,
+}) => {
+  const searchByUser = (event) => {
+    event.preventDefault();
+    setIsAutoCompleteOpen(false);
+
+    // 추후 수정
+    location.href = `/myPickPage?userNo=${userNo}`;
+  };
+
   return (
-    <li className={styles.userList}>
-      <a href="#">
-        <div className={styles.userLeftSide}>
-          {sysName !== null ? (
-            <img src={`/images/${sysName}`}></img>
-          ) : (
-            <img className={styles.thumbNail} src={`/images/test.jpg`}></img>
-          )}
-        </div>
-        <div className={styles.userMiddleSide1}>{userNickName}</div>
-        <div className={styles.userMiddleSide2}>{userId}</div>
-        {/* <div className={styles.userRightSide}>
+    <li className={styles.userList} onClick={searchByUser}>
+      <div className={styles.userLeftSide}>
+        {sysName !== null ? (
+          <img src={`/images/${sysName}`}></img>
+        ) : (
+          <img className={styles.thumbNail} src={`/images/test.jpg`}></img>
+        )}
+      </div>
+      <div className={styles.userMiddleSide1}>{userNickName}</div>
+      <div className={styles.userMiddleSide2}>{userId}</div>
+      {/* <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
         </div> */}
-      </a>
     </li>
   );
 };
 
 // HashTagList Li
-const HashTagList = ({ hashTag }) => {
+const HashTagList = ({ hashTag, setIsAutoCompleteOpen, toSearch }) => {
+  const searchByHashtag = (event) => {
+    event.preventDefault();
+    setIsAutoCompleteOpen(false);
+
+    // 추후 수정
+    location.href = `/feedList/search?keyword=${hashTag}`;
+  };
+
   return (
-    <li className={styles.hashTagList}>
-      <a href="#">
-        <div className={styles.userLeftSide}>
-          {/* 해시태그 아이콘 등록해주세요 */}
-          <img src="" alt=""></img>
-        </div>
-        <div className={styles.userMiddleSide}>{hashTag}</div>
-        {/* <div className={styles.userRightSide}>
+    <li className={styles.hashTagList} onClick={searchByHashtag}>
+      <div className={styles.userLeftSide}>
+        {/* 해시태그 아이콘 등록해주세요 */}
+        <Hashtag cl />
+      </div>
+      <div className={styles.userMiddleSide}>{hashTag}</div>
+      {/* <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
         </div> */}
-      </a>
     </li>
   );
 };
@@ -51,7 +71,6 @@ const SearchBox = () => {
   const [searchInput, setSearchInput] = useState('');
 
   const autoSearchRef = useRef();
-
   const toSearch = useNavigate();
 
   // 검색 자동완성 출력 개수
@@ -143,6 +162,7 @@ const SearchBox = () => {
     console.log(searchInput);
   };
 
+  // 엔터 누를 시 입력된 검색어로 submit
   const searchHashList = (event) => {
     event.preventDefault();
     setIsAutoCompleteOpen(false);
@@ -165,12 +185,19 @@ const SearchBox = () => {
             {completedData.map((i) => {
               return i.userId !== undefined ? (
                 <UserList
+                  userNo={i.userNo}
                   userId={i.userId}
                   userNickName={i.userNickName}
                   sysName={i.sysName}
+                  setIsAutoCompleteOpen={setIsAutoCompleteOpen}
+                  toSearch={toSearch}
                 />
               ) : (
-                <HashTagList hashTag={i.hashTag} />
+                <HashTagList
+                  hashTag={i.hashTag}
+                  setIsAutoCompleteOpen={setIsAutoCompleteOpen}
+                  toSearch={toSearch}
+                />
               );
             })}
           </div>
@@ -181,49 +208,3 @@ const SearchBox = () => {
 };
 
 export default SearchBox;
-
-// import React, { useState } from 'react';
-// import style from './SearchBox.scss';
-// import { styled } from 'styled-components';
-// import SearchAutoCompleteBox from './SearchAutoCompleteBox';
-
-// const SearchContainer = styled('div')`
-//   width: 400px;
-//   height: 45px;
-//   position: relative;
-//   border: 0;
-//   img {
-//     position: absolute;
-//     right: 10px;
-//     top: 10px;
-//   }
-// `;
-
-// const Search = styled('input')`
-//   border: 0;
-//   padding-left: 10px;
-//   background-color: #eaeaea;
-//   width: 100%;
-//   height: 100%;
-//   outline: none;
-// `;
-
-// const SearchBoxTest = () => {
-//   let searchbox = document.getElementById('searchBox');
-//   const [searchInput, setSearchInput] = useState('');
-
-//   const searchboxInput = (event) => {
-//     console.log(event.target.value);
-//     setSearchInput(event.target.value);
-//   };
-//   return (
-//     <div className={style.searchBoxLayout}>
-//       <SearchContainer>
-//         <Search id="searchBox" onChange={searchboxInput} />
-//         <SearchAutoCompleteBox props={searchInput} />
-//       </SearchContainer>
-//     </div>
-//   );
-// };
-
-// export default SearchBoxTest;
