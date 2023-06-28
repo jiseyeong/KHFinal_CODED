@@ -1,90 +1,51 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import './DeleteAccountCom.scss';
 import ChangePwModal from '../../../../Profile/component/ChangePwModal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../../../../modules/Redux/members';
 
-const removeAccount = () => {
-  let checkPw = '';
-  if (comfirm('정말로 회원을 탈퇴하시겠습니까?')) {
-    checkPw = prompt('비밀번호를 입력해주세요.');
-  }
-  axios({
-    url: '/auth/deleteMemberWithoutId',
-    method: 'delete',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    params: {
-      checkPw: checkPw,
-    },
-  }).then((resp) => {
-    if (resp.data === 0) {
-      alert('회원 탈퇴가 완료되었습니다.');
-      navi('/');
-    } else {
-      alert('회원 번호가 일치하지 않습니다.');
-      return;
-    }
-  });
-};
-
-const DeleteAccountCom = () => {
+const DeleteAccountCom = ({toggleChangePwModal}) => {
   const accessToken = useSelector((state) => state.member.access);
+  const dispatch = useDispatch();
+  const onLogout = useCallback(()=>{dispatch(logout(), [dispatch])});
 
-  const [password, setPassword] = useState({ currentPw: '', pw: '', repw: '' });
-  const [pwConfirmCheck, setPwConfirmCheck] = useState(true);
-  const pwRef1 = useRef();
-  const pwRef2 = useRef();
+  const [password, setPassword] = useState('');
+  const navi = useNavigate();
 
   // 입력한 비밀번호를 객체에 저장
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setPassword((prev) => ({ ...prev, [name]: value }));
-    console.log(e.target.value);
-    handlePw();
+    setPassword(value);
   };
 
-  // 비밀번호 변경 버튼
-  const submitInput = () => {
-    if (
-      password.currentPw === '' ||
-      password.pw === '' ||
-      password.repw === ''
-    ) {
-      alert('입력 폼을 모두 채워주세요.');
-      return;
-    }
-
-    axios({
-      url: '/auth/updatePwAfterPwCheck',
-      method: 'put',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        currentPw: password.currentPw,
-        pw: password.pw,
-      },
-    }).then((resp) => {
-      if (resp.data === 0) {
-        alert('현재 비밀번호가 일치하지 않습니다.');
-        setPassword({ currentPw: '', pw: '', repw: '' });
-      } else {
-        alert('변경이 완료되었습니다.');
+  const removeAccount = () => {
+    if(accessToken){
+      if (confirm('정말로 회원을 탈퇴하시겠습니까?')) {
+        axios({
+          url: '/auth/deleteMemberWithoutId',
+          method: 'delete',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            checkPw: password,
+          },
+        }).then((resp) => {
+          if (resp.data > 0) {
+            onLogout();
+            alert('회원 탈퇴가 완료되었습니다.');
+            navi('/');
+          } else {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+          }
+        }).catch((error)=>{
+          console.log(error);
+        });
       }
-    });
-
-    DeleteAccountCom((prev) => {
-      return !prev;
-    });
-  };
-
-  const handlePw = () => {
-    if (pwRef1.current.value === pwRef2.current.value) {
-      setPwConfirmCheck(true);
-    } else {
-      setPwConfirmCheck(false);
     }
   };
 
@@ -93,7 +54,7 @@ const DeleteAccountCom = () => {
       <div className="mainWrapper">
         <div className="subWrapper">
           <div className="innerWrapper" onClick={(e) => e.stopPropagation()}>
-            <button className="closeBtn" onClick={DeleteAccountCom}>
+            <button className="closeBtn" onClick={toggleChangePwModal}>
               x
             </button>
             <div className="blankWrapper1"></div>
@@ -127,17 +88,12 @@ const DeleteAccountCom = () => {
                   type="password"
                   placeholder="현재 비밀번호"
                   name="currentPw"
-                  value={password.currentPw || ''}
+                  value={password}
                   onChange={handleInput}
                 />
-                {pwConfirmCheck ? (
-                  <div className="checkpw">비밀번호가 일치합니다.</div>
-                ) : (
-                  <div className="checkpw">비밀번호가 일치하지 않습니다.</div>
-                )}
               </div>
               <div className="btnLayout">
-                <button className="DeleteAccountComBtn" onCLick={removeAccount}>
+                <button className="DeleteAccountComBtn" onClick={removeAccount}>
                   byebye..
                 </button>
               </div>
