@@ -294,6 +294,8 @@
       width: 35%;
       justify-content: center;
       padding: 20px 15px 15px 20px;
+      overflow-y:scroll;
+      word-break:break-all;
 
       .authorPopularity {
         width: 100%;
