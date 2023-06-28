@@ -33,12 +33,12 @@ import FeedCommentList from './component/FeedPostDetail/FeedCommentList';
 import CaroselTest from './test/CaroselTest';
 import FeedInsertTest from './test/FeedInsertTest';
 
-import TodayAndAdForm from './component/TodayAndAd/TodayAndAdForm';
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
 import Follow from './test/Follow';
 import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
+import TodayWeather from './component/TodayWeather/TodayWeather';
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -125,8 +125,20 @@ function App() {
         <Route path="/" element={<IndexPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/feedList" element={<FeedList type={'recent'} />} />
-        <Route path="/feedPopularList" element={<FeedList type="popular" />} />
+        <Route path="/feedList" element={<FeedList type="recent" key={1} />} />
+        <Route
+          path="/feedPopularList"
+          element={<FeedList type="popular" key={2} />}
+        />
+        <Route
+          path="/feedFollowingList"
+          element={<FeedList type="following" key={3} />}
+        />
+        <Route path="/myPickPage/" element={<MyPickPage />} key={4} />
+        <Route
+          path="/feedScrapList"
+          element={<FeedList type="scrap" key={5} />}
+        />
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
         <Route path="/profile" element={<Profile />} />
@@ -148,14 +160,12 @@ function App() {
         <Route path="/test/Follow" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
 
-        <Route path="/myPickPage" element={<MyPickPage />} />
-
         <Route
           path="/test/feedComment"
           element={<FeedCommentList feedPostId={295} depth={0} parentId={0} />}
         />
         <Route path="/FeedInsert" element={<FeedInsert />} />
-        <Route path="/test/TodayAndAdForm" element={<TodayAndAdForm />} />
+        <Route path="/todayWeather" element={<TodayWeather />} />
 
         <Route
           path="/login/oauth2/code/kakao"

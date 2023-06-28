@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { FeedMaxTempContext } from '../../modules/Context/FeedMaxTempContext';
 import { useSelector } from 'react-redux';
-import weatherIcons from '../WeatherCommon/WetherIcons';
+import weatherIcons from '../WeatherCommon/WeatherIcons';
 import style from './WeeklyWeatherCard.module.scss';
 
 function WeeklyWeatherCard({ weeklyData, weatherMessage, date, index }) {

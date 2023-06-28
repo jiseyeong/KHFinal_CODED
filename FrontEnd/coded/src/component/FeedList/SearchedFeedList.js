@@ -62,6 +62,7 @@ function SearchedFeedList() {
   // useEffect(() => {
   //   setkeywordInput();
   // }, [keywordInput]);
+
   useEffect(() => {
     cpage.current = 1;
     setNewSearch(true);

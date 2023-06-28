@@ -16,6 +16,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
+import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -79,6 +80,8 @@ function Modal({
   // ); // 그냥 modalData?.follower로 바꿔볼 것.
   // const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
+  const userNo = useSelector((state) => state.member.userNo);
+  const [weatherIcon, setWeatherIcon] = useState('');
 
   let num = 0;
 
@@ -86,6 +89,20 @@ function Modal({
     updateImageList();
     // 스크랩 여부 가져오기
     updateScrap();
+
+    if (feedPost.ptyCode == 1 || feedPost.ptyCode == 2) {
+      setWeatherIcon(weatherIcons.rain);
+    } else if (feedPost.ptyCode == 3) {
+      setWeatherIcon(weatherIcons.snow);
+    } else if (feedPost.ptyCode == 4) {
+      setWeatherIcon(weatherIcons.heavyRain);
+    } else {
+      if (feedPost.skyCode == 1) {
+        setWeatherIcon(weatherIcons.sun);
+      } else {
+        setWeatherIcon(weatherIcons.cloud);
+      }
+    }
   }, []);
 
   function updateImageList() {
@@ -406,9 +423,11 @@ function Modal({
                       {userBio}
                     </div>
                   </div>
-                  <div className="optionBox" onClick={optionBoxClick}>
-                    <OptionBox></OptionBox>
-                  </div>
+                  {feedPost.userNo === userNo && (
+                    <div className="optionBox" onClick={optionBoxClick}>
+                      <OptionBox></OptionBox>
+                    </div>
+                  )}
                   {optionListDiv && (
                     <div className="optionList">
                       <div className="optionListDiv">
@@ -420,14 +439,15 @@ function Modal({
                     </div>
                   )}
                 </div>
-                <hr className="hrTag"></hr>
+                {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
-                  <span>
-                    {/* 데일리룩 #OOTD #청바지 #셔츠 */}
-                    {/* {modalData?.modalData?.modalData?.description} */}
-                    {feedPost.body}
-                  </span>
+                  <div className="feedPostBody">{feedPost.body}</div>
+                  <div className="feedPostWeather">
+                    <div className="weatherIcon">{weatherIcon}</div>
+                    <div className="writeTemp">{feedPost.writeTemp}º</div>
+                  </div>
                 </div>
+                <div className="hashTagBody">해쉬태그</div>
               </div>
             </div>
 

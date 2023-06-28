@@ -189,7 +189,7 @@ const FeedPostDetail = (props) => {
           <div className={styles.userProfileLayout}>
             {/* 해당 유저의 마이픽 페이지로 이동 */}
             <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
-              {feedPost.userProfileSysName != null ? (
+              {feedPost.profileSysName != null ? (
                 <img
                   className={styles.userProfile}
                   src={`/images/${feedPost.profileSysName}`}

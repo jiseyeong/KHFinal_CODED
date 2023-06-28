@@ -133,9 +133,10 @@
           padding: 10px;
 
           .commentUserImgWrapper {
-            width: 10%;
+            width: 7%;
             // height: 40px;
             margin-right: 8px;
+            margin-left:8px;
 
             .commentUserImg {
               border: 0px solid #ffffff;
@@ -249,26 +250,45 @@
           //   }
           // }
         }
-
-        .hrTag {
-          border: 1px solid rgb(227, 227, 227);
-        }
-
         .authorDescription {
           font-size: 14px;
-          display: inline-flex;
+          display:flex;
           // line-height: 16.9px;
           text-decoration: none solid rgb(38, 40, 43);
           text-align: left;
           white-space: pre-wrap;
           word-spacing: 0px;
-          margin-top: 20px;
-          margin-left: 20px;
-          height: 75%;
+          padding-top:10px;
+          padding-bottom:10px;
+          margin-left: 30px;
+          height: 55%;
 
-          span {
-            font-size: 13px;
+          .feedPostBody{
+            width:85%;
           }
+          .feedPostWeather{
+            width:15%;
+            display:flex;
+            .weatherIcon{
+              width:50%;
+              svg{
+                width:80%;
+                height:20%;
+              }
+            }
+            .writeTemp{
+              padding-top:7px;
+              width:50%;
+              font-size:20px;
+            }
+          }
+        }
+
+        .hashTagBody{
+          height:20%;
+          padding-left:30px;
+          line-height:50px;
+          font-size:12px;
         }
       }
     }
@@ -276,6 +296,8 @@
       width: 35%;
       justify-content: center;
       padding: 20px 15px 15px 20px;
+      overflow-y:auto;
+      word-break:break-all;
 
       .authorPopularity {
         width: 100%;

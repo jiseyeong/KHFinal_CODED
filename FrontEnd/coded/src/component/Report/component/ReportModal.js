@@ -42,7 +42,7 @@ const Reportdiv = styled('div')`
 const Reportdiv2 = styled('div')`
   margin-top: 20px;
   color: #ff0066;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
 `;
 
@@ -53,14 +53,17 @@ const EtcArea = styled('textarea')`
 
 const Buttonok = styled('button')`
   font-size: 13px;
-  font-weight: bold;
-  border-color: gray;
-  border-radius: 8px;
+  border-radius: 13px;
   position: relative;
   margin-right: 8px;
-  width: 57px;
-  height: 27px;
-  color: black;
+
+  width: 72px;
+  height: 30px;
+  background-color:black;
+  border:none;
+  color:white;
+  cursor:pointer;
+
 `;
 
 
@@ -255,10 +258,12 @@ function ReportModal({ onReportView }) {
             </div>
             <br />
             <div>
+
             <Buttonok onClick={handlePopupok}>확인</Buttonok>
             <Buttonok2 onClick={handlePopupCancel}>취소</Buttonok2>
               <br/>
               <br/>
+
               <Reportdiv2>
                 허위신고를 할 경우 활동에 제한을 받을 수 있습니다. <br />이 점
                 유의해주시기 바랍니다.

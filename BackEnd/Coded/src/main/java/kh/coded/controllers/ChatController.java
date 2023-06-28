@@ -3,24 +3,24 @@ package kh.coded.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import kh.coded.dto.DMDTO;
 import kh.coded.dto.DMRoomListDTO;
 import kh.coded.services.DMRoomService;
 import kh.coded.services.DMRoomUserService;
 import kh.coded.services.DMService;
+import utils.CustomWebSocketHandler;
 
 
 @RestController
@@ -54,7 +54,6 @@ public class ChatController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-
 	
 	// 채팅방번호를 통한 채팅내역 불러오기
 	@GetMapping("selectDMbyRoomid")
@@ -64,25 +63,27 @@ public class ChatController {
 	}
 
 
-
 	// -- 이하 STOMP 구독 및 메세지 송신 --
-
-	@PostMapping("/send")
-	public ResponseEntity<Void> sendMessage(@RequestBody DMDTO DMDTO) {
-		template.convertAndSend("/topic/message", DMDTO);
-		return new ResponseEntity<>(HttpStatus.OK);
+	
+	// 구독
+	@SubscribeMapping("/topic/{roomId}")
+	public List<DMDTO> handleSubscription(@DestinationVariable int roomId) {
+	    // 해당 방 번호를 기반으로 구독 처리 로직을 수행하고 채팅 내역을 반환
+		List<DMDTO> list = DMService.selectDMbyRoomid(roomId);
+	    return list;
 	}
-
-	@MessageMapping("/sendMessage")
-	public void receiveMessage(@Payload DMDTO DMDTO) {
-		// receive message from client
+	
+	
+	// 메세지 송신 후 특정 roomId에 송신
+    @SendTo("/topic/{roomId}")
+    @MessageMapping("/{roomId}")
+    public DMDTO handleChatMessage(@DestinationVariable int roomId, DMDTO message) {
+		return message;
 	}
-
-
-	@SendTo("/topic/message")
-	public DMDTO broadcastMessage(@Payload DMDTO DMDTO) {
-		return DMDTO;
-	}
-
-
+	
+	
+	
+	
+	
+	
 }

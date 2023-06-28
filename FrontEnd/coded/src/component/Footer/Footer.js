@@ -11,7 +11,9 @@ class Footer extends Component {
             <div className="title">
               <p>members.</p>
             </div>
-            <Link to="/deleteAccount">Delete Account</Link>
+            <div className="descList">
+              <Link to="/deleteAccount">Delete Account</Link>
+            </div>
           </div>
           <div className="middle">
             <div className="title">
@@ -19,7 +21,8 @@ class Footer extends Component {
             </div>
             <div className="descList">
               <Link to="/terms">Terms of Use</Link>
-              <br />
+            </div>
+            <div className="descList">
               <Link to="/privacyPolicy">Privacy Policy</Link>
             </div>
           </div>

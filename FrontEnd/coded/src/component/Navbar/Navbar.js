@@ -1,6 +1,13 @@
 import React, { Component, useCallback, useEffect, useState } from 'react';
 import './Navbar.scss';
-import { BrowserRouter, Route, Router, Routes, useNavigate, withRouter } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  Router,
+  Routes,
+  useNavigate,
+  withRouter,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import SearchBox from '../Search/SearchBox';
@@ -16,7 +23,7 @@ import Logo from './navLogo.png';
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
   const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
-  const [isListOotdBorder, setListOotdBorder] = useState(true);
+  const [listOotdBorder, setListOotdBorder] = useState(1);
   const [isHomeBorder, setIsHomeBorder] = useState(true);
   const accessToken = useSelector((state) => state.member.access);
   const navbarType = useSelector((state) => state.navbarSetting.type);
@@ -64,7 +71,7 @@ function Navbar() {
     navigate('/weekly');
   }
 
-  function loginPage () {
+  function loginPage() {
     navigate('/login');
   }
 
@@ -72,6 +79,24 @@ function Navbar() {
     navigate('/profile');
   }
 
+  // 상단 네비의 카테고리 클릭 시 적용
+  const handleClickCategory = (e) => {
+    e.preventDefault();
+
+    setListOotdBorder(e.target.value);
+
+    if (e.target.value === 1) {
+      navigate('/feedList');
+    } else if (e.target.value === 2) {
+      navigate('/feedPopularList');
+    } else if (e.target.value === 3) {
+      navigate('/feedFollowingList');
+    } else if (e.target.value === 4) {
+      navigate('/myPickPage');
+    } else if (e.target.value === 5) {
+      navigate('/feedScrapList');
+    }
+  };
 
   return (
     <>
@@ -79,7 +104,7 @@ function Navbar() {
         <nav className="topNavBar">
           <div className="leftNavBar">
             <a className="navLogo" href="/">
-              <img src={Logo} className='navLogo'/>
+              <img src={Logo} className="navLogo" />
               <div>CODED</div>
             </a>
             <div className="leftMenuWrapper">
@@ -92,6 +117,7 @@ function Navbar() {
                     onClick={handleClickOotd}
                   >
                     #OOTD
+                    <hr />
                   </span>
                 </li>
                 {accessToken && (
@@ -103,6 +129,7 @@ function Navbar() {
                       onClick={handleClickWeekly}
                     >
                       #WEEKLY
+                      <hr />
                     </span>
                   </li>
                 )}
@@ -117,8 +144,10 @@ function Navbar() {
 
           <div className="rightNavBar">
             <div className="rightMenuWrapper">
-             <button onClick={loginPage} className='loginBtn'>로그인 / 회원가입</button>
-              <button onClick={myPage} className='mypage'>마이페이지</button>
+              <button onClick={loginPage} className="loginBtn">
+                로그인 / 회원가입
+              </button>
+              {/* <button onClick={myPage} className='mypage'>마이페이지</button> */}
               {/* <svg
                 stroke="currentColor"
                 fill="currentColor"
@@ -131,35 +160,72 @@ function Navbar() {
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
               </svg> */}
             </div>
-        
           </div>
         </nav>
         {navbarType === 'Mem' && (
           <nav className="bottomNavBar">
             <ul className="categories">
-              <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>
+              <li
+                value="1"
+                className={listOotdBorder === 1 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
                 Hot
               </li>
-              <li>New</li>
-              <li>Following</li>
-              <li>MyPick</li>
-              <li>Scrap</li>
+              <li
+                value="2"
+                className={listOotdBorder === 2 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
+                New
+              </li>
+              <li
+                value="3"
+                className={listOotdBorder === 3 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
+                Following
+              </li>
+              <li
+                value="4"
+                className={listOotdBorder === 4 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
+                MyPick
+              </li>
+              <li
+                value="5"
+                className={listOotdBorder === 5 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
+                Scrap
+              </li>
             </ul>
           </nav>
         )}
         {navbarType === 'NonMem' && (
           <nav className="bottomNavBar">
             <ul className="categories">
-              <li className={isListOotdBorder ? 'isListOotdBorder' : ''}>
+              <li
+                value="1"
+                className={listOotdBorder === 1 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
                 Hot
               </li>
-              <li>New</li>
+              <li
+                value="2"
+                className={listOotdBorder === 2 ? 'isListOotdBorder' : ''}
+                onClick={handleClickCategory}
+              >
+                New
+              </li>
             </ul>
           </nav>
         )}
         {navbarType === 'Weekly' && (
           <nav className="bottomNavBar">
-            <p className={isHomeBorder ? 'isHomeBorder' : ''}>User's Choice!</p>
+            <p className={isHomeBorder ? 'isHomeBorder' : ''}>USER'S CODI!</p>
           </nav>
         )}
       </div>
