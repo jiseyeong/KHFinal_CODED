@@ -307,14 +307,17 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
     <div className="toastUIContainer">
       <div className="leftWrapper">
         <div className="bodyImageLayout">
-          {bodyImage && bodyImage !== ''?(
-          <img
-            ref={bodyImageRef}
-            className="bodyImage"
-            src={bodyImage}
-            alt="이미지를 넣어주세요"
-          />
-          ):(<div>이미지를 넣어주세요</div>)}
+        {bodyImage && bodyImage !== '' ? (
+            <img ref={bodyImageRef} className="bodyImage" src={bodyImage} />
+          ) : imgBase64.length > 0 ? (
+            <img
+              ref={bodyImageRef}
+              className="bodyImage"
+              src={imgBase64[0]}
+            />
+          ) : (
+            <div>이미지를 넣어주세요</div>
+          )}
         </div>
 
         <div className="ImagePreviewLayout">
