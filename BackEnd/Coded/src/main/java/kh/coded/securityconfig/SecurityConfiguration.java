@@ -128,6 +128,7 @@ public class SecurityConfiguration {
 			"/ReportOk"
 
 
+
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
@@ -184,7 +185,7 @@ public class SecurityConfiguration {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		
 		http.csrf(csrf->csrf.disable());
-		//http.cors(cors->cors.disable());
+		http.cors(cors->cors.disable());
 		
 		http.formLogin(login -> login.disable());
 		http.logout(logout -> logout.disable());
@@ -249,13 +250,13 @@ public class SecurityConfiguration {
 //		}
 //	});
 		
-		http.rememberMe(rememberMe -> 
-							rememberMe
-								.key("myKey")
-								.tokenValiditySeconds(60 * 60 * 24 * 7)
-								.userDetailsService(memberService)
-								.rememberMeParameter("remember-me")
-		);
+//		http.rememberMe(rememberMe -> 
+//							rememberMe
+//								.key("myKey")
+//								.tokenValiditySeconds(60 * 60 * 24 * 7)
+//								.userDetailsService(memberService)
+//								.rememberMeParameter("remember-me")
+//		);
 		
 		//한 계정 당 하나의 로그인 유지만 가능하도록 하는 설정임.
 		//http.sessionManagement(session -> session.maximumSessions(1).maxSessionsPreventsLogin(true));

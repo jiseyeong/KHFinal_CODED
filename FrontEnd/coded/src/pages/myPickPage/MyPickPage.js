@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useDispatch, useSelector } from 'react-redux';
-import { setNonMember } from '../../modules/Redux/navbarSetting';
+import { setIndexMyPick, setNonMember } from '../../modules/Redux/navbarSetting';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -15,7 +15,8 @@ const MyPickPage = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
-
+  const setNavIndeMyPick = useCallback(()=>dispatch(setIndexMyPick(),[dispatch]));
+  const setNavbarIndexOOTD = useCallback(()=>dispatch(setIndexOOTD()),[dispatch]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const navi = useNavigate();
@@ -23,6 +24,11 @@ const MyPickPage = () => {
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
   );
+
+  useEffect(()=>{
+    setNavbarIndexOOTD();
+    setNavIndeMyPick();
+  },[]);
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
