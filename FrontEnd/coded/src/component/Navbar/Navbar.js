@@ -28,6 +28,7 @@ function Navbar() {
   const accessToken = useSelector((state) => state.member.access);
   const navbarType = useSelector((state) => state.navbarSetting.type);
   const navbarIndex = useSelector((state) => state.navbarSetting.navbarIndex);
+  const navbarIndex2 = useSelector((state) => state.navbarSetting.navbarIndex2);
   const dispatch = useDispatch();
   const onNavbarSetNonMem = useCallback(
     () => dispatch(setNonMember()),
@@ -113,7 +114,7 @@ function Navbar() {
                 <li value="feed" className="leftMenu">
                   <span
                     className={
-                      isOotdBorder ? 'leftMenuOotdAct' : 'leftMenuOotd'
+                      navbarIndex2===1 ? 'leftMenuOotdAct' : 'leftMenuOotd'
                     }
                     onClick={handleClickOotd}
                   >
@@ -125,7 +126,7 @@ function Navbar() {
                   <li value="feed" className="leftMenu">
                     <span
                       className={
-                        isWeeklyBorder ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
+                        navbarIndex2===2 ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
                       }
                       onClick={handleClickWeekly}
                     >
