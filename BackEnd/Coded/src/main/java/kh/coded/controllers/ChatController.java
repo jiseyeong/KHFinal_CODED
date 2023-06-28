@@ -75,8 +75,8 @@ public class ChatController {
 	
 	
 	// 메세지 송신 후 특정 roomId에 송신
-	@MessageMapping("/chat/{roomId}")
     @SendTo("/topic/{roomId}")
+    @MessageMapping("/{roomId}")
     public DMDTO handleChatMessage(@DestinationVariable int roomId, DMDTO message) {
 		return message;
 	}

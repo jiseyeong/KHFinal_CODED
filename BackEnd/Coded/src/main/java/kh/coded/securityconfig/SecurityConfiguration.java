@@ -121,7 +121,8 @@ public class SecurityConfiguration {
 			"/auth/selectMyPickPageData",
 			"/feedpost/updatefeed",
 			"/test.jpg",
-			"/feedpost/feedpost"
+			"/feedpost/feedpost",
+			"/ws/info"
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
@@ -152,7 +153,10 @@ public class SecurityConfiguration {
 			"/mypick/selectMember",
 			"/mypick/selectFeedPost",
 			
-			
+			"/DM/**",
+			"/topic/**",
+			"/ws/**",
+			"/app/**",
 	};
 	private final String[] API_ADMIN_LIST = {
 			
