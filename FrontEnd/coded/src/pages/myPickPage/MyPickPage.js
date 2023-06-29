@@ -2,13 +2,17 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useDispatch, useSelector } from 'react-redux';
-import { setNonMember } from '../../modules/Redux/navbarSetting';
 import {
   Link,
   useLocation,
   useNavigate,
   useSearchParams,
 } from 'react-router-dom';
+import {
+  setIndexMyPick,
+  setIndexOOTD,
+  setNonMember,
+} from '../../modules/Redux/navbarSetting';
 import axios from 'axios';
 import Modal from 'react-modal';
 import FollowerList from '../../component/FollowList/FollowList';
@@ -23,7 +27,13 @@ const MyPickPage = () => {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
-
+  const setNavIndeMyPick = useCallback(() =>
+    dispatch(setIndexMyPick(), [dispatch]),
+  );
+  const setNavbarIndexOOTD = useCallback(
+    () => dispatch(setIndexOOTD()),
+    [dispatch],
+  );
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const navi = useNavigate();
@@ -46,6 +56,11 @@ const MyPickPage = () => {
 
   const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
   const [followModalMode, setFollowModalMode] = useState(true);
+
+  useEffect(() => {
+    setNavbarIndexOOTD();
+    setNavIndeMyPick();
+  }, []);
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴

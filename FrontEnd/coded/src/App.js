@@ -39,6 +39,7 @@ import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 import TodayWeather from './component/TodayWeather/TodayWeather';
 import Follow from './component/FollowList/Follow';
+// import ConfirmDialog from './component/Common/ConfirmDialog';
 
 const ButtonContainer = styled.div`
   position: fixed;
@@ -166,6 +167,8 @@ function App() {
         />
         <Route path="/FeedInsert" element={<FeedInsert />} />
         <Route path="/todayWeather" element={<TodayWeather />} />
+
+        {/* <Route path="/confirmDialog" element={<ConfirmDialog />} /> */}
 
         <Route
           path="/login/oauth2/code/kakao"

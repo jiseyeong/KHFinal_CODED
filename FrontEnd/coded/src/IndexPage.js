@@ -74,6 +74,9 @@ const IndexPage = () => {
       <Link to="/todayWeather">오늘의 날씨</Link>
       <br />
       <br />
+      {/* <Link to="/confirmDialog">로그인안내창</Link> */}
+      <br />
+      <br />
       <button onClick={onReportView}>신고하기</button>
       <br />
       <br />

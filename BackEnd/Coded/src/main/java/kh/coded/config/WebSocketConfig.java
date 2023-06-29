@@ -25,7 +25,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		// STOMP 엔드포인트 등록 // 
 		registry.addEndpoint("/ws")
 		.addInterceptors(new HttpSessionHandshakeInterceptor())
-		.setAllowedOrigins("*")
+		.setAllowedOriginPatterns("*")
 		.withSockJS();
 	}
 
