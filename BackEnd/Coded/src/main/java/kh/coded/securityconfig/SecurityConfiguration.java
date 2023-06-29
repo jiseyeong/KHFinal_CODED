@@ -128,9 +128,9 @@ public class SecurityConfiguration {
 			"/ReportOk",
 
 			"/follow/selectfollowinglist",
-			"/follow/selectfollowerlist"
+			"/follow/selectfollowerlist",
 
-			"/feedpost/selectOneFeedPost",
+			"/feedpost/selectOneFeedPost"
 
 	};
 	private final String[] API_USER_LIST = {

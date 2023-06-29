@@ -145,17 +145,15 @@ public class MemberDAO {
 	
 	public List<MemberWithProfileDTO> selectFollowingList(int fromUserNo) { //팔로잉 리스트(사진,멤버정보)
 		return mybatis.selectList("Member.followingList",fromUserNo);
-
+	}
+	
 	public int getRecordCount() {
 		return mybatis.selectOne("Member.getRecordCount");
 	}
-	
 	public List<MemberDTO> selectPaging(int startNum, int endNum){
 		Map<String, Integer> data = new HashMap<>();
 		data.put("startNum", startNum);
 		data.put("endNum", endNum);
 		return mybatis.selectList("Member.selectPaging", data);
-
 	}
-}
 }
