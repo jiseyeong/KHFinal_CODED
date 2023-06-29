@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import './MyPickPage.scss';
 import FeedPostDetail from '../../component/FeedPostDetail/FeedPostDetail';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIndexMyPick, setNonMember } from '../../modules/Redux/navbarSetting';
+import { setIndexMyPick, setIndexOOTD, setNonMember } from '../../modules/Redux/navbarSetting';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
