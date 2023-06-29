@@ -68,10 +68,13 @@ const IndexPage = () => {
       <Link to="/FeedInsert">피드 작성 테스트</Link>
       <br />
       <br />
-      <Link to="/test/follow">팔로워 팔로잉 리스트 테스트</Link>
+      <Link to="/followList">팔로워 팔로잉 리스트 테스트</Link>
       <br />
       <br />
       <Link to="/todayWeather">오늘의 날씨</Link>
+      <br />
+      <br />
+      {/* <Link to="/confirmDialog">로그인안내창</Link> */}
       <br />
       <br />
       <button onClick={onReportView}>신고하기</button>

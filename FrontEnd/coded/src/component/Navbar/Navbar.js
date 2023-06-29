@@ -23,10 +23,12 @@ import Logo from './navLogo.png';
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
   const [isWeeklyBorder, setIsWeeklyBorder] = useState(false);
-  const [listOotdBorder, setListOotdBorder] = useState(1);
+  // const [listOotdBorder, setListOotdBorder] = useState(1);
   const [isHomeBorder, setIsHomeBorder] = useState(true);
   const accessToken = useSelector((state) => state.member.access);
   const navbarType = useSelector((state) => state.navbarSetting.type);
+  const navbarIndex = useSelector((state) => state.navbarSetting.navbarIndex);
+  const navbarIndex2 = useSelector((state) => state.navbarSetting.navbarIndex2);
   const dispatch = useDispatch();
   const onNavbarSetNonMem = useCallback(
     () => dispatch(setNonMember()),
@@ -83,12 +85,12 @@ function Navbar() {
   const handleClickCategory = (e) => {
     e.preventDefault();
 
-    setListOotdBorder(e.target.value);
+    //setListOotdBorder(e.target.value);
 
     if (e.target.value === 1) {
-      navigate('/feedList');
-    } else if (e.target.value === 2) {
       navigate('/feedPopularList');
+    } else if (e.target.value === 2) {
+      navigate('/feedList');
     } else if (e.target.value === 3) {
       navigate('/feedFollowingList');
     } else if (e.target.value === 4) {
@@ -112,7 +114,7 @@ function Navbar() {
                 <li value="feed" className="leftMenu">
                   <span
                     className={
-                      isOotdBorder ? 'leftMenuOotdAct' : 'leftMenuOotd'
+                      navbarIndex2===1 ? 'leftMenuOotdAct' : 'leftMenuOotd'
                     }
                     onClick={handleClickOotd}
                   >
@@ -124,7 +126,7 @@ function Navbar() {
                   <li value="feed" className="leftMenu">
                     <span
                       className={
-                        isWeeklyBorder ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
+                        navbarIndex2===2 ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
                       }
                       onClick={handleClickWeekly}
                     >
@@ -167,35 +169,35 @@ function Navbar() {
             <ul className="categories">
               <li
                 value="1"
-                className={listOotdBorder === 1 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 1 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Hot
               </li>
               <li
                 value="2"
-                className={listOotdBorder === 2 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 2 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 New
               </li>
               <li
                 value="3"
-                className={listOotdBorder === 3 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 3 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Following
               </li>
               <li
                 value="4"
-                className={listOotdBorder === 4 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 4 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 MyPick
               </li>
               <li
                 value="5"
-                className={listOotdBorder === 5 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 5 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Scrap
@@ -208,14 +210,14 @@ function Navbar() {
             <ul className="categories">
               <li
                 value="1"
-                className={listOotdBorder === 1 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 1 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 Hot
               </li>
               <li
                 value="2"
-                className={listOotdBorder === 2 ? 'isListOotdBorder' : ''}
+                className={navbarIndex === 2 ? 'isListOotdBorder' : ''}
                 onClick={handleClickCategory}
               >
                 New

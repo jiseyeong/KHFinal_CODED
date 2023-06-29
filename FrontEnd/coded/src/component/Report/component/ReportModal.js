@@ -1,19 +1,7 @@
-import React, { Component, useCallback, useEffect, useRef, useState } from 'react';
-// import "../styles/common.scss";
-// import "../styles/reset.scss";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './ReportModal.scss';
-//import Image from "../image/326548_bookmark_icon.png";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import FeedCommentList from '../../FeedPostDetail/FeedCommentList';
-import {
-  OptionBox,
-  Like,
-  ScrapImage,
-} from '../../../assets/ModalAsset/ModalAsset';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 import { setNonMember } from '../../../modules/Redux/navbarSetting';
 
@@ -56,17 +44,26 @@ const Buttonok = styled('button')`
   border-radius: 13px;
   position: relative;
   margin-right: 8px;
-
   width: 72px;
   height: 30px;
-  background-color:black;
-  border:none;
-  color:white;
-  cursor:pointer;
-
+  background-color: black;
+  border: none;
+  color: white;
+  cursor: pointer;
 `;
 
-
+const Buttonok2 = styled('button')`
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 48px;
+  position: relative;
+  border-color: gray;
+  border-radius: 8px;
+  width: 57px;
+  height: 27px;
+  color: black;
+  cursor: pointer;
+`;
 
 function ReportModal({ onReportView }) {
   const textread = useRef();
@@ -86,69 +83,46 @@ function ReportModal({ onReportView }) {
     console.log(ev.target.value);
   };
 
-  const handlePopupCancel = () => {
-    onReportView();
-  }
-
-
-
   useEffect(() => {
-      if (accessToken) {
-        // 1. 토큰 값으로 나의 고유 넘버를 반환
-        axios({
-          url: '/auth/userNo',
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-          .then((resp) => {
-          })
-          // 2. 고유 넘버로 유저 정보 반환
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        denyAccess();
-      }
+    if (accessToken) {
+      // 1. 토큰 값으로 나의 고유 넘버를 반환
+      axios({
+        url: '/auth/userNo',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((resp) => {})
+        // 2. 고유 넘버로 유저 정보 반환
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      denyAccess();
+    }
   }, [accessToken]);
 
-
-
-
   const handlePopupok = () => {
-    console.log("abc")
+    console.log('abc');
     axios({
       url: '/ReportOk',
       method: 'post',
       data: {
-        type:reportType,
-        text:text
+        type: reportType,
+        text: text,
       },
-    }).then((resp) => {
-      
-    }).catch((error)=>{
-      console.log(error);
     })
-  }
-
-  const Buttonok2 = styled('button')`
-  font-size: 13px;
-  font-weight: bold;
-  margin-left: 48px;
-  position: relative;
-  border-color: gray;
-  border-radius: 8px;
-  width: 57px;
-  height: 27px;
-  color: black;
-`;
- 
+      .then((resp) => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="reportmodalwrapper">
       <div className="mainWrapper">
-        <div className="modalWrapper" onClick={onReportView}>
+        <div className="modalWrapper">
           <div
             className="innerWrapper"
             style={{ flexDirection: 'column' }}
@@ -240,7 +214,7 @@ function ReportModal({ onReportView }) {
             <div>
               {reportType === 'e' ? (
                 <EtcArea
-                  style={{ padding: '4px' }}
+                  style={{ padding: '4px', backgroundColor: 'white' }}
                   rows="7"
                   cols="50"
                   value={text}
@@ -249,28 +223,21 @@ function ReportModal({ onReportView }) {
               ) : (
                 <EtcArea
                   readOnly
-                  style={{ pointerEvents: 'none' }}
+                  style={{ pointerEvents: 'none', backgroundColor: '#B6B6B6' }}
                   rows="7"
                   cols="50"
                   value={text}
                 />
               )}
             </div>
-            <br />
-            <div>
-
-            <Buttonok onClick={handlePopupok}>확인</Buttonok>
-            <Buttonok2 onClick={handlePopupCancel}>취소</Buttonok2>
-              <br/>
-              <br/>
+            <div className="bottomLayout">
+              <Buttonok onClick={handlePopupok}>확인</Buttonok>
+              <Buttonok2 onClick={onReportView}>취소</Buttonok2>
 
               <Reportdiv2>
                 허위신고를 할 경우 활동에 제한을 받을 수 있습니다. <br />이 점
                 유의해주시기 바랍니다.
               </Reportdiv2>
-              <br />
-              <br />
-              <br />
             </div>
           </div>
         </div>
