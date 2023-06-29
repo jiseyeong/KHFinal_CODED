@@ -64,7 +64,7 @@ const ProfileTemplate = () => {
   const address2 = useRef();
 
   // 정규식 적용
-  const regexId = /^[A-Za-z0-9_]{7,13}$/;
+  const regexId = /^[a-z0-9_]{7,13}$/;
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
@@ -317,22 +317,22 @@ const ProfileTemplate = () => {
       memberInfo.bio === '' ||
       memberInfo.hashTag === ''
     ) {
-      alert('모든 입력박스를 입력해주세요.');
+      alert('모든 정보를 입력해주세요');
       return;
     }
 
     if (!regexId.test(memberInfo.userId)) {
-      alert('ID는 영문 대소문자 또는 숫자로 7~13 자리로 구성되어야 합니다.');
+      alert('7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
       return;
     }
 
     if (!regexNickName.test(memberInfo.userNickName)) {
-      alert('닉네임은 특수문자를 제외, 8자리 이하 길이로 구성되어야 합니다.');
+      alert('8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.');
       return;
     }
 
     if (!regexEmail.test(memberInfo.email)) {
-      alert('이메일은 이메일 형식의 30자리 이하 길이로 구성되어야 합니다.');
+      alert('올바르지 않은 이메일 형식입니다.');
       return;
     }
 
@@ -581,7 +581,7 @@ const ProfileTemplate = () => {
                     <input
                       type="text"
                       className="forEdit"
-                      placeholder="ID를 입력해주세요"
+                      placeholder="아이디를 입력해주세요"
                       name="userId"
                       onChange={handleMemberInfo}
                       value={memberInfo.userId || ''}
