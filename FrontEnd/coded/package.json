@@ -29,7 +29,7 @@
     "sass": "^1.63.3",
     "slick-carousel": "^1.8.1",
     "sockjs-client": "^1.6.1",
-    "styled-components": "^6.0.0-rc.3",
+    "styled-components": "^6.0.1",
     "zustand": "^4.3.8"
   },
   "scripts": {
