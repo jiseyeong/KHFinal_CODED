@@ -449,7 +449,6 @@ function Modal({
                   </div>
                 </div>
                 <div className="hashTagBody">
-                  {' '}
                   {hashTagList.length > 0 ? (
                     hashTagList.map((e, i) => (
                       <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
