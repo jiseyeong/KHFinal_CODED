@@ -17,6 +17,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
+import CreatableSelect from 'react-select/creatable';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -133,6 +134,7 @@ function Modal({
   }
 
   function deleteFeedPost() {
+    console.log(editYN);
     axios({
       method: 'delete',
       url: '/feedpost/deleteFeedPost',
@@ -148,6 +150,35 @@ function Modal({
         console.log(error);
       });
   }
+  //  수정하기 ---------------------------------------
+  const [FeedPost, setFeedPost] = useState(feedPost);
+  const [HashTag, setHashTag] = useState(hashTagList);
+  const [editYN, setEditYN] = useState(false);
+  // 수정 버튼 눌렀을때
+  function editFeedPost() {
+    setEditYN(true);
+  }
+
+  // 수정하기 완료
+  function editComplate() {
+    axios({
+      method: 'put',
+      url: '/feedpost/updatefeed',
+      params: {
+        feedPostId: feedPost.feedPostId,
+        body: FeedPost.body,
+        hashtag: HashTag,
+      },
+    })
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // function editCancel(){
+  //
+  // }
 
   // 좋아요, 스크랩 기능들------------------------
   const [likeScale, setLikeScale] = useState(1);
@@ -424,32 +455,85 @@ function Modal({
                       {userBio}
                     </div>
                   </div>
-                  {feedPost.userNo === userNo && (
-                    <div className="optionBox" onClick={optionBoxClick}>
-                      <OptionBox></OptionBox>
-                    </div>
-                  )}
-                  {optionListDiv && (
-                    <div className="optionList">
-                      <div className="optionListDiv">
-                        <a>edit</a>
-                      </div>
-                      <div className="optionListDiv">
-                        <a onClick={deleteFeedPost}>delete</a>
-                      </div>
+
+                  {/* 수정하기 눌렀을 때 숨김 */}
+
+                  {editYN === false && (
+                    <div className="optionBox">
+                      {feedPost.userNo === userNo && (
+                        <div className="optionBox" onClick={optionBoxClick}>
+                          <OptionBox></OptionBox>
+                        </div>
+                      )}
+                      {optionListDiv && (
+                        <div className="optionList">
+                          <div className="optionListDiv">
+                            <a onClick={editFeedPost}>수정하기</a>
+                          </div>
+                          <div className="optionListDiv">
+                            <a onClick={deleteFeedPost}>삭제</a>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
                 {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
-                  <div className="feedPostBody">{feedPost.body}</div>
+                  {/* 수정하기 에디터블 */}
+                  {/* {
+<div className="feedPostBody">{feedPost.body}</div> //{feedPost.body}숨김
+
+<div className="feedPostBody"><textarea
+              className="post"
+              placeholder="내용을 입력해주세요"
+              style={{height:"100%", width:"100%", resize:"none", border:"1px solid black"}}
+              defaultValue={feedPost.body}
+            ></textarea></div>
+
+} */}
+                  {editYN === false ? (
+                    <div className="feedPostBody">{feedPost.body}</div>
+                  ) : (
+                    <div className="feedPostBody">
+                      <textarea
+                        className="post"
+                        placeholder="내용을 입력해주세요"
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                          resize: 'none',
+                          border: '1px solid black',
+                        }}
+                        defaultValue={feedPost.body}
+                      ></textarea>
+                    </div>
+                  )}
+                  <div className="feedPostWidth"></div>
                   <div className="feedPostWeather">
                     <div className="weatherIcon">{weatherIcon}</div>
                     <div className="writeTemp">{feedPost.writeTemp}º</div>
                   </div>
                 </div>
-                <div className="hashTagBody">
-                  {hashTagList.length > 0 ? (
+
+                {/* 
+                  수정하기 눌렀을 때
+
+                  <div>
+                  <CreatableSelect
+              placeholder="해시태그 추가"
+              isMulti
+              options={options}
+              ref={selectRef}
+            />
+            </div>
+            <div>
+            <button onclick={()=>{editComplate}}>수정 완료</button>
+            <button onclick={editCancel}>수정 취소</button>
+            <div>
+            넣고 오른쪽에
+
+{hashTagList.length > 0 ? (
                     hashTagList.map((e, i) => (
                       <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
                         <span>
@@ -461,7 +545,41 @@ function Modal({
                   ) : (
                     <span>태그 없음</span>
                   )}
-                </div>
+
+                  숨기기
+                  */}
+                {editYN === false ? (
+                  <div className="hashTagBody">
+                    {hashTagList.length > 0 ? (
+                      hashTagList.map((e, i) => (
+                        <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                          <span>
+                            #{e.hashTag}
+                            &nbsp;&nbsp;
+                          </span>
+                        </Link>
+                      ))
+                    ) : (
+                      <span>태그 없음</span>
+                    )}
+                  </div>
+                ) : (
+                  <div className="hashTagBody">
+                    <div className="select">
+                    <CreatableSelect
+                      placeholder="해시태그 추가"
+                      isMulti
+                      options={hashTagList}
+                      className='select2'
+                      // ref={selectRef}
+                    />
+                    </div>
+                    <div className="buttons">
+                      <button>수정 완료</button>
+                      <button>수정 취소</button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
