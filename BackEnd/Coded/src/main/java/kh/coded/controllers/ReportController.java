@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.ReportDTO;
+import kh.coded.security.JwtProvider;
 import kh.coded.services.FeedReportService;
 
 @RestController
@@ -19,6 +22,8 @@ public class ReportController {
 
 	@Autowired
 	private FeedReportService feedReportService;
+	@Autowired
+	private JwtProvider jwtProvider;
 
 	@GetMapping(value = "")
 	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
@@ -30,18 +35,31 @@ public class ReportController {
 		}
 	}
 
-//	@PostMapping(value = "/ReportOk") // 구현중
-//	public ResponseEntity<?> ReportOk
-//	(
-//			@RequestParam(value="type") 
-//			String type ,
-//			@RequestParam(value="text") 
-//			String text
-//			){
-//		
-//		return ResponseEntity.ok().body(feedReportService.ReportOk);
-//	}
-//
-
+	// @PostMapping(value = "/ReportOk") // 구현중
+	// public ResponseEntity<?> ReportOk
+	// (
+	// 		@RequestParam(value="type") 
+	// 		String type ,
+	// 		@RequestParam(value="text") 
+	// 		String text
+	// 		){
+	// 	System.out.println(type);
+	// 	System.out.println(text);
+	// 	return null;
+	// }
+	
+	@GetMapping(value="report")
+	public ResponseEntity<?> selectAllReport(
+			@RequestHeader(value="authorization") String authorization
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<ReportDTO> data = feedReportService.selectAllFeedReport();
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 
 }
