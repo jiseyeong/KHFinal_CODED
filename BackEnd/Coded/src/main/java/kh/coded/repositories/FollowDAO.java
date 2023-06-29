@@ -31,7 +31,11 @@ public class FollowDAO {
 		Map<String, Integer> isFollow = new HashMap<>();
 		isFollow.put("toUserNo", toUserNo);
 		isFollow.put("myUserNo", myUserNo);
-		return mybatis.selectOne("Follow.isFollow", isFollow);
+		if(mybatis.selectOne("Follow.isFollow", isFollow) == null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 //	팔로우 등록 - 해당 유저를 팔로우 등록
