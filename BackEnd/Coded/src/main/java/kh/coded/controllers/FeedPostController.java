@@ -451,5 +451,20 @@ public class FeedPostController {
 		FeedPostAddDTO data = feedpostService.selectOneFeedPost(feedpostId);
 		return ResponseEntity.ok().body(data);
 	}
+	
+	@GetMapping("/getNaviInfo")
+	public ResponseEntity<?> getNaviInfo(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = feedpostService.selectPageNavi(cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 
 }

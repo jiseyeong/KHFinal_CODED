@@ -5,6 +5,7 @@ public class StaticValue {
 
 	public static final int FEEDCOUNTPERSCROLL = 30;
 	//
+	public static final int NAVICOUNTPERPAGE = 10;
 	
 	public static final String REFRESH_TOKEN_COOKIE_NAME = "CodedRefreshToken"; // 바꿀 경우 프론트에서 쿠키 찾는 것도 바꿔야 함.
 	

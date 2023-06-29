@@ -126,10 +126,7 @@ public class SecurityConfiguration {
 			"/feedpost/feedpost",
 			"/ws/**",
 			"/ReportOk",
-			"/feedpost/selectOneFeedPost"
-
-
-
+			"/feedpost/selectOneFeedPost",
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
@@ -168,6 +165,7 @@ public class SecurityConfiguration {
 	};
 	private final String[] API_ADMIN_LIST = {
 			"/feedReport/report",
+			"/feedpost/getNaviInfo",
 	};
 	
 //	@Autowired
