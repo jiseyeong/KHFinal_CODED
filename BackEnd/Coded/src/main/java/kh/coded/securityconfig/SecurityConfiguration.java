@@ -126,6 +126,8 @@ public class SecurityConfiguration {
 			"/feedpost/feedpost",
 			"/ws/**",
 			"/ReportOk",
+			"/app/**",
+
 
 			"/follow/selectfollowinglist",
 			"/follow/selectfollowerlist",
@@ -167,7 +169,7 @@ public class SecurityConfiguration {
 			"/DM/**",
 			"/topic/**",
 			"/ws/**",
-			"/app/**",
+			
 	};
 	private final String[] API_ADMIN_LIST = {
 			"/feedReport/report",
