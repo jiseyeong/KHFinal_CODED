@@ -39,7 +39,7 @@ const Footer = styled.div`
   a {
     text-decoration: none;
     &:hover {
-      color:#ff0066;
+      color: #ff0066;
     }
   }
 `;
@@ -172,11 +172,11 @@ const AuthForm = ({ type }) => {
         !address2.current.value
       ) {
         setRegisterPassCheck(false);
-        setRegisterPassMessage('모든 정보를 기입해주세요.');
+        setRegisterPassMessage('모든 정보를 기입해주세요 :(');
         joinConfirmRef.current.style.color = 'red';
       } else {
         setRegisterPassCheck(true);
-        setRegisterPassMessage('회원가입이 가능합니다.');
+        setRegisterPassMessage('회원가입이 가능합니다 :)');
         joinConfirmRef.current.style.color = 'blue';
       }
     }
@@ -209,7 +209,9 @@ const AuthForm = ({ type }) => {
                   setIdDuplicateMessage('이미 존재하는 아이디입니다.');
                   idDuplicateRef.current.style.color = 'red';
                 } else if (!regexId.test(idRef.current.value)) {
-                  setIdDuplicateMessage('사용 불가능한 아이디 형식입니다.');
+                  setIdDuplicateMessage(
+                    '7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.',
+                  );
                   idDuplicateRef.current.style.color = 'red';
                 } else {
                   setIdDuplicateMessage('사용 가능한 아이디입니다.');
@@ -264,7 +266,7 @@ const AuthForm = ({ type }) => {
                 setEmailDuplicateMessage('이미 존재하는 이메일입니다.');
                 emailDuplicateRef.current.style.color = 'red';
               } else if (!regexEmail.test(emailRef.current.value)) {
-                setEmailDuplicateMessage('이메일 형식을 지켜주셔야 합니다.');
+                setEmailDuplicateMessage('올바르지 않은 이메일 형식입니다.');
                 emailDuplicateRef.current.style.color = 'red';
               } else {
                 setEmailDuplicateMessage('사용 가능한 이메일입니다.');
@@ -285,7 +287,9 @@ const AuthForm = ({ type }) => {
   function handleNickName(e) {
     if (nickNameRef.current.value) {
       if (!regexNickName.test(nickNameRef.current.value)) {
-        setNickNameRegexMessage('사용할 수 없는 닉네임 형식입니다.');
+        setNickNameRegexMessage(
+          '8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능합니다.',
+        );
         nickNameDuplicateRef.current.style.color = 'red';
       } else {
         setNickNameRegexMessage('사용 가능한 닉네임입니다.');
@@ -310,7 +314,7 @@ const AuthForm = ({ type }) => {
     } else if (!pwConfirmCheck) {
       alert('비밀번호가 일치하지 않습니다.');
     } else if (!address1.current.value || !address2.current.value) {
-      alert('주소를 입력해주셔야 합니다.');
+      alert('거주하시는 지역을 선택해주세요.');
     } else {
       axios({
         method: 'post',
@@ -356,9 +360,10 @@ const AuthForm = ({ type }) => {
       timeout: 5000,
     })
       .then(function (response) {
-        if(response.status == 202){
-          alert(response.data)
-        }else{
+        console.log(response);
+        if (response.status == 202) {
+          alert(response.data);
+        } else {
           let refreshToken = cookie.load('CodedRefreshToken');
           refreshToken = refreshToken.substr(
             'Bearer '.length,
@@ -374,7 +379,7 @@ const AuthForm = ({ type }) => {
         }
       })
       .catch(function (e) {
-          console.log(e);
+        console.log(e);
       });
   }
 
@@ -470,7 +475,7 @@ const AuthForm = ({ type }) => {
           type="text"
           autoComplete="username"
           name="userId"
-          placeholder="아이디를 입력해주세요"
+          placeholder="아이디"
           ref={idRef}
           value={id}
           onChange={handleId}
@@ -484,7 +489,7 @@ const AuthForm = ({ type }) => {
           className={style.inputPw}
           autoComplete="new-password"
           name="pw"
-          placeholder="비밀번호를 입력해주세요"
+          placeholder="비밀번호"
           type={isPwView ? 'text' : 'password'}
           ref={pwRef}
         ></input>
@@ -546,7 +551,7 @@ const AuthForm = ({ type }) => {
             <input
               autoComplete="email"
               name="e-mail"
-              placeholder="e-mail"
+              placeholder="이메일"
               type="text"
               //value={email}
               ref={emailRef}
@@ -609,13 +614,13 @@ const AuthForm = ({ type }) => {
       )}
       <Footer>
         <div className={style.loginLink}>
-        {type === 'login' ? (
-          <Link to="/signup" className={style.signUp}>
-            SIGN UP
-          </Link>
-        ) : (
-          <Link to="/login">LOGIN</Link>
-        )}
+          {type === 'login' ? (
+            <Link to="/signup" className={style.signUp}>
+              SIGN UP
+            </Link>
+          ) : (
+            <Link to="/login">LOGIN</Link>
+          )}
         </div>
       </Footer>
     </AuthFormBlock>

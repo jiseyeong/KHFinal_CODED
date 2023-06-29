@@ -88,6 +88,21 @@ function Modal({
   let num = 0;
 
   useEffect(() => {
+
+    let arrTemp = [];
+    hashTagList.forEach((item) => {
+      let temp = { value: item.hashTag, label: item.hashTag };
+      setSelectHashTag((preview) => [...preview, temp]);
+      arrTemp = arrTemp.concat({
+        value: item.hashTag,
+        label: item.hashTag,
+      });
+      setHashTag([...HashTag,...arrTemp])
+    });
+
+    console.log(feedPost);
+    console.log(HashTag);
+
     updateImageList();
     // 스크랩 여부 가져오기
     updateScrap();
@@ -127,13 +142,15 @@ function Modal({
   }
 
   function optionBoxClick() {
-    console.log('test');
     setOptionListDiv((prev) => {
       return !prev;
     });
   }
 
   function deleteFeedPost() {
+    setOptionListDiv((prev) => {
+      return !prev;
+    });
     if (accessToken) {
       axios({
         method: 'delete',
@@ -156,34 +173,80 @@ function Modal({
   }
   //  수정하기 ---------------------------------------
   const [FeedPost, setFeedPost] = useState(feedPost);
-  const [HashTag, setHashTag] = useState(hashTagList);
+  const [selectHashTag, setSelectHashTag] = useState([]);//수정 전
+  const [HashTag, setHashTag] = useState([]);//삭제하고 나서의
   const [editYN, setEditYN] = useState(false);
+  const [content, setContent] = useState("");//수정 후
+  const selectRef = useRef();
+  const contentRef = useRef();// 바디 레퍼런스
   // 수정 버튼 눌렀을때
+
+ 
+
   function editFeedPost() {
+    setOptionListDiv((prev) => {
+      return !prev;
+    });
+    console.log(selectHashTag)
+    console.log(HashTag)
     setEditYN(true);
   }
 
   // 수정하기 완료
   function editComplate() {
+    console.log(feedPost.feedPostId)
+    setFeedPost(prevFeedPost=>{
+      return{
+        ...prevFeedPost, body : contentRef
+      }
+    })
     axios({
       method: 'put',
       url: '/feedpost/updatefeed',
       params: {
-        feedPostId: feedPost.feedPostId,
-        body: FeedPost.body,
-        hashtag: HashTag,
+        feedpostId: feedPost.feedPostId,
+        userNo: feedPost.userNo,
+        body: contentRef.current.value,
+        HashTag: selectHashTag,
       },
     })
       .then(() => {})
       .catch((error) => {
         console.log(error);
       });
+      setEditYN(false)
   }
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: 520, // 원하는 가로 크기로 변경
+      height: 52.3, // 원하는 높이로 변경
+      lineHeight: 'normal',
+      fontSize: 14,
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      transform: 'rotate(180deg)', // 화살표 회전
+    }),
+  };
 
-  function editCancel(){
-  
+
+  //글 수정
+
+  function editCancel() {
+    console.log(contentRef.current.value)
+    console.log(feedPost.body)
+    console.log(HashTag)
+    console.log(selectHashTag)
   }
+
+  const handleInputChange = (event) => {
+  };
+
+  // const handleSaveClick = () => {
+  //   setPreviousValue(value);
+  // };
 
   // 좋아요, 스크랩 기능들------------------------
   const [likeScale, setLikeScale] = useState(1);
@@ -384,18 +447,6 @@ function Modal({
   //   console.log('id값', modalData?.modalData?.modalData?.id);
   // });
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: 520, // 원하는 가로 크기로 변경
-      height: 50, // 원하는 높이로 변경
-    }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      transform: 'rotate(180deg)', // 화살표 회전
-    }),
-  };
-
   return (
     <div className="wrapper">
       <div className="mainWrapper">
@@ -497,18 +548,7 @@ function Modal({
                 </div>
                 {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
-                  {/* 수정하기 에디터블 */}
-                  {/* {
-<div className="feedPostBody">{feedPost.body}</div> //{feedPost.body}숨김
 
-<div className="feedPostBody"><textarea
-              className="post"
-              placeholder="내용을 입력해주세요"
-              style={{height:"100%", width:"100%", resize:"none", border:"1px solid black"}}
-              defaultValue={feedPost.body}
-            ></textarea></div>
-
-} */}
                   {editYN === false ? (
                     <div className="feedPostBody">{feedPost.body}</div>
                   ) : (
@@ -516,14 +556,8 @@ function Modal({
                       <textarea
                         className="post"
                         placeholder="내용을 입력해주세요"
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                          resize: 'none',
-                          border: '1px solid black',
-                        }}
-                        defaultValue={feedPost.body}
-                      ></textarea>
+                        ref={contentRef}
+                      >{feedPost.body}</textarea>
                     </div>
                   )}
                   <div className="feedPostWidth"></div>
@@ -531,40 +565,10 @@ function Modal({
                     <div className="weatherIcon">{weatherIcon}</div>
                     <div className="writeTemp">{feedPost.writeTemp}º</div>
                   </div>
+                  <div className="feedPostWidth"></div>
                 </div>
 
-                {/* 
-                  수정하기 눌렀을 때
 
-                  <div>
-                  <CreatableSelect
-              placeholder="해시태그 추가"
-              isMulti
-              options={options}
-              ref={selectRef}
-            />
-            </div>
-            <div>
-            <button onclick={()=>{editComplate}}>수정 완료</button>
-            <button onclick={editCancel}>수정 취소</button>
-            <div>
-            넣고 오른쪽에
-
-{hashTagList.length > 0 ? (
-                    hashTagList.map((e, i) => (
-                      <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
-                        <span>
-                          #{e.hashTag}
-                          &nbsp;&nbsp;
-                        </span>
-                      </Link>
-                    ))
-                  ) : (
-                    <span>태그 없음</span>
-                  )}
-
-                  숨기기
-                  */}
                 {editYN === false ? (
                   <div className="hashTagBody">
                     {hashTagList.length > 0 ? (
@@ -587,15 +591,18 @@ function Modal({
                         className="crSelect"
                         placeholder="해시태그 추가"
                         isMulti
-                        options={hashTagList}
+                        // options={HashTag} 모든 해시태그 ex) select * from hashtag로 모든 해시태그 찾기
+                        value={selectHashTag}
+                        ref={selectRef}
+                        onChange={(value) => setSelectHashTag(value)}
                         menuPlacement="top"
                         styles={customStyles}
-                        // ref={selectRef}
                       />
+
                     </div>
                     <div className="buttons">
-                      <button>수정 완료</button>
-                      <button onClick={}>수정 취소</button>
+                      <button onClick={editComplate}>수정 완료</button>
+                      <button onClick={editCancel}>수정 취소</button>
                     </div>
                   </div>
                 )}

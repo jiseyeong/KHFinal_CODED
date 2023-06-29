@@ -44,12 +44,13 @@ const Buttonok = styled('button')`
   border-radius: 13px;
   position: relative;
   margin-right: 8px;
-  width: 72px;
-  height: 30px;
+  width: 62px;
+  height: 28px;
   background-color: black;
   border: none;
   color: white;
   cursor: pointer;
+  font-weight: bold;
 `;
 
 const Buttonok2 = styled('button')`
@@ -58,10 +59,12 @@ const Buttonok2 = styled('button')`
   margin-left: 48px;
   position: relative;
   border-color: gray;
-  border-radius: 8px;
-  width: 57px;
-  height: 27px;
-  color: black;
+  border-radius: 13px;
+  background-color: black;
+  width: 62px;
+  border: none;
+  height: 28px;
+  color: white;
   cursor: pointer;
 `;
 
@@ -73,6 +76,7 @@ function ReportModal({ onReportView }) {
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
+  const loginUserNo = useSelector((state) => state.member.userNo);
 
   const handleReportNumber = (ev) => {
     setReportType(ev.target.value);
@@ -93,7 +97,7 @@ function ReportModal({ onReportView }) {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-        .then((resp) => {})
+        .then((resp) => {}) 
         // 2. 고유 넘버로 유저 정보 반환
         .catch((error) => {
           console.log(error);
@@ -104,16 +108,44 @@ function ReportModal({ onReportView }) {
   }, [accessToken]);
 
   const handlePopupok = () => {
-    console.log('abc');
-    axios({
+    let str = "";
+    switch(reportType){
+
+      case 'a':{
+        str = "개인정보 침해 및 명예훼손 게시물"
+      } break;
+
+      case 'b':{
+        str = "불법 광고 게시물"
+      } break;
+
+      case 'c':{
+        str = "도배성 게시물"
+      } break;
+
+      case 'd':{
+        str = "저작권 침해 게시물"
+      } break;
+
+      case 'e':{
+        str = "기타 (직접입력)"
+      } break;
+
+      
+}
+
+      axios({
       url: '/ReportOk',
       method: 'post',
-      data: {
-        type: reportType,
-        text: text,
+      params: {
+        title: str,
+        writerUserNo: loginUserNo
       },
     })
-      .then((resp) => {})
+      .then((resp) => {
+        alert("신고가 접수 되었습니다.")
+        onReportView();
+      })
       .catch((error) => {
         console.log(error);
       });
