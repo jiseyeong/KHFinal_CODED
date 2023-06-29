@@ -133,20 +133,25 @@ function Modal({
   }
 
   function deleteFeedPost() {
-    axios({
-      method: 'delete',
-      url: '/feedpost/deleteFeedPost',
-      params: {
-        feedPostId: feedPost.feedPostId,
-      },
-    })
-      .then(() => {
-        closeModal();
-        window.location.reload();
+    if(accessToken){
+      axios({
+        method: 'delete',
+        url: '/feedpost/deleteFeedPost',
+        params: {
+          feedPostId: feedPost.feedPostId,
+        },
+        headers:{
+          Authorization:`Bearer ${accessToken}`
+        }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then(() => {
+          closeModal();
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   // 좋아요, 스크랩 기능들------------------------
