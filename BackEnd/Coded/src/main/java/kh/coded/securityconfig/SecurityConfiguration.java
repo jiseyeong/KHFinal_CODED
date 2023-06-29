@@ -169,7 +169,16 @@ public class SecurityConfiguration {
 			"/feedpost/getNaviInfo",
 			"/auth/getNaviInfo",
 			"/auth/pagingMember",
+			"/auth/getNaviInfo/id",
+			"/auth/pagingMember/id",
+			"/auth/getNaviInfo/nickName",
+			"/auth/pagingMember/nickName",
+			"/auth/getNaviInfo/role",
+			"/auth/pagingMember/role",
+			"/auth/getNaviInfo/email",
+			"/auth/pagingMember/email",
 			"/auth/deleteMemberByAdmin",
+			"/auth/getUserByUserNo",
 			"/feedpost/getNaviInfo/userNo",
 	};
 	

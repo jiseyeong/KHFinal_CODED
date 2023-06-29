@@ -143,10 +143,58 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.getRecordCount");
 	}
 	
+	public int getRecordCountById(String userId) {
+		return mybatis.selectOne("Member.getRecordCountById", userId);
+	}
+	
+	public int getRecordCountByNickName(String userNickName) {
+		return mybatis.selectOne("Member.getRecordCountByNickName", userNickName);
+	}
+	
+	public int getRecordCountByRole(String role) {
+		return mybatis.selectOne("Member.getRecordCountByRole", role);
+	}
+	
+	public int getRecordCountByEmail(String email) {
+		return mybatis.selectOne("Member.getRecordCountByEmail", email);
+	}
+	
 	public List<MemberDTO> selectPaging(int startNum, int endNum){
 		Map<String, Integer> data = new HashMap<>();
 		data.put("startNum", startNum);
 		data.put("endNum", endNum);
 		return mybatis.selectList("Member.selectPaging", data);
+	}
+	
+	public List<MemberDTO> selectPagingById(String userId,int startNum, int endNum){
+		Map<String, Object> data = new HashMap<>();
+		data.put("userId", userId);
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("Member.selectPagingById", data);
+	}
+	
+	public List<MemberDTO> selectPagingByNickName(String userNickName,int startNum, int endNum){
+		Map<String, Object> data = new HashMap<>();
+		data.put("userNickName", userNickName);
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("Member.selectPagingByNickName", data);
+	}
+	
+	public List<MemberDTO> selectPagingByRole(String role,int startNum, int endNum){
+		Map<String, Object> data = new HashMap<>();
+		data.put("role", role);
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("Member.selectPagingByRole", data);
+	}
+	
+	public List<MemberDTO> selectPagingByEmail(String email,int startNum, int endNum){
+		Map<String, Object> data = new HashMap<>();
+		data.put("email", email);
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("Member.selectPagingByEmail", data);
 	}
 }

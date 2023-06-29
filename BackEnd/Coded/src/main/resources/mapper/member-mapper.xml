@@ -109,5 +109,73 @@
 		where rn between ${startNum} and ${endNum}
 		order by rn asc
 	</select>
+	
+	<select id="getRecordCountById" resultType="int">
+		select count(*) from member
+		where userId Like '%'||#{userId}||'%'
+	</select>
+	
+	<select id="selectPagingById" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where userId Like '%'||#{userId}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByNickName" resultType="int">
+		select count(*) from member
+		where userNickName Like '%'||#{userNickName}||'%'
+	</select>
+	
+	<select id="selectPagingByNickName" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where userNickName Like '%'||#{userNickName}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByRole" resultType="int">
+		select count(*) from member
+		where Role Like '%'||#{role}||'%'
+	</select>
+	
+	<select id="selectPagingByRole" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where Role Like '%'||#{role}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByEmail" resultType="int">
+		select count(*) from member
+		where email Like '%'||#{email}||'%'
+	</select>
+	
+	<select id="selectPagingByEmail" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where email Like '%'||#{email}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
 
   </mapper>
