@@ -4,33 +4,27 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Follow">
 
-	<select id="selectFollowingList"
-		resultType="kh.coded.dto.MemberDTO">
-		select * from member where UserNo = ${ToUserNo}
+<!-- 	<select id="selectFollowerList"
+		resultType="int"> 나를 팔로우 하는 사람
+		select fromuserno from follow where toUserNo = ${ToUserNo}
 	</select>
 
-	<select id="selectFollowerList"
-		resultType="kh.coded.dto.MemberDTO">
-		select * from member where UserNo = ${FromUserNo}
-	</select>
+	<select id="selectFollowingList" 
+		resultType="int"> 내가 팔로우 하는 사람
+		select touserno from follow where fromUserNo = ${FromUserNo}
+	</select> -->
 
 	<select id="isFollow" resultType="boolean">
-		select * from follow where ToUserNo = ${ToUserNo} and FromUserNo =
-		${FromUserNo}
+		select * from follow where ToUserNo = ${toUserNo} and FromUserNo = ${myUserNo}
 	</select>
 
-
-
 	<insert id="insertFollow">
-		insert into Follow values(Follow_seq.nextval, ${ToUserNo},
-		${FromUserNo})
+		insert into Follow values(Follow_seq.nextval, ${toUserNo},
+		${fromUserNo})
 	</insert>
 
-
-
 	<delete id="deleteFollow">
-		delete from Follow where ToUserNo = ${ToUserNo} and
-		FromUserNo = ${FromUserNo}
+		delete from Follow where ToUserNo = ${toUserNo} and
+		FromUserNo = ${fromUserNo}
 	</delete>
-
 </mapper>

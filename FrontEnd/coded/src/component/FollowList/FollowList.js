@@ -7,6 +7,10 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
   const [followingList, setFollowingList] = useState([]);
   const [followerList, setFollowerList] = useState([]);
   const [showFollowStats, setShowFollowStats] = useState(followModalMode);
+  const myUserNo = useSelector((state) => state.member.userNo); //내 유저번호 뽑아오기(로그인한 유저) 
+  const [isFollowerList,setIsFollowerList] = useState([]);
+  const [isFollowingList,setIstFollowingList] = useState([]);
+  const followRef = useRef(); 
 
   const toFollowing = () => {
     setShowFollowStats(true);
@@ -17,26 +21,75 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
 
   // 초기 데이터 세팅
   useEffect(() => {
-    axios({
-      url: '',
-      method: 'post',
-      param: {
-        userNo: userNo,
-      },
-    })
-      .then((resp) => {
-        // 해당 유저넘버의 팔로잉 리스트와 팔로우 리스트들을 받아온다
-        // 리스트들의 데이터 => 프로필, id, 닉네임
-        // 나를 팔로워한 유저들의 정보를 가져올 때, 내가 그 유저를 팔로우 했는 지 그 여부도 알아야 한다
-        // => axios요청을 한 번 더 보내도됨 근데 바로 가져올 수 있게 하는 걸 추천
-        const { followingList, followerList } = resp.data;
-        setFollowingList(followingList);
-        setFollowerList(followerList);
-      })
+    axios
+      .all([
+        axios.get('/follow/selectfollowerlist', {
+          params: {
+            toUserNo: userNo,
+            myUserNo: myUserNo
+          },
+        }),
+        axios.get('/follow/selectfollowinglist', {
+          params: {
+            fromUserNo: userNo,
+            myUserNo: myUserNo
+          },
+        }),
+        // axios.get('follow/isFollow', {
+        //   params:{
+        //     toUserNo:userNo,
+        //     FromUserNo:myUserNo
+        //   },
+        // })
+      ])
+      .then(
+        axios.spread((resp1, resp2) => {
+          //resp1 -> 팔로워 리스트
+          //resp2 -> 팔로잉 리스트
+          const {followerList,isFollowerList} = resp1.data;
+          setFollowerList({
+            userId: followerList.userId,
+            userNickname: followerList.userNickName,
+            sysName: followerList.sysName
+          });
+          setIsFollowerList([isFollowerList]);
+
+          const {followingList,isFollowingList} = resp2.data;
+          setFollowingList({
+            userId: followingList.userId,
+            userNickname: followingList.userNickName,
+            sysName: followingList.sysName
+          });
+          setIstFollowingList([isFollowingList]);
+          // 해당 유저넘버의 팔로잉 리스트와 팔로우 리스트들을 받아온다
+          // 리스트들의 데이터 => 프로필, id, 닉네임
+          // 나를 팔로워한 유저들의 정보를 가져올 때, 내가 그 유저를 팔로우 했는 지 그 여부도 알아야 한다
+          // => axios요청을 한 번 더 보내도됨 근데 바로 가져올 수 있게 하는 걸 추천
+
+
+        }),
+      )
       .catch((error) => {
         console.log(error);
       });
+
   }, []);
+
+  function follow (myUserNo,toUserNo) { //버튼 클릭시 insert, delete..
+    axios({
+      method:'post',
+      url:'/follow/insertfollow',
+      params:{
+        toUserNo:toUserNo,
+        fromUserNo:myUserNo
+      }
+    }).then((response)=>{
+
+    }).catch((error)=>{
+      console.log(error);
+    })
+  }
+
 
   return (
     <div className="followContainer">
@@ -81,12 +134,13 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
       </div>
       <div className="modalBody">
         <ul className="userList">
+          {console.log(followerList)}
           {showFollowStats
-            ? followingList.map((item) => {
-                <FollowUser followUser={item} />;
+            ? followingList.map((item,index) => {
+                <FollowUser followUser={item} isFollow={isFollowingList[i]} follow={follow}/>;
               })
-            : followerList.map((item) => {
-                <FollowUser followUser={item} />;
+            : followerList.map((item,index) => {
+                <FollowUser followUser={item} isFollow={isFollowerList[i]} follow={follow} />;
               })}
         </ul>
       </div>
@@ -94,18 +148,24 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
   );
 }
 
-const FollowUser = () => {
+const FollowUser = (followUser,isFollow) => {
   return (
+    
     <li className="user">
       <div className="profileLayout">
-        <img className="profile" src="/images/test.jpg" />
+        <img className="profile" src={`/images/${followUser.sysName}.jpg`}/>
       </div>
       <div className="infoLayout">
-        <div className="userNickName">닉네임</div>
-        <div className="userId">아이디</div>
+        <div className="userNickName">{followUser.userNickName}</div>
+        <div className="userId">{followUser.userId}</div>
       </div>
       <div className="btnLayout">
-        <button className="followBtn">팔로우</button>
+        {isFollow ? (
+           <button className="followingBtn" onClick={()=>{follow(myUserNo,followUser.userNo)}}>팔로잉</button>
+        ):(
+          <button className="followBtn" onClick={()=>{follow(myUserNo,followUser.userNo)}}>팔로우</button>
+        )  
+      }
       </div>
     </li>
   );

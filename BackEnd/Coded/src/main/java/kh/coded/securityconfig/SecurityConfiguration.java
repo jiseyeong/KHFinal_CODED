@@ -125,8 +125,10 @@ public class SecurityConfiguration {
 			"/test.jpg",
 			"/feedpost/feedpost",
 			"/ws/**",
-			"/ReportOk"
+			"/ReportOk",
 
+			"/follow/selectfollowinglist",
+			"/follow/selectfollowerlist"
 
 
 	};

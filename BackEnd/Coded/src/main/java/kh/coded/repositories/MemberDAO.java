@@ -134,4 +134,12 @@ public class MemberDAO {
 	public MyPickPageDTO selectMyPickPageData(int userNo) {
 		return mybatis.selectOne("Member.selectMyPickPageData",userNo);
 	}
+	
+	public List<MemberWithProfileDTO> selectFollowerList(int toUserNo) { //팔로워 리스트(사진,멤버정보)
+		return mybatis.selectList("Member.followerList", toUserNo);
+	}
+	
+	public List<MemberWithProfileDTO> selectFollowingList(int fromUserNo) { //팔로잉 리스트(사진,멤버정보)
+		return mybatis.selectList("Member.followingList",fromUserNo);
+	}
 }
