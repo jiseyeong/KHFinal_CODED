@@ -59,12 +59,8 @@ public class FeedPostService {
 	@Autowired
 	private FeedScrapDAO feedScrapDAO;
 
-	public int insertTest(FeedPostDTO dto) {
-		return feedpostDAO.insertFeedPost(dto);
-	}
-
 	// insert feedpost start
-	public int insertFeedPost(FeedPostDTO dto) {
+	public FeedPostDTO insertFeedPost(FeedPostDTO dto) {
 		return feedpostDAO.insertFeedPost(dto);
 	}
 

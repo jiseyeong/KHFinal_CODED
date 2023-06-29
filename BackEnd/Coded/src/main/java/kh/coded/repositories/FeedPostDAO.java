@@ -27,10 +27,11 @@ public class FeedPostDAO {
 
 
 	
-//	피드 쓰기 - 피드를 작성 할 수 있는 페이지//feedpostID가져와야됨
-	public int insertFeedPost(FeedPostDTO dto) {
+//	피드 쓰기 - 피드를 작성 할 수 있는 페이지
+// 해시태그나 기타 사진 데이터 연동을 위해 feedpostId를 가져와서 사용합니다.
+	public FeedPostDTO insertFeedPost(FeedPostDTO dto) {
 		mybatis.insert("FeedPost.insertFeedPost", dto);
-		return dto.getFeedPostId();
+		return dto;
 	}
 
 //	피드 내 사진 첨부 - 사진을 첨부하여 피드 작성
@@ -50,8 +51,8 @@ public class FeedPostDAO {
 	}
 //	해시태그 중복 체크
 	public int HashTagJB(HashTagDTO dto) {
-		mybatis.selectOne("FeedPost.HashTagJB", dto);
-		return dto.getTagId();
+		System.out.println((int)mybatis.selectOne("FeedPost.HashTagJB", dto));
+		return mybatis.selectOne("FeedPost.HashTagJB", dto);
 	}
 	
 ////	피드 내 날씨 해시태그 - 오늘 날씨에 맞는 날씨 해시태그 자동 입력 (뽑기)

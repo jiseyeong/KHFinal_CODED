@@ -5,7 +5,10 @@
 <mapper namespace="FeedPost">
 
 	<insert id="insertFeedPost">
-		insert into FeedPost values(FeedPost_seq.nextval, ${userNo}, #{body}, sysdate, ${writeTemp}, ${writeTempRange}, ${writePtyCode}, ${wrtieSkyCode})
+		<selectKey keyProperty="feedPostId" resultType="int" order="BEFORE">
+			select FeedPostId_seq.nextval from dual;
+		</selectKey>
+		insert into FeedPost values (${feedPostId}, ${userNo}, #{body}, sysdate, ${writeTemp}, ${writeTempRange}, ${writePtyCode}, ${writeSkyCode})
 	</insert>
 
 	<insert id="insertFeedPhoto">
