@@ -11,7 +11,7 @@ public class FeedPostAddDTO {
 	private int writeTemp;
 	private int writeTempRange;
 	private int writePtyCode;
-	private int wrtieSkyCode;
+	private int writeSkyCode;
 
 	private String userNickName;
 	private String address1;
@@ -23,7 +23,7 @@ public class FeedPostAddDTO {
 	}
 	
 	public FeedPostAddDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
-			int writeTempRange, int writePtyCode, int wrtieSkyCode, String userNickName, String address1,
+			int writeTempRange, int writePtyCode, int writeSkyCode, String userNickName, String address1,
 			String address2, String profileSysName, String thumbNailSysName) {
 		super();
 		this.feedPostId = feedPostId;
@@ -33,7 +33,7 @@ public class FeedPostAddDTO {
 		this.writeTemp = writeTemp;
 		this.writeTempRange = writeTempRange;
 		this.writePtyCode = writePtyCode;
-		this.wrtieSkyCode = wrtieSkyCode;
+		this.writeSkyCode = writeSkyCode;
 		this.userNickName = userNickName;
 		this.address1 = address1;
 		this.address2 = address2;
@@ -42,7 +42,7 @@ public class FeedPostAddDTO {
 	}
 
 	public FeedPostAddDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
-			int writeTempRange, int writePtyCode, int wrtieSkyCode, String userNickName, String profileSysName,
+			int writeTempRange, int writePtyCode, int writeSkyCode, String userNickName, String profileSysName,
 			String thumbNailSysName) {
 		super();
 		this.feedPostId = feedPostId;
@@ -52,7 +52,7 @@ public class FeedPostAddDTO {
 		this.writeTemp = writeTemp;
 		this.writeTempRange = writeTempRange;
 		this.writePtyCode = writePtyCode;
-		this.wrtieSkyCode = wrtieSkyCode;
+		this.writeSkyCode = writeSkyCode;
 		this.userNickName = userNickName;
 		this.profileSysName = profileSysName;
 		this.thumbNailSysName = thumbNailSysName;
@@ -126,11 +126,11 @@ public class FeedPostAddDTO {
 		this.writePtyCode = writePtyCode;
 	}
 
-	public int getWrtieSkyCode() {
-		return wrtieSkyCode;
+	public int getWriteSkyCode() {
+		return writeSkyCode;
 	}
-	public void setWrtieSkyCode(int wrtieSkyCode) {
-		this.wrtieSkyCode = wrtieSkyCode;
+	public void setWriteSkyCode(int writeSkyCode) {
+		this.writeSkyCode = writeSkyCode;
 	}
 
 	public String getAddress1() {

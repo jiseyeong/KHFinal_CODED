@@ -103,22 +103,35 @@ public class FeedPostController {
 	public ResponseEntity<?> insertFeedPost(
 //			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
 			@ModelAttribute FeedPostDTO dto,
+			// 파일 데이터를 전송하는 겨웅 Header에 nultipart-form/data를 추가하여 보냅니다.
+			// Axios로 보낼 때, FormData로 묶어서 Data:formData로 보냄
+			// Post형식으로 dto를 묶어서 받을 경우 ModelAttribute를 사용합니다.
 			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
 		try {
 			System.out.println("dto"+dto);
-			System.out.println("피드id : "+dto.getFeedPostId());
+			System.out.println("피드id : "+dto.getFeedPostId()); // 받아올 필요 x
 			System.out.println("유저넘버 : "+dto.getUserNo());
 			System.out.println("내용 : "+dto.getBody());
-			System.out.println("작성일자 : "+dto.getWriteDate());
-			System.out.println("기온 : "+dto.getWriteTemp());
-			System.out.println("기온2 : "+dto.getWriteTempRange());
-			System.out.println("강우? : "+dto.getWritePtyCode());
-			System.out.println("스카이코드 : "+dto.getWrtieSkyCode());
+			System.out.println("작성일자 : "+dto.getWriteDate()); // 작성 필요 x
+			System.out.println("최고온도 : "+dto.getWriteTemp());
+			System.out.println("일교차 : "+dto.getWriteTempRange());
+			System.out.println("강수상태 : "+dto.getWritePtyCode());
+			System.out.println("하늘상태 : "+dto.getWriteSkyCode());
 			System.out.println("해시코드 : " + HashTag.get(0));
 			System.out.println("파일명 : "+files.get(0).getOriginalFilename());
 
+			// 피드 테이블 insert
+			// insert후 feedPostId를 리턴 받습니다.
+			int feedpostId = feedpostService.insertFeedPost(dto);
+			//사진 테이블 insert
+			// 사진이 없는 경우 pass
+
+			//해시태그 테이블 insert
+			//해시 태그 리스트 for문 돌면서 insert? Hashtag insert => tagid return => postHash insert
+			//해시 태그가 없는 경우 pass
+
 			String realPath = request.getServletContext().getRealPath("images");
-//			int feedpostId = feedpostService.insertFeedPost(new FeedPostDTO(0, userNo, body, null, 0, 0));
+//
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
 					int TagId = 0;
