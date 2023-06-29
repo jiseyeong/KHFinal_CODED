@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
-import weatherIcons from '../../../component/WeatherCommon/WetherIcons';
 
 function ToastUI({ clickdata, setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
