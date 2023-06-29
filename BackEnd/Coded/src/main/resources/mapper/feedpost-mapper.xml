@@ -186,5 +186,21 @@
 		where rn between ${startFeedNum} and ${endFeedNum}
 		order by rn asc
 	</select>
+	
+	<select id="selectOne" resultType="kh.coded.dto.FeedPostAddDTO">
+		select f.*
+		from
+		(select fe.*,
+		m.userNickName,
+		m.address1,
+		m.address2,
+		m.sysName as profileSysName,
+		thum.sysName as thumbNailSysName
+			from feedPost fe
+			left join (select mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
+			left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
+		) f
+		where f.feedpostId=${feedpostId}
+	</select>
 
 </mapper>

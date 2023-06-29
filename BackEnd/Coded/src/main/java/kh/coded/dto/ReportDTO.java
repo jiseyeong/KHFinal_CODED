@@ -1,6 +1,7 @@
 package kh.coded.dto;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class ReportDTO {
 
@@ -99,5 +100,10 @@ public class ReportDTO {
 
     public void setWriteDate(Timestamp writeDate) {
         this.writeDate = writeDate;
+    }
+    
+    public String getFormedWriteDate() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yy년 MM월 dd일");
+    	return sdf.format(writeDate);
     }
 }
