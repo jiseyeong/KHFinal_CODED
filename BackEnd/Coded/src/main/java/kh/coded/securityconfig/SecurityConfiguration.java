@@ -128,7 +128,7 @@ public class SecurityConfiguration {
 			"/ReportOk",
 
 			"/follow/selectfollowinglist",
-			"/follow/selectfollowerlist"
+			"/follow/selectfollowerlist",
 
 			"/feedpost/selectOneFeedPost",
 
