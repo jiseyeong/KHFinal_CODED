@@ -41,6 +41,8 @@ const MyPickPage = () => {
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
   );
+  // 내용 null
+  // sysdate
 
   // 팔로우/팔로워 모달창 세팅
   const modalStyle = {
