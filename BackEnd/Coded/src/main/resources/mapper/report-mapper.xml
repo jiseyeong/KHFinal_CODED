@@ -4,8 +4,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Report">
 
+
 	<insert id="Report">
 		insert into report values
 (reportid_seq.nextval,${WRITERUSERNO},${TARGETFEEDPOSTID},null,null,#{},#{BODY},${'F'},${WRITEDATE});
 	</insert>
+
+	<select id="selectAll" resultType="kh.coded.dto.ReportDTO">
+		select * from Report
+	</select>
+
 </mapper>

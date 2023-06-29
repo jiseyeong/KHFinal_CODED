@@ -1,6 +1,7 @@
 package kh.coded.dto;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class ReportDTO {
 
@@ -11,7 +12,6 @@ public class ReportDTO {
     private int targetFeedCommentId;
     private String title;
     private String body;
-    private char replyCondition;
     private Timestamp writeDate;
 
     public ReportDTO() {
@@ -25,7 +25,6 @@ public class ReportDTO {
         this.targetFeedCommentId = targetFeedCommentId;
         this.title = title;
         this.body = body;
-        this.replyCondition = replyCondition;
         this.writeDate = writeDate;
     }
 
@@ -85,19 +84,16 @@ public class ReportDTO {
         this.body = body;
     }
 
-    public char getReplyCondition() {
-        return replyCondition;
-    }
-
-    public void setReplyCondition(char replyCondition) {
-        this.replyCondition = replyCondition;
-    }
-
     public Timestamp getWriteDate() {
         return writeDate;
     }
 
     public void setWriteDate(Timestamp writeDate) {
         this.writeDate = writeDate;
+    }
+    
+    public String getFormedWriteDate() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("yy년 MM월 dd일");
+    	return sdf.format(writeDate);
     }
 }

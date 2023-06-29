@@ -136,7 +136,7 @@
             width: 7%;
             // height: 40px;
             margin-right: 8px;
-            margin-left:8px;
+            margin-left: 8px;
 
             .commentUserImg {
               border: 0px solid #ffffff;
@@ -251,44 +251,70 @@
           // }
         }
         .authorDescription {
+          height: 50%;
           font-size: 14px;
-          display:flex;
+          display: flex;
           // line-height: 16.9px;
           text-decoration: none solid rgb(38, 40, 43);
           text-align: left;
           white-space: pre-wrap;
           word-spacing: 0px;
-          padding-top:10px;
-          padding-bottom:10px;
+          padding-top: 10px;
+          padding-bottom: 10px;
           margin-left: 30px;
-          height: 55%;
 
-          .feedPostBody{
-            width:85%;
+          .feedPostBody {
+            width: 80%;
           }
-          .feedPostWeather{
-            width:15%;
-            display:flex;
-            .weatherIcon{
-              width:50%;
-              svg{
-                width:80%;
-                height:20%;
+          .feedPostWeather {
+            width: 15%;
+            display: flex;
+            .weatherIcon {
+              width: 50%;
+              svg {
+                width: 80%;
+                height: 20%;
               }
             }
-            .writeTemp{
-              padding-top:7px;
-              width:50%;
-              font-size:20px;
+            .writeTemp {
+              padding-top: 7px;
+              width: 50%;
+              font-size: 20px;
             }
+          }
+          .feedPostWidth {
+            width: 3%;
           }
         }
 
-        .hashTagBody{
-          height:20%;
-          padding-left:30px;
-          line-height:50px;
-          font-size:12px;
+        .hashTagBody {
+          display: flex;
+          height: 20%;
+          padding-left: 30px;
+          line-height: 50px;
+          font-size: 12px;
+          .selectLayout {
+            width: 70%;
+            height: 100%;
+            .crSelect {
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+          .buttons {
+            width: 30%;
+            height: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 30%;
+
+            button {
+              height: 30px;
+            }
+          }
         }
       }
     }
@@ -296,8 +322,8 @@
       width: 35%;
       justify-content: center;
       padding: 20px 15px 15px 20px;
-      overflow-y:auto;
-      word-break:break-all;
+      overflow-y: auto;
+      word-break: break-all;
 
       .authorPopularity {
         width: 100%;
@@ -314,10 +340,9 @@
         .likeBox {
           @extend %borderBox;
           border-top-left-radius: 6px;
-          border-bottom-left-radius: 6px; 
+          border-bottom-left-radius: 6px;
           color: #ff0066;
           background-color: white;
-
         }
         .disLikeBox {
           @extend %borderBox;
@@ -357,8 +382,8 @@
           border-radius: 6px;
           margin-left: 8px;
           color: #ff0066;
-          background-color:white;
-          padding-top:3px;
+          background-color: white;
+          padding-top: 3px;
         }
 
         .disScrapBox {
@@ -366,7 +391,7 @@
           border-radius: 6px;
           margin-left: 8px;
           background-color: white;
-          padding-top:3px;
+          padding-top: 3px;
         }
         .scrapImage {
           width: 93%;
@@ -585,7 +610,7 @@
           .likeRepleBox {
             margin-left: auto;
             svg {
-              fill: #ff0066;  
+              fill: #ff0066;
             }
           }
           .dislikeRepleBox {
