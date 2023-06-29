@@ -344,15 +344,12 @@ function ToastUI({ setFeedPostInsertOpen }) {
     const formData = new FormData();
     delete feedpost.address1;
     delete feedpost.address2;
-    console.log(feedpost);
     formData.append('dto', feedpost);
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
-      console.log(item.value);
     });
     for (var i = 0; i < file.length; i++) {
       formData.append('files', file[i]);
-      console.log(file[i]);
     }
 
     // 기후 데이터

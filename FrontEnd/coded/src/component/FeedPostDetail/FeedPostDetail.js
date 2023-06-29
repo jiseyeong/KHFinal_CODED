@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import Modal from '../../pages/Ootd/Main/Modal';
+import FeedModal from '../../pages/Ootd/Main/FeedModal';
 import styles from './FeedPostDetail.module.scss';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -80,6 +80,7 @@ const FeedPostDetail = (props) => {
 
   useEffect(() => {
     //피드 라이크가 변경된다면, likeCount 갱신하기.
+    console.log('a');
     getFeedLikeCount();
   }, [isFeedLike]);
 
@@ -256,7 +257,7 @@ const FeedPostDetail = (props) => {
           </div>
         </div>
         {modal && (
-          <Modal
+          <FeedModal
             closeModal={closeModal}
             feedPost={feedPost}
             feedLikeCount={feedLikeCount}

@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
 // import "../styles/common.scss";
 // import "../styles/reset.scss";
-import './Modal.scss';
+import './FeedModal.scss';
 //import Image from "../image/326548_bookmark_icon.png";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -28,7 +28,7 @@ const ImageLayout = styled('div')`
   align-items: center;
 `;
 
-function Modal({
+function FeedModal({
   // modalData,
   // data,
   // setData,
@@ -665,4 +665,4 @@ function Modal({
     </div>
   );
 }
-export default Modal;
+export default FeedModal;

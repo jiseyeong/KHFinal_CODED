@@ -132,7 +132,9 @@ public class SecurityConfiguration {
 			"/follow/selectfollowerlist",
 			"/feedpost/selectOneFeedPost",
 			"/follow/insertfollow",
-			"/feedReport/insertReport"
+			"/feedReport/insertReport",
+			"/feedList/search",
+			"/coded.ico"
 
 	};
 	private final String[] API_USER_LIST = {

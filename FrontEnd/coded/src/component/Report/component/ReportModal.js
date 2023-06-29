@@ -188,7 +188,6 @@ function ReportModal({ feedPostId, onReportView }) {
                   <label>
                     <input
                       type="radio"
-                      name="theme"
                       value="a"
                       onChange={handleReportNumber}
                     />
@@ -201,7 +200,6 @@ function ReportModal({ feedPostId, onReportView }) {
                   <label>
                     <input
                       type="radio"
-                      name="theme"
                       value="b"
                       onChange={handleReportNumber}
                     />
@@ -214,7 +212,6 @@ function ReportModal({ feedPostId, onReportView }) {
                   <label>
                     <input
                       type="radio"
-                      name="theme"
                       value="c"
                       onChange={handleReportNumber}
                     />
@@ -227,7 +224,6 @@ function ReportModal({ feedPostId, onReportView }) {
                   <label>
                     <input
                       type="radio"
-                      name="theme"
                       value="d"
                       onChange={handleReportNumber}
                     />
@@ -240,7 +236,6 @@ function ReportModal({ feedPostId, onReportView }) {
                   <label>
                     <input
                       type="radio"
-                      name="theme"
                       value="e"
                       onChange={handleReportNumber}
                     />

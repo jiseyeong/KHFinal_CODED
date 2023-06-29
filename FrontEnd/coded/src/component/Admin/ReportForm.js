@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Modal from '../../pages/Ootd/Main/Modal';
+import FeedModal from '../../pages/Ootd/Main/FeedModal';
 
 function ReportForm() {
   const accessToken = useSelector((state) => state.member.access);
@@ -133,10 +133,22 @@ function ReportForm() {
             </tr>
             <tr>
               <th style={{ width: '5%' }}>ID</th>
-              <th style={{ width: '5%' }}>writer<br />userNo</th>
+              <th style={{ width: '5%' }}>
+                writer
+                <br />
+                userNo
+              </th>
               <th style={{ width: '70%' }}>Title</th>
-              <th style={{ width: '15%' }}>Write <br /> Date</th>
-              <th style={{ width: '5%' }}>target<br />FeedPost<br />Id</th>
+              <th style={{ width: '15%' }}>
+                Write <br /> Date
+              </th>
+              <th style={{ width: '5%' }}>
+                target
+                <br />
+                FeedPost
+                <br />
+                Id
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -185,7 +197,7 @@ function ReportForm() {
         </table>
       </div>
       {modal && (
-        <Modal
+        <FeedModal
           // modal={modal}
           closeModal={closeModal}
           feedPost={feedPost}
