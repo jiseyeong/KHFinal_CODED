@@ -35,18 +35,18 @@ public class ReportController {
 		}
 	}
 
-	@PostMapping(value = "/ReportOk") // 구현중
-	public ResponseEntity<?> ReportOk
-	(
-			@RequestParam(value="type") 
-			String type ,
-			@RequestParam(value="text") 
-			String text
-			){
-		System.out.println(type);
-		System.out.println(text);
-		return null;
-	}
+	// @PostMapping(value = "/ReportOk") // 구현중
+	// public ResponseEntity<?> ReportOk
+	// (
+	// 		@RequestParam(value="type") 
+	// 		String type ,
+	// 		@RequestParam(value="text") 
+	// 		String text
+	// 		){
+	// 	System.out.println(type);
+	// 	System.out.println(text);
+	// 	return null;
+	// }
 	
 	@GetMapping(value="report")
 	public ResponseEntity<?> selectAllReport(
