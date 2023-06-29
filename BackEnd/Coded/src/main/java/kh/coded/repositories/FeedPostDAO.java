@@ -165,4 +165,8 @@ public class FeedPostDAO {
 	public int getRecordCount() {
 		return mybatis.selectOne("FeedPost.getRecordCount");
 	}
+	
+	public int getRecordCount(int userNo) {
+		return mybatis.selectOne("FeedPost.getRecordCountByUserNo", userNo);
+	}
 }
