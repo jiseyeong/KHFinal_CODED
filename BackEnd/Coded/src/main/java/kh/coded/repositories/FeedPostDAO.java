@@ -4,15 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kh.coded.dto.*;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
-
-import kh.coded.dto.FeedPostAddDTO;
-import kh.coded.dto.FeedPostDTO;
-import kh.coded.dto.HashTagDTO;
-import kh.coded.dto.PhotoDTO;
 
 @Repository
 public class FeedPostDAO {
@@ -39,21 +35,19 @@ public class FeedPostDAO {
 		mybatis.insert("FeedPost.insertFeedPhoto", dto);
 	}
 	
-	public int insertPostHashs(int FeedPostId, int TagId) {
+	public int insertPostHashs(int feedPostId, int tagId) {
 		Map<String, Integer> result = new HashMap<>();
-		result.put("FeedPostId", FeedPostId);
-		result.put("TagId", TagId);
+		result.put("feedPostId", feedPostId);
+		result.put("tagId", tagId);
 		return mybatis.insert("FeedPost.insertPostHashs", result);
 	}
-	public int insertHashTag(HashTagDTO dto) { // 해시태그
+	public HashTagDTO insertHashTag(HashTagDTO dto) { // 해시태그
 		mybatis.insert("FeedPost.insertHashTag", dto);
-		return dto.getTagId();
+		return dto;
 	}
 //	해시태그 중복 체크
-	public int HashTagJB(String tagName) {
-		int a = mybatis.selectOne("FeedPost.HashTagJB", tagName);
-		System.out.println("checkInt : "+a);
-		return a;
+	public HashTagDTO HashTagJB(String tagName) {
+		return mybatis.selectOne("FeedPost.HashTagJB", tagName);
 	}
 	
 ////	피드 내 날씨 해시태그 - 오늘 날씨에 맞는 날씨 해시태그 자동 입력 (뽑기)
@@ -77,11 +71,11 @@ public class FeedPostDAO {
 		return mybatis.insert("FeedPost.updateFeedPhoto", dto);
 	}
 	
-	public int updatePostHashs(int FeedPostId, int TagId) { //PostHashs 여기서 가져와야됨 hashtagid를
+	public int updatePostHashs(int feedPostId, int tagId) { //PostHashs 여기서 가져와야됨 hashtagid를
 		Map<String, Integer> result = new HashMap<>();
-		result.put("FeedPostId", FeedPostId);
-		result.put("TagId", TagId);
-		return mybatis.insert("FeedPost.updatePostHashs", result);
+		result.put("feedPostId", feedPostId);
+		result.put("tagId", tagId);
+		return mybatis.update("FeedPost.updatePostHashs", result);
 	}
 	
 	
@@ -169,5 +163,13 @@ public class FeedPostDAO {
 	
 	public int getRecordCount(int userNo) {
 		return mybatis.selectOne("FeedPost.getRecordCountByUserNo", userNo);
+	}
+
+	public boolean postHashJB(PostHashsDTO dto) {
+		if(mybatis.selectOne("FeedPost.postHashJB",dto)==null)
+			return false;
+		else{
+			return true;
+		}
 	}
 }

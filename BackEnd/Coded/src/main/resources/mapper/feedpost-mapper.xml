@@ -6,29 +6,27 @@
 
 	<insert id="insertFeedPost">
 		<selectKey keyProperty="feedPostId" resultType="int" order="BEFORE">
-			select FeedPostId_seq.nextval from dual;
+			select FeedPostId_seq.nextval from dual
 		</selectKey>
 		insert into FeedPost values (${feedPostId}, ${userNo}, #{body}, sysdate, ${writeTemp}, ${writeTempRange}, ${writePtyCode}, ${writeSkyCode})
 	</insert>
 
 	<insert id="insertFeedPhoto">
-		insert into FeedPhoto values(FeedPost_seq.nextval,
-		#{oriName}, #{sysname}, ${feedPostId},
-		0,0)
+		insert into photo values(photoId_seq.nextval, #{oriName}, #{sysName}, ${feedPostId}, 0,0)
 	</insert>
 
 	<insert id="insertHashTag">
-		insert into HashTag values(Hashtag_seq.nextval,
-		#{HashTag})
+		<selectKey keyProperty="tagId" resultType="int" order="BEFORE">
+			select tagId_seq.nextval from dual
+		</selectKey>
+		insert into HashTag values(${tagId}, #{hashTag})
 	</insert>
 
 	<insert id="insertPostHashs">
-		insert into PostHashs values(PostHashs_seq.nextval,
-		#{feedPostId}, #{tagId})
+		insert into PostHashs values(linkId_seq.nextval, ${feedPostId}, ${tagId})
 	</insert>
 
-	<select id="selectTestFeedList"
-		resultType="kh.coded.dto.FeedPostDTO">
+	<select id="selectTestFeedList" resultType="kh.coded.dto.FeedPostDTO">
 		select * from feedpost order by feedpostid desc
 	</select>
 
@@ -126,14 +124,15 @@
 	</select>
 	
 	<!-- 해시태그 중복 체크 -->
-	<select id="HashTagJB" resultType="int">
-		select tagId from Hashtag where Hashtag = #{tagName}
+	<select id="HashTagJB" resultType="kh.coded.dto.HashTagDTO">
+		select * from Hashtag where hashtag = #{tagName}
 	</select>
 	
 
 	<update id="updateFeedPost">
-		update feedpost set body = #{body} where feedpostid = ${feedpostid}
+		update feedPost set body = #{body} where feedPostId = ${feedPostId}
 	</update>
+
 	<update id="updateupdateFeedPhoto">
 		update photo set oriName=#{oriName}, sysname = #{sysname} where feedpostid =
 		${feedpostid}
@@ -208,5 +207,10 @@
 	<select id="getRecordCountByUserNo" resultType="int">
 		select count(*) from FeedPost where userNo=${userNo}
 	</select>
+
+	<select id="postHashJB" resultType="Boolean">
+		select count(*) from FeedPost where feedPostId=${feedPostId} and tagId=${tagId}
+	</select>
+
 
 </mapper>

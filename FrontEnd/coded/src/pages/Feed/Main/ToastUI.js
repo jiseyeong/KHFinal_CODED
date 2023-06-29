@@ -347,7 +347,7 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
     console.log(feedpost);
     formData.append('dto', feedpost);
     selectRef.current.getValue().forEach((item) => {
-      formData.append('HashTag', item.value);
+      formData.append('hashTag', item.value);
       console.log(item.value);
     });
     for (var i = 0; i < file.length; i++) {
@@ -364,7 +364,11 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
       },
       data: formData,
     })
-      .then((resp) => {})
+      .then((resp) => {
+        if (resp.data) {
+          alert('등록이 완료되었습니다.');
+        }
+      })
       .catch((error) => {});
   };
 
