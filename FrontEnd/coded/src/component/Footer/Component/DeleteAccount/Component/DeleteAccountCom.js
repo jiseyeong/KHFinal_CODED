@@ -7,10 +7,12 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../../../../modules/Redux/members';
 
-const DeleteAccountCom = ({toggleChangePwModal}) => {
+const DeleteAccountCom = ({ toggleChangePwModal }) => {
   const accessToken = useSelector((state) => state.member.access);
   const dispatch = useDispatch();
-  const onLogout = useCallback(()=>{dispatch(logout(), [dispatch])});
+  const onLogout = useCallback(() => {
+    dispatch(logout(), [dispatch]);
+  });
 
   const [password, setPassword] = useState('');
   const navi = useNavigate();
@@ -22,7 +24,7 @@ const DeleteAccountCom = ({toggleChangePwModal}) => {
   };
 
   const removeAccount = () => {
-    if(accessToken){
+    if (accessToken) {
       if (confirm('정말로 회원을 탈퇴하시겠습니까?')) {
         axios({
           url: '/auth/deleteMemberWithoutId',
@@ -33,18 +35,20 @@ const DeleteAccountCom = ({toggleChangePwModal}) => {
           params: {
             checkPw: password,
           },
-        }).then((resp) => {
-          if (resp.data > 0) {
-            onLogout();
-            alert('회원 탈퇴가 완료되었습니다.');
-            navi('/');
-          } else {
-            alert('비밀번호가 일치하지 않습니다.');
-            return;
-          }
-        }).catch((error)=>{
-          console.log(error);
-        });
+        })
+          .then((resp) => {
+            if (resp.data > 0) {
+              onLogout();
+              alert('회원 탈퇴가 완료되었습니다.');
+              navi('/');
+            } else {
+              alert('비밀번호가 일치하지 않습니다.');
+              return;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     }
   };
@@ -86,7 +90,7 @@ const DeleteAccountCom = ({toggleChangePwModal}) => {
               <div className="inputLayout">
                 <input
                   type="password"
-                  placeholder="현재 비밀번호"
+                  placeholder="현재 비밀번호를 입력해주세요"
                   name="currentPw"
                   value={password}
                   onChange={handleInput}
