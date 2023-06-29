@@ -30,18 +30,18 @@ public class ReportController {
 		}
 	}
 
-	@PostMapping(value = "/ReportOk") // 구현중
-	public ResponseEntity<?> ReportOk
-	(
-			@RequestParam(value="type") 
-			String type ,
-			@RequestParam(value="text") 
-			String text
-			){
-		
-		return ResponseEntity.ok().body(feedReportService.ReportOk);
-	}
-
+//	@PostMapping(value = "/ReportOk") // 구현중
+//	public ResponseEntity<?> ReportOk
+//	(
+//			@RequestParam(value="type") 
+//			String type ,
+//			@RequestParam(value="text") 
+//			String text
+//			){
+//		
+//		return ResponseEntity.ok().body(feedReportService.ReportOk);
+//	}
+//
 
 
 }
