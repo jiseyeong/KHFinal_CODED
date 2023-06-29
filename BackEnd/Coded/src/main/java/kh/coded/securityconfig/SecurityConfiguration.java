@@ -170,6 +170,7 @@ public class SecurityConfiguration {
 			"/auth/getNaviInfo",
 			"/auth/pagingMember",
 			"/auth/deleteMemberByAdmin",
+			"/feedpost/getNaviInfo/userNo",
 	};
 	
 //	@Autowired

@@ -453,5 +453,20 @@ public class FeedPostController {
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
-
+	
+	@GetMapping("/getNaviInfo/userNo")
+	public ResponseEntity<?> getUserNoNaviInfo(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userNo") int userNo
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = feedpostService.selectPageNavi(cpage, userNo);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 }

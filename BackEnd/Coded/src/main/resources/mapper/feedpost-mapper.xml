@@ -205,5 +205,8 @@
 	<select id="getRecordCount" resultType="int">
 		select count(*) from FeedPost
 	</select>
+	<select id="getRecordCountByUserNo" resultType="int">
+		select count(*) from FeedPost where userNo=${userNo}
+	</select>
 
 </mapper>

@@ -17,56 +17,136 @@ function FeedListForm(){
     const [isFeedLike, setIsFeedLike] = useState(false);
     const [hashTagList, setHashTagList] = useState([]);
     const [feedPost, setFeedPost] = useState([]);
+    const [type, setType] = useState('none');
+
+    const selectBoxRef = useRef(null);
+    const inputRef = useRef(null);
 
     const navigate = useNavigate();
 
     useEffect(()=>{
         if(accessToken){
             updateFeedList();
+            handleSearchSelect();
         }
     },[accessToken, cpage])
 
     function updateFeedList(){
         if(accessToken){
-            axios({
-                method:'get',
-                url:'/feedpost/getNaviInfo',
-                headers:{
-                    Authorization:`Bearer ${accessToken}`,
-                },
-                params:{
-                    cpage:cpage
-                }
-            })
-            .then((response)=>{
-                setNaviList(response.data.naviList);
-                setNeedPrev(response.data.needPrev);
-                setNeedNext(response.data.needNext);
-            })
-            .catch((error)=>{
-                if (error.request.status === 403) {
-                    console.log('Forbiddened. 권한이 없습니다.');
-                    navigate('/');
-                  } else if (error.request.status === 400) {
-                    console.log('badRequest. : ' + error.response.data);
-                  } else {
+            if(type ==='none'){
+                axios({
+                    method:'get',
+                    url:'/feedpost/getNaviInfo',
+                    headers:{
+                        Authorization:`Bearer ${accessToken}`,
+                    },
+                    params:{
+                        cpage:cpage
+                    }
+                })
+                .then((response)=>{
+                    setNaviList(response.data.naviList);
+                    setNeedPrev(response.data.needPrev);
+                    setNeedNext(response.data.needNext);
+                })
+                .catch((error)=>{
+                    if (error.request.status === 403) {
+                        console.log('Forbiddened. 권한이 없습니다.');
+                        navigate('/');
+                      } else if (error.request.status === 400) {
+                        console.log('badRequest. : ' + error.response.data);
+                      } else {
+                        console.log(error);
+                      }
+                })
+                axios({
+                    method:'get',
+                    url:'/feedpost/selectAllFeedPost/',
+                    params:{
+                        cpage:cpage
+                    }
+                })
+                .then((response)=>{
+                    setFeedPostList(response.data);
+                })
+                .catch((error)=>{
                     console.log(error);
-                  }
-            })
-            axios({
-                method:'get',
-                url:'/feedpost/selectAllFeedPost/',
-                params:{
-                    cpage:cpage
-                }
-            })
-            .then((response)=>{
-                setFeedPostList(response.data);
-            })
-            .catch((error)=>{
-                console.log(error);
-            })
+                })
+            }else if(type==='userNo'){
+                axios({
+                    method:'get',
+                    url:'/feedpost/getNaviInfo/userNo',
+                    headers:{
+                        Authorization:`Bearer ${accessToken}`,
+                    },
+                    params:{
+                        userNo:inputRef.current.value,
+                        cpage:cpage
+                    }
+                })
+                .then((response)=>{
+                    setNaviList(response.data.naviList);
+                    setNeedPrev(response.data.needPrev);
+                    setNeedNext(response.data.needNext);
+                })
+                .catch((error)=>{
+                    if (error.request.status === 403) {
+                        console.log('Forbiddened. 권한이 없습니다.');
+                        navigate('/');
+                      } else if (error.request.status === 400) {
+                        console.log('badRequest. : ' + error.response.data);
+                      } else {
+                        console.log(error);
+                      }
+                })
+                axios({
+                    method:'get',
+                    url:'/feedpost/selectUserFeedPost',
+                    params:{
+                        userNo:inputRef.current.value,
+                        cpage:cpage
+                    }
+                })
+                .then((response)=>{
+                    setFeedPostList(response.data);
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+            }else if(type==='feedPostId'){
+                axios({
+                    method: 'get',
+                    url: '/feedpost/selectOneFeedPost',
+                    params: {
+                      feedpostId: inputRef.current.value,
+                    },
+                  })
+                .then((response)=>{
+                    setFeedPostList([]);
+                    setFeedPostList((prev)=>{return [...prev, response.data]});
+                })
+                .catch((error)=>{
+                    console.log(error);
+                })
+            }
         }
+    }
+
+
+    function handleSearchSelect(){
+        console.log(selectBoxRef.current.value);
+        if(selectBoxRef.current.value === 'FeedPostID'){
+            setType('feedPostId');
+        }else if(selectBoxRef.current.value === 'UserNo'){
+            setType('userNo');
+        }else{
+            setType('none');
+        }
+    }
+
+    function handleSearch(){
+        setCpage(1);
+        updateFeedList();
     }
 
     function handleCpage(index){
@@ -207,6 +287,17 @@ function FeedListForm(){
                                 )
                             })}
                             {needNext && (<button onClick={()=>{handleCpage(naviList[naviList.length - 1] + 1)}}>next</button>)}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" colSpan={3}>
+                            <select ref={selectBoxRef} onChange={handleSearchSelect}>
+                                <option value='FeedPostID'>FeedPostID</option>
+                                <option value='UserNo'>UserNo</option>
+                            </select>
+                            <input type="text" ref={inputRef}></input>
+                            <button onClick={handleSearch}>검색</button>
+                            <button onClick={()=>{setType('none')}}>검색 취소</button>
                         </td>
                     </tr>
                 </tbody>
