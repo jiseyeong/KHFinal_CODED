@@ -125,7 +125,8 @@ public class SecurityConfiguration {
 			"/test.jpg",
 			"/feedpost/feedpost",
 			"/ws/**",
-			"/ReportOk"
+			"/ReportOk",
+			"/app/**",
 
 
 
@@ -163,7 +164,7 @@ public class SecurityConfiguration {
 			"/DM/**",
 			"/topic/**",
 			"/ws/**",
-			"/app/**",
+			
 	};
 	private final String[] API_ADMIN_LIST = {
 			
