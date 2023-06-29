@@ -131,7 +131,8 @@ public class SecurityConfiguration {
 			"/follow/selectfollowinglist",
 			"/follow/selectfollowerlist",
 			"/feedpost/selectOneFeedPost",
-			"/follow/insertfollow"
+			"/follow/insertfollow",
+			"/feedReport/insertReport"
 
 	};
 	private final String[] API_USER_LIST = {

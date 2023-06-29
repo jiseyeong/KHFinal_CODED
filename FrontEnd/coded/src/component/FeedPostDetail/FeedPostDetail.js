@@ -257,7 +257,6 @@ const FeedPostDetail = (props) => {
         </div>
         {modal && (
           <Modal
-            // modal={modal}
             closeModal={closeModal}
             feedPost={feedPost}
             feedLikeCount={feedLikeCount}

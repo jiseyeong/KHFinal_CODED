@@ -9,7 +9,7 @@ import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
 
-function ToastUI({ clickdata, setFeedPostInsertOpen }) {
+function ToastUI({ setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({

@@ -18,6 +18,7 @@ import { styled } from 'styled-components';
 import { Link } from 'react-router-dom';
 import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
+import ReportModal from '../../../component/Report/component/ReportModal';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -84,6 +85,9 @@ function Modal({
   const accessToken = useSelector((state) => state.member.access);
   const userNo = useSelector((state) => state.member.userNo);
   const [weatherIcon, setWeatherIcon] = useState('');
+
+  // 신고 모달창 관련 on/off
+  const [reportModal, setReportModal] = useState(false);
 
   let num = 0;
 
@@ -449,6 +453,7 @@ function Modal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
+                    {console.log(feedPost)}
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
@@ -628,6 +633,14 @@ function Modal({
                   <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}>
                     <ScrapImage />
                   </div>
+                  <button
+                    onClick={(e) => {
+                      console.log('trueture');
+                      setReportModal(true);
+                    }}
+                  >
+                    테스트
+                  </button>
                 </div>
               </div>
 
@@ -636,6 +649,15 @@ function Modal({
                 depth={0}
                 parentId={0}
               />
+
+              {/* Report insert 기능 완료 */}
+              {/* Report 모달창 구현 완료 */}
+              {/* 단 모달창 안에서 모달창을 띄우질 못함 */}
+              {/* 1. Modal.js의 이름을 바꾸어야함 (Modal 라이브러리의 <Modal>과 이름이 겹치기 때문) */}
+              {/* {이것은 별도의 컴포넌트로 이름을 바꾸어 import를 해도 안쪽에 <Modal>이 존재하여 소용이 없음} */}
+              {/* 2. 이름 바꾼 후 신고 창이 활성화가 안됨 여기가 문제 */}
+              {/* 아래 주석 해제 시 그냥 페이지 전환으로 기능 */}
+              {/* {reportModal && <ReportModal />} */}
             </div>
           </div>
         </div>
