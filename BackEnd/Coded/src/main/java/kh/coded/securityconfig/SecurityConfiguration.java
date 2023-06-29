@@ -167,6 +167,9 @@ public class SecurityConfiguration {
 	private final String[] API_ADMIN_LIST = {
 			"/feedReport/report",
 			"/feedpost/getNaviInfo",
+			"/auth/getNaviInfo",
+			"/auth/pagingMember",
+			"/auth/deleteMemberByAdmin",
 	};
 	
 //	@Autowired

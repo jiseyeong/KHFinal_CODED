@@ -500,4 +500,49 @@ public class AuthenticationController {
         MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }
+    
+    @GetMapping("/auth/getNaviInfo")
+	public ResponseEntity<?> getNaviInfo(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = memberService.selectPageNavi(cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+    @GetMapping("/auth/pagingMember")
+    public ResponseEntity<?> getPagingMember(
+    		@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<MemberDTO> data = memberService.pagingMember(cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @DeleteMapping("/auth/deleteMemberByAdmin")
+    public ResponseEntity<?> deleteMemberByAdmin(
+    		@RequestHeader(value="authorization") String authorization,
+    		@RequestParam(value="userNo") int userNo
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				memberService.deleteMember_Admin(userNo);
+				return ResponseEntity.ok().body(null);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
 }

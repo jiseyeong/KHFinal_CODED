@@ -125,69 +125,65 @@ function ReportForm() {
 
   return (
     <div>
-      {accessToken ? (
-        <div style={{ display: 'flex' }}>
-          <table border={1} style={{ flex: 2 }}>
-            <thead>
-              <tr>
-                <th colSpan={5}>신고글 리스트</th>
-              </tr>
-              <tr>
-                <th style={{ width: '5%' }}>ID</th>
-                <th style={{ width: '5%' }}>writer<br />userNo</th>
-                <th style={{ width: '70%' }}>Title</th>
-                <th style={{ width: '15%' }}>Write <br /> Date</th>
-                <th style={{ width: '5%' }}>target<br />FeedPost<br />Id</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reportList.map((item, index) => {
-                return (
-                  <tr key={item.reportId}>
-                    <td>{item.reportId}</td>
-                    <td
-                      onClick={() => {
-                        moveToUser(item.writerUserNo);
-                      }}
-                    >
-                      {item.writerUserNo}
-                    </td>
-                    <td
-                      onClick={() => {
-                        setBody(item.body);
-                      }}
-                    >
-                      {item.title}
-                    </td>
-                    <td>{item.formedWriteDate}</td>
-                    <td
-                      onClick={() => {
-                        onFeedModal(item.targetFeedPostId);
-                      }}
-                    >
-                      {item.targetFeedPostId}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <table border={1} style={{ flex: 1 }}>
-            <thead>
-              <tr>
-                <th>선택된 신고글 본문</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{body}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        <div>로그인 후 이용 가능한 서비스입니다.</div>
-      )}
+      <div style={{ display: 'flex' }}>
+        <table border={1} style={{ flex: 2 }}>
+          <thead>
+            <tr>
+              <th colSpan={5}>신고글 리스트</th>
+            </tr>
+            <tr>
+              <th style={{ width: '5%' }}>ID</th>
+              <th style={{ width: '5%' }}>writer<br />userNo</th>
+              <th style={{ width: '70%' }}>Title</th>
+              <th style={{ width: '15%' }}>Write <br /> Date</th>
+              <th style={{ width: '5%' }}>target<br />FeedPost<br />Id</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reportList.map((item, index) => {
+              return (
+                <tr key={item.reportId}>
+                  <td>{item.reportId}</td>
+                  <td
+                    onClick={() => {
+                      moveToUser(item.writerUserNo);
+                    }}
+                  >
+                    {item.writerUserNo}
+                  </td>
+                  <td
+                    onClick={() => {
+                      setBody(item.body);
+                    }}
+                  >
+                    {item.title}
+                  </td>
+                  <td>{item.formedWriteDate}</td>
+                  <td
+                    onClick={() => {
+                      onFeedModal(item.targetFeedPostId);
+                    }}
+                  >
+                    {item.targetFeedPostId}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <table border={1} style={{ flex: 1 }}>
+          <thead>
+            <tr>
+              <th>선택된 신고글 본문</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{body}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       {modal && (
         <Modal
           // modal={modal}
