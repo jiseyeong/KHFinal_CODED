@@ -156,5 +156,12 @@ public class FeedPostDAO {
 		data.put("endFeedNum", endFeedNum);
 		return mybatis.selectList("FeedPost.selectScrapFeedPost", data);
 	}
-
+	
+	public FeedPostAddDTO selectOneFeedPost(int feedpostId){
+		return mybatis.selectOne("FeedPost.selectOne", feedpostId);
+	}
+	
+	public int getRecordCount() {
+		return mybatis.selectOne("FeedPost.getRecordCount");
+	}
 }

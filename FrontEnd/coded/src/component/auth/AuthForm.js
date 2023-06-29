@@ -356,7 +356,6 @@ const AuthForm = ({ type }) => {
       timeout: 5000,
     })
       .then(function (response) {
-        console.log(response);
         if(response.status == 202){
           alert(response.data)
         }else{
@@ -435,7 +434,6 @@ const AuthForm = ({ type }) => {
       url: '/login/oauth2/google/codeInfo',
     })
       .then((response) => {
-        console.log(response);
         const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
         window.location.href = GOOGLE_AUTH_URL;
       })
