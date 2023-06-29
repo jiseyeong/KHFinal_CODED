@@ -16,6 +16,18 @@ import {
 import axios from 'axios';
 import Modal from 'react-modal';
 import FollowerList from '../../component/FollowList/FollowList';
+import FeedInsert from '../../test/FeedUpdateTestOuter';
+import FeedInsertModal from '../Feed/Main/FeedInsertModal';
+import { CloseBtn } from '../../assets/ModalAsset/IconAsset';
+
+const customStyle = {
+  position: 'absolute',
+  top: '10px',
+  right: '10px',
+  width: '30px',
+  height: '30px',
+  cursor: 'pointer',
+};
 
 const MyPickPage = () => {
   const [feedPost, setFeedPost] = useState([]);
@@ -41,9 +53,30 @@ const MyPickPage = () => {
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
   );
+  const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
+  const [followModalMode, setFollowModalMode] = useState(true);
+
+  const [feedWriteModal, setFeedWriteModal] = useState(false);
+
+  // 피드 작성 모달창 세팅
+  const insertModalStyle = {
+    overlay: {
+      zIndex: 101,
+    },
+    content: {
+      margin: 'auto',
+      width: '1100px',
+      height: '700px',
+      padding: '2.5rem',
+      // position: 'relative',
+    },
+  };
 
   // 팔로우/팔로워 모달창 세팅
   const modalStyle = {
+    overlay: {
+      zIndex: 101,
+    },
     content: {
       margin: 'auto',
       width: '400px',
@@ -53,9 +86,6 @@ const MyPickPage = () => {
       padding: '0',
     },
   };
-
-  const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
-  const [followModalMode, setFollowModalMode] = useState(true);
 
   useEffect(() => {
     setNavbarIndexOOTD();
@@ -259,7 +289,12 @@ const MyPickPage = () => {
                   </svg>
                 </div>
               ) : (
-                <div className="writeBtnLayout">
+                <div
+                  className="writeBtnLayout"
+                  onClick={() => {
+                    setFeedWriteModal(true);
+                  }}
+                >
                   <svg
                     className="writeBtnSvg"
                     height="40"
@@ -297,6 +332,19 @@ const MyPickPage = () => {
             followModalMode={followModalMode}
             userNo={currentUserNo}
           />
+        </Modal>
+        <Modal
+          isOpen={feedWriteModal}
+          style={insertModalStyle}
+          ariaHideApp={false}
+        >
+          <CloseBtn
+            customStyle={customStyle}
+            onClick={() => {
+              setFeedWriteModal(false);
+            }}
+          />
+          <FeedInsertModal setFeedPostInsertOpen={setFeedWriteModal} />
         </Modal>
       </div>
     </div>

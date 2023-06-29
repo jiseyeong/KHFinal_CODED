@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 // import CardList from './CardList.scss';
-import Modal from './Modal';
+import FeedModal from './FeedModal';
 // import InfiniteScroll from 'react-infinite-scroller';
 import style from './Main.module.scss';
 import axios from 'axios';
@@ -103,7 +103,7 @@ function Main({ InfiniteScroll, handleClickLike }) {
         </div>
       </div>
       <div className={isModal ? '' : 'displayNone'}>
-        <Modal
+        <FeedModal
           modalData={modalData_func}
           data={getData}
           commentData={commentData}

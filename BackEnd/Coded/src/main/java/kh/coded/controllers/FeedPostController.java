@@ -87,27 +87,26 @@ public class FeedPostController {
         return ResponseEntity.ok().body(null);
     }
 
-    @PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
+    @PostMapping(value = "insertFeedPost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
     public ResponseEntity<?> insertFeedPost(
-//			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
             @ModelAttribute FeedPostDTO dto,
             // 파일 데이터를 전송하는 겨웅 Header에 nultipart-form/data를 추가하여 보냅니다.
             // Axios로 보낼 때, FormData로 묶어서 Data:formData로 보냄
             // Post형식으로 dto를 묶어서 받을 경우 ModelAttribute를 사용합니다.
             @RequestParam List<String> hashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) throws Exception{
-        System.out.println("dto" + dto);
-        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
-        System.out.println("유저넘버 : " + dto.getUserNo());
-        System.out.println("내용 : " + dto.getBody());
-        System.out.println("작성일자 : " + dto.getWriteDate()); // 작성 필요 x
-        System.out.println("최고온도 : " + dto.getWriteTemp());
-        System.out.println("일교차 : " + dto.getWriteTempRange());
-        System.out.println("강수상태 : " + dto.getWritePtyCode());
-        System.out.println("하늘상태 : " + dto.getWriteSkyCode());
-        System.out.println("해시코드 : " + hashTag.get(0));
-        System.out.println("파일명 : " + files.get(0).getOriginalFilename());
-        dto.setUserNo(21);
-        dto.setBody("test");
+//        System.out.println("dto" + dto);
+//        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
+//        System.out.println("유저넘버 : " + dto.getUserNo());
+//        System.out.println("내용 : " + dto.getBody());
+//        System.out.println("작성일자 : " + dto.getWriteDate()); // 작성 필요 x
+//        System.out.println("최고온도 : " + dto.getWriteTemp());
+//        System.out.println("일교차 : " + dto.getWriteTempRange());
+//        System.out.println("강수상태 : " + dto.getWritePtyCode());
+//        System.out.println("하늘상태 : " + dto.getWriteSkyCode());
+//        System.out.println("해시코드 : " + hashTag.get(0));
+//        System.out.println("파일명 : " + files.get(0).getOriginalFilename());
+//        dto.setUserNo(21);
+//        dto.setBody("test");
 
         // 피드 테이블 insert
         // insert후 feedPostId가 update된 dto를 리턴 받습니다. (selectKey)
@@ -373,7 +372,6 @@ public class FeedPostController {
     @GetMapping(value = "selectUserFeedPost")
     public ResponseEntity<?> selectUserFeedPost(@RequestParam(value = "userNo") int userNo,
                                                 @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
-        System.out.println("chekced");
         List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo, cpage);
         return ResponseEntity.ok().body(data);
     }

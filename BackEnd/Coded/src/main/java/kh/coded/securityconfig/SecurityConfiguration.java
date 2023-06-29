@@ -131,7 +131,11 @@ public class SecurityConfiguration {
 			"/follow/selectfollowinglist",
 			"/follow/selectfollowerlist",
 			"/feedpost/selectOneFeedPost",
-			"/follow/insertfollow"
+			"/follow/insertfollow",
+			"/feedReport/insertReport",
+			"/feedList/search",
+			"/coded.ico",
+			"/feedpost/insertFeedPost"
 
 	};
 	private final String[] API_USER_LIST = {
@@ -149,7 +153,7 @@ public class SecurityConfiguration {
 			"/auth/userWithProfileDTO",
 			"/auth/updatePwAfterPwCheck",
 			"/auth/deleteMemberWithoutId",
-			
+
 			"/feedpost/insertFeedLike",
 			"/feedpost/isLike",
 			"/feedpost/isScrap",
