@@ -125,7 +125,8 @@ public class SecurityConfiguration {
 			"/test.jpg",
 			"/feedpost/feedpost",
 			"/ws/**",
-			"/ReportOk"
+			"/ReportOk",
+			"/feedpost/selectOneFeedPost"
 
 
 
@@ -166,7 +167,7 @@ public class SecurityConfiguration {
 			"/app/**",
 	};
 	private final String[] API_ADMIN_LIST = {
-			
+			"/feedReport/report",
 	};
 	
 //	@Autowired
@@ -199,6 +200,7 @@ public class SecurityConfiguration {
 				authorize
 					.requestMatchers(API_WHITE_LIST).permitAll()
 					.requestMatchers(API_USER_LIST).hasRole("USER")
+					.requestMatchers(API_ADMIN_LIST).hasRole("ADMIN")
 					.anyRequest().authenticated();
 			}catch(Exception e) {
 				throw new RuntimeException(e);

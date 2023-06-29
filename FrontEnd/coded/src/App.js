@@ -39,6 +39,7 @@ import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 import TodayWeather from './component/TodayWeather/TodayWeather';
 import Follow from './component/FollowList/Follow';
+import AdminPage from './pages/Admin/AdminPage';
 // import ConfirmDialog from './component/Common/ConfirmDialog';
 
 const ButtonContainer = styled.div`
@@ -182,6 +183,7 @@ function App() {
           element={<GoogleCodeCallbackPage />}
         />
         <Route path="/login/oauth2/callback" element={<LastCallbackPage />} />
+        <Route path="/Admin" element={<AdminPage />} />
         {/* <Route path="/likepeed" element={<Likepeed/>} />
         <Route path="/newpeed"  element={<Newpeed/>} /> */}
       </Routes>

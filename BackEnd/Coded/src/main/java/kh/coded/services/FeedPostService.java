@@ -341,4 +341,8 @@ public class FeedPostService {
         
         return feedpostDAO.selectScrapFeedPost(userNo, startFeedNum, endFeedNum);
     }
+    
+    public FeedPostAddDTO selectOneFeedPost(int feedpostId) {
+    	return feedpostDAO.selectOneFeedPost(feedpostId);
+    }
 }
