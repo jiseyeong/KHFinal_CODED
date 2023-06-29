@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Modal from '../../pages/Ootd/Main/Modal';
 
 function ReportForm() {
   const accessToken = useSelector((state) => state.member.access);
@@ -68,14 +69,14 @@ function ReportForm() {
       },
     })
       .then((response) => {
-        setFeedPost(respons.data);
+        setFeedPost(response.data);
 
         function getHashs() {
           return axios({
             method: 'get',
             url: '/feedpost/hashtagList',
             params: {
-              feedPostId: response.data.feedPostId,
+              feedPostId: feedPost.feedPostId,
             },
           }).then((response) => {
             setHashTagList((prev) => {
@@ -88,7 +89,7 @@ function ReportForm() {
             method: 'get',
             url: '/feedpost/likeCount',
             params: {
-              feedPostId: response.data.feedPostId,
+              feedPostId: feedPost.feedPostId,
             },
           })
             .then((response) => {
