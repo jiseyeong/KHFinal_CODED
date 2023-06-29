@@ -38,9 +38,8 @@ public class ReportController {
 			@RequestParam(value="text") 
 			String text
 			){
-		System.out.println(type);
-		System.out.println(text);
-		return null;
+		
+		return ResponseEntity.ok().body(feedReportService.ReportOk);
 	}
 
 
