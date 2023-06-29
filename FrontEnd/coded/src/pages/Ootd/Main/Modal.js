@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useRef, useState } from 'react';
+import React, { Component, useEffect, useMemo, useRef, useState } from 'react';
 // import "../styles/common.scss";
 // import "../styles/reset.scss";
 import './Modal.scss';
@@ -176,9 +176,10 @@ function Modal({
       });
   }
 
-  // function editCancel(){
-  //
-  // }
+
+  function editCancel(){
+  
+  }
 
   // 좋아요, 스크랩 기능들------------------------
   const [likeScale, setLikeScale] = useState(1);
@@ -576,7 +577,7 @@ function Modal({
                     </div>
                     <div className="buttons">
                       <button>수정 완료</button>
-                      <button>수정 취소</button>
+                      <button onClick={}>수정 취소</button>
                     </div>
                   </div>
                 )}
