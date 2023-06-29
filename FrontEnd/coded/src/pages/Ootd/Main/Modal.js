@@ -134,16 +134,16 @@ function Modal({
   }
 
   function deleteFeedPost() {
-    if(accessToken){
+    if (accessToken) {
       axios({
         method: 'delete',
         url: '/feedpost/deleteFeedPost',
         params: {
           feedPostId: feedPost.feedPostId,
         },
-        headers:{
-          Authorization:`Bearer ${accessToken}`
-        }
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       })
         .then(() => {
           closeModal();
@@ -384,6 +384,18 @@ function Modal({
   //   console.log('id값', modalData?.modalData?.modalData?.id);
   // });
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: 520, // 원하는 가로 크기로 변경
+      height: 50, // 원하는 높이로 변경
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      transform: 'rotate(180deg)', // 화살표 회전
+    }),
+  };
+
   return (
     <div className="wrapper">
       <div className="mainWrapper">
@@ -570,14 +582,16 @@ function Modal({
                   </div>
                 ) : (
                   <div className="hashTagBody">
-                    <div className="select">
-                    <CreatableSelect
-                      placeholder="해시태그 추가"
-                      isMulti
-                      options={hashTagList}
-                      className='select2'
-                      // ref={selectRef}
-                    />
+                    <div className="selectLayout">
+                      <CreatableSelect
+                        className="crSelect"
+                        placeholder="해시태그 추가"
+                        isMulti
+                        options={hashTagList}
+                        menuPlacement="top"
+                        styles={customStyles}
+                        // ref={selectRef}
+                      />
                     </div>
                     <div className="buttons">
                       <button>수정 완료</button>
