@@ -199,5 +199,9 @@
 		) f
 		where f.feedpostId=${feedpostId}
 	</select>
+	
+	<select id="getRecordCount" resultType="int">
+		select count(*) from FeedPost
+	</select>
 
 </mapper>

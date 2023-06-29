@@ -160,4 +160,8 @@ public class FeedPostDAO {
 	public FeedPostAddDTO selectOneFeedPost(int feedpostId){
 		return mybatis.selectOne("FeedPost.selectOne", feedpostId);
 	}
+	
+	public int getRecordCount() {
+		return mybatis.selectOne("FeedPost.getRecordCount");
+	}
 }
