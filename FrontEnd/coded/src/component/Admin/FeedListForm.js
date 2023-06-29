@@ -17,23 +17,24 @@ function FeedListForm(){
     const [isFeedLike, setIsFeedLike] = useState(false);
     const [hashTagList, setHashTagList] = useState([]);
     const [feedPost, setFeedPost] = useState([]);
-    const [type, setType] = useState('none');
+    const type = useRef('none');
 
     const selectBoxRef = useRef(null);
     const inputRef = useRef(null);
+
+    const numberRegex = /^[0-9]+$/;
 
     const navigate = useNavigate();
 
     useEffect(()=>{
         if(accessToken){
             updateFeedList();
-            handleSearchSelect();
         }
     },[accessToken, cpage])
 
     function updateFeedList(){
         if(accessToken){
-            if(type ==='none'){
+            if(type.current ==='none'){
                 axios({
                     method:'get',
                     url:'/feedpost/getNaviInfo',
@@ -72,7 +73,7 @@ function FeedListForm(){
                 .catch((error)=>{
                     console.log(error);
                 })
-            }else if(type==='userNo'){
+            }else if(type.current==='userNo'){
                 axios({
                     method:'get',
                     url:'/feedpost/getNaviInfo/userNo',
@@ -113,7 +114,7 @@ function FeedListForm(){
                 .catch((error)=>{
                     console.log(error);
                 })
-            }else if(type==='feedPostId'){
+            }else if(type.current ==='feedPostId'){
                 axios({
                     method: 'get',
                     url: '/feedpost/selectOneFeedPost',
@@ -122,8 +123,18 @@ function FeedListForm(){
                     },
                   })
                 .then((response)=>{
-                    setFeedPostList([]);
-                    setFeedPostList((prev)=>{return [...prev, response.data]});
+                    if(response.data){
+                        setFeedPostList([response.data]);
+                        setNaviList([1]);
+                        setNeedPrev(false);
+                        setNeedNext(false);
+                    }else{
+                        setFeedPostList([]);
+                        setNaviList([]);
+                        setNeedPrev(false);
+                        setNeedNext(false);
+                    }
+                    
                 })
                 .catch((error)=>{
                     console.log(error);
@@ -134,19 +145,23 @@ function FeedListForm(){
 
 
     function handleSearchSelect(){
-        console.log(selectBoxRef.current.value);
         if(selectBoxRef.current.value === 'FeedPostID'){
-            setType('feedPostId');
+            type.current ='feedPostId';
         }else if(selectBoxRef.current.value === 'UserNo'){
-            setType('userNo');
+            type.current = 'userNo';
         }else{
-            setType('none');
+            type.current = 'none';
         }
     }
 
     function handleSearch(){
-        setCpage(1);
-        updateFeedList();
+        if(numberRegex.test(inputRef.current.value)){
+            handleSearchSelect();
+            setCpage(1);
+            updateFeedList();
+        }else{
+            alert("해당 요소는 숫자만으로 검색 가능합니다.");
+        }
     }
 
     function handleCpage(index){
@@ -297,7 +312,7 @@ function FeedListForm(){
                             </select>
                             <input type="text" ref={inputRef}></input>
                             <button onClick={handleSearch}>검색</button>
-                            <button onClick={()=>{setType('none')}}>검색 취소</button>
+                            <button onClick={()=>{type.current = 'none'; updateFeedList();}}>검색 취소</button>
                         </td>
                     </tr>
                 </tbody>

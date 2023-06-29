@@ -577,4 +577,216 @@ public class MemberService implements UserDetailsService {
 		
 		return memberDAO.selectPaging(startNum, endNum);
 	}
+	
+	public Map<String, Object> selectPageNaviById(int cpage, String userId){
+		//1. 전체 글의 개수
+		int recordTotalCount = memberDAO.getRecordCountById(userId);
+		//2. 페이지당 보여줄 글의 개수
+		int recordCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		//3. 페이지당 보여줄 네비게이터의 수
+		int naviCountPerPage = StaticValue.NAVICOUNTPERPAGE;
+
+		//4. 1번과 2번 항목에 의해 총 페이지의 개수가 정해짐.
+		//전체 글의 개수를 페이지당 
+		int pageTotalCount = recordTotalCount%recordCountPerPage > 0 ?
+				recordTotalCount/recordCountPerPage + 1
+				:recordTotalCount/recordCountPerPage;
+
+		if(cpage < 1) {
+			cpage = 1;
+		}else if(cpage > pageTotalCount) {
+			cpage = pageTotalCount;
+		}
+
+		int startNavi = (cpage-1)/naviCountPerPage*naviCountPerPage+1;
+		int endNavi = startNavi + (naviCountPerPage-1);
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		boolean needPrev = true;
+		boolean needNext = true;
+		ArrayList<Integer> list = new ArrayList<>();
+
+		if(startNavi == 1) {needPrev = false;}
+		if(endNavi == pageTotalCount) {needNext = false;}
+		for(int i = startNavi; i <= endNavi; i++) {
+			list.add(i);
+		}
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("naviList", list);
+		data.put("needPrev", needPrev);
+		data.put("needNext", needNext);
+
+		return data;
+	}
+	
+	public List<MemberDTO> pagingMemberById(int cpage, String userId) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endNum = cpage * feedCountPerPage;
+		int startNum = endNum - (feedCountPerPage - 1);
+		
+		return memberDAO.selectPagingById(userId, startNum, endNum);
+	}
+	
+	public Map<String, Object> selectPageNaviByNickName(int cpage, String userNickName){
+		//1. 전체 글의 개수
+		int recordTotalCount = memberDAO.getRecordCountByNickName(userNickName);
+		//2. 페이지당 보여줄 글의 개수
+		int recordCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		//3. 페이지당 보여줄 네비게이터의 수
+		int naviCountPerPage = StaticValue.NAVICOUNTPERPAGE;
+
+		//4. 1번과 2번 항목에 의해 총 페이지의 개수가 정해짐.
+		//전체 글의 개수를 페이지당 
+		int pageTotalCount = recordTotalCount%recordCountPerPage > 0 ?
+				recordTotalCount/recordCountPerPage + 1
+				:recordTotalCount/recordCountPerPage;
+
+		if(cpage < 1) {
+			cpage = 1;
+		}else if(cpage > pageTotalCount) {
+			cpage = pageTotalCount;
+		}
+
+		int startNavi = (cpage-1)/naviCountPerPage*naviCountPerPage+1;
+		int endNavi = startNavi + (naviCountPerPage-1);
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		boolean needPrev = true;
+		boolean needNext = true;
+		ArrayList<Integer> list = new ArrayList<>();
+
+		if(startNavi == 1) {needPrev = false;}
+		if(endNavi == pageTotalCount) {needNext = false;}
+		for(int i = startNavi; i <= endNavi; i++) {
+			list.add(i);
+		}
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("naviList", list);
+		data.put("needPrev", needPrev);
+		data.put("needNext", needNext);
+
+		return data;
+	}
+	
+	public List<MemberDTO> pagingMemberByNickName(int cpage, String userNickName) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endNum = cpage * feedCountPerPage;
+		int startNum = endNum - (feedCountPerPage - 1);
+		
+		return memberDAO.selectPagingByNickName(userNickName,startNum, endNum);
+	}
+	
+	public Map<String, Object> selectPageNaviByRole(int cpage, String role){
+		//1. 전체 글의 개수
+		int recordTotalCount = memberDAO.getRecordCountByRole(role);
+		//2. 페이지당 보여줄 글의 개수
+		int recordCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		//3. 페이지당 보여줄 네비게이터의 수
+		int naviCountPerPage = StaticValue.NAVICOUNTPERPAGE;
+
+		//4. 1번과 2번 항목에 의해 총 페이지의 개수가 정해짐.
+		//전체 글의 개수를 페이지당 
+		int pageTotalCount = recordTotalCount%recordCountPerPage > 0 ?
+				recordTotalCount/recordCountPerPage + 1
+				:recordTotalCount/recordCountPerPage;
+
+		if(cpage < 1) {
+			cpage = 1;
+		}else if(cpage > pageTotalCount) {
+			cpage = pageTotalCount;
+		}
+
+		int startNavi = (cpage-1)/naviCountPerPage*naviCountPerPage+1;
+		int endNavi = startNavi + (naviCountPerPage-1);
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		boolean needPrev = true;
+		boolean needNext = true;
+		ArrayList<Integer> list = new ArrayList<>();
+
+		if(startNavi == 1) {needPrev = false;}
+		if(endNavi == pageTotalCount) {needNext = false;}
+		for(int i = startNavi; i <= endNavi; i++) {
+			list.add(i);
+		}
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("naviList", list);
+		data.put("needPrev", needPrev);
+		data.put("needNext", needNext);
+
+		return data;
+	}
+	
+	public List<MemberDTO> pagingMemberByRole(int cpage, String role) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endNum = cpage * feedCountPerPage;
+		int startNum = endNum - (feedCountPerPage - 1);
+		
+		return memberDAO.selectPagingByRole(role, startNum, endNum);
+	}
+	
+	public Map<String, Object> selectPageNaviByEmail(int cpage, String email){
+		//1. 전체 글의 개수
+		int recordTotalCount = memberDAO.getRecordCountByEmail(email);
+		//2. 페이지당 보여줄 글의 개수
+		int recordCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		//3. 페이지당 보여줄 네비게이터의 수
+		int naviCountPerPage = StaticValue.NAVICOUNTPERPAGE;
+
+		//4. 1번과 2번 항목에 의해 총 페이지의 개수가 정해짐.
+		//전체 글의 개수를 페이지당 
+		int pageTotalCount = recordTotalCount%recordCountPerPage > 0 ?
+				recordTotalCount/recordCountPerPage + 1
+				:recordTotalCount/recordCountPerPage;
+
+		if(cpage < 1) {
+			cpage = 1;
+		}else if(cpage > pageTotalCount) {
+			cpage = pageTotalCount;
+		}
+
+		int startNavi = (cpage-1)/naviCountPerPage*naviCountPerPage+1;
+		int endNavi = startNavi + (naviCountPerPage-1);
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		boolean needPrev = true;
+		boolean needNext = true;
+		ArrayList<Integer> list = new ArrayList<>();
+
+		if(startNavi == 1) {needPrev = false;}
+		if(endNavi == pageTotalCount) {needNext = false;}
+		for(int i = startNavi; i <= endNavi; i++) {
+			list.add(i);
+		}
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("naviList", list);
+		data.put("needPrev", needPrev);
+		data.put("needNext", needNext);
+
+		return data;
+	}
+	
+	public List<MemberDTO> pagingMemberByEmail(int cpage, String email) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endNum = cpage * feedCountPerPage;
+		int startNum = endNum - (feedCountPerPage - 1);
+		
+		return memberDAO.selectPagingByEmail(email ,startNum, endNum);
+	}
 }

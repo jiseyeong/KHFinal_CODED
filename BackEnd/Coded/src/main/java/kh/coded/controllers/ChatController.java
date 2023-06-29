@@ -60,6 +60,7 @@ public class ChatController {
 	public ResponseEntity<?> selectDMbyRoomid (@RequestParam(value = "roomId") int roomId){
 		List<DMDTO> list = DMService.selectDMbyRoomid(roomId);
 		return ResponseEntity.ok().body(list);
+		
 	}
 
 
@@ -70,6 +71,7 @@ public class ChatController {
 	public List<DMDTO> handleSubscription(@DestinationVariable int roomId) {
 	    // 해당 방 번호를 기반으로 구독 처리 로직을 수행하고 채팅 내역을 반환
 		List<DMDTO> list = DMService.selectDMbyRoomid(roomId);
+		System.out.println(roomId+"를 구독함");
 	    return list;
 	}
 	
@@ -77,8 +79,9 @@ public class ChatController {
 	// 메세지 송신 후 특정 roomId에 송신
     @SendTo("/topic/{roomId}")
     @MessageMapping("/{roomId}")
-    public DMDTO handleChatMessage(@DestinationVariable int roomId, DMDTO message) {
-		return message;
+    public void handleChatMessage(@DestinationVariable int roomId, String message, int userNo) {
+    	System.out.println("방번호 "+roomId +" 보낸사람 "+userNo+" 메세지 "+message );
+  
 	}
 	
 	

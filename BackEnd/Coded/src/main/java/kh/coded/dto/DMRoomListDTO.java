@@ -12,7 +12,7 @@ public class DMRoomListDTO {
 	public DMRoomListDTO() {
 		super();
 	}
-	public DMRoomListDTO(int roomid, int userNo, String userId, String userNickname, int photoId, String oriName,
+	public DMRoomListDTO(int roomId, int userNo, String userId, String userNickname, int photoId, String oriName,
 			String sysName) {
 		super();
 		this.roomId = roomId;
@@ -23,10 +23,10 @@ public class DMRoomListDTO {
 		this.oriName = oriName;
 		this.sysName = sysName;
 	}
-	public int getRoomid() {
+	public int getRoomId() {
 		return roomId;
 	}
-	public void setRoomid(int roomId) {
+	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
 	public int getUserNo() {
