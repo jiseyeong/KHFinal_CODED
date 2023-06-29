@@ -35,10 +35,10 @@ import FeedInsertTest from './test/FeedInsertTest';
 
 import ImageSlide from './test/ImageSlide';
 import MyPickPage from './pages/myPickPage/MyPickPage';
-import Follow from './test/Follow';
 import { styled } from 'styled-components';
 import DeleteAccount from './component/Footer/Component/DeleteAccount/DeleteAccount';
 import TodayWeather from './component/TodayWeather/TodayWeather';
+import Follow from './component/FollowList/Follow';
 // import ConfirmDialog from './component/Common/ConfirmDialog';
 
 const ButtonContainer = styled.div`
@@ -158,7 +158,7 @@ function App() {
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
-        <Route path="/test/Follow" element={<Follow />} />
+        <Route path="/followList" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
 
         <Route
