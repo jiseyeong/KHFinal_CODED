@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
+import WeatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 
 function ToastUI({ clickdata, setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
@@ -63,20 +64,20 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
             response.data.today.ptyCode == 1 ||
             response.data.today.ptyCode == 2
           ) {
-            setWeatherIcon(weatherIcons.rain);
+            setWeatherIcon(WeatherIcons.rain);
             setWeatherName('비');
           } else if (response.data.today.ptyCode == 3) {
-            setWeatherIcon(weatherIcons.snow);
+            setWeatherIcon(WeatherIcons.snow);
             setWeatherName('눈');
           } else if (response.data.today.ptyCode == 4) {
-            setWeatherIcon(weatherIcons.heavyRain);
+            setWeatherIcon(WeatherIcons.heavyRain);
             setWeatherName('소나기');
           } else {
             if (response.data.today.skyCode == 1) {
-              setWeatherIcon(weatherIcons.sun);
+              setWeatherIcon(WeatherIcons.sun);
               setWeatherName('맑음');
             } else {
-              setWeatherIcon(weatherIcons.cloud);
+              setWeatherIcon(WeatherIcons.cloud);
               setWeatherName('구름많음');
             }
           }
@@ -103,16 +104,16 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
             response.data.today.ptyCode == 1 ||
             response.data.today.ptyCode == 2
           ) {
-            setWeatherIcon(weatherIcons.rain);
+            setWeatherIcon(WeatherIcons.rain);
           } else if (response.data.today.ptyCode == 3) {
-            setWeatherIcon(weatherIcons.snow);
+            setWeatherIcon(WeatherIcons.snow);
           } else if (response.data.today.ptyCode == 4) {
-            setWeatherIcon(weatherIcons.heavyRain);
+            setWeatherIcon(WeatherIcons.heavyRain);
           } else {
             if (response.data.today.skyCode == 1) {
-              setWeatherIcon(weatherIcons.sun);
+              setWeatherIcon(WeatherIcons.sun);
             } else {
-              setWeatherIcon(weatherIcons.cloud);
+              setWeatherIcon(WeatherIcons.cloud);
             }
           }
         })
@@ -344,7 +345,6 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
     const formData = new FormData();
     delete feedpost.address1;
     delete feedpost.address2;
-    console.log(feedpost);
     formData.append('dto', feedpost);
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);

@@ -173,8 +173,8 @@ function Modal({
   }
   //  수정하기 ---------------------------------------
   const [FeedPost, setFeedPost] = useState(feedPost);
-  const [selectHashTag, setSelectHashTag] = useState([]);//수정 전
-  const [HashTag, setHashTag] = useState([]);//삭제하고 나서의
+  const [selectHashTag, setSelectHashTag] = useState(hashTagList);//수정 전
+  const [HashTag, setHashTag] = useState(hashTagList);//삭제하고 나서의
   const [editYN, setEditYN] = useState(false);
   const [content, setContent] = useState("");//수정 후
   const selectRef = useRef();
@@ -187,28 +187,30 @@ function Modal({
     setOptionListDiv((prev) => {
       return !prev;
     });
-    console.log(selectHashTag)
-    console.log(HashTag)
     setEditYN(true);
   }
 
   // 수정하기 완료
   function editComplate() {
-    console.log(feedPost.feedPostId)
+    const formData = new FormData();
+
+    formData.append('feedPostId', feedPost.feedPostId);
+    formData.append('userNo', feedPost.userNo)
+    formData.append('body', contentRef.current.value)
+    selectRef.current.getValue().forEach((item) => {
+      formData.append('hashTag', item.value);
+      console.log(item.value);
+    });
+
     setFeedPost(prevFeedPost=>{
       return{
-        ...prevFeedPost, body : contentRef
+        ...prevFeedPost, body : contentRef.current.value
       }
     })
     axios({
       method: 'put',
       url: '/feedpost/updatefeed',
-      params: {
-        feedpostId: feedPost.feedPostId,
-        userNo: feedPost.userNo,
-        body: contentRef.current.value,
-        HashTag: selectHashTag,
-      },
+      data: formData
     })
       .then(() => {})
       .catch((error) => {
@@ -235,10 +237,13 @@ function Modal({
   //글 수정
 
   function editCancel() {
+    
+
+    console.log(feedPost)
     console.log(contentRef.current.value)
     console.log(feedPost.body)
-    console.log(HashTag)
-    console.log(selectHashTag)
+
+    // contentRef.current.innerText = commentInfo.body;
   }
 
   const handleInputChange = (event) => {

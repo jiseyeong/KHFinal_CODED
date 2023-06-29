@@ -64,7 +64,6 @@ public class FeedPostController {
 	public ResponseEntity<?> updateFeedPost(
             @ModelAttribute("dto") FeedPostDTO dto,
             @RequestParam("hashTag") List<String> hashTag, HttpServletRequest request) throws Exception{
-
         System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
         System.out.println("유저넘버 : " + dto.getUserNo());
         System.out.println("내용 : " + dto.getBody());
