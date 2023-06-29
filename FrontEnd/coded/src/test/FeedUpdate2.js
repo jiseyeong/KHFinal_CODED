@@ -8,8 +8,6 @@ import { useSelector } from 'react-redux';
 import { Rain } from '../../../assets/ModalAsset/IconAsset';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
 
-
-
 const FeedUpdate = ({ clickdata }) => {
   const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
@@ -98,15 +96,14 @@ const FeedUpdate = ({ clickdata }) => {
           setSelectedOptions((preview) => [...preview, temp]);
         });
 
-        data.photoList
-          .forEach((item) => {
-            setCopyImgBase64((preview) => [...preview, item]);
-            setImgBase64((preview) => [...preview, item]);
-          })
+        data.photoList.forEach((item) => {
+          setCopyImgBase64((preview) => [...preview, item]);
+          setImgBase64((preview) => [...preview, item]);
+        });
 
-          // console.log(data.feedPost); //객체로 나옴
-          // console.log(data.feedPost.body); //test
-          setContentbody(data.feedPost.body);
+        // console.log(data.feedPost); //객체로 나옴
+        // console.log(data.feedPost.body); //test
+        setContentbody(data.feedPost.body);
         console.log('3');
       })
       .catch((error) => {
@@ -147,7 +144,7 @@ const FeedUpdate = ({ clickdata }) => {
     if (clickdata) {
       setImgBase64([...CopyimgBase64]);
       console.log(contentRef.current.innerText);
-      console.log(CopyimgBase64.length)
+      console.log(CopyimgBase64.length);
       console.log(imgBase64.length);
       selectedOptions.forEach((option) => {
         formData.append('HashTag', option.value);

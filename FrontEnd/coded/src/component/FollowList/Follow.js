@@ -22,7 +22,7 @@ function Follow() {
     <div style={{ textAlign: 'center', width: '100%', height: '100%' }}>
       <div style={{ float: 'left' }}>
         <button onClick={() => setFollowerIsOpen(true)}>Follower 버튼</button>
-        <Modal isOpen={FollowerIsOpen} style={modalStyle}>
+        <Modal isOpen={FollowerIsOpen} style={modalStyle} ariaHideApp={false}>
           <FollowerList setFollowerIsOpen={setFollowerIsOpen} />
         </Modal>
       </div>

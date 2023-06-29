@@ -47,11 +47,11 @@ public class FollowController {
 
 		boolean isFollow = followService.isFollow(toUserNo, fromUserNo);
 		if (!isFollow) {
-			int deleteFollow = followService.deleteFollow(toUserNo, fromUserNo);
-			return ResponseEntity.ok().body(deleteFollow);
-		} else {
 			int insertFollow = followService.insertFollow(toUserNo, fromUserNo);
 			return ResponseEntity.ok().body(insertFollow);
+		} else {
+			int deleteFollow = followService.deleteFollow(toUserNo, fromUserNo);
+			return ResponseEntity.ok().body(deleteFollow);
 		}
 	}
 }

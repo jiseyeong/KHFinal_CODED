@@ -19,12 +19,10 @@
 	</select>
 
 	<insert id="insertFollow">
-		insert into Follow values(followid_seq.nextval, ${toUserNo},
-		${fromUserNo})
+		insert into Follow values(followid_seq.nextval, ${toUserNo}, ${fromUserNo})
 	</insert>
 
 	<delete id="deleteFollow">
-		delete from Follow where ToUserNo = ${toUserNo} and
-		FromUserNo = ${fromUserNo}
+		delete from Follow where ToUserNo = ${toUserNo} and FromUserNo = ${fromUserNo}
 	</delete>
 </mapper>

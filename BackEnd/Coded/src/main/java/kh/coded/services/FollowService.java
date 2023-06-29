@@ -34,10 +34,9 @@ public class FollowService {
 		Map<String,Object> followerListMap = new HashMap<>();
 		followerListMap.put("resp1FollowerList", followerList);
 		followerListMap.put("resp1IsFollowerList", isFollowList);
-
-		System.out.println(followerListMap);
-		return followerListMap;
 		
+		return followerListMap;
+
 	}
 
 	public Map<String,Object> selectFollowingList(int fromUserNo, int myUserNo) { //내가 팔로우 하는 사람들 정보 뽑기
@@ -47,7 +46,7 @@ public class FollowService {
 			isFollowList.add(followDAO.isFollow(dto.getUserNo(),myUserNo));
 		}
 		Map<String,Object> followingListMap = new HashMap<>();
-		followingListMap.put("resp2followingList", followingList);
+		followingListMap.put("resp2FollowingList", followingList);
 		followingListMap.put("resp2isFollowingList", isFollowList);
 
 		return followingListMap;

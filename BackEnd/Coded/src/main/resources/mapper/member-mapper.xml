@@ -82,7 +82,7 @@
 	</select>
 
 	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
-		select * from member left join photo using (userNo) where userno in(select fromuserno from follow where userNo = ${toUserNo})
+		select * from member left join photo using (userNo) where userno in(select fromuserno from follow where touserNo = ${toUserNo})
 	</select>
 
 	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
@@ -95,11 +95,11 @@
 	</update>
 
 	<select id="selectMyPickPageData" resultType="kh.coded.dto.MyPickPageDTO">
-		SELECT m.*, p.*, fp.postCount, following.followingCount, follower.followerCount FROM member m
-		LEFT JOIN photo p ON m.userNo = p.userno
-		LEFT JOIN ( SELECT userno, COUNT(*) AS postCount FROM feedpost WHERE userno = ${userNo} GROUP BY userno ) fp ON m.userNo = fp.userno
-		left join ( select fromuserNo, count(*) as followingCount from follow where fromuserNo = ${userNo} group by fromuserNo ) following on m.userno = following.fromuserNo
-		left join ( select count(*) as followerCount from follow where touserNo = ${userNo} group by touserNo ) follower on m.userno = following.fromuserNo
+		SELECT m.*,p.* ,fp.postCount, nvl(following.followingCount,0) as followingCount, nvl(follower.followerCount,0) as followerCount FROM member m
+		LEFT JOIN photo p ON m.userNo = p.userNo
+		LEFT JOIN ( SELECT userNo, COUNT(*) AS postCount FROM feedPost WHERE userNo = ${userNo} GROUP BY userNo ) fp ON m.userNo = fp.userNo
+		left join ( select toUserNo, count(*) as followingCount from follow where toUserNo = ${userNo} group by toUserNo ) following on m.userNo = following.toUserNo
+		left join ( select fromUserNo, count(*) as followerCount from follow where fromUserNo = ${userNo} group by fromUserNo ) follower on m.userNo = follower.fromUserNo
 		WHERE m.userNo = ${userNo}
 	</select>
 	
