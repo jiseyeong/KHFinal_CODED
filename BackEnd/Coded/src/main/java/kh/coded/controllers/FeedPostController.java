@@ -67,12 +67,12 @@ public class FeedPostController {
 		try {
 			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
 			if (HashTag.size() > 0) {
-				for (String index : HashTag) {
+				for (String tagName : HashTag) {
 					int TagId = 0;
-					if (feedpostService.HashTagJB(new HashTagDTO(0, index))!=0) { //해시태그 중복 체크
-						TagId = feedpostService.HashTagJB(new HashTagDTO(0, index));
+					if (feedpostService.HashTagJB(tagName)!=0) { //해시태그 중복 체크
+						TagId = feedpostService.HashTagJB(tagName);
 					} else {
-						TagId = feedpostService.insertHashTag(new HashTagDTO(0, index));
+						TagId = feedpostService.insertHashTag(new HashTagDTO(0, tagName));
 					} // 해시 태그 넣기
 					feedpostService.updatePostHashs(feedpostId, TagId);// PostHashs에 저장
 				}
@@ -118,12 +118,12 @@ public class FeedPostController {
         //해시 태그 리스트 for문 돌면서 insert? Hashtag insert => tagid return => postHash insert
         //해시 태그가 없는 경우 pass
 		if (HashTag.size() > 0) {
-			for (String index : HashTag) {
+			for (String tagName : HashTag) {
 				int TagId = 0;
-				if (feedpostService.HashTagJB(new HashTagDTO(0, index)) != 0) { //해시태그 중복 체크
-					TagId = feedpostService.HashTagJB(new HashTagDTO(0, index));
+				if (feedpostService.HashTagJB(tagName) != 0) { //해시태그 중복 체크
+					TagId = feedpostService.HashTagJB(tagName);
 				} else {
-					TagId = feedpostService.insertHashTag(new HashTagDTO(0, index));
+					TagId = feedpostService.insertHashTag(new HashTagDTO(0, tagName));
 				} // 해시 태그 넣기
 //					feedpostService.insertPostHashs(feedpostId, TagId);// PostHashs에 저장
 			}

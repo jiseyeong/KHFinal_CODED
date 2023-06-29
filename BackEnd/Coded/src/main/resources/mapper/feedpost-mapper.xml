@@ -126,14 +126,13 @@
 	</select>
 	
 	<!-- 해시태그 중복 체크 -->
-	<select id="HashTagJB" resultType="kh.coded.dto.HashTagDTO">
-	select * from Hashtag where Hashtag = #{Hashtag}
+	<select id="HashTagJB" resultType="int">
+		select tagId from Hashtag where Hashtag = #{tagName}
 	</select>
 	
 
 	<update id="updateFeedPost">
-		update feedpost set body = #{body} where feedpostid =
-		${feedpostid}
+		update feedpost set body = #{body} where feedpostid = ${feedpostid}
 	</update>
 	<update id="updateupdateFeedPhoto">
 		update photo set oriName=#{oriName}, sysname = #{sysname} where feedpostid =

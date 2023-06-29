@@ -72,8 +72,8 @@ public class FeedPostService {
 		return feedpostDAO.insertHashTag(dto);
 	}
 
-	public int HashTagJB(HashTagDTO dto) {
-		return feedpostDAO.HashTagJB(dto);
+	public int HashTagJB(String tagName) {
+		return feedpostDAO.HashTagJB(tagName);
 	}
 
 	public void insertFeedPhoto(String realPath, List<MultipartFile> files, int feedPostId) throws IOException {

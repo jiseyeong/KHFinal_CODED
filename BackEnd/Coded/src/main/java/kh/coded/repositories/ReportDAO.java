@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.ReportDTO;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ReportDAO {
 
 	
