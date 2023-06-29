@@ -49,6 +49,9 @@
 	<delete id="deleteMember">
 		delete member where userId = #{userId}
 	</delete>
+	<delete id="deleteMemberAdmin">
+		delete member where userNo=${userNo}
+	</delete>
 	<update id="updateMember">
 		update member set usernickname = #{userNickName}, bio = #{bio}, hashtag = #{hashtag},
 		 address1 = #{address1}, address2 = #{address2} where userId = #{userId}
@@ -99,6 +102,20 @@
 		left join ( select count(*) as followerCount from follow where touserNo = ${userNo} group by touserNo ) follower on m.userno = following.fromuserNo
 		WHERE m.userNo = ${userNo}
 	</select>
-
+	
+	<select id="getRecordCount" resultType="int">
+		select count(*) from member
+	</select>
+	
+	<select id="selectPaging" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
 
   </mapper>

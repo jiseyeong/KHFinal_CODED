@@ -130,6 +130,7 @@ public class SecurityConfiguration {
 			"/follow/selectfollowinglist",
 			"/follow/selectfollowerlist"
 
+			"/feedpost/selectOneFeedPost",
 
 	};
 	private final String[] API_USER_LIST = {
@@ -157,6 +158,7 @@ public class SecurityConfiguration {
 			"/feedpost/comment",
 			"/feedpost/nestedComment",
 			"/feedpost/comment/like",
+			"/feedpost/deleteFeedPost",
 			
 			"/mypick/selectMember",
 			"/mypick/selectFeedPost",
@@ -168,7 +170,12 @@ public class SecurityConfiguration {
 			"/app/**",
 	};
 	private final String[] API_ADMIN_LIST = {
-			
+			"/feedReport/report",
+			"/feedpost/getNaviInfo",
+			"/auth/getNaviInfo",
+			"/auth/pagingMember",
+			"/auth/deleteMemberByAdmin",
+			"/feedpost/getNaviInfo/userNo",
 	};
 	
 //	@Autowired
@@ -201,6 +208,7 @@ public class SecurityConfiguration {
 				authorize
 					.requestMatchers(API_WHITE_LIST).permitAll()
 					.requestMatchers(API_USER_LIST).hasRole("USER")
+					.requestMatchers(API_ADMIN_LIST).hasRole("ADMIN")
 					.anyRequest().authenticated();
 			}catch(Exception e) {
 				throw new RuntimeException(e);
