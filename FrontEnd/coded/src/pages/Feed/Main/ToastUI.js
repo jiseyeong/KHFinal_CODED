@@ -346,9 +346,6 @@ function ToastUI({ clickdata, setFeedPostInsertOpen }) {
     delete feedpost.address2;
     console.log(feedpost);
     formData.append('dto', feedpost);
-    // formData.append('userNo', feedpost.userNo);
-    // formData.append('body', feedpost.body);
-    // formData.append('writeDate', feedpost.writeDate);
     selectRef.current.getValue().forEach((item) => {
       formData.append('HashTag', item.value);
       console.log(item.value);

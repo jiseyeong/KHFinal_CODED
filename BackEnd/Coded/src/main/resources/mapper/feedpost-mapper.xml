@@ -5,10 +5,7 @@
 <mapper namespace="FeedPost">
 
 	<insert id="insertFeedPost">
-		insert into FeedPost values(FeedPost_seq.nextval,
-		${userNo},
-		#{body}, sysdate,
-		${writeTemp}, ${writeTempRange})
+		insert into FeedPost values(FeedPost_seq.nextval, ${userNo}, #{body}, sysdate, ${writeTemp}, ${writeTempRange}, ${writePtyCode}, ${wrtieSkyCode})
 	</insert>
 
 	<insert id="insertFeedPhoto">

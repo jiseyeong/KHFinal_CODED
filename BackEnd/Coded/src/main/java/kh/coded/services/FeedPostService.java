@@ -64,8 +64,8 @@ public class FeedPostService {
 	}
 
 	// insert feedpost start
-	public int insertFeedPost(FeedPostDTO FeedPost) {
-		return feedpostDAO.insertFeedPost(FeedPost);
+	public int insertFeedPost(FeedPostDTO dto) {
+		return feedpostDAO.insertFeedPost(dto);
 	}
 
 	public int insertPostHashs(int FeedPost, int TagId) {
