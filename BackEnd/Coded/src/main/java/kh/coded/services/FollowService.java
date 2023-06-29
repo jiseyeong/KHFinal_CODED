@@ -34,7 +34,7 @@ public class FollowService {
 		Map<String,Object> followerListMap = new HashMap<>();
 		followerListMap.put("resp1FollowerList", followerList);
 		followerListMap.put("resp1IsFollowerList", isFollowList);
-
+		
 		return followerListMap;
 
 	}

@@ -82,7 +82,7 @@
 	</select>
 
 	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
-		select * from member left join photo using (userNo) where userno in(select fromuserno from follow where userNo = ${toUserNo})
+		select * from member left join photo using (userNo) where userno in(select fromuserno from follow where touserNo = ${toUserNo})
 	</select>
 
 	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
