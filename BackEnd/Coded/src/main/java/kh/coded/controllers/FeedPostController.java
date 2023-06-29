@@ -66,10 +66,9 @@ public class FeedPostController {
 	@PutMapping(value = "updatefeed") // 피드 수정
 	public ResponseEntity<?> updateFeedPost(
 			@RequestParam int feedpostId, @RequestParam String body,
-			@RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, 
+			@RequestParam List<String> HashTag, 
 			HttpServletRequest request) {
 		try {
-			String realPath = request.getServletContext().getRealPath("images");
 			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
 			if (HashTag.size() > 0) {
 				for (String index : HashTag) {
@@ -81,9 +80,6 @@ public class FeedPostController {
 					} // 해시 태그 넣기
 					feedpostService.updatePostHashs(feedpostId, TagId);// PostHashs에 저장
 				}
-			}
-			if (files.size() > 0) {
-				feedpostService.updateFeedPhoto(realPath, files, feedpostId);
 			}
 			return ResponseEntity.ok().body(null);
 		} catch (Exception e) {
