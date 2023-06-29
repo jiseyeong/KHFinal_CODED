@@ -5,10 +5,10 @@
 <mapper namespace="FeedPost">
 
 	<insert id="insertFeedPost">
-		insert into FeedPost values(FeedPost_seq.nextval,
-		${userNo},
-		#{body}, sysdate,
-		${writeTemp}, ${writeTempRange})
+		<selectKey keyProperty="feedPostId" resultType="int" order="BEFORE">
+			select FeedPostId_seq.nextval from dual;
+		</selectKey>
+		insert into FeedPost values (${feedPostId}, ${userNo}, #{body}, sysdate, ${writeTemp}, ${writeTempRange}, ${writePtyCode}, ${writeSkyCode})
 	</insert>
 
 	<insert id="insertFeedPhoto">
@@ -126,14 +126,13 @@
 	</select>
 	
 	<!-- 해시태그 중복 체크 -->
-	<select id="HashTagJB" resultType="kh.coded.dto.HashTagDTO">
-	select * from Hashtag where Hashtag = #{Hashtag}
+	<select id="HashTagJB" resultType="int">
+		select tagId from Hashtag where Hashtag = #{tagName}
 	</select>
 	
 
 	<update id="updateFeedPost">
-		update feedpost set body = #{body} where feedpostid =
-		${feedpostid}
+		update feedpost set body = #{body} where feedpostid = ${feedpostid}
 	</update>
 	<update id="updateupdateFeedPhoto">
 		update photo set oriName=#{oriName}, sysname = #{sysname} where feedpostid =
@@ -185,6 +184,29 @@
 		) f
 		where rn between ${startFeedNum} and ${endFeedNum}
 		order by rn asc
+	</select>
+	
+	<select id="selectOne" resultType="kh.coded.dto.FeedPostAddDTO">
+		select f.*
+		from
+		(select fe.*,
+		m.userNickName,
+		m.address1,
+		m.address2,
+		m.sysName as profileSysName,
+		thum.sysName as thumbNailSysName
+			from feedPost fe
+			left join (select mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName from member mem left join photo prof on mem.userNo = prof.userNo) m on fe.UserNo = m.userNo
+			left join (select feedPostID, sysName from (select p1.*, ROW_NUMBER() over(PARTITION BY p1.feedpostid order by p1.feedpostid) rn2 from photo p1 inner join photo p2 on p1.feedpostid = p2.feedpostid) where rn2=1) thum on fe.feedPostId = thum.feedPostId
+		) f
+		where f.feedpostId=${feedpostId}
+	</select>
+	
+	<select id="getRecordCount" resultType="int">
+		select count(*) from FeedPost
+	</select>
+	<select id="getRecordCountByUserNo" resultType="int">
+		select count(*) from FeedPost where userNo=${userNo}
 	</select>
 
 </mapper>

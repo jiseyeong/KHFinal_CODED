@@ -49,6 +49,9 @@
 	<delete id="deleteMember">
 		delete member where userId = #{userId}
 	</delete>
+	<delete id="deleteMemberAdmin">
+		delete member where userNo=${userNo}
+	</delete>
 	<update id="updateMember">
 		update member set usernickname = #{userNickName}, bio = #{bio}, hashtag = #{hashtag},
 		 address1 = #{address1}, address2 = #{address2} where userId = #{userId}
@@ -78,6 +81,14 @@
 		select * from member left join photo using (userNo) where userNo=${userNo}
 	</select>
 
+	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
+		select * from member left join photo using (userNo) where userno in(select fromuserno from follow where userNo = ${toUserNo})
+	</select>
+
+	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
+		select * from member left join photo using (userNo) where userno in(select touserno from follow where fromuserNo = ${fromUserNo})
+	</select>
+
 	<update id="updateMemberByUserNo">
 		update member set userId=#{userId}, userNickName = #{userNickName}, email = #{email}, bio=#{bio}, hashTag=#{hashTag},
 		address1 = #{address1}, address2 = #{address2} where userNo = ${userNo}
@@ -91,6 +102,88 @@
 		left join ( select count(*) as followerCount from follow where touserNo = ${userNo} group by touserNo ) follower on m.userno = following.fromuserNo
 		WHERE m.userNo = ${userNo}
 	</select>
-
+	
+	<select id="getRecordCount" resultType="int">
+		select count(*) from member
+	</select>
+	
+	<select id="selectPaging" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountById" resultType="int">
+		select count(*) from member
+		where userId Like '%'||#{userId}||'%'
+	</select>
+	
+	<select id="selectPagingById" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where userId Like '%'||#{userId}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByNickName" resultType="int">
+		select count(*) from member
+		where userNickName Like '%'||#{userNickName}||'%'
+	</select>
+	
+	<select id="selectPagingByNickName" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where userNickName Like '%'||#{userNickName}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByRole" resultType="int">
+		select count(*) from member
+		where Role Like '%'||#{role}||'%'
+	</select>
+	
+	<select id="selectPagingByRole" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where Role Like '%'||#{role}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByEmail" resultType="int">
+		select count(*) from member
+		where email Like '%'||#{email}||'%'
+	</select>
+	
+	<select id="selectPagingByEmail" resultType="kh.coded.dto.MemberDTO">
+		select m.*
+		from
+		(select mem.*,
+		row_number() over(order by mem.userNo desc) rn
+			from member mem
+			where email Like '%'||#{email}||'%'
+		) m
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
 
   </mapper>

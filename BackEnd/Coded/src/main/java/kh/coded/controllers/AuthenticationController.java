@@ -500,4 +500,192 @@ public class AuthenticationController {
         MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }
+    
+    @GetMapping("/auth/getNaviInfo")
+	public ResponseEntity<?> getNaviInfo(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = memberService.selectPageNavi(cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+    @GetMapping("/auth/pagingMember")
+    public ResponseEntity<?> getPagingMember(
+    		@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<MemberDTO> data = memberService.pagingMember(cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @GetMapping("/auth/getNaviInfo/id")
+	public ResponseEntity<?> getNaviInfoById(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userId") String userId
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = memberService.selectPageNaviById(cpage, userId);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+    @GetMapping("/auth/pagingMember/id")
+    public ResponseEntity<?> getPagingMemberById(
+    		@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userId") String userId
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<MemberDTO> data = memberService.pagingMemberById(cpage, userId);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @GetMapping("/auth/getNaviInfo/nickName")
+	public ResponseEntity<?> getNaviInfoByNickName(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userNickName") String userNickName
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = memberService.selectPageNaviByNickName(cpage, userNickName);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+    @GetMapping("/auth/pagingMember/nickName")
+    public ResponseEntity<?> getPagingMemberByNickName(
+    		@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userNickName") String userNickName
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<MemberDTO> data = memberService.pagingMemberByNickName(cpage, userNickName);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @GetMapping("/auth/getNaviInfo/role")
+	public ResponseEntity<?> getNaviInfoByRole(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userRole") String role
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = memberService.selectPageNaviByRole(cpage, role);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+    @GetMapping("/auth/pagingMember/role")
+    public ResponseEntity<?> getPagingMemberByRole(
+    		@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="userRole") String role
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<MemberDTO> data = memberService.pagingMemberByRole(cpage, role);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @GetMapping("/auth/getNaviInfo/email")
+	public ResponseEntity<?> getNaviInfoByEmail(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="email") String email
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = memberService.selectPageNaviByEmail(cpage, email);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+    @GetMapping("/auth/pagingMember/email")
+    public ResponseEntity<?> getPagingMemberByEmail(
+    		@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage,
+			@RequestParam(value="email") String email
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<MemberDTO> data = memberService.pagingMemberByEmail(cpage, email);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @DeleteMapping("/auth/deleteMemberByAdmin")
+    public ResponseEntity<?> deleteMemberByAdmin(
+    		@RequestHeader(value="authorization") String authorization,
+    		@RequestParam(value="userNo") int userNo
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				memberService.deleteMember_Admin(userNo);
+				return ResponseEntity.ok().body(null);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @GetMapping("/auth/getUserByUserNo")
+    public ResponseEntity<?> getUserByUserNo(
+    		@RequestHeader(value="authorization") String authorization,
+    		@RequestParam(value="userNo") int userNo
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				MemberDTO data = memberService.selectByUserNo(userNo);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
 }

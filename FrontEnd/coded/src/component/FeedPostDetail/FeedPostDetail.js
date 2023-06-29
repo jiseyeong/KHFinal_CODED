@@ -18,6 +18,10 @@ const FeedPostDetail = (props) => {
   const accessToken = useSelector((state) => state.member.access);
   const myRef = useRef(null);
 
+  const [feedLikeCount, setFeedLikeCount] = useState(0);
+  const [isFeedLike, setIsFeedLike] = useState(false);
+  const [scale, setScale] = useState(1);
+
   // 모달 창 열기
   const openModal = () => {
     if (!modal) {
@@ -72,10 +76,6 @@ const FeedPostDetail = (props) => {
         console.log(error);
       });
   }, []);
-
-  const [feedLikeCount, setFeedLikeCount] = useState(0);
-  const [isFeedLike, setIsFeedLike] = useState(false);
-  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     //피드 라이크가 변경된다면, likeCount 갱신하기.

@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import style from './SearchForm.module.scss';
 
 const textMap = {
-  id: '아이디 찾기',
-  pw: '비밀번호 재발급',
+  id: 'SEARCH ID',
+  pw: 'RESET PASSWORD',
 };
 
 function SearchForm({ type }) {
