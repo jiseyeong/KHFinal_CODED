@@ -59,29 +59,29 @@ public class FeedPostController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PutMapping(value = "updatefeed") // 피드 수정
-    public ResponseEntity<?> updateFeedPost(
-            @RequestParam int feedpostId, @RequestParam String body,
-            @RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files,
-            HttpServletRequest request) throws Exception {
-        String realPath = request.getServletContext().getRealPath("images");
-        feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
-        if (HashTag.size() > 0) {
-            for (String tagName : HashTag) {
-                int TagId = 0;
-                if (feedpostService.HashTagJB(new HashTagDTO(0, tagName)) != 0) { //해시태그 중복 체크
-                    TagId = feedpostService.HashTagJB(new HashTagDTO(0, tagName));
-                } else {
-                    TagId = feedpostService.insertHashTag(new HashTagDTO(0, tagName));
-                } // 해시 태그 넣기
-                feedpostService.updatePostHashs(feedpostId, TagId);// PostHashs에 저장
-            }
-        }
-        if (files.size() > 0) {
-            feedpostService.updateFeedPhoto(realPath, files, feedpostId);
-        }
-        return ResponseEntity.ok().body(null);
-    }
+	@PutMapping(value = "updatefeed") // 피드 수정
+	public ResponseEntity<?> updateFeedPost(
+			@RequestParam int feedpostId, @RequestParam String body,
+			@RequestParam List<String> HashTag, 
+			HttpServletRequest request) {
+		try {
+			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
+			if (HashTag.size() > 0) {
+				for (String index : HashTag) {
+					int TagId = 0;
+					if (feedpostService.HashTagJB(new HashTagDTO(0, index))!=0) { //해시태그 중복 체크
+						TagId = feedpostService.HashTagJB(new HashTagDTO(0, index));
+					} else {
+						TagId = feedpostService.insertHashTag(new HashTagDTO(0, index));
+					} // 해시 태그 넣기
+					feedpostService.updatePostHashs(feedpostId, TagId);// PostHashs에 저장
+				}
+			}
+			return ResponseEntity.ok().body(null);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
     @DeleteMapping("/deleteFeedPost") // 피드 삭제
     public ResponseEntity<?> deleteFeedPost(@RequestParam int feedPostId) {
@@ -391,51 +391,67 @@ public class FeedPostController {
         return ResponseEntity.ok().body(data);
     }
 
-    // 인기순 정렬 피드 리스트
-    @GetMapping("selectPopularFeedPost")
-    public ResponseEntity<?> selectLikeFeedPost(@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
-        List<FeedPostAddDTO> data = feedpostService.selectLikeFeedPost(cpage);
-        return ResponseEntity.ok().body(data);
-    }
+	// 인기순 정렬 피드 리스트
+	@GetMapping("selectPopularFeedPost")
+	public ResponseEntity<?> selectLikeFeedPost(@RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage){
+		List<FeedPostAddDTO> data = feedpostService.selectLikeFeedPost(cpage);
+		return ResponseEntity.ok().body(data);
+	}
+	
+	@GetMapping("selectFollowingFeedPost")
+	public ResponseEntity<?> selectFollowingFeedPost(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				List<FeedPostAddDTO> data = feedpostService.selectFollowingFeedPost(userNo, cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
+    
+	
+	@GetMapping("selectScrapFeedPost")
+	public ResponseEntity<?> selectScrapFeedPost(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				int userNo = jwtProvider.getLoginUserNo(accessToken);
+				List<FeedPostAddDTO> data = feedpostService.selectScrapFeedPost(userNo, cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 
-    @GetMapping("selectFollowingFeedPost")
-    public ResponseEntity<?> selectFollowingFeedPost(
-            @RequestHeader(value = "authorization") String authorization,
-            @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage
-    ) {
-        if (authorization.length() > 7) {
-            String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-            if (jwtProvider.validateToken(accessToken)) {
-                int userNo = jwtProvider.getLoginUserNo(accessToken);
-                List<FeedPostAddDTO> data = feedpostService.selectFollowingFeedPost(userNo, cpage);
-                return ResponseEntity.ok().body(data);
-            }
-        }
-        return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
-    }
-
-    @GetMapping("selectScrapFeedPost")
-    public ResponseEntity<?> selectScrapFeedPost(
-            @RequestHeader(value = "authorization") String authorization,
-            @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage
-    ) {
-        if (authorization.length() > 7) {
-            String accessToken = authorization.substring("Bearer ".length(), authorization.length());
-            if (jwtProvider.validateToken(accessToken)) {
-                int userNo = jwtProvider.getLoginUserNo(accessToken);
-                List<FeedPostAddDTO> data = feedpostService.selectScrapFeedPost(userNo, cpage);
-                return ResponseEntity.ok().body(data);
-            }
-        }
-        return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
-    }
-
-    @GetMapping("selectOneFeedPost")
-    public ResponseEntity<?> selectOneFeedPost(
-            @RequestParam(value = "feedpostId") int feedpostId
-    ) {
-        FeedPostAddDTO data = feedpostService.selectOneFeedPost(feedpostId);
-        return ResponseEntity.ok().body(data);
-    }
+	@GetMapping("selectOneFeedPost")
+	public ResponseEntity<?> selectOneFeedPost(
+			@RequestParam(value="feedpostId") int feedpostId
+			){
+		FeedPostAddDTO data = feedpostService.selectOneFeedPost(feedpostId);
+		return ResponseEntity.ok().body(data);
+	}
+	
+	@GetMapping("/getNaviInfo")
+	public ResponseEntity<?> getNaviInfo(
+			@RequestHeader(value="authorization") String authorization,
+			@RequestParam(value="cpage", required=false, defaultValue="1") int cpage
+			){
+		if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				Map<String, Object> data = feedpostService.selectPageNavi(cpage);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+	}
 
 }
