@@ -17,7 +17,7 @@ import axios from 'axios';
 import Modal from 'react-modal';
 import FollowerList from '../../component/FollowList/FollowList';
 import FeedInsert from '../../test/FeedUpdateTestOuter';
-import ToastUI from '../Feed/Main/ToastUI';
+import FeedInsertModal from '../Feed/Main/FeedInsertModal';
 import { CloseBtn } from '../../assets/ModalAsset/IconAsset';
 
 const customStyle = {
@@ -57,6 +57,8 @@ const MyPickPage = () => {
   const [followModalMode, setFollowModalMode] = useState(true);
 
   const [feedWriteModal, setFeedWriteModal] = useState(false);
+
+  // 피드 작성 모달창 세팅
   const insertModalStyle = {
     overlay: {
       zIndex: 101,
@@ -66,12 +68,15 @@ const MyPickPage = () => {
       width: '1100px',
       height: '700px',
       padding: '2.5rem',
-      position: 'relative',
+      // position: 'relative',
     },
   };
 
   // 팔로우/팔로워 모달창 세팅
   const modalStyle = {
+    overlay: {
+      zIndex: 101,
+    },
     content: {
       margin: 'auto',
       width: '400px',
@@ -339,7 +344,7 @@ const MyPickPage = () => {
               setFeedWriteModal(false);
             }}
           />
-          <ToastUI setFeedPostInsertOpen={setFeedWriteModal} />
+          <FeedInsertModal setFeedPostInsertOpen={setFeedWriteModal} />
         </Modal>
       </div>
     </div>

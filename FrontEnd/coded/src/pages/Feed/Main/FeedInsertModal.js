@@ -1,26 +1,21 @@
 import CreatableSelect from 'react-select/creatable';
-import './ToastUI.scss';
-import { useState } from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import './FeedInsertModal.scss';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
+import WeatherIcons from '../../../component/WeatherCommon/WeatherIcons';
+import { setNonMember } from '../../../modules/Redux/navbarSetting';
 
-function ToastUI({ setFeedPostInsertOpen }) {
+function FeedInsertModal({ setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
     display: 'inline-block',
   });
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const [feedpost, setFeedPost] = useState({});
-  const [addressList1, setAddressList1] = useState([]);
-  const [addressList2, setAddressList2] = useState([]);
-  const [addressIndex1, setAddressIndex1] = useState(-1);
-  const [addressIndex2, setAddressIndex2] = useState(-1);
   const address = useRef();
 
   const selectRef = useRef();
@@ -28,6 +23,8 @@ function ToastUI({ setFeedPostInsertOpen }) {
   const [options, setOptions] = useState([]);
 
   const accessToken = useSelector((state) => state.member.access);
+  const dispatch = useDispatch();
+  const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const bodyImageRef = useRef();
 
   //날씨
@@ -53,8 +50,6 @@ function ToastUI({ setFeedPostInsertOpen }) {
         },
       })
         .then((response) => {
-          setAddress1(response.data.address1);
-          setAddress2(response.data.address2);
           setWeatherMessage(response.data.message);
           setRecentTemp(response.data.today.recent);
           setMinTemp(response.data.today.min);
@@ -63,62 +58,36 @@ function ToastUI({ setFeedPostInsertOpen }) {
             response.data.today.ptyCode == 1 ||
             response.data.today.ptyCode == 2
           ) {
-            setWeatherIcon(weatherIcons.rain);
+            setWeatherIcon(WeatherIcons.rain);
             setWeatherName('비');
           } else if (response.data.today.ptyCode == 3) {
-            setWeatherIcon(weatherIcons.snow);
+            setWeatherIcon(WeatherIcons.snow);
             setWeatherName('눈');
           } else if (response.data.today.ptyCode == 4) {
-            setWeatherIcon(weatherIcons.heavyRain);
+            setWeatherIcon(WeatherIcons.heavyRain);
             setWeatherName('소나기');
           } else {
             if (response.data.today.skyCode == 1) {
-              setWeatherIcon(weatherIcons.sun);
+              setWeatherIcon(WeatherIcons.sun);
               setWeatherName('맑음');
             } else {
-              setWeatherIcon(weatherIcons.cloud);
+              setWeatherIcon(WeatherIcons.cloud);
               setWeatherName('구름많음');
             }
           }
+          setFeedPost((prev) => ({
+            ...prev,
+            writeTemp: response.data.today.min,
+            writeTempRange: response.data.today.max - response.data.today.min,
+            writePtyCode: response.data.today.ptyCode,
+            writeSkyCode: response.data.today.skyCode,
+          }));
         })
         .catch((error) => {
           console.log(error);
         });
     } else {
-      axios({
-        method: 'get',
-        url: '/weather/todayNonMem',
-        params: {
-          time: new Date().getTime(),
-        },
-      })
-        .then((response) => {
-          setAddress1(response.data.address1);
-          setAddress2(response.data.address2);
-          setWeatherMessage(response.data.message);
-          setRecentTemp(response.data.today.recent);
-          setMinTemp(response.data.today.min);
-          setMaxTemp(response.data.today.max);
-          if (
-            response.data.today.ptyCode == 1 ||
-            response.data.today.ptyCode == 2
-          ) {
-            setWeatherIcon(weatherIcons.rain);
-          } else if (response.data.today.ptyCode == 3) {
-            setWeatherIcon(weatherIcons.snow);
-          } else if (response.data.today.ptyCode == 4) {
-            setWeatherIcon(weatherIcons.heavyRain);
-          } else {
-            if (response.data.today.skyCode == 1) {
-              setWeatherIcon(weatherIcons.sun);
-            } else {
-              setWeatherIcon(weatherIcons.cloud);
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      denyAccess();
     }
   }, [accessToken]);
 
@@ -143,7 +112,6 @@ function ToastUI({ setFeedPostInsertOpen }) {
               Authorization: `Bearer ${accessToken}`,
             },
           }),
-          axios.get('/auth/getAddress1List'),
           axios.get('/PostHashs/selectAllPostTagNames'),
         ])
         // 2. 고유 넘버로 유저 정보 반환 후 저장
@@ -151,36 +119,22 @@ function ToastUI({ setFeedPostInsertOpen }) {
 
         // 3. 해시 태그의 기존 데이터들 반환
         .then(
-          axios.spread((resp1, resp2, resp3) => {
+          axios.spread((resp1, resp2) => {
             // 내 정보 + 피드 정보
             const { userNo, address1, address2 } = resp1.data;
-
-            const feedPost = {
-              userNo: userNo,
-              address1: address1,
-              address2: address2,
-              writeDate: getCurrentDate(),
-            };
 
             setFeedPost((prev) => {
               return {
                 ...prev,
-                ...feedPost,
+                userNo: userNo,
+                address1: address1,
+                address2: address2,
+                writeDate: getCurrentDate(),
               };
             });
 
-            // 주소 데이터
-            let address = [];
-            resp2.data.forEach((addressData) => {
-              address = address.concat({
-                value: addressData,
-                label: addressData,
-              });
-            });
-            setAddressList1(address);
-
             // 해시태그 데이터
-            const HashTagNameList = resp3.data;
+            const HashTagNameList = resp2.data;
             let arrTemp = [];
             HashTagNameList.forEach((hashTag) => {
               arrTemp = arrTemp.concat({
@@ -189,100 +143,13 @@ function ToastUI({ setFeedPostInsertOpen }) {
               });
               setOptions([...options, ...arrTemp]);
             });
-
-            // 객체로 리턴
-            const obj = { feedpost: feedPost, addressList: address };
-            return obj;
           }),
-          // 3. 내 정보에 등록된 1차 기본 주소 지정
         )
-        .then((obj) => initAddress1(obj))
-        .then((obj) => getAddress2(obj))
         .catch((error) => {
           console.log(error);
         });
     }
   }, [accessToken]);
-
-  // 내 정보에 등록된 1차 기본 주소 지정
-  const initAddress1 = (obj) => {
-    const { feedpost, addressList } = obj;
-    let address1 = {};
-    addressList.forEach((item, index) => {
-      if (item.value === feedpost.address1) {
-        setAddressIndex1(index);
-        address1 = item;
-      }
-    });
-    return { feedpost: feedpost, addressList: address1 };
-  };
-
-  // 1차 주소를 토대로 2차 주소를 가져옴 (넘겨받은 객체를 통한 주소 가져옴)
-  const getAddress2 = (obj) => {
-    const { feedpost, addressList } = obj;
-    axios
-      .get('/auth/getAddress2List', {
-        params: {
-          address1: addressList.value,
-        },
-      })
-      .then((resp) => {
-        let arrTemp = [];
-        resp.data.forEach((addressData) => {
-          arrTemp = arrTemp.concat({
-            value: addressData,
-            label: addressData,
-          });
-        });
-        setAddressList2(arrTemp);
-        obj = { feedpost: feedpost, addressList: arrTemp };
-        initAddress2(obj);
-        return obj;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // 내 정보에 등록된 2차 기본 주소 지정
-  const initAddress2 = (obj) => {
-    const { feedpost, addressList } = obj;
-    if (addressList.length > 0) {
-      addressList.forEach((item, index) => {
-        if (item.value === feedpost.address2) {
-          setAddressIndex2(index);
-          return;
-        }
-      });
-    } else {
-      setAddressIndex2(0);
-    }
-  };
-
-  // 1차 주소 지정에 따른 2차 주소 지정 (target을 통한 지정된 내용 불러오기)
-  const setAddress = (target) => {
-    setFeedPost((prev) => ({ ...prev, address1: target.value }));
-    axios
-      .get('/auth/getAddress2List', {
-        params: {
-          address1: target.value,
-        },
-      })
-      .then((resp) => {
-        let arrTemp = [];
-        resp.data.forEach((addressData) => {
-          arrTemp = arrTemp.concat({
-            value: addressData,
-            label: addressData,
-          });
-        });
-        address.current.setValue('');
-        setAddressList2(arrTemp);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   // 이미지 변경 시 적용,
   const handleChangeFile = (event) => {
@@ -299,6 +166,7 @@ function ToastUI({ setFeedPostInsertOpen }) {
     } else {
       for (var i = 0; i < event.target.files.length; i++) {
         if (event.target.files[i]) {
+          console.log(event.target.files[i].size);
           let reader = new FileReader();
           reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장.
           // 파일 상태 업데이트
@@ -340,11 +208,33 @@ function ToastUI({ setFeedPostInsertOpen }) {
     }
   };
 
-  const test = () => {
+  useEffect(() => {
+    if (file.length > 0) {
+      console.log(file[0].size);
+    }
+  }, [file]);
+  // 폼 입력
+  const insertForm = () => {
+    if (feedpost.body === '' || feedpost.body === undefined) {
+      alert('내용을 입력해 주세요.');
+      return;
+    }
+    if (selectRef.current.getValue().length === 0) {
+      alert('최소 한 개 이상의 해시 태그를 입력해 주세요.');
+      return;
+    }
+    if (file.length === 0) {
+      alert('최소 한 개 이상의 사진을 첨부해 주세요.');
+      return;
+    }
+
     const formData = new FormData();
-    delete feedpost.address1;
-    delete feedpost.address2;
-    formData.append('dto', feedpost);
+    formData.append('userNo', feedpost.userNo);
+    formData.append('body', feedpost.body);
+    formData.append('writeTemp', feedpost.writeTemp);
+    formData.append('writeTempRange', feedpost.writeTempRange);
+    formData.append('writePtyCode', feedpost.writePtyCode);
+    formData.append('writeSkyCode', feedpost.writeSkyCode);
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
     });
@@ -352,23 +242,24 @@ function ToastUI({ setFeedPostInsertOpen }) {
       formData.append('files', file[i]);
     }
 
-    // 기후 데이터
     axios({
       method: 'POST',
-      url: '/feedpost/feedpost',
+      url: '/feedpost/insertFeedPost',
       headers: {
         'Content-Type': 'multipart/form-data',
       },
       data: formData,
     })
       .then((resp) => {
-        if (resp.data) {
-          alert('등록이 완료되었습니다.');
-        }
+        alert('등록이 완료되었습니다.');
+        location.reload();
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
+  const [select, setSelect] = useState([]);
   return (
     <div className="toastUIContainer">
       <div className="leftWrapper">
@@ -449,60 +340,23 @@ function ToastUI({ setFeedPostInsertOpen }) {
             <CreatableSelect
               placeholder="해시태그 추가"
               isMulti
+              value={select}
               options={options}
               ref={selectRef}
-              // onChange={(value) => setSelectedOptions(value)}
+              onChange={(selectedOptions) => {
+                setSelect(selectedOptions);
+                setTimeout(() => {
+                  if (selectRef.current.getValue().length > 5) {
+                    alert('해시 태그는 5개 까지 입력 가능합니다.');
+                    setSelect((prevValues) => prevValues.slice(0, -1));
+                  }
+                }, 100);
+              }}
             />
           </div>
 
-          {/* <div className="weatherSelectLayout">
-            <div className="select1">
-              {addressList1.length > 0 && (
-                <Select
-                  placeholder="지역1"
-                  options={addressList1}
-                  defaultValue={addressList1[addressIndex1]}
-                  onChange={setAddress2}
-                  isDisabled
-                />
-              )}
-            </div>
-            <div className="select2">
-              {addressList2.length > 0 && (
-                <Select
-                  ref={address2}
-                  placeholder="지역2"
-                  options={addressList2}
-                  defaultValue={addressList2[addressIndex2]}
-                  onChange={(target) => {
-                    setAddress2((prev) => ({
-                      ...prev,
-                      address2: target.value,
-                    }));
-                  }}
-                  isDisabled
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="dateLayout">
-            {feedpost.writeDate !== undefined && (
-              <input
-                type="date"
-                value={feedpost.writeDate}
-                onChange={(e) => {
-                  setFeedPost((prev) => ({
-                    ...prev,
-                    writeDate: e.target.value,
-                  }));
-                }}
-              />
-            )}
-          </div> */}
-
           <div className="weatherResultLayout">
-            <div className="todayName">{`${feedpost.writeDate} ${address1}, ${address2} 날씨`}</div>
+            <div className="todayName">{`${feedpost.writeDate} ${feedpost.address1}, ${feedpost.address2} 날씨`}</div>
             <div className="todaySky">
               {weatherIcon} {weatherName}
             </div>
@@ -521,7 +375,7 @@ function ToastUI({ setFeedPostInsertOpen }) {
               >
                 취소
               </button>
-              <button onClick={test}>작성</button>
+              <button onClick={insertForm}>작성</button>
             </div>
           </div>
         </div>
@@ -530,4 +384,4 @@ function ToastUI({ setFeedPostInsertOpen }) {
   );
 }
 
-export default ToastUI;
+export default FeedInsertModal;

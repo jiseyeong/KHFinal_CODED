@@ -80,7 +80,6 @@ const FeedPostDetail = (props) => {
 
   useEffect(() => {
     //피드 라이크가 변경된다면, likeCount 갱신하기.
-    console.log('a');
     getFeedLikeCount();
   }, [isFeedLike]);
 

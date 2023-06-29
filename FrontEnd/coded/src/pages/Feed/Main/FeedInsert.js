@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import Modal from 'react-modal';
-import ToastUI from './ToastUI';
+import FeedInsertModal from './FeedInsertModal';
 import { CloseBtn } from '../../../assets/ModalAsset/IconAsset';
 import { styled } from 'styled-components';
 

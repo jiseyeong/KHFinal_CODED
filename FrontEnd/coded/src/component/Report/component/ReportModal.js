@@ -87,10 +87,6 @@ function ReportModal({ feedPostId, onReportView }) {
   };
 
   useEffect(() => {
-    console.log('들어옴');
-  }, []);
-
-  useEffect(() => {
     if (accessToken) {
       // 1. 토큰 값으로 나의 고유 넘버를 반환
       axios({
@@ -101,7 +97,6 @@ function ReportModal({ feedPostId, onReportView }) {
         },
       })
         .then((resp) => {
-          console.log(resp.data);
           setUserNo(resp.data);
         })
         // 2. 고유 넘버로 유저 정보 반환
