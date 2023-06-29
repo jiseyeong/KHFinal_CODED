@@ -153,6 +153,7 @@ public class SecurityConfiguration {
 			"/feedpost/comment",
 			"/feedpost/nestedComment",
 			"/feedpost/comment/like",
+			"/feedpost/deleteFeedPost",
 			
 			"/mypick/selectMember",
 			"/mypick/selectFeedPost",
