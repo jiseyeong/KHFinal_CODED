@@ -3,31 +3,21 @@ import axios from 'axios';
 import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 
-function SendBtn() {
-    const loginUserNo = useSelector((state) => state.member.userNo);
-    const [RoomId, setRoomId] = useState(0);
+function SendBtn(props) {
+    const setMessage = props.setMessage;
+    const Send = props.Send;
+
 
     const sendRef = useRef(null);
 
     const sendToServer = () => {
-        // 서버로 데이터 전송
-        axios
-            .request({
-                url: '/app/${roomId}',
-                method: 'post',
-                params: {
-                    roomId: RoomId,
-                    userNo: loginUserNo,
-                    message: sendRef.current.value
-                },
-            })
-            .then(resp => {
+        setMessage(sendRef.current.value);
+        Send()
+        // 입력 필드 초기화
+        sendRef.current.value = '';
+      };
 
-            })
-            .catch((error) => console.log(error));
-    };
-
-    const SendBtn = styled.div`
+    const SendBtnContainer  = styled.div`
     height:8%; width:100%; display:flex;
     `
     const SendChat = styled.input`
@@ -43,17 +33,17 @@ function SendBtn() {
         &:focus{outline:none;}
     `
 
-    const Send = styled.button`
+    const SendBtn = styled.button`
     margin-top:10px; margin-left:15px; width:50px; height:30px;
     border:none; background-color:lightgray; border-radius:5px;
     &:hover{cursor:pointer;}
     `
 
     return (
-        <SendBtn>
+        <SendBtnContainer >
             <SendChat type="text" ref={sendRef}/>
-            <Send onClick={sendToServer}>Send</Send>
-        </SendBtn>
+            <SendBtn onClick={(sendToServer) }>Send</SendBtn>
+        </SendBtnContainer>
     );
 }
 

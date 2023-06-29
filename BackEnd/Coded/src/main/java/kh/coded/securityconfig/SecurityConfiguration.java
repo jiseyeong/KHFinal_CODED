@@ -126,7 +126,14 @@ public class SecurityConfiguration {
 			"/feedpost/feedpost",
 			"/ws/**",
 			"/ReportOk",
+			"/app/**",
+
+
+			"/follow/selectfollowinglist",
+			"/follow/selectfollowerlist",
+
 			"/feedpost/selectOneFeedPost",
+
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
@@ -162,14 +169,23 @@ public class SecurityConfiguration {
 			"/DM/**",
 			"/topic/**",
 			"/ws/**",
-			"/app/**",
+			
 	};
 	private final String[] API_ADMIN_LIST = {
 			"/feedReport/report",
 			"/feedpost/getNaviInfo",
 			"/auth/getNaviInfo",
 			"/auth/pagingMember",
+			"/auth/getNaviInfo/id",
+			"/auth/pagingMember/id",
+			"/auth/getNaviInfo/nickName",
+			"/auth/pagingMember/nickName",
+			"/auth/getNaviInfo/role",
+			"/auth/pagingMember/role",
+			"/auth/getNaviInfo/email",
+			"/auth/pagingMember/email",
 			"/auth/deleteMemberByAdmin",
+			"/auth/getUserByUserNo",
 			"/feedpost/getNaviInfo/userNo",
 	};
 	
