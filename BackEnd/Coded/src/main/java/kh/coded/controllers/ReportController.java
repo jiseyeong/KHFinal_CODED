@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.ReportDTO;
+
+
 import kh.coded.security.JwtProvider;
+
 import kh.coded.services.FeedReportService;
 
 @RestController
@@ -26,8 +29,9 @@ public class ReportController {
 	private JwtProvider jwtProvider;
 
 	@GetMapping(value = "")
-	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
-		try {
+	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) 
+	{
+		try { 
 			List<FeedPostDTO> list = feedReportService.selectFeedList(UserNo);
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
@@ -35,19 +39,18 @@ public class ReportController {
 		}
 	}
 
-	// @PostMapping(value = "/ReportOk") // 구현중
-	// public ResponseEntity<?> ReportOk
-	// (
-	// 		@RequestParam(value="type") 
-	// 		String type ,
-	// 		@RequestParam(value="text") 
-	// 		String text
-	// 		){
-	// 	System.out.println(type);
-	// 	System.out.println(text);
-	// 	return null;
-	// }
-	
+
+	@PostMapping(value = "/ReportOk") // 구현중
+	public ResponseEntity<?> ReportOk
+	(@RequestParam(value = "writerUserNo") int writerUserNo,@RequestParam(value = "title") String title){
+		try{
+			int ReportOk = feedReportService.ReportOk(writerUserNo,title);
+			return ResponseEntity.ok().body(ReportOk);
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 	@GetMapping(value="report")
 	public ResponseEntity<?> selectAllReport(
 			@RequestHeader(value="authorization") String authorization
@@ -61,5 +64,6 @@ public class ReportController {
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
 	}
+
 
 }
