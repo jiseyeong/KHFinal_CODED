@@ -146,7 +146,6 @@ public class MemberDAO {
 	public List<MemberWithProfileDTO> selectFollowingList(int fromUserNo) { //팔로잉 리스트(사진,멤버정보)
 		return mybatis.selectList("Member.followingList",fromUserNo);
 	}
-
 	public int getRecordCount() {
 		return mybatis.selectOne("Member.getRecordCount");
 	}
@@ -172,9 +171,8 @@ public class MemberDAO {
 		data.put("startNum", startNum);
 		data.put("endNum", endNum);
 		return mybatis.selectList("Member.selectPaging", data);
-
 	}
-	
+
 	public List<MemberDTO> selectPagingById(String userId,int startNum, int endNum){
 		Map<String, Object> data = new HashMap<>();
 		data.put("userId", userId);
