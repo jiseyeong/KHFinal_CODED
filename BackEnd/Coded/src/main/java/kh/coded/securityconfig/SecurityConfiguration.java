@@ -126,7 +126,12 @@ public class SecurityConfiguration {
 			"/feedpost/feedpost",
 			"/ws/**",
 			"/ReportOk",
+
+			"/follow/selectfollowinglist",
+			"/follow/selectfollowerlist"
+
 			"/feedpost/selectOneFeedPost",
+
 	};
 	private final String[] API_USER_LIST = {
 			"/weather/**",
