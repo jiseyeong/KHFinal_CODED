@@ -114,6 +114,10 @@ public class MemberDAO {
 	public int deleteMember(String userId) { //회원탈퇴
 		return mybatis.delete("Member.deleteMember",userId);
 	}
+	
+	public int deleteMemberAdmin(int userNo) {
+		return mybatis.delete("Member.deleteMemberAdmin", userNo);
+	}
 
     public List<MemberDTO> selectUserList() {
 		return mybatis.selectList("Member.selectUserList");
@@ -134,4 +138,24 @@ public class MemberDAO {
 	public MyPickPageDTO selectMyPickPageData(int userNo) {
 		return mybatis.selectOne("Member.selectMyPickPageData",userNo);
 	}
+	
+	public List<MemberWithProfileDTO> selectFollowerList(int toUserNo) { //팔로워 리스트(사진,멤버정보)
+		return mybatis.selectList("Member.followerList", toUserNo);
+	}
+	
+	public List<MemberWithProfileDTO> selectFollowingList(int fromUserNo) { //팔로잉 리스트(사진,멤버정보)
+		return mybatis.selectList("Member.followingList",fromUserNo);
+
+	public int getRecordCount() {
+		return mybatis.selectOne("Member.getRecordCount");
+	}
+	
+	public List<MemberDTO> selectPaging(int startNum, int endNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("Member.selectPaging", data);
+
+	}
+}
 }

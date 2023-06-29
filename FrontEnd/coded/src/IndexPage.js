@@ -59,9 +59,6 @@ const IndexPage = () => {
       <Link to="/TestComponent">기능 테스트</Link>
       <br />
       <br />
-      <Link to="/searchBox">검색 테스트</Link>
-      <br />
-      <br />
       <Link to="/test/feedComment">피드 댓글 테스트</Link>
       <br />
       <br />
@@ -74,6 +71,7 @@ const IndexPage = () => {
       <Link to="/todayWeather">오늘의 날씨</Link>
       <br />
       <br />
+      <Link to="/Admin/report">관리자페이지</Link>
       {/* <Link to="/confirmDialog">로그인안내창</Link> */}
       <br />
       <br />

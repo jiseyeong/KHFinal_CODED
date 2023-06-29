@@ -209,7 +209,9 @@ const AuthForm = ({ type }) => {
                   setIdDuplicateMessage('이미 존재하는 아이디입니다.');
                   idDuplicateRef.current.style.color = 'red';
                 } else if (!regexId.test(idRef.current.value)) {
-                  setIdDuplicateMessage('7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
+                  setIdDuplicateMessage(
+                    '7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.',
+                  );
                   idDuplicateRef.current.style.color = 'red';
                 } else {
                   setIdDuplicateMessage('사용 가능한 아이디입니다.');
@@ -285,7 +287,9 @@ const AuthForm = ({ type }) => {
   function handleNickName(e) {
     if (nickNameRef.current.value) {
       if (!regexNickName.test(nickNameRef.current.value)) {
-        setNickNameRegexMessage('8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능합니다.');
+        setNickNameRegexMessage(
+          '8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능합니다.',
+        );
         nickNameDuplicateRef.current.style.color = 'red';
       } else {
         setNickNameRegexMessage('사용 가능한 닉네임입니다.');
@@ -435,7 +439,6 @@ const AuthForm = ({ type }) => {
       url: '/login/oauth2/google/codeInfo',
     })
       .then((response) => {
-        console.log(response);
         const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
         window.location.href = GOOGLE_AUTH_URL;
       })

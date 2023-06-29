@@ -59,13 +59,9 @@ public class FeedPostService {
 	@Autowired
 	private FeedScrapDAO feedScrapDAO;
 
-	public int insertTest(FeedPostDTO dto) {
-		return feedpostDAO.insertFeedPost(dto);
-	}
-
 	// insert feedpost start
-	public int insertFeedPost(FeedPostDTO FeedPost) {
-		return feedpostDAO.insertFeedPost(FeedPost);
+	public FeedPostDTO insertFeedPost(FeedPostDTO dto) {
+		return feedpostDAO.insertFeedPost(dto);
 	}
 
 	public int insertPostHashs(int FeedPost, int TagId) {
@@ -75,11 +71,11 @@ public class FeedPostService {
 	public int insertHashTag(HashTagDTO dto) {
 		return feedpostDAO.insertHashTag(dto);
 	}
-	
-	public int HashTagJB(HashTagDTO dto) {
-		return feedpostDAO.HashTagJB(dto);
+
+	public int HashTagJB(String tagName) {
+		return feedpostDAO.HashTagJB(tagName);
 	}
-	
+
 	public void insertFeedPhoto(String realPath, List<MultipartFile> files, int feedPostId) throws IOException {
 		File realPathFile = new File(realPath);
 		if (!realPathFile.exists()) {
@@ -98,12 +94,12 @@ public class FeedPostService {
 		}
 	}
 	// insert feedpost end
-	
+
 	// update feedpost start
 	public int updateFeedPost(FeedPostDTO FeedPost) {
-    	return feedpostDAO.updateFeedPost(FeedPost);
-    }
-	
+		return feedpostDAO.updateFeedPost(FeedPost);
+	}
+
 	public int updatePostHashs(int FeedPost, int TagId) {
 		return feedpostDAO.updatePostHashs(FeedPost, TagId);
 	}
@@ -125,15 +121,15 @@ public class FeedPostService {
 			}
 		}
 	}
-	
-	
+
+
 	// public TodayWeatherDTO select(int WeatherCode) {
-//		return feedpostDAO.selectTodayWeather(WeatherCode);
-//	}
-//	
-//	public int insertWeatherCode(int WeatherCode) {
-//		return feedpostDAO.insertWeatherCode(WeatherCode);
-//	}
+	//		return feedpostDAO.selectTodayWeather(WeatherCode);
+	//	}
+	//	
+	//	public int insertWeatherCode(int WeatherCode) {
+	//		return feedpostDAO.insertWeatherCode(WeatherCode);
+	//	}
 
 
 	public List<FeedPostDTO> selectFeedList(int UserNo) {
@@ -148,49 +144,49 @@ public class FeedPostService {
 		return postHashsDAO.selectAllTagIdByFeedPostId(feedPostId);
 	}
 
-//    // 고도화 작업 요구
-//    public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
-//        // 피드 리스트 출력
-//        // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
-//        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-//        int endFeedNum = cpage * feedCountPerPage;
-//        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-//
-//        List<FeedPostDTO> feedPostList = feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
-//        List<MemberDTO> memberList = new ArrayList<>();
-//        List<PhotoDTO> userProfileList = new ArrayList<>();
-//        List<PhotoDTO> thumbNailList = new ArrayList<>();
-//        List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
-//        List<Integer> feedLikeList = new ArrayList<>(); //좋아요 갯수
-//        List<Boolean> isFeedLikeList = new ArrayList<>();//좋아요 여부 
-//
-//        for (FeedPostDTO feedPost : feedPostList) {
-//            PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
-//            MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
-//            userInfo.setPw("");
-//            PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
-//            List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
-//            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
-//            boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
-//            thumbNailList.add(thumbNail);
-//            memberList.add(userInfo);
-//            userProfileList.add(userProfile);
-//            hashTagLists.add(hashTagList);
-//            feedLikeList.add(feedLike);
-//            isFeedLikeList.add(isFeedLike);
-//        }
-//
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("feedPostList",feedPostList);
-//        map.put("thumbNailList",thumbNailList);
-//        map.put("memberList",memberList);
-//        map.put("userProfileList",userProfileList);
-//        map.put("hashTagLists",hashTagLists);
-//        map.put("feedLikeList", feedLikeList);
-//        map.put("isFeedLikeList", isFeedLikeList);
-//        
-//        return map;
-//    }
+	//    // 고도화 작업 요구
+	//    public Map<String, Object> selectAllFeedPost(int cpage,int userNo) {
+	//        // 피드 리스트 출력
+	//        // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
+	//        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+	//        int endFeedNum = cpage * feedCountPerPage;
+	//        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+	//
+	//        List<FeedPostDTO> feedPostList = feedpostDAO.selectAllFeedPost(startFeedNum, endFeedNum);
+	//        List<MemberDTO> memberList = new ArrayList<>();
+	//        List<PhotoDTO> userProfileList = new ArrayList<>();
+	//        List<PhotoDTO> thumbNailList = new ArrayList<>();
+	//        List<List<PostHashsWithHashTagDTO>> hashTagLists = new ArrayList<>();
+	//        List<Integer> feedLikeList = new ArrayList<>(); //좋아요 갯수
+	//        List<Boolean> isFeedLikeList = new ArrayList<>();//좋아요 여부 
+	//
+	//        for (FeedPostDTO feedPost : feedPostList) {
+	//            PhotoDTO thumbNail = photoDAO.selectThumbNailByFeedPostId(feedPost.getFeedPostId());
+	//            MemberDTO userInfo = memberDAO.selectMemberByUserNo(feedPost.getUserNo());
+	//            userInfo.setPw("");
+	//            PhotoDTO userProfile = photoDAO.selectByUserNo(feedPost.getUserNo());
+	//            List<PostHashsWithHashTagDTO> hashTagList = postHashsDAO.selectAllTagIdByFeedPostId(feedPost.getFeedPostId());
+	//            int feedLike = feedLikeDAO.selectFeedLike(feedPost.getFeedPostId());
+	//            boolean isFeedLike = feedLikeDAO.isFeedLike(userNo,feedPost.getFeedPostId());
+	//            thumbNailList.add(thumbNail);
+	//            memberList.add(userInfo);
+	//            userProfileList.add(userProfile);
+	//            hashTagLists.add(hashTagList);
+	//            feedLikeList.add(feedLike);
+	//            isFeedLikeList.add(isFeedLike);
+	//        }
+	//
+	//        Map<String, Object> map = new HashMap<>();
+	//        map.put("feedPostList",feedPostList);
+	//        map.put("thumbNailList",thumbNailList);
+	//        map.put("memberList",memberList);
+	//        map.put("userProfileList",userProfileList);
+	//        map.put("hashTagLists",hashTagLists);
+	//        map.put("feedLikeList", feedLikeList);
+	//        map.put("isFeedLikeList", isFeedLikeList);
+	//        
+	//        return map;
+	//    }
 
 	public List<FeedPostAddDTO> selectAllFeedPost(int cpage) {
 		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
@@ -237,108 +233,202 @@ public class FeedPostService {
 
 	}
 
-    public List<FeedPostAddDTO> selectSearchFeedListByHashs(int cpage, String keyword) {
-        // 피드 리스트 출력
-        // 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
-        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-        int endFeedNum = cpage * feedCountPerPage;
-        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-        return feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
-    }
-    
-    
-    public int deleteFeedPost(int feedPostId) {
-    	return feedpostDAO.deleteFeedPost(feedPostId);
-    }
-    public int insertComment(FeedCommentDTO dto) {
-    	return commentDAO.insert(dto);
-    }
-    public int insertNestedComment(FeedCommentDTO dto) {
-    	return commentDAO.insertNestedComment(dto);
-    }
-    public void updateComment(int feedCommentId, String body) {
-    	commentDAO.update(feedCommentId, body);
-    }
-    public void deleteComment(int feedCommentId) {
-    	commentDAO.delete(feedCommentId);
-    }
-    public List<FeedCommentAddDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
-    	return commentDAO.selectByFeedPostDepth0(feedPostId);
-    }
-    public List<FeedCommentAddDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
-    	return commentDAO.selectByParentIdAndDepth(parentId, depth);
-    }
-    public boolean selectCommentLikeForChecked(int userNo, int commentId) {
-    	return commentLikeDAO.selectForChecked(userNo, commentId) != null;
-    }
-    public int selectCommentLikeForCount(int commentId) {
-    	return commentLikeDAO.selectForCount(commentId).size();
-    }
-    public void insertCommentLike(int userNo, int commentId) {
-    	FeedCommentLikeDTO dto = new FeedCommentLikeDTO(0, userNo, commentId);
-    	commentLikeDAO.insert(dto);
-    }
-    public void deleteCommentLike(int userNo, int commentId) {
-    	commentLikeDAO.delete(userNo, commentId);
-    }
-    
-    public int insertFeedLike(int userNo,int feedPostId) {
-    	return feedLikeDAO.insertFeedLike(userNo, feedPostId);
-    }
-    
-    public int deleteFeedLike(int userNo,int feedPostId) {
-    	return feedLikeDAO.deleteFeedLike(userNo, feedPostId);
-    }
-    
-    public int selectFeedLike(int feedpostId) {
-    	return feedLikeDAO.selectFeedLike(feedpostId);
-    }
-    
-    public boolean isFeedLike(int userNo, int feedPostId) {
-    	return feedLikeDAO.isFeedLike(userNo, feedPostId);
-    }
-    
-    public int insertFeedScrap(int userNo,int feedPostId) {
-    	return feedScrapDAO.insertFeedScrap(userNo, feedPostId);
-    }
-    
-    public int deleteFeedScrap(int userNo,int feedPostId) {
-    	return feedScrapDAO.deleteFeedScrap(userNo, feedPostId);
-    }
-    
-    public boolean isFeedScrap(int userNo, int feedPostId) {
-    	return feedScrapDAO.isFeedScrap(userNo, feedPostId);
-    }
+	public List<FeedPostAddDTO> selectSearchFeedListByHashs(int cpage, String keyword) {
+		// 피드 리스트 출력
+		// 출력 내용 : 피드 리스트, 피드 썸네일, 피드 해시태그, 유저 리스트(닉네임), 유저 프로필 사진,
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+		return feedpostDAO.selectSearchFeedListByHashs(startFeedNum, endFeedNum, keyword);
+	}
 
-    public List<FeedPostAddDTO> selectUserFeedPost(int userNo, int cpage) {
-        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-        int endFeedNum = cpage * feedCountPerPage;
-        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
 
-        return feedpostDAO.selectUserFeedPost(userNo, startFeedNum, endFeedNum);
-    }
-    
-    public List<FeedPostAddDTO> selectLikeFeedPost(int cpage) {
-        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-        int endFeedNum = cpage * feedCountPerPage;
-        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+	public int deleteFeedPost(int feedPostId) {
+		return feedpostDAO.deleteFeedPost(feedPostId);
+	}
+	public int insertComment(FeedCommentDTO dto) {
+		return commentDAO.insert(dto);
+	}
+	public int insertNestedComment(FeedCommentDTO dto) {
+		return commentDAO.insertNestedComment(dto);
+	}
+	public void updateComment(int feedCommentId, String body) {
+		commentDAO.update(feedCommentId, body);
+	}
+	public void deleteComment(int feedCommentId) {
+		commentDAO.delete(feedCommentId);
+	}
+	public List<FeedCommentAddDTO> selectCommentByFeedPostIdAndDepth0(int feedPostId){
+		return commentDAO.selectByFeedPostDepth0(feedPostId);
+	}
+	public List<FeedCommentAddDTO> selectCommentByParentIdAndDepth(int parentId, int depth){
+		return commentDAO.selectByParentIdAndDepth(parentId, depth);
+	}
+	public boolean selectCommentLikeForChecked(int userNo, int commentId) {
+		return commentLikeDAO.selectForChecked(userNo, commentId) != null;
+	}
+	public int selectCommentLikeForCount(int commentId) {
+		return commentLikeDAO.selectForCount(commentId).size();
+	}
+	public void insertCommentLike(int userNo, int commentId) {
+		FeedCommentLikeDTO dto = new FeedCommentLikeDTO(0, userNo, commentId);
+		commentLikeDAO.insert(dto);
+	}
+	public void deleteCommentLike(int userNo, int commentId) {
+		commentLikeDAO.delete(userNo, commentId);
+	}
 
-        return feedpostDAO.selectLikeFeedPost(startFeedNum, endFeedNum);
-    }
-    
-    public List<FeedPostAddDTO> selectFollowingFeedPost(int userNo, int cpage){
-        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-        int endFeedNum = cpage * feedCountPerPage;
-        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-        
-        return feedpostDAO.selectFollowingFeedPost(userNo, startFeedNum, endFeedNum);
-    }
-    
-    public List<FeedPostAddDTO> selectScrapFeedPost(int userNo, int cpage){
-        int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
-        int endFeedNum = cpage * feedCountPerPage;
-        int startFeedNum = endFeedNum - (feedCountPerPage - 1);
-        
-        return feedpostDAO.selectScrapFeedPost(userNo, startFeedNum, endFeedNum);
-    }
+	public int insertFeedLike(int userNo,int feedPostId) {
+		return feedLikeDAO.insertFeedLike(userNo, feedPostId);
+	}
+
+	public int deleteFeedLike(int userNo,int feedPostId) {
+		return feedLikeDAO.deleteFeedLike(userNo, feedPostId);
+	}
+
+	public int selectFeedLike(int feedpostId) {
+		return feedLikeDAO.selectFeedLike(feedpostId);
+	}
+
+	public boolean isFeedLike(int userNo, int feedPostId) {
+		return feedLikeDAO.isFeedLike(userNo, feedPostId);
+	}
+
+	public int insertFeedScrap(int userNo,int feedPostId) {
+		return feedScrapDAO.insertFeedScrap(userNo, feedPostId);
+	}
+
+	public int deleteFeedScrap(int userNo,int feedPostId) {
+		return feedScrapDAO.deleteFeedScrap(userNo, feedPostId);
+	}
+
+	public boolean isFeedScrap(int userNo, int feedPostId) {
+		return feedScrapDAO.isFeedScrap(userNo, feedPostId);
+	}
+
+	public List<FeedPostAddDTO> selectUserFeedPost(int userNo, int cpage) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+		return feedpostDAO.selectUserFeedPost(userNo, startFeedNum, endFeedNum);
+	}
+
+	public List<FeedPostAddDTO> selectLikeFeedPost(int cpage) {
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+		return feedpostDAO.selectLikeFeedPost(startFeedNum, endFeedNum);
+	}
+
+	public List<FeedPostAddDTO> selectFollowingFeedPost(int userNo, int cpage){
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+		return feedpostDAO.selectFollowingFeedPost(userNo, startFeedNum, endFeedNum);
+	}
+
+	public List<FeedPostAddDTO> selectScrapFeedPost(int userNo, int cpage){
+		int feedCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		int endFeedNum = cpage * feedCountPerPage;
+		int startFeedNum = endFeedNum - (feedCountPerPage - 1);
+
+		return feedpostDAO.selectScrapFeedPost(userNo, startFeedNum, endFeedNum);
+	}
+
+	public FeedPostAddDTO selectOneFeedPost(int feedpostId) {
+		return feedpostDAO.selectOneFeedPost(feedpostId);
+	}
+
+	public Map<String, Object> selectPageNavi(int cpage){
+		//1. 전체 글의 개수
+		int recordTotalCount = feedpostDAO.getRecordCount();
+		//2. 페이지당 보여줄 글의 개수
+		int recordCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		//3. 페이지당 보여줄 네비게이터의 수
+		int naviCountPerPage = StaticValue.NAVICOUNTPERPAGE;
+
+		//4. 1번과 2번 항목에 의해 총 페이지의 개수가 정해짐.
+		//전체 글의 개수를 페이지당 
+		int pageTotalCount = recordTotalCount%recordCountPerPage > 0 ?
+				recordTotalCount/recordCountPerPage + 1
+				:recordTotalCount/recordCountPerPage;
+
+		if(cpage < 1) {
+			cpage = 1;
+		}else if(cpage > pageTotalCount) {
+			cpage = pageTotalCount;
+		}
+
+		int startNavi = (cpage-1)/naviCountPerPage*naviCountPerPage+1;
+		int endNavi = startNavi + (naviCountPerPage-1);
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		boolean needPrev = true;
+		boolean needNext = true;
+		ArrayList<Integer> list = new ArrayList<>();
+
+		if(startNavi == 1) {needPrev = false;}
+		if(endNavi == pageTotalCount) {needNext = false;}
+		for(int i = startNavi; i <= endNavi; i++) {
+			list.add(i);
+		}
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("naviList", list);
+		data.put("needPrev", needPrev);
+		data.put("needNext", needNext);
+
+		return data;
+	}
+	
+	public Map<String, Object> selectPageNavi(int cpage, int userNo){
+		//1. 전체 글의 개수
+		int recordTotalCount = feedpostDAO.getRecordCount(userNo);
+		//2. 페이지당 보여줄 글의 개수
+		int recordCountPerPage = StaticValue.FEEDCOUNTPERSCROLL;
+		//3. 페이지당 보여줄 네비게이터의 수
+		int naviCountPerPage = StaticValue.NAVICOUNTPERPAGE;
+
+		//4. 1번과 2번 항목에 의해 총 페이지의 개수가 정해짐.
+		//전체 글의 개수를 페이지당 
+		int pageTotalCount = recordTotalCount%recordCountPerPage > 0 ?
+				recordTotalCount/recordCountPerPage + 1
+				:recordTotalCount/recordCountPerPage;
+
+		if(cpage < 1) {
+			cpage = 1;
+		}else if(cpage > pageTotalCount) {
+			cpage = pageTotalCount;
+		}
+
+		int startNavi = (cpage-1)/naviCountPerPage*naviCountPerPage+1;
+		int endNavi = startNavi + (naviCountPerPage-1);
+
+		if(endNavi > pageTotalCount) {
+			endNavi = pageTotalCount;
+		}
+
+		boolean needPrev = true;
+		boolean needNext = true;
+		ArrayList<Integer> list = new ArrayList<>();
+
+		if(startNavi == 1) {needPrev = false;}
+		if(endNavi == pageTotalCount) {needNext = false;}
+		for(int i = startNavi; i <= endNavi; i++) {
+			list.add(i);
+		}
+
+		Map<String, Object> data = new HashMap<>();
+		data.put("naviList", list);
+		data.put("needPrev", needPrev);
+		data.put("needNext", needNext);
+
+		return data;
+	}
 }
