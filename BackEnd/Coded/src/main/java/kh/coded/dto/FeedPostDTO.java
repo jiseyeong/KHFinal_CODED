@@ -11,16 +11,12 @@ public class FeedPostDTO {
 	private int writeTemp;
 	private int writeTempRange;
 	private int writePtyCode;
-	private int wrtieSkyCode;
-	
-	public FeedPostDTO() {
-		super();
-	}
-	
+	private int writeSkyCode;
 
-	public FeedPostDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp, int writeTempRange,
-			int writePtyCode, int wrtieSkyCode) {
-		super();
+	public FeedPostDTO() {
+	}
+
+	public FeedPostDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp, int writeTempRange, int writePtyCode, int writeSkyCode) {
 		this.feedPostId = feedPostId;
 		this.userNo = userNo;
 		this.body = body;
@@ -28,66 +24,70 @@ public class FeedPostDTO {
 		this.writeTemp = writeTemp;
 		this.writeTempRange = writeTempRange;
 		this.writePtyCode = writePtyCode;
-		this.wrtieSkyCode = wrtieSkyCode;
+		this.writeSkyCode = writeSkyCode;
 	}
-
 
 	public int getFeedPostId() {
 		return feedPostId;
 	}
+
 	public void setFeedPostId(int feedPostId) {
 		this.feedPostId = feedPostId;
 	}
+
 	public int getUserNo() {
 		return userNo;
 	}
+
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
+
 	public String getBody() {
 		return body;
 	}
+
 	public void setBody(String body) {
 		this.body = body;
 	}
+
 	public Timestamp getWriteDate() {
-		return this.writeDate;
+		return writeDate;
 	}
+
 	public void setWriteDate(Timestamp writeDate) {
 		this.writeDate = writeDate;
 	}
+
 	public int getWriteTemp() {
 		return writeTemp;
 	}
+
 	public void setWriteTemp(int writeTemp) {
 		this.writeTemp = writeTemp;
 	}
+
 	public int getWriteTempRange() {
 		return writeTempRange;
 	}
+
 	public void setWriteTempRange(int writeTempRange) {
 		this.writeTempRange = writeTempRange;
 	}
-
 
 	public int getWritePtyCode() {
 		return writePtyCode;
 	}
 
-
 	public void setWritePtyCode(int writePtyCode) {
 		this.writePtyCode = writePtyCode;
 	}
 
-
-	public int getWrtieSkyCode() {
-		return wrtieSkyCode;
+	public int getWriteSkyCode() {
+		return writeSkyCode;
 	}
 
-
-	public void setWrtieSkyCode(int wrtieSkyCode) {
-		this.wrtieSkyCode = wrtieSkyCode;
+	public void setWriteSkyCode(int writeSkyCode) {
+		this.writeSkyCode = writeSkyCode;
 	}
-	
-	
 }

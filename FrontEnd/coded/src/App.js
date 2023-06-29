@@ -155,7 +155,6 @@ function App() {
         <Route path="/testComponent" element={<TestComponent />} />
         <Route path="/imageUpload" element={<ImageUpload />} />
         <Route path="/searchLabelSelect" element={<SearchLabelSelect />} />
-        <Route path="/searchBox" element={<SearchBox />} />
 
         <Route path="/caroselTest" element={<CaroselTest />} />
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
