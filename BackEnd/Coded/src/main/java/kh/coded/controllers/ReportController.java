@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kh.coded.dto.FeedPostDTO;
+import kh.coded.dto.ReportDTO;
 import kh.coded.services.FeedReportService;
 
 @RestController
@@ -21,8 +22,9 @@ public class ReportController {
 	private FeedReportService feedReportService;
 
 	@GetMapping(value = "")
-	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) {
-		try {
+	public ResponseEntity<?> selectNoScrollFeedList(@RequestParam(value = "userNo") int UserNo) 
+	{
+		try { 
 			List<FeedPostDTO> list = feedReportService.selectFeedList(UserNo);
 			return ResponseEntity.ok().body(list);
 		} catch (Exception e) {
@@ -30,18 +32,14 @@ public class ReportController {
 		}
 	}
 
-//	@PostMapping(value = "/ReportOk") // 구현중
-//	public ResponseEntity<?> ReportOk
-//	(
-//			@RequestParam(value="type") 
-//			String type ,
-//			@RequestParam(value="text") 
-//			String text
-//			){
-//		
-//		return ResponseEntity.ok().body(feedReportService.ReportOk);
-//	}
-//
-
-
+	@PostMapping(value = "/ReportOk") // 구현중
+	public ResponseEntity<?> ReportOk
+	(@RequestParam(value = "writerUserNo") int writerUserNo,@RequestParam(value = "title") String title){
+		try{
+			int ReportOk = feedReportService.ReportOk(writerUserNo,title);
+			return ResponseEntity.ok().body(ReportOk);
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 }
