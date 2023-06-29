@@ -50,9 +50,10 @@ public class FeedPostDAO {
 		return dto.getTagId();
 	}
 //	해시태그 중복 체크
-	public int HashTagJB(HashTagDTO dto) {
-		System.out.println((int)mybatis.selectOne("FeedPost.HashTagJB", dto));
-		return mybatis.selectOne("FeedPost.HashTagJB", dto);
+	public int HashTagJB(String tagName) {
+		int a = mybatis.selectOne("FeedPost.HashTagJB", tagName);
+		System.out.println("checkInt : "+a);
+		return a;
 	}
 	
 ////	피드 내 날씨 해시태그 - 오늘 날씨에 맞는 날씨 해시태그 자동 입력 (뽑기)
