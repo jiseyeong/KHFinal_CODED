@@ -158,7 +158,7 @@ public class WeatherService {
 					try {
 						UriComponents uri = UriComponentsBuilder.fromHttpUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst")
 								.queryParam("serviceKey", weatherShortAPIKey)
-								.queryParam("numOfRows", 2000)
+								.queryParam("numOfRows", 900)
 								.queryParam("pageNo", 1)
 								.queryParam("base_date", day)
 								.queryParam("base_time", "0200")
@@ -185,17 +185,17 @@ public class WeatherService {
 				for(int i = 0; i < jsonArray.length(); i++) {
 					String category = jsonArray.getJSONObject(i).getString("category");
 					Date date = formatter.parse(Integer.toString(jsonArray.getJSONObject(i).getInt("fcstDate")));
-					int diff = Math.abs(Integer.parseInt(dayFormatter.format(date)) - Integer.parseInt(dayFormatter.format(new Date())));
+					double diff = Math.ceil((date.getTime() - now.getTime()) / (24 * 60 * 60 * 1000.0));
 					if(category.equals("TMP")) {
 						//1시간 온도
 						//fcstTime 은 0400 등으로 들어있다보니, 400으로 인식될것임
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
 						if(index <= 2) {
-							if(diff == 1) {
+							if(diff == 1.0) {
 								todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}else {
-							if(diff == 0) {
+							if(diff == 0.0) {
 								todayList.get(index).setRecent(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}
@@ -205,62 +205,62 @@ public class WeatherService {
 						//1시간 기상 상태 코드
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
 						if(index <= 2) {
-							if(diff == 1) {
+							if(diff == 1.0) {
 								todayList.get(index).setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 
-						}else if(diff == 0){
+						}else if(diff == 0.0){
 							todayList.get(index).setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 						}
 
 						if(index == WEEKLY_SET_TIME) {
-							if(diff == 1) {
+							if(diff == 1.0) {
 								nextDay.setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
-							}else if (diff == 2) {
+							}else if (diff == 2.0) {
 								twoDay.setSkyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}
 					}else if(category.equals("PTY")) {
 						int index = jsonArray.getJSONObject(i).getInt("fcstTime")/100;
 						if(index <= 2) {
-							if(diff == 1) {
+							if(diff == 1.0) {
 								todayList.get(index).setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}else {
-							if(diff == 0) {
+							if(diff == 0.0) {
 								todayList.get(index).setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}
 
 						if(index == WEEKLY_SET_TIME) {
-							if(diff == 1) {
+							if(diff == 1.0) {
 								nextDay.setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
-							}else if (diff == 2) {
+							}else if (diff == 2.0) {
 								twoDay.setPtyCode(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
 						}
 					}
 					else if(category.equals("TMN")) {
 						//일일 최저 기온
-						if(diff == 0) {
+						if(diff == 0.0) {
 							for(int j = 0; j < 23; j++) {
 								todayList.get(j).setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
-						}else if(diff == 1){
+						}else if(diff == 1.0){
 							nextDay.setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
-						}else if(diff == 2) {
+						}else if(diff == 2.0) {
 							twoDay.setMin(jsonArray.getJSONObject(i).getInt("fcstValue"));
 						}
 
 					}else if(category.equals("TMX")) {
 						//일일 최고 기온
-						if(diff == 0) {
+						if(diff == 0.0) {
 							for(int j = 0; j < 23; j++) {
 								todayList.get(j).setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
 							}
-						}else if(diff == 1) {
+						}else if(diff == 1.0) {
 							nextDay.setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
-						}else if(diff == 2) {
+						}else if(diff == 2.0) {
 							twoDay.setMax(jsonArray.getJSONObject(i).getInt("fcstValue"));
 						}
 

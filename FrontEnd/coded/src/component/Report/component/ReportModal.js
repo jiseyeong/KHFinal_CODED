@@ -21,14 +21,16 @@ const ReportH3 = styled('h3')`
 
 const Reportdiv = styled('div')`
   margin: 0.5rem;
+  padding-bottom: 2px;
   color: #222;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: silver;
   text-align: center;
 `;
 
 const Reportdiv2 = styled('div')`
+  text-align:center;
   margin-top: 20px;
   color: #ff0066;
   font-size: 14px;
@@ -41,6 +43,8 @@ const EtcArea = styled('textarea')`
 `;
 
 const Buttonok = styled('button')`
+  margin-left:43.5%;
+  text-align: center;
   font-size: 13px;
   border-radius: 13px;
   position: relative;
@@ -171,9 +175,11 @@ function ReportModal({ feedPostId, onReportView }) {
             style={{ flexDirection: 'column' }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="closeBtn" onClick={onReportView}>
-              x
-            </button>
+            <div className="closeBtnLayout">
+              <button className="closeBtn" onClick={onReportView}>
+                x
+              </button>
+            </div>
             <ReportH3>REPORT</ReportH3>
             <Reportdiv>신고사유를 선택해주세요</Reportdiv>
 
@@ -244,7 +250,7 @@ function ReportModal({ feedPostId, onReportView }) {
                 </p>
               </div>
             </div>
-            <div>
+            <div style={{textAlign: "center"}}>
               {reportType === 'e' ? (
                 <EtcArea
                   style={{ padding: '4px', backgroundColor: 'white' }}
@@ -267,8 +273,7 @@ function ReportModal({ feedPostId, onReportView }) {
               )}
             </div>
             <div className="bottomLayout">
-              <Buttonok onClick={handlePopupok}>확인</Buttonok>
-              <Buttonok2 onClick={onReportView}>취소</Buttonok2>
+              <Buttonok onClick={handlePopupok}>submit</Buttonok>
 
               <Reportdiv2>
                 허위신고를 할 경우 활동에 제한을 받을 수 있습니다. <br />이 점

@@ -96,4 +96,5 @@ public class ReportDTO {
     	SimpleDateFormat sdf = new SimpleDateFormat("yy년 MM월 dd일");
     	return sdf.format(writeDate);
     }
+    
 }

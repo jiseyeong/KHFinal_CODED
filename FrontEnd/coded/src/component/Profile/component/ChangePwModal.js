@@ -8,6 +8,7 @@ function ChangePwModal({ toggleChangePwModal }) {
 
   const [password, setPassword] = useState({ currentPw: '', pw: '', repw: '' });
   const [pwConfirmCheck, setPwConfirmCheck] = useState(true);
+  const [pwConfirmMessage, setPwConfirmMessage] = useState('');
   const pwRef1 = useRef();
   const pwRef2 = useRef();
 
@@ -66,10 +67,17 @@ function ChangePwModal({ toggleChangePwModal }) {
   };
 
   const handlePw = () => {
-    if (pwRef1.current.value === pwRef2.current.value) {
-      setPwConfirmCheck(true);
-    } else {
+    if(pwRef1.current.value && pwRef2.current.value){
+      if (pwRef1.current.value === pwRef2.current.value) {
+        setPwConfirmCheck(true);
+        setPwConfirmMessage('비밀번호가 일치합니다.');
+      } else {
+        setPwConfirmCheck(false);
+        setPwConfirmMessage('비밀번호가 일치하지 않습니다.');
+      }
+    }else{
       setPwConfirmCheck(false);
+      setPwConfirmMessage('');
     }
   };
 
@@ -128,11 +136,7 @@ function ChangePwModal({ toggleChangePwModal }) {
                   ref={pwRef2}
                   onChange={handleInput}
                 />
-                {pwConfirmCheck ? (
-                  <div className="checkpw">비밀번호가 일치합니다.</div>
-                ) : (
-                  <div className="checkpw">비밀번호가 일치하지 않습니다.</div>
-                )}
+                {pwConfirmMessage}
               </div>
               <div className="btnLayout">
                 <button onClick={submitInput}>complete</button>

@@ -231,7 +231,7 @@ function Navbar() {
         )}
         {navbarType === 'Weekly' && (
           <nav className="bottomNavBar">
-            <p className={isHomeBorder ? 'isHomeBorder' : ''}>USER'S CODI!</p>
+            <p className={isHomeBorder ? 'isHomeBorder' : ''}>CODI FOR YOU</p>
           </nav>
         )}
       </div>

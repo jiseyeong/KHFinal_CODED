@@ -195,12 +195,12 @@ function FeedListForm() {
       .then((response) => {
         setFeedPost(response.data);
 
-        function getHashs() {
+        function getHashs(feedPostId) {
           return axios({
             method: 'get',
             url: '/feedpost/hashtagList',
             params: {
-              feedPostId: feedPost.feedPostId,
+              feedPostId: feedPostId,
             },
           }).then((response) => {
             setHashTagList((prev) => {
@@ -208,22 +208,19 @@ function FeedListForm() {
             });
           });
         }
-        function getLikeCount() {
+        function getLikeCount(feedPostId) {
           return axios({
             method: 'get',
             url: '/feedpost/likeCount',
             params: {
-              feedPostId: feedPost.feedPostId,
+              feedPostId: feedPostId,
             },
           })
             .then((response) => {
               setFeedLikeCount(response.data);
             })
-            .catch((error) => {
-              console.log(error);
-            });
         }
-        function getIsLike() {
+        function getIsLike(feedPostId) {
           return axios({
             method: 'get',
             url: '/feedpost/isLike',
@@ -231,15 +228,18 @@ function FeedListForm() {
               Authorization: `Bearer ${accessToken}`,
             },
             params: {
-              feedPostId: feedPost.feedPostId,
+              feedPostId: feedPostId,
             },
           }).then((response) => {
             setIsFeedLike(response.data);
           });
         }
 
-        axios.all([getHashs(), getLikeCount(), getIsLike()]).then(() => {
+        axios.all([getHashs(response.data.feedPostId), getLikeCount(response.data.feedPostId), getIsLike(response.data.feedPostId)]).then(() => {
           openModal();
+        })
+        .catch((error)=>{
+          console.log(error);
         });
       })
       .catch((error) => {
