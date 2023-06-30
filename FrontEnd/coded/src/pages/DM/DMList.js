@@ -16,13 +16,12 @@ function DMList() {
   const [DMRoomList, setDMRoomList] = useState([]); //채팅중인 모든 방 정보
   const [DMRoom, setDMRoom] = useState({}); // 클릭한 한사람의 정보
   const [DMList, setDMList] = useState([]); // 클릭한 사람과의 대화 내용
-  const [Message, setMessage] = useState(); // 작성한 DM 내용
 
   const [stompClient, setStompClient] = useState();
   
   // DMList 페이지에 올 시 웹소켓 연결을 준비하여 STOMP를 연결하는 코드
   useEffect(() => {
-    const socketUrl = `http://192.168.50.218:9999/ws`;
+    const socketUrl = `http://localhost:9999/ws`;
     const socket = new SockJS(socketUrl);
     const client = Stomp.over(socket);
     setStompClient(client);
@@ -48,11 +47,12 @@ function DMList() {
   useEffect(() => {
     if (stompClient && DMRoom.roomId) {
       const subscription = stompClient.subscribe(
-        `/topic/DM/topic/${DMRoom.roomId}`,
-        (message) => {
-          const receivedMessage = JSON.parse(message.body);
-          setDMList((prevDMList) => [...prevDMList, receivedMessage]);
-        }
+        `/topic/${DMRoom.roomId}`,
+        (receivedMessage) => {
+          // console.log(receivedMessage.body);
+
+          setDMList((prev) => [...prev, JSON.parse(receivedMessage.body)]);
+        },{}
       );
 
       return () => {
@@ -61,21 +61,20 @@ function DMList() {
     }
   }, [stompClient, DMRoom.roomId]);
 
+
   //메세지 보내기
-  const Send = () => {
-    const currentTime = new Date().toLocaleString();
+  const Send = (message) => {
+    const currentTime = new Date().getTime();
     {console.log(currentTime);}
-
-    stompClient.send(
-
-      '/app/DM/'+DMRoom.roomId,
+    console.log(message);
+    stompClient.send('/app/chat/'+DMRoom.roomId,{},
+    JSON.stringify(
       {
-          roomId: DMRoom.roomId,
-          userNo: loginUserNo,
-          time: currentTime
+        userNo:loginUserNo,
+        message:message,
+        writeDate : currentTime
       }
-      ,Message
-  )
+    ))
   }
 
 
@@ -83,24 +82,7 @@ function DMList() {
     setDMRoom(room);
   };
 
-  useEffect(() => {
-    if (loginUserNo > 0) {
-      axios({
-        method: 'get',
-        url: '/DM/selectChatList',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          userNo: loginUserNo,
-        },
-      })
-        .then((resp) => {
-          setDMRoomList(resp.data);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [loginUserNo]);
+
 
   useEffect(() => {
     if (loginUserNo > 0) {
@@ -187,7 +169,6 @@ function DMList() {
           DMRoomList={DMRoomList}
           DMRoom={DMRoom}
           Send={Send}
-          setMessage={setMessage}
         ></ChatBox>
       </div>
       <div className="List">

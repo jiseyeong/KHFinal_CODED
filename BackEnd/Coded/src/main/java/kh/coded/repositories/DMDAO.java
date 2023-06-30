@@ -23,6 +23,11 @@ public class DMDAO {
 	public List<DMDTO> selectDMbyRoomid(int roomId) {
 		return mybatis.selectList("DM.selectDMbyRoomid",roomId);
 	}
+
+	public void inserDM(DMDTO dmDto) {
+		mybatis.insert("DM.inserDM",dmDto);
+		
+	}
 	
 	
 }
