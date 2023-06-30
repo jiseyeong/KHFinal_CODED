@@ -404,7 +404,6 @@ function FeedModal({
                   </div>
 
                   {/* 수정하기 눌렀을 때 숨김 */}
-                  {console.log(feedpost)}
                   {editYN === false && (
                     <div className="optionBox">
                       <div className="optionBox" onClick={optionBoxClick}>

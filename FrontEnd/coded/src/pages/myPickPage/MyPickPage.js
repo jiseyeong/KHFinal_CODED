@@ -35,9 +35,9 @@ const MyPickPage = () => {
   const cpage = useRef(1);
 
   const loginUserNo = useSelector((state) => state.member.userNo);
+  const accessToken = useSelector((state) => state.member.access);
 
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const setNavIndeMyPick = useCallback(() =>
     dispatch(setIndexMyPick(), [dispatch]),
@@ -108,26 +108,28 @@ const MyPickPage = () => {
           .then((resp) => {
             setCurrentUserNo(resp.data);
           })
-          .then(getMyPickData)
           // 2. 고유 넘버로 유저 정보 반환
           // .then(getMyPickData)
           .catch((error) => {
             console.log(error);
           });
       }
+    } else {
+      getMyPickData();
     }
     return () => {
       window.onscroll = null;
     };
-  }, [accessToken]);
+  }, [accessToken, currentUserNo]);
 
-  useEffect(() => {
-    if (currentUserNo) {
-      getMyPickData();
-    }
-  }, [currentUserNo]);
+  // useEffect(() => {
+  //   if (currentUserNo) {
+  //     getMyPickData();
+  //   }
+  // }, [currentUserNo]);
 
   const getMyPickData = () => {
+    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -195,7 +197,7 @@ const MyPickPage = () => {
 
   // 팔로우/팔로워 상태를 조회
   const checkFollow = () => {
-    if (loginUserNo) {
+    if (accessToken) {
       axios({
         url: '/follow/isfollow',
         method: 'get',
@@ -205,7 +207,6 @@ const MyPickPage = () => {
         },
       })
         .then((resp) => {
-          console.log(resp.data);
           setFollowStats(resp.data);
         })
         .catch((error) => {
@@ -225,7 +226,6 @@ const MyPickPage = () => {
       },
     })
       .then((resp) => {
-        console.log(resp.data);
         setFollowStats((prev) => !prev);
       })
       .catch((error) => {

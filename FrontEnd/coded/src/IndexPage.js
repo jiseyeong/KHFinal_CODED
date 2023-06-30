@@ -18,7 +18,7 @@ const IndexPage = () => {
   const dispatch = useDispatch();
   const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
   const accessToken = useSelector((state) => state.member.access);
-  const [alertCheck,setAlertCheck] = useState(false);
+  const [alertCheck, setAlertCheck] = useState(false);
 
   function onReportView() {
     setReportView(!reportView);
@@ -83,8 +83,16 @@ const IndexPage = () => {
       <button onClick={onLogout}>로그아웃</button>
       <br />
       <br />
-      <button onClick={()=>{setAlertCheck(true)}}>test</button>
-      {alertCheck && <ConfirmDialog setAlertCheck={setAlertCheck}></ConfirmDialog>}
+      <button
+        onClick={() => {
+          setAlertCheck(true);
+        }}
+      >
+        test
+      </button>
+      {alertCheck && (
+        <ConfirmDialog setAlertCheck={setAlertCheck}></ConfirmDialog>
+      )}
       {reportView && <ReportModal onReportView={onReportView} />}
     </div>
   );

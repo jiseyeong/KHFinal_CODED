@@ -23,7 +23,7 @@ public class FeedPostAddDTO {
 	}
 
 	public FeedPostAddDTO(int feedPostId, int userNo, String body, Timestamp writeDate, int writeTemp,
-						  int writeTempRange, int writePtyCode, int writeSkyCode, String userNickName, String address1,
+						  int writeTempRange, int writePtyCode, int writeSkyCode, String userId, String userNickName, String address1,
 						  String address2, String profileSysName, String thumbNailSysName) {
 		super();
 		this.feedPostId = feedPostId;
@@ -34,6 +34,7 @@ public class FeedPostAddDTO {
 		this.writeTempRange = writeTempRange;
 		this.writePtyCode = writePtyCode;
 		this.writeSkyCode = writeSkyCode;
+		this.userId = userId;
 		this.userNickName = userNickName;
 		this.address1 = address1;
 		this.address2 = address2;
