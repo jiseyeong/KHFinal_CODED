@@ -5,6 +5,7 @@ import { logout } from './modules/Redux/members';
 import axios from 'axios';
 import ReportModal from './component/Report/component/ReportModal';
 import { color } from 'framer-motion';
+import ConfirmDialog from './component/Common/ConfirmDialog';
 
 const IndexPage = () => {
   const [reportView, setReportView] = useState(false);
@@ -17,6 +18,7 @@ const IndexPage = () => {
   const dispatch = useDispatch();
   const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
   const accessToken = useSelector((state) => state.member.access);
+  const [alertCheck,setAlertCheck] = useState(false);
 
   function onReportView() {
     setReportView(!reportView);
@@ -81,6 +83,8 @@ const IndexPage = () => {
       <button onClick={onLogout}>로그아웃</button>
       <br />
       <br />
+      <button onClick={()=>{setAlertCheck(true)}}>test</button>
+      {alertCheck && <ConfirmDialog setAlertCheck={setAlertCheck}></ConfirmDialog>}
       {reportView && <ReportModal onReportView={onReportView} />}
     </div>
   );

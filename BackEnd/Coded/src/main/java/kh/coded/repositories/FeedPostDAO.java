@@ -165,6 +165,10 @@ public class FeedPostDAO {
 		return mybatis.selectOne("FeedPost.getRecordCountByUserNo", userNo);
 	}
 
+	public int updateFeedPostHashTag(int feedpostId) {
+		return mybatis.delete("FeedPost.updateFeedPostHashTag", feedpostId);
+	}
+	
 	public boolean postHashJB(PostHashsDTO dto) {
 		if(mybatis.selectOne("FeedPost.postHashJB",dto)==null)
 			return false;
