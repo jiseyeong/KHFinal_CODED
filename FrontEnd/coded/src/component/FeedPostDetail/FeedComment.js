@@ -12,9 +12,9 @@ const HeartIcons = {
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"
-      viewBox="0 0 16 16"
-      height="5"
-      width="5"
+      viewBox="0 0 20 20"
+      height="3"
+      width="3"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -30,9 +30,9 @@ const HeartIcons = {
       stroke="currentColor"
       fill="#ff0066"
       strokeWidth="0"
-      viewBox="0 0 16 16"
-      height="5"
-      width="5"
+      viewBox="0 0 20 20"
+      height="3"
+      width="3"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
