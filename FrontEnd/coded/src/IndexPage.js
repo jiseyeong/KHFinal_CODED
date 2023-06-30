@@ -1,12 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from './modules/Redux/members';
-import axios from 'axios';
 import ReportModal from './component/Report/component/ReportModal';
 import { color } from 'framer-motion';
 import ConfirmDialog from './component/Common/ConfirmDialog';
-import { styled } from 'styled-components';
+import { setIndexOOTD } from './modules/Redux/navbarSetting';
 
 const IndexPage = () => {
   const [reportView, setReportView] = useState(false);
@@ -18,8 +17,13 @@ const IndexPage = () => {
   });
   const dispatch = useDispatch();
   const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
+  const onSetIndexOOTD = useCallback(()=>dispatch(setIndexOOTD()), [dispatch]);
   const accessToken = useSelector((state) => state.member.access);
   const [alertCheck,setAlertCheck] = useState(false);
+
+  useEffect(()=>{
+    onSetIndexOOTD();
+  },[])
 
   function onReportView() {
     setReportView(!reportView);
