@@ -330,7 +330,6 @@ function FeedModal({
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
   function setFeedLike() {
-    aa;
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
