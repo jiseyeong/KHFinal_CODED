@@ -45,4 +45,8 @@ public class PhotoDAO {
 	public void deletePhoto(int feedPostId) {
 		mybatis.delete("Photo.deletePhoto",feedPostId);
 	}
+	
+	public List<PhotoDTO> selectByMessageId(int messageId){
+		return mybatis.selectList("Photo.selectByMessageId", messageId);
+	}
 }
