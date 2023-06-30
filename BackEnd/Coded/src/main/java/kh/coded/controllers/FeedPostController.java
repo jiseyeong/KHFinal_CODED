@@ -67,7 +67,10 @@ public class FeedPostController {
         System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
         System.out.println("유저넘버 : " + dto.getUserNo());
         System.out.println("내용 : " + dto.getBody());
-        System.out.println("해시코드 : " + hashTag.size());
+        for(int i = 0; i<hashTag.size(); i++) {
+        	System.out.println("해시코드 : " + hashTag.get(i));
+        }
+//        System.out.println("해시코드 : " + hashTag.get(0));
 
         // 피드 테이블 update
         int result = feedpostService.updateFeedPost(dto);
