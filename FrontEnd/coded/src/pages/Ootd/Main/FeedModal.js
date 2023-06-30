@@ -20,8 +20,6 @@ import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
 import ReportModal from '../../../component/Report/component/ReportModal';
 
-
-
 const ImageLayout = styled('div')`
   max-width: 100%;
   max-height: 100%;
@@ -94,7 +92,6 @@ function FeedModal({
   let num = 0;
 
   useEffect(() => {
-
     console.log(selectHashTag.length);
 
     let arrTemp = [];
@@ -105,9 +102,8 @@ function FeedModal({
         value: item.hashTag,
         label: item.hashTag,
       });
-      setHashTag([...HashTag,...arrTemp])
+      setHashTag([...HashTag, ...arrTemp]);
     });
-
 
     updateImageList();
     // 스크랩 여부 가져오기
@@ -128,20 +124,19 @@ function FeedModal({
     }
 
     axios({
-      method:"get",
-      url:'/PostHashs/selectAllPostTagNames',
-    })
-    .then((resp)=>{
+      method: 'get',
+      url: '/PostHashs/selectAllPostTagNames',
+    }).then((resp) => {
       const HashTagNameList = resp.data;
-            let arrTemp = [];
-            HashTagNameList.forEach((hashTag) => {
-              arrTemp = arrTemp.concat({
-                value: hashTag.hashTag,
-                label: hashTag.hashTag,
-              });
-              setOptions([...options, ...arrTemp]);
-            });
-    })
+      let arrTemp = [];
+      HashTagNameList.forEach((hashTag) => {
+        arrTemp = arrTemp.concat({
+          value: hashTag.hashTag,
+          label: hashTag.hashTag,
+        });
+        setOptions([...options, ...arrTemp]);
+      });
+    });
   }, []);
 
   function updateImageList() {
@@ -194,18 +189,15 @@ function FeedModal({
     }
   }
   //  수정하기 ---------------------------------------
-  const [FeedPost, setFeedPost] = useState(feedPost);
-  const [selectHashTag, setSelectHashTag] = useState([]);//수정 전
-  const [HashTag, setHashTag] = useState(hashTagList);//삭제하고 나서의
+  const [FeedPost, setFeedPost] = useState({});
+  const [selectHashTag, setSelectHashTag] = useState([]); //수정 전
+  const [HashTag, setHashTag] = useState(hashTagList); //삭제하고 나서의
   const [editYN, setEditYN] = useState(false);
-  const [content, setContent] = useState("");//수정 후
+  const [content, setContent] = useState(''); //수정 후
   const selectRef = useRef();
-  const contentRef = useRef();// 바디 레퍼런스
-  const [options, setOptions] = useState([]);//가져오기 해쉬태그 리스트
+  const contentRef = useRef(); // 바디 레퍼런스
+  const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
   // 수정 버튼 눌렀을때
-
-
-
 
   function editFeedPost() {
     setOptionListDiv((prev) => {
@@ -216,30 +208,49 @@ function FeedModal({
 
   // 수정하기 완료
   function editComplate() {
+    if (
+      contentRef.current.value === '' ||
+      contentRef.current.value === undefined
+    ) {
+      alert('내용을 입력해주세요');
+      return;
+    }
+    if (selectRef.current.getValue().length === 0) {
+      alert('최소 한 개 이상의 해시태그를 입력해 주세요');
+      return;
+    }
+    setSelectHashTag([]);
     const formData = new FormData();
     formData.append('feedPostId', feedPost.feedPostId);
-    formData.append('userNo', feedPost.userNo)
-    formData.append('body', contentRef.current.value)
+    formData.append('userNo', feedPost.userNo);
+    formData.append('body', contentRef.current.value);
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
       console.log(item.value);
+      setHashTag({})
+      setSelectHashTag((prev)=>{return [...prev, item.value]})
     });
+    setContent(contentRef.current.value);
+    setEditYN(false);
 
-    setFeedPost(prevFeedPost=>{
-      return{
-        ...prevFeedPost, body : contentRef.current.value
-      }
-    })
+    setFeedPost((prevFeedPost) => {
+      return {
+        ...prevFeedPost,
+        body: contentRef.current.value,
+      };
+    });
     axios({
       method: 'put',
       url: '/feedpost/updatefeed',
-      data: formData
+      data: formData,
     })
-      .then(() => {})
+      .then(() => {
+        alert('수정이 완료되었습니다 :)');
+        
+      })
       .catch((error) => {
         console.log(error);
       });
-      setEditYN(false)
   }
 
   const customStyles = {
@@ -256,15 +267,33 @@ function FeedModal({
     }),
   };
 
+  let [inputCount, setInputCount] = useState(0);
+  const inputCountRef = useRef();
 
+  const onTextareaHandler = (e) => {
+    const value = e.target.value.length;
+    const value2 = 200 - value;
+    setInputCount(value2);
+    if (value2 >= 0) {
+      inputCountRef.current.style.color = 'blue';
+    } else {
+      inputCountRef.current.style.color = 'red';
+    }
+  };
   //글 수정
 
+  // 글 취소
+
   function editCancel() {
-    
+    setSelectHashTag([]);
+  hashTagList.forEach((e)=>{
+    setSelectHashTag((prev)=>{return [...prev, {value : e.hashTag, label: e.hashTag}]})
+  })
+    setContent(feedPost.body);
+    setEditYN(false);
   }
 
-  const handleInputChange = (event) => {
-  };
+  const handleInputChange = (event) => {};
 
   // const handleSaveClick = () => {
   //   setPreviousValue(value);
@@ -300,7 +329,8 @@ function FeedModal({
   }
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
-  function setFeedLike() { aa
+  function setFeedLike() {
+    aa;
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
@@ -570,26 +600,52 @@ function FeedModal({
                 </div>
                 {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
-
                   {editYN === false ? (
                     <div className="feedPostBody">{feedPost.body}</div>
                   ) : (
                     <div className="feedPostBody">
                       <textarea
                         className="post"
-                        placeholder="내용을 입력해주세요"
+                        placeholder="content"
+                        maxLength="200"
                         ref={contentRef}
-                      >{feedPost.body}</textarea>
+                        onChange={onTextareaHandler}
+                        onInput={(e) => {
+                          setFeedPost(() => {
+                            return { ...FeedPost, body: e.target.value };
+                          });
+                        }}
+                      >
+                        {feedPost.body}
+                      </textarea>
                     </div>
                   )}
-                  <div className="feedPostWidth"></div>
-                  <div className="feedPostWeather">
-                    <div className="weatherIcon">{weatherIcon}</div>
-                    <div className="writeTemp">{feedPost.writeTemp}º</div>
+                  <div className="feedPostBodyRight">
+                    <div className="feedPostBodyRightTop">
+                      <div className="feedPostWidth"></div>
+                      <div className="feedPostWeather">
+                        <div className="weatherIcon">{weatherIcon}</div>
+                        <div className="writeTemp">{feedPost.writeTemp}º</div>
+                      </div>
+                      <div className="feedPostWidth"></div>
+                    </div>
+                    <div className="feedPostBodyRightBottom">
+                      {editYN !== false && (
+                        <div className="inputCount" ref={inputCountRef}>
+                          {inputCount}자
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="feedPostWidth"></div>
                 </div>
 
+                {/* 수정 눌렀을때
+                {editYN === false ? (
+                    <div className="feedPostBody">{feedPost.body}</div>
+                  )
+                <div className="inputCount" ref={inputCountRef}>
+                  {inputCount}
+                </div> */}
 
                 {editYN === false ? (
                   <div className="hashTagBody">
@@ -621,17 +677,18 @@ function FeedModal({
                           setTimeout(() => {
                             if (selectRef.current.getValue().length > 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');
-                              setSelectHashTag((prevValues) => prevValues.slice(0, -1));
+                              setSelectHashTag((prevValues) =>
+                                prevValues.slice(0, -1),
+                              );
                             }
                           }, 100);
                         }}
                         menuPlacement="top"
                         styles={customStyles}
                       />
-
                     </div>
                     <div className="buttons">
-                      <Link to="/"> <button onClick={editComplate}>수정 완료</button></Link>
+                        <button onClick={editComplate}>수정 완료</button>
                       <button onClick={editCancel}>수정 취소</button>
                     </div>
                   </div>
@@ -692,11 +749,7 @@ function FeedModal({
               {/* {reportModal && <ReportModal />} */}
             </div>
           </div>
-          
         </div>
-        
-        
-
       </div>
     </div>
   );
