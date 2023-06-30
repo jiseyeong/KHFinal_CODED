@@ -18,4 +18,27 @@
 	<select id="createRoomId" resultType="int">
 		select roomid_seq.nextval from dual
 	</select>
+	
+	<select id="selectPagingList" resultType="kh.coded.dto.DMRoomDTO">
+		select r.*
+		from
+			(select room.*,
+				row_number() over(order by room.RoomId desc) rn
+				from DMRoom room
+			) r
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCount" resultType="int">
+		select count(*) from DMRoom
+	</select>
+	
+	<select id="selectOneByRoomId" resultType="kh.coded.dto.DMRoomDTO">
+		select * from DMRoom where roomId=${roomId}
+	</select>
+	
+	<delete id="deleteByRoomId">
+		delete from DMRoom where roomId=${roomId}
+	</delete>
 </mapper>

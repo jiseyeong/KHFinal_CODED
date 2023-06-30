@@ -4,8 +4,31 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DMRoomUser">
 	<delete id="deleteUserDMRoomUser">
-		delete from dmroomuser where userno = ${userNo} and roomid={roomId}; 
+		delete from dmroomuser where userno = ${userNo} and roomid=${roomId}
 	</delete>
+	
+	<select id="selectByRoomId" resultType="kh.coded.dto.DMRoomUserDTO">
+		select * from DMRoomUser where RoomId=${roomId}
+	</select>
+	
+	<select id="selectByUserNo" resultType="kh.coded.dto.DMRoomUserDTO">
+		select * from DMRoomUser where userNo-${userNo}
+	</select>
+	
+	<select id="selectPagingListByUserNo" resultType="kh.coded.dto.DMRoomUserDTO">
+		select r.*
+		from (select ru.*,
+				row_number() over(order by ru.RoomId desc) rn
+			from DMRoomUser ru
+			where ru.userNo=${userNo} 
+			)r
+		where rn between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByUserNo" resultType="int">
+		select count(*) from DMRoomUser where userNo=${userNo}
+	</select>
 </mapper>
 
 <!--16 20-->

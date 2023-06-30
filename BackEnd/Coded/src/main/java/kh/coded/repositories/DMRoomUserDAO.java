@@ -17,7 +17,7 @@ public class DMRoomUserDAO {
 	private SqlSessionTemplate mybatis;
 
 	public List<DMRoomUserDTO> selectByUserNo(int userNo) {
-		return mybatis.selectOne("DMRoomUser.selectByUserNo",userNo);
+		return mybatis.selectList("DMRoomUser.selectByUserNo",userNo);
 	}
 	
 	public void deleteUserDMRoomUser(int roomId, int userNo) {
@@ -25,5 +25,21 @@ public class DMRoomUserDAO {
 		map.put("roomId", roomId);
 		map.put("userNo", userNo);
 		mybatis.delete("DMRoomUser.deleteUserDMRoomUser", map);
+	}
+	
+	public List<DMRoomUserDTO> selectByRoomId(int roomId) {
+		return mybatis.selectList("DMRoomUser.selectByRoomId", roomId);
+	}
+	
+	public List<DMRoomUserDTO> selectPagingListByUserNo(int userNo, int startNum, int endNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("userNo", userNo);
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("DMRoomUser.selectPagingListByUserNo", data);
+	}
+	
+	public int getRecordCountByUserNo(int userNo) {
+		return mybatis.selectOne("DMRoomUser.getRecordCountByUserNo", userNo);
 	}
 }
