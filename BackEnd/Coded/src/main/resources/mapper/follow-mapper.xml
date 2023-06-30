@@ -14,17 +14,15 @@
 		select touserno from follow where fromUserNo = ${FromUserNo}
 	</select> -->
 
-	<select id="isFollow" resultType="boolean">
-		select * from follow where ToUserNo = ${toUserNo} and FromUserNo = ${myUserNo}
+	<select id="isFollow" resultType="Boolean">
+		select count(*) from follow where ToUserNo = ${toUserNo} and FromUserNo = ${myUserNo}
 	</select>
 
 	<insert id="insertFollow">
-		insert into Follow values(Follow_seq.nextval, ${toUserNo},
-		${fromUserNo})
+		insert into Follow values(followid_seq.nextval, ${toUserNo}, ${fromUserNo})
 	</insert>
 
 	<delete id="deleteFollow">
-		delete from Follow where ToUserNo = ${toUserNo} and
-		FromUserNo = ${fromUserNo}
+		delete from Follow where ToUserNo = ${toUserNo} and FromUserNo = ${fromUserNo}
 	</delete>
 </mapper>

@@ -601,8 +601,8 @@ const AuthForm = ({ type }) => {
         </>
       )}
       <ButtonWithMarginTop
-        cyan={true}
-        fullWidth
+        // cyan="true"
+        // fullwidth="true"
         onClick={type === 'register' ? doRegister : doLogin}
       >
         {text}

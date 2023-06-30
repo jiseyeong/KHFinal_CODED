@@ -13,7 +13,14 @@ import LoadingBar from '../Common/LoadingBar';
 import NoticeBar from './NoticeBar';
 import NoneSearchedBar from './NoneSearchedBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIndexFollowing, setIndexHot, setIndexNew, setIndexOOTD, setIndexScrap, setNonMember } from '../../modules/Redux/navbarSetting';
+import {
+  setIndexFollowing,
+  setIndexHot,
+  setIndexNew,
+  setIndexOOTD,
+  setIndexScrap,
+  setNonMember,
+} from '../../modules/Redux/navbarSetting';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
 
@@ -63,24 +70,39 @@ function FeedList({ type }) {
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
 
-  const onNavbarIndexHot = useCallback(() => dispatch(setIndexHot()),[dispatch]);
-  const onNavbarIndexNew = useCallback(() => dispatch(setIndexNew()),[dispatch]);
-  const onNavbarIndexFollowing = useCallback(()=>dispatch(setIndexFollowing()),[dispatch]);
-  const onNavbarIndexScrap = useCallback(()=>dispatch(setIndexScrap()),[dispatch]);
-  const onNavbarIndexOOTD = useCallback(()=>dispatch(setIndexOOTD()),[dispatch]);
+  const onNavbarIndexHot = useCallback(
+    () => dispatch(setIndexHot()),
+    [dispatch],
+  );
+  const onNavbarIndexNew = useCallback(
+    () => dispatch(setIndexNew()),
+    [dispatch],
+  );
+  const onNavbarIndexFollowing = useCallback(
+    () => dispatch(setIndexFollowing()),
+    [dispatch],
+  );
+  const onNavbarIndexScrap = useCallback(
+    () => dispatch(setIndexScrap()),
+    [dispatch],
+  );
+  const onNavbarIndexOOTD = useCallback(
+    () => dispatch(setIndexOOTD()),
+    [dispatch],
+  );
 
-  useEffect(()=>{
+  useEffect(() => {
     onNavbarIndexOOTD();
-    if(type==="recent"){
+    if (type === 'recent') {
       onNavbarIndexNew();
-    }else if(type==='popular'){
+    } else if (type === 'popular') {
       onNavbarIndexHot();
-    }else if(type==='following'){
+    } else if (type === 'following') {
       onNavbarIndexFollowing();
-    }else if(type==='scrap'){
+    } else if (type === 'scrap') {
       onNavbarIndexScrap();
     }
-  },[])
+  }, []);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   useEffect(() => {
@@ -92,10 +114,8 @@ function FeedList({ type }) {
 
   const addFeedList = () => {
     if (!pageLoading) {
-      console.log(cpage.current);
       setPageLoading(true);
       if (type === 'recent') {
-        console.log('recent');
         axios({
           method: 'GET',
           url: '/feedpost/selectAllFeedPost/',
@@ -113,7 +133,6 @@ function FeedList({ type }) {
             setPageLoading(false);
           });
       } else if (type === 'popular') {
-        console.log('popular');
         axios({
           method: 'get',
           url: '/feedpost/selectPopularFeedPost',
@@ -131,11 +150,8 @@ function FeedList({ type }) {
             setPageLoading(false);
           });
       } else if (type === 'following' || type === 'scrap') {
-        console.log('checkt');
         if (accessToken) {
-          console.log('access');
           if (type === 'following') {
-            console.log('following');
             axios({
               method: 'get',
               url: '/feedpost/selectFollowingFeedPost',
@@ -156,7 +172,6 @@ function FeedList({ type }) {
                 setPageLoading(false);
               });
           } else if (type === 'scrap') {
-            console.log('scrap');
             axios({
               method: 'get',
               url: '/feedpost/selectScrapFeedPost',
@@ -196,13 +211,17 @@ function FeedList({ type }) {
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
-      <Masonry className={'my-masonry-grid'} options={masonryOptions}>
-        {feedPost.map((e, i) => (
-          <div className="grid-item" key={i}>
-            <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
-          </div>
-        ))}
-      </Masonry>
+      {feedPost.length > 0 ? (
+        <Masonry className={'my-masonry-grid'} options={masonryOptions}>
+          {feedPost.map((e, i) => (
+            <div className="grid-item" key={i}>
+              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+            </div>
+          ))}
+        </Masonry>
+      ) : (
+        <NoneSearchedBar />
+      )}
     </FeedPostOuter>
   );
 }

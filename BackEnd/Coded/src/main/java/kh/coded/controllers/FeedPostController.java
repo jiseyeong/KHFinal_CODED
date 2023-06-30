@@ -59,28 +59,25 @@ public class FeedPostController {
         return ResponseEntity.ok().body(result);
     }
 
-	@PutMapping(value = "updatefeed") // 피드 수정
+
+	@PutMapping(value = "updatefeed") // 피드 수정시 사용
 	public ResponseEntity<?> updateFeedPost(
-			@RequestParam int feedpostId, @RequestParam String body,
-			@RequestParam List<String> HashTag, 
-			HttpServletRequest request) {
-		try {
-			feedpostService.updateFeedPost(new FeedPostDTO(feedpostId, 0, body, null, 0, 0, 0, 1));
-			if (HashTag.size() > 0) {
-				for (String tagName : HashTag) {
-					int TagId = 0;
-					if (feedpostService.HashTagJB(tagName)!=0) { //해시태그 중복 체크
-						TagId = feedpostService.HashTagJB(tagName);
-					} else {
-						TagId = feedpostService.insertHashTag(new HashTagDTO(0, tagName));
-					} // 해시 태그 넣기
-					feedpostService.updatePostHashs(feedpostId, TagId);// PostHashs에 저장
-				}
-			}
-			return ResponseEntity.ok().body(null);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+            @ModelAttribute("dto") FeedPostDTO dto,
+            @RequestParam("hashTag") List<String> hashTag, HttpServletRequest request) throws Exception{
+
+        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
+        System.out.println("유저넘버 : " + dto.getUserNo());
+        System.out.println("내용 : " + dto.getBody());
+        System.out.println("해시코드 : " + hashTag.get(0));
+
+        // 피드 테이블 update
+        int result = feedpostService.updateFeedPost(dto);
+
+        // 해시태그 테이블 update
+        if (hashTag.size() > 0) {
+            feedpostService.updateHashTags(hashTag, dto.getFeedPostId());
+        }
+        return ResponseEntity.ok().body(true);
 	}
 
     @DeleteMapping("/deleteFeedPost") // 피드 삭제
@@ -90,25 +87,26 @@ public class FeedPostController {
         return ResponseEntity.ok().body(null);
     }
 
-    @PostMapping(value = "feedpost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
+    @PostMapping(value = "insertFeedPost") // 피드 쓰기 - 피드를 작성 할 수 있는 페이지
     public ResponseEntity<?> insertFeedPost(
-//			@RequestParam int userNo, @RequestParam String body, @RequestParam String writeDate,
             @ModelAttribute FeedPostDTO dto,
             // 파일 데이터를 전송하는 겨웅 Header에 nultipart-form/data를 추가하여 보냅니다.
             // Axios로 보낼 때, FormData로 묶어서 Data:formData로 보냄
             // Post형식으로 dto를 묶어서 받을 경우 ModelAttribute를 사용합니다.
-            @RequestParam List<String> HashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) {
-        System.out.println("dto" + dto);
-        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
-        System.out.println("유저넘버 : " + dto.getUserNo());
-        System.out.println("내용 : " + dto.getBody());
-        System.out.println("작성일자 : " + dto.getWriteDate()); // 작성 필요 x
-        System.out.println("최고온도 : " + dto.getWriteTemp());
-        System.out.println("일교차 : " + dto.getWriteTempRange());
-        System.out.println("강수상태 : " + dto.getWritePtyCode());
-        System.out.println("하늘상태 : " + dto.getWriteSkyCode());
-        System.out.println("해시코드 : " + HashTag.get(0));
-        System.out.println("파일명 : " + files.get(0).getOriginalFilename());
+            @RequestParam List<String> hashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) throws Exception{
+//        System.out.println("dto" + dto);
+//        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
+//        System.out.println("유저넘버 : " + dto.getUserNo());
+//        System.out.println("내용 : " + dto.getBody());
+//        System.out.println("작성일자 : " + dto.getWriteDate()); // 작성 필요 x
+//        System.out.println("최고온도 : " + dto.getWriteTemp());
+//        System.out.println("일교차 : " + dto.getWriteTempRange());
+//        System.out.println("강수상태 : " + dto.getWritePtyCode());
+//        System.out.println("하늘상태 : " + dto.getWriteSkyCode());
+//        System.out.println("해시코드 : " + hashTag.get(0));
+//        System.out.println("파일명 : " + files.get(0).getOriginalFilename());
+//        dto.setUserNo(21);
+//        dto.setBody("test");
 
         // 피드 테이블 insert
         // insert후 feedPostId가 update된 dto를 리턴 받습니다. (selectKey)
@@ -117,29 +115,17 @@ public class FeedPostController {
         //해시태그 테이블 insert
         //해시 태그 리스트 for문 돌면서 insert? Hashtag insert => tagid return => postHash insert
         //해시 태그가 없는 경우 pass
-		if (HashTag.size() > 0) {
-			for (String tagName : HashTag) {
-				int TagId = 0;
-				if (feedpostService.HashTagJB(tagName) != 0) { //해시태그 중복 체크
-					TagId = feedpostService.HashTagJB(tagName);
-				} else {
-					TagId = feedpostService.insertHashTag(new HashTagDTO(0, tagName));
-				} // 해시 태그 넣기
-//					feedpostService.insertPostHashs(feedpostId, TagId);// PostHashs에 저장
-			}
-		}
-
+        if (hashTag.size() > 0) {
+            feedpostService.insertHashTags(hashTag, feedPostDTO.getFeedPostId());
+        }
 
         //사진 테이블 insert
         // 사진이 없는 경우 pass
-
-
-        String realPath = request.getServletContext().getRealPath("images");
-
         if (files.size() > 0) { // 사진 저장
-//				feedpostService.insertFeedPhoto(realPath, files, feedpostId);
+            String realPath = request.getServletContext().getRealPath("images");
+            feedpostService.insertFeedPhoto(realPath, files, feedPostDTO.getFeedPostId());
         }
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(true);
     }
 
     @GetMapping("/hashtagList")
@@ -386,7 +372,6 @@ public class FeedPostController {
     @GetMapping(value = "selectUserFeedPost")
     public ResponseEntity<?> selectUserFeedPost(@RequestParam(value = "userNo") int userNo,
                                                 @RequestParam(value = "cpage", required = false, defaultValue = "1") int cpage) {
-        System.out.println("chekced");
         List<FeedPostAddDTO> data = feedpostService.selectUserFeedPost(userNo, cpage);
         return ResponseEntity.ok().body(data);
     }

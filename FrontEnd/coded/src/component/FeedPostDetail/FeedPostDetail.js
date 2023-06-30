@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useRef, useState } from 'react';
-import Modal from '../../pages/Ootd/Main/Modal';
+import FeedModal from '../../pages/Ootd/Main/FeedModal';
 import styles from './FeedPostDetail.module.scss';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ const FeedPostDetail = (props) => {
   const [feedLikeCount, setFeedLikeCount] = useState(0);
   const [isFeedLike, setIsFeedLike] = useState(false);
   const [scale, setScale] = useState(1);
+  const [loginCheckModal, setLoginCheckModal] = useState(false);
 
   // 모달 창 열기
   const openModal = () => {
@@ -255,8 +256,7 @@ const FeedPostDetail = (props) => {
           </div>
         </div>
         {modal && (
-          <Modal
-            // modal={modal}
+          <FeedModal
             closeModal={closeModal}
             feedPost={feedPost}
             feedLikeCount={feedLikeCount}

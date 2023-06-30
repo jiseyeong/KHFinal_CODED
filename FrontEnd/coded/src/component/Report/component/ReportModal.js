@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import { setNonMember } from '../../../modules/Redux/navbarSetting';
+import Modal from 'react-modal';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -68,15 +69,14 @@ const Buttonok2 = styled('button')`
   cursor: pointer;
 `;
 
-function ReportModal({ onReportView }) {
-  const textread = useRef();
+function ReportModal({ feedPostId, onReportView }) {
   const [text, setText] = useState('');
   const [reportType, setReportType] = useState('a');
 
   const dispatch = useDispatch();
+  const [userNo, setUserNo] = useState(0);
   const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
-  const loginUserNo = useSelector((state) => state.member.userNo);
 
   const handleReportNumber = (ev) => {
     setReportType(ev.target.value);
@@ -84,7 +84,6 @@ function ReportModal({ onReportView }) {
 
   const handleEtcContents = (ev) => {
     setText(ev.target.value);
-    console.log(ev.target.value);
   };
 
   useEffect(() => {
@@ -97,7 +96,9 @@ function ReportModal({ onReportView }) {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-        .then((resp) => {}) 
+        .then((resp) => {
+          setUserNo(resp.data);
+        })
         // 2. 고유 넘버로 유저 정보 반환
         .catch((error) => {
           console.log(error);
@@ -108,42 +109,52 @@ function ReportModal({ onReportView }) {
   }, [accessToken]);
 
   const handlePopupok = () => {
-    let str = "";
-    switch(reportType){
+    let str = '';
+    switch (reportType) {
+      case 'a':
+        {
+          str = '개인정보 침해 및 명예훼손 게시물';
+        }
+        break;
 
-      case 'a':{
-        str = "개인정보 침해 및 명예훼손 게시물"
-      } break;
+      case 'b':
+        {
+          str = '불법 광고 게시물';
+        }
+        break;
 
-      case 'b':{
-        str = "불법 광고 게시물"
-      } break;
+      case 'c':
+        {
+          str = '도배성 게시물';
+        }
+        break;
 
-      case 'c':{
-        str = "도배성 게시물"
-      } break;
+      case 'd':
+        {
+          str = '저작권 침해 게시물';
+        }
+        break;
 
-      case 'd':{
-        str = "저작권 침해 게시물"
-      } break;
+      case 'e':
+        {
+          str = '기타';
+        }
+        break;
+    }
 
-      case 'e':{
-        str = "기타 (직접입력)"
-      } break;
+    const form = new FormData();
+    form.append('writerUserNo', userNo);
+    form.append('targetFeedPostId', feedPostId);
+    form.append('title', str);
+    form.append('body', text);
 
-      
-}
-
-      axios({
-      url: '/ReportOk',
+    axios({
+      url: '/feedReport/insertReport',
       method: 'post',
-      params: {
-        title: str,
-        writerUserNo: loginUserNo
-      },
+      data: form,
     })
       .then((resp) => {
-        alert("신고가 접수 되었습니다.")
+        alert('신고가 접수 되었습니다.');
         onReportView();
       })
       .catch((error) => {
@@ -172,7 +183,6 @@ function ReportModal({ onReportView }) {
                   <label>
                     <input
                       type="radio"
-                      name="theme"
                       value="a"
                       onChange={handleReportNumber}
                     />
@@ -180,67 +190,53 @@ function ReportModal({ onReportView }) {
                   </label>
                 </p>
               </div>
-
-              <div>
-                <div className="radios">
-                  <p>
-                    <label>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="b"
-                        onChange={handleReportNumber}
-                      />
-                      불법 광고 게시물
-                    </label>
-                  </p>
-                </div>
+              <div className="radios">
+                <p>
+                  <label>
+                    <input
+                      type="radio"
+                      value="b"
+                      onChange={handleReportNumber}
+                    />
+                    불법 광고 게시물
+                  </label>
+                </p>
               </div>
-
-              <div>
-                <div className="radios">
-                  <p>
-                    <label>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="c"
-                        onChange={handleReportNumber}
-                      />
-                      도배성 게시물
-                    </label>
-                  </p>
-                </div>
+              <div className="radios">
+                <p>
+                  <label>
+                    <input
+                      type="radio"
+                      value="c"
+                      onChange={handleReportNumber}
+                    />
+                    도배성 게시물
+                  </label>
+                </p>
               </div>
-              <div>
-                <div className="radios">
-                  <p>
-                    <label>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="d"
-                        onChange={handleReportNumber}
-                      />
-                      저작권 침해 게시물
-                    </label>
-                  </p>
-                </div>
+              <div className="radios">
+                <p>
+                  <label>
+                    <input
+                      type="radio"
+                      value="d"
+                      onChange={handleReportNumber}
+                    />
+                    저작권 침해 게시물
+                  </label>
+                </p>
               </div>
-              <div>
-                <div className="radios">
-                  <p>
-                    <label>
-                      <input
-                        type="radio"
-                        name="theme"
-                        value="e"
-                        onChange={handleReportNumber}
-                      />
-                      기타 (직접입력)
-                    </label>
-                  </p>
-                </div>
+              <div className="radios">
+                <p>
+                  <label>
+                    <input
+                      type="radio"
+                      value="e"
+                      onChange={handleReportNumber}
+                    />
+                    기타 (직접입력)
+                  </label>
+                </p>
               </div>
             </div>
             <div>
@@ -255,7 +251,10 @@ function ReportModal({ onReportView }) {
               ) : (
                 <EtcArea
                   readOnly
-                  style={{ pointerEvents: 'none', backgroundColor: '#B6B6B6' }}
+                  style={{
+                    pointerEvents: 'none',
+                    backgroundColor: '#B6B6B6',
+                  }}
                   rows="7"
                   cols="50"
                   value={text}

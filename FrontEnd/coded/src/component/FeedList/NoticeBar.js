@@ -28,7 +28,7 @@ const SilverHor = styled('hr')`
 const NoticeBar = ({ keyword }) => {
   return (
     <NoticeBarLayout>
-      <NoticeDataDiv>검색 결과</NoticeDataDiv>
+      <NoticeDataDiv>'{keyword}' 에 대한 검색 결과</NoticeDataDiv>
     </NoticeBarLayout>
   );
 };

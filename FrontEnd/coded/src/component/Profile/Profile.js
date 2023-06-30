@@ -115,7 +115,6 @@ const ProfileTemplate = () => {
         .then(
           // axios의 다중 통신 이후 전달받은 데이터는 spread로 다른 매개 변수에 지정
           axios.spread((resp1, resp2) => {
-            console.log(resp1);
             const {
               userNo,
               userId,
@@ -259,7 +258,6 @@ const ProfileTemplate = () => {
 
   // 사진 등록 시, 바로 불러오기 기능
   const handleChangeFile = (event) => {
-    console.log(event.target.files);
     setImgBase64([]);
 
     if (event.target.files[0]) {
@@ -322,12 +320,14 @@ const ProfileTemplate = () => {
     }
 
     if (!regexId.test(memberInfo.userId)) {
-      alert('7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
+      alert('아이디는 7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
       return;
     }
 
     if (!regexNickName.test(memberInfo.userNickName)) {
-      alert('8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.');
+      alert(
+        '닉네임은 8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.',
+      );
       return;
     }
 
@@ -435,7 +435,6 @@ const ProfileTemplate = () => {
       url: '/login/oauth2/google/codeInfo',
     })
       .then((response) => {
-        console.log(response);
         const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
         window.location.href = GOOGLE_AUTH_URL;
       })

@@ -79,30 +79,18 @@ const SearchBox = () => {
   // 검색 전 자동완성 시 보여줄 해시태그 데이터를 가져옴
   useEffect(() => {
     axios
-      .request({
-        url: '/auth/selectUserListWithProfile',
-        method: 'GET',
-      })
-      .then((resp) => {
-        setSearchData(() => {
-          return resp.data;
-        });
-      })
+      .all([
+        axios.get('/auth/selectUserListWithProfile'),
+        axios.get('/PostHashs/selectAllPostTagNames'),
+      ])
+      .then(
+        axios.spread((resp1, resp2) => {
+          setSearchData([...resp1.data, ...resp2.data]);
+        }),
+      )
       .catch((error) => {
         console.log(error);
       });
-
-    axios
-      .request({
-        url: '/PostHashs/selectAllPostTagNames',
-        method: 'GET',
-      })
-      .then((resp) => {
-        setSearchData((prev) => {
-          return [...prev, ...resp.data];
-        });
-      })
-      .catch((error) => console.log(error));
   }, []);
 
   // 검색 자동완성 바깥 범위 (body) 클릭 시 자동완성 폼 사라짐`
@@ -126,7 +114,7 @@ const SearchBox = () => {
     let input = e.target.value;
 
     const temp = [];
-    searchData.forEach((item, index) => {
+    searchData.forEach((item) => {
       if (temp.length == searchCount) {
         return;
       }
@@ -140,7 +128,7 @@ const SearchBox = () => {
       }
     });
 
-    searchData.forEach((item, index) => {
+    searchData.forEach((item) => {
       if (temp.length == searchCount) {
         return;
       }
@@ -153,13 +141,6 @@ const SearchBox = () => {
 
     setSearchInput(input);
     setCompletedData(temp);
-    // const debounce = setTimeout(() => {
-    //   if (completedData) change();
-    // }, 200);
-    // return () => {
-    //   clearTimeout(debounce);
-    // };
-    console.log(searchInput);
   };
 
   // 엔터 누를 시 입력된 검색어로 submit
@@ -182,7 +163,7 @@ const SearchBox = () => {
       {isAutoCompleteOpen && (
         <div className={styles.autoSearchContainer} ref={autoSearchRef}>
           <div className={styles.autoSearchWrap}>
-            {completedData.map((i) => {
+            {completedData.map((i, index) => {
               return i.userId !== undefined ? (
                 <UserList
                   userNo={i.userNo}
@@ -191,12 +172,14 @@ const SearchBox = () => {
                   sysName={i.sysName}
                   setIsAutoCompleteOpen={setIsAutoCompleteOpen}
                   toSearch={toSearch}
+                  key={index}
                 />
               ) : (
                 <HashTagList
                   hashTag={i.hashTag}
                   setIsAutoCompleteOpen={setIsAutoCompleteOpen}
                   toSearch={toSearch}
+                  key={index}
                 />
               );
             })}

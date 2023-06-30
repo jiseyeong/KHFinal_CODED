@@ -31,22 +31,26 @@ public class FollowDAO {
 		Map<String, Integer> isFollow = new HashMap<>();
 		isFollow.put("toUserNo", toUserNo);
 		isFollow.put("myUserNo", myUserNo);
-		return mybatis.selectOne("Follow.isFollow", isFollow);
+		if(mybatis.selectOne("Follow.isFollow", isFollow) == null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 //	팔로우 등록 - 해당 유저를 팔로우 등록
 	public int insertFollow(int toUserNo, int fromUserNo) {
 		Map<String, Integer> insert = new HashMap<>();
-		insert.put("ToUserId", toUserNo);
-		insert.put("FromUserId", fromUserNo);
+		insert.put("toUserNo", toUserNo);
+		insert.put("fromUserNo", fromUserNo);
 		return mybatis.insert("Follow.insertFollow", insert);
 	}
 
 //	팔로우 해제 - 해당 유저를 팔로우 해제
 	public int deleteFollow(int toUserNo, int fromUserNo) {
 		Map<String, Integer> delete = new HashMap<>();
-		delete.put("ToUserId", toUserNo);
-		delete.put("FromUserId", fromUserNo);
+		delete.put("toUserNo", toUserNo);
+		delete.put("fromUserNo", fromUserNo);
 		return mybatis.delete("Follow.deleteFollow", delete);
 	}
 }

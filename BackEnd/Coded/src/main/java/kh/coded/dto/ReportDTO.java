@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 public class ReportDTO {
 
     private int reportId;
-    private int writeUserNo;
+    private int writerUserNo;
     private int targetFeedPostId;
     private int targetUserNo;
     private int targetFeedCommentId;
@@ -17,9 +17,9 @@ public class ReportDTO {
     public ReportDTO() {
     }
 
-    public ReportDTO(int reportId, int writeUserNo, int targetFeedPostId, int targetUserNo, int targetFeedCommentId, String title, String body, char replyCondition, Timestamp writeDate) {
+    public ReportDTO(int reportId, int writerUserNo, int targetFeedPostId, int targetUserNo, int targetFeedCommentId, String title, String body, char replyCondition, Timestamp writeDate) {
         this.reportId = reportId;
-        this.writeUserNo = writeUserNo;
+        this.writerUserNo = writerUserNo;
         this.targetFeedPostId = targetFeedPostId;
         this.targetUserNo = targetUserNo;
         this.targetFeedCommentId = targetFeedCommentId;
@@ -36,12 +36,12 @@ public class ReportDTO {
         this.reportId = reportId;
     }
 
-    public int getWriteUserNo() {
-        return writeUserNo;
+    public int getWriterUserNo() {
+        return writerUserNo;
     }
 
-    public void setWriteUserNo(int writeUserNo) {
-        this.writeUserNo = writeUserNo;
+    public void setWriterUserNo(int writerUserNo) {
+        this.writerUserNo = writerUserNo;
     }
 
     public int getTargetFeedPostId() {
