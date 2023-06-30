@@ -16,34 +16,35 @@ function SendBtn(props) {
         sendRef.current.value = '';
       };
 
-    const SendBtnContainer  = styled.div`
-    height:8%; width:100%; display:flex;
-    `
-    const SendChat = styled.input`
-    width:85%; height:30px;
-        margin-left:10px;
-        margin-top:10px;
-        font-size: 15px;
-        color: #222222;
-        border: none;
-        background: lightgray;
-        border-radius:5px;
-        padding:10px;
-        &:focus{outline:none;}
-    `
 
-    const SendBtn = styled.button`
-    margin-top:10px; margin-left:15px; width:50px; height:30px;
-    border:none; background-color:lightgray; border-radius:5px;
-    &:hover{cursor:pointer;}
-    `
 
     return (
         <SendBtnContainer >
             <SendChat type="text" ref={sendRef}/>
-            <SendBtn onClick={(sendToServer) }>Send</SendBtn>
+            <SendButton onClick={(sendToServer) }>Send</SendButton>
         </SendBtnContainer>
     );
 }
+
+const SendBtnContainer  = styled.div`
+height:8%; width:100%; display:flex;
+`
+const SendChat = styled.input`
+width:85%; height:30px;
+    margin-left:10px;
+    margin-top:10px;
+    font-size: 15px;
+    color: #222222;
+    border: none;
+    background: lightgray;
+    border-radius:5px;
+    padding:10px;
+    &:focus{outline:none;}
+`
+const SendButton = styled.button`
+margin-top:10px; margin-left:15px; width:50px; height:30px;
+border:none; background-color:lightgray; border-radius:5px;
+&:hover{cursor:pointer;}
+`
 
 export default SendBtn;

@@ -30,7 +30,6 @@ function DMList() {
     client.connect({}, () => {
       console.log('STOMP 연결 성공');
     });
-
     return () => {
       if (stompClient) {
         stompClient.disconnect();
@@ -124,39 +123,7 @@ function DMList() {
   }, [DMRoom.roomId]);
 
 
-  const DMListOuter = styled('div')`
-    padding-top: 10px;
-    margin: auto;
-    width: 1000px;
-    height: 600px;
-    display: flex;
-
-    .chatBox {
-      height: 100%;
-      width: 60%;
-      padding: 5px;
-    }
-    .List {
-      height: 100%;
-      width: 40%;
-      border-radius: 20px;
-      padding: 5px;
-    }
-    .searchBox {
-      height: 10%;
-      width: 100%;
-      background-color: lightgray;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      padding-top: 15px;
-    }
-    .chatList {
-      height: 88%;
-      width: 100%;
-      background-color: lightgray;
-      border-radius: 5px;
-    }
-  `;
+  
 
   return (
     <DMListOuter>
@@ -189,5 +156,39 @@ function DMList() {
     </DMListOuter>
   );
 }
+
+const DMListOuter = styled.div`
+    padding-top: 10px;
+    margin: auto;
+    width: 1000px;
+    height: 600px;
+    display: flex;
+
+    .chatBox {
+      height: 100%;
+      width: 60%;
+      padding: 5px;
+    }
+    .List {
+      height: 100%;
+      width: 40%;
+      border-radius: 20px;
+      padding: 5px;
+    }
+    .searchBox {
+      height: 10%;
+      width: 100%;
+      background-color: lightgray;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding-top: 15px;
+    }
+    .chatList {
+      height: 88%;
+      width: 100%;
+      background-color: lightgray;
+      border-radius: 5px;
+    }
+  `;
 
 export default DMList;
