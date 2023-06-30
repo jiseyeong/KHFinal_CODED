@@ -13,7 +13,7 @@ const ListElement = (props) => {
     };
 
 
-    const RoomElement = styled('div')`
+    const RoomElement = styled.div`
 
       .RoomElement{height:80px; width:100%; padding:5px; display:flex;}
       .RoomElement:hover{cursor:pointer; background-color:white;}

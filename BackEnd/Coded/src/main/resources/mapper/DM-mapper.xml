@@ -6,4 +6,7 @@
 	<select id="selectDMbyRoomid" resultType="kh.coded.dto.DMDTO">
 		select * from dm where roomid = ${roomId}
 	</select>
+	<insert id="inserDM">
+		insert into DM values(messageid_seq.nextval,${roomId},${userNo},#{message},sysdate,default)
+	</insert>
 </mapper>
