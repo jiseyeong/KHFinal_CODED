@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import ReportModal from '../../../component/Report/component/ReportModal';
 
-function MenuButton() {
+function MenuButton(props) {
+  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ReportModalOpen, setReportModalOpen] = useState(false);
 
@@ -40,7 +42,7 @@ const MenuButtonContainer = styled.div`
 .moreBtn:hover{cursor:pointer;}
 .ul{list-style: none; background-color:white; margin-left:15px; padding:0px;
 width:60px; margin-top:30px; border-radius:10px; position: relative;}
-.li{margin:5px; text-align:center;}
+.li{margin:5px; text-align:center; padding-top:5px; padding-bottom:5px;}
 .li:hover{cursor:pointer;}
 .closeBtn2{display:none;}
 `

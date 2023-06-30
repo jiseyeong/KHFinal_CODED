@@ -5,18 +5,13 @@ import { useSelector } from 'react-redux';
 
 function SendBtn(props) {
     const Send = props.Send;
-
-
     const sendRef = useRef(null);
 
     const sendToServer = () => {
-
         Send(sendRef.current.value)
         // 입력 필드 초기화
         sendRef.current.value = '';
       };
-
-
 
     return (
         <SendBtnContainer >
