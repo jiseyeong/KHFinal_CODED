@@ -633,14 +633,14 @@ function FeedModal({
                   <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}>
                     <ScrapImage />
                   </div>
-                  <button
+                  {/* <button
                     onClick={(e) => {
                       console.log('trueture');
                       setReportModal(true);
                     }}
                   >
                     테스트
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
