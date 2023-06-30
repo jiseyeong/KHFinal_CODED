@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './Footer.scss';
+import { useSelector } from 'react-redux';
 
 class Footer extends Component {
   render() {
+    
+
+
     return (
       <div className="Footer">
         <div className="footerContainer">

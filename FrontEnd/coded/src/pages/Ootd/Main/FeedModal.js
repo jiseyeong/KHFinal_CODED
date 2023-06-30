@@ -19,6 +19,9 @@ import { Link } from 'react-router-dom';
 import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
 import ReportModal from '../../../component/Report/component/ReportModal';
+import ConfirmDialog from '../../../component/Common/ConfirmDialog';
+
+
 
 
 
@@ -59,6 +62,8 @@ function FeedModal({
     fade: false,
   };
 
+  
+
   // const [feedPost,setFeedPost] = useState({});
   // const [photoList,setPhotoList] = useState([]);
   // const [writeMember,setWriteMember] = useState({});
@@ -66,6 +71,8 @@ function FeedModal({
   // const [feedLikeCount,setFeedLikeCount] = useState(0);
   // const [isFeedLike,setFeedLike] = useState();
 
+
+  
   const [userBio, setUserBio] = useState('');
 
   const [imageList, setImageList] = useState([]);
@@ -87,6 +94,8 @@ function FeedModal({
   const accessToken = useSelector((state) => state.member.access);
   const userNo = useSelector((state) => state.member.userNo);
   const [weatherIcon, setWeatherIcon] = useState('');
+
+  const [isLogintrue,setIsLogintrue] =useState(false);
 
   // 신고 모달창 관련 on/off
   const [reportModal, setReportModal] = useState(false);
@@ -220,8 +229,10 @@ function FeedModal({
       });
   }
 
+
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
-  function setFeedLike() { aa
+  function setFeedLike() { 
+    if(accessToken){
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
@@ -249,7 +260,10 @@ function FeedModal({
         // } else {
         console.log(error);
         // }
-      });
+      });}
+      else{
+        setIsLogintrue(true)
+      }
   }
 
   // 피드의 스크랩 반영 ( 추가 / 삭제 )
@@ -272,6 +286,7 @@ function FeedModal({
         setTimeout(() => {
           setScrapScale(1);
         }, 200);
+
       })
       .catch((error) => {
         // if (error.request.status === 400) {
@@ -632,7 +647,7 @@ function FeedModal({
                   style={{ transform: `scale(${scrapScale})` }}
                   onClick={setFeedScrap}
                 >
-                  <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}>
+                  <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'} onClick={()=>{setReportModal(true)}}>
                     <ScrapImage />
                   </div>
                   <button
@@ -664,7 +679,7 @@ function FeedModal({
           
         </div>
         
-        
+        {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue}/> }
 
       </div>
     </div>
