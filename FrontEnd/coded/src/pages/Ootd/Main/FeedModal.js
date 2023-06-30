@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom';
 import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
 import ReportModal from '../../../component/Report/component/ReportModal';
+import ConfirmDialog from '../../../component/Common/ConfirmDialog';
 
 const ImageLayout = styled('div')`
   max-width: 100%;
@@ -85,6 +86,8 @@ function FeedModal({
   const accessToken = useSelector((state) => state.member.access);
   const userNo = useSelector((state) => state.member.userNo);
   const [weatherIcon, setWeatherIcon] = useState('');
+
+  const [isLogintrue, setIsLogintrue] = useState(false);
 
   // 신고 모달창 관련 on/off
   const [reportModal, setReportModal] = useState(false);
@@ -276,35 +279,40 @@ function FeedModal({
   }
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
+
   function setFeedLike() {
-    axios({
-      method: 'post',
-      url: '/feedpost/insertFeedLike',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        feedPostId: feedPost.feedPostId,
-      },
-    })
-      .then((resp) => {
-        // 반영된 좋아요 수 저장
-        setFeedLikeCount(resp.data);
-        // 좋아요 상태로 변경
-        setIsFeedLike((prev) => !prev);
-        // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
-        setLikeScale(!isFeedLike ? 1.2 : 1);
-        setTimeout(() => {
-          setLikeScale(1);
-        }, 200);
+    if (accessToken) {
+      axios({
+        method: 'post',
+        url: '/feedpost/insertFeedLike',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          feedPostId: feedPost.feedPostId,
+        },
       })
-      .catch((error) => {
-        // if (error.request.status === 400) {
-        //   console.log(error.response.data);
-        // } else {
-        console.log(error);
-        // }
-      });
+        .then((resp) => {
+          // 반영된 좋아요 수 저장
+          setFeedLikeCount(resp.data);
+          // 좋아요 상태로 변경
+          setIsFeedLike((prev) => !prev);
+          // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
+          setLikeScale(!isFeedLike ? 1.2 : 1);
+          setTimeout(() => {
+            setLikeScale(1);
+          }, 200);
+        })
+        .catch((error) => {
+          // if (error.request.status === 400) {
+          //   console.log(error.response.data);
+          // } else {
+          console.log(error);
+          // }
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   }
 
   // 피드의 스크랩 반영 ( 추가 / 삭제 )
@@ -532,7 +540,12 @@ function FeedModal({
                   style={{ transform: `scale(${scrapScale})` }}
                   onClick={setFeedScrap}
                 >
-                  <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}>
+                  <div
+                    className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}
+                    onClick={() => {
+                      setReportModal(true);
+                    }}
+                  >
                     <ScrapImage />
                   </div>
                   {/* <button
@@ -562,6 +575,8 @@ function FeedModal({
             </div>
           </div>
         </div>
+
+        {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
       </div>
     </div>
   );
