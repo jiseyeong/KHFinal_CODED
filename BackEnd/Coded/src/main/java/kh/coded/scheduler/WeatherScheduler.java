@@ -12,7 +12,7 @@ public class WeatherScheduler {
 	@Autowired
 	private WeatherService weatherService;
 	
-	@Scheduled(cron = "0 0 4 * * ?")
+	@Scheduled(cron = "0 15 2 * * ?")
 	public void todayDataCalling() {
 		weatherService.setFullTodayWeather();
 	}
