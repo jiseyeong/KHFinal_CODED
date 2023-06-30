@@ -31,7 +31,9 @@
         }
     }
     .heartBox{
+        margin-top: 3px;
         font-size:15px;
+        cursor: pointer;
         svg{
             width:20px;
             height:20px;
@@ -51,6 +53,7 @@
         text-align:center;
         
     }
+
     .heartCount{
         width:15%;
         font-size:11px;

@@ -21,8 +21,9 @@ const ReportH3 = styled('h3')`
 
 const Reportdiv = styled('div')`
   margin: 0.5rem;
+  padding-bottom: 2px;
   color: #222;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: silver;
   text-align: center;
@@ -172,9 +173,9 @@ function ReportModal({ feedPostId, onReportView }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="closeBtnLayout">
-            <button className="closeBtn" onClick={onReportView}>
-              x
-            </button>
+              <button className="closeBtn" onClick={onReportView}>
+                x
+              </button>
             </div>
             <ReportH3>REPORT</ReportH3>
             <Reportdiv>신고사유를 선택해주세요</Reportdiv>
