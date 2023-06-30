@@ -30,6 +30,7 @@ const Reportdiv = styled('div')`
 `;
 
 const Reportdiv2 = styled('div')`
+  text-align:center;
   margin-top: 20px;
   color: #ff0066;
   font-size: 14px;
@@ -42,6 +43,8 @@ const EtcArea = styled('textarea')`
 `;
 
 const Buttonok = styled('button')`
+  margin-left:43.5%;
+  text-align: center;
   font-size: 13px;
   border-radius: 13px;
   position: relative;
@@ -242,7 +245,7 @@ function ReportModal({ feedPostId, onReportView }) {
                 </p>
               </div>
             </div>
-            <div>
+            <div style={{textAlign: "center"}}>
               {reportType === 'e' ? (
                 <EtcArea
                   style={{ padding: '4px', backgroundColor: 'white' }}

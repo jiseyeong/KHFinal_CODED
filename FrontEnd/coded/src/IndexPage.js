@@ -6,6 +6,7 @@ import axios from 'axios';
 import ReportModal from './component/Report/component/ReportModal';
 import { color } from 'framer-motion';
 import ConfirmDialog from './component/Common/ConfirmDialog';
+import { styled } from 'styled-components';
 
 const IndexPage = () => {
   const [reportView, setReportView] = useState(false);
@@ -24,8 +25,10 @@ const IndexPage = () => {
     setReportView(!reportView);
   }
 
+
+
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div>
       <Link to="/feedList">
         <button style={{ width: '200px', height: '100px' }}>페이지 시작</button>
       </Link>
@@ -46,7 +49,7 @@ const IndexPage = () => {
       <Link to="/profile">마이 프로필 페이지</Link> // Completed!
       <br />
       <br />
-      <Link to="/DMPage">DMRoom</Link>
+      <Link to="/DMList">DMList</Link>
       <br />
       <br />
       <Link to="/ootd">OOTD</Link>

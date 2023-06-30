@@ -10,7 +10,6 @@ import Ootd from './pages/Ootd/Main/Main';
 import KakaoCodeCallbackPage from './pages/auth/Login/OAuthKakaoCodeCallback';
 import LastCallbackPage from './pages/auth/Login/OAuthLastCallback';
 import NaverCodeCallbackPage from './pages/auth/Login/OAuthNaverCodeCallback';
-import DMPage from './pages/DM/DMPage';
 import IdSearch from './pages/auth/Login/IdSearch';
 import PwSearch from './pages/auth/Login/PwSearch';
 import GoogleCodeCallbackPage from './pages/auth/Login/OAuthGoogleCodeCallback';
@@ -145,7 +144,6 @@ function App() {
         <Route path="/feedList/search" element={<SearchedFeedList />} />
         {/* <Route path="/feed/search/:keyword" element={<SearchedFeedList />} /> */}
         <Route path="/profile" element={<Profile />} />
-        <Route path="/DMPage" element={<DMPage />} />
         <Route path="/DMList" element={<DMList />} />
         <Route path="/ootd" element={<Ootd />} />
         <Route path="/idSearch" element={<IdSearch />} />
