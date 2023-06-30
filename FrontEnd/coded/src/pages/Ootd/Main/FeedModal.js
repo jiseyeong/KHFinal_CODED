@@ -413,8 +413,8 @@ function FeedModal({
                         <img
                           src={`/images/${item.sysName}`}
                           style={{
-                            maxWidth: '100%',
-                            height: '100%',
+                            maxWidth:'100%',
+                            height:'100%',
                             objectFit: 'contain',
                             margin: 'auto',
                             display: 'block',
