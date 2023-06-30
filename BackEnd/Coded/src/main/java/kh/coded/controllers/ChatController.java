@@ -3,6 +3,7 @@ package kh.coded.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -27,8 +28,7 @@ import utils.CustomWebSocketHandler;
 @RequestMapping("/DM/")
 public class ChatController {
 
-	@Autowired
-	private SimpMessagingTemplate template;
+	
 
 	@Autowired
 	private DMRoomService DMRoomService;
@@ -64,26 +64,6 @@ public class ChatController {
 	}
 
 
-	// -- 이하 STOMP 구독 및 메세지 송신 --
-	
-	// 구독
-	@SubscribeMapping("/topic/{roomId}")
-	public List<DMDTO> handleSubscription(@DestinationVariable int roomId) {
-	    // 해당 방 번호를 기반으로 구독 처리 로직을 수행하고 채팅 내역을 반환
-		List<DMDTO> list = DMService.selectDMbyRoomid(roomId);
-		System.out.println(roomId+"를 구독함");
-	    return list;
-	}
-	
-	
-	// 메세지 송신 후 특정 roomId에 송신
-    @SendTo("/topic/{roomId}")
-    @MessageMapping("/{roomId}")
-    public void handleChatMessage(@DestinationVariable int roomId, String message, int userNo) {
-    	System.out.println("방번호 "+roomId +" 보낸사람 "+userNo+" 메세지 "+message );
-  
-	}
-	
 	
 	
 	

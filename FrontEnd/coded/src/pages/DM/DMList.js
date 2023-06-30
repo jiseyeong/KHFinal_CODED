@@ -48,9 +48,10 @@ function DMList() {
   useEffect(() => {
     if (stompClient && DMRoom.roomId) {
       const subscription = stompClient.subscribe(
-        `/topic/DM/topic/${DMRoom.roomId}`,
+        `/topic/${DMRoom.roomId}`,
         (message) => {
           const receivedMessage = JSON.parse(message.body);
+          console.log(Message)
           setDMList((prevDMList) => [...prevDMList, receivedMessage]);
         }
       );
@@ -68,7 +69,7 @@ function DMList() {
 
     stompClient.send(
 
-      '/app/DM/'+DMRoom.roomId,
+      '/app/chat/'+DMRoom.roomId,
       {
           roomId: DMRoom.roomId,
           userNo: loginUserNo,
@@ -82,25 +83,6 @@ function DMList() {
   const handleListElementClick = (room) => {
     setDMRoom(room);
   };
-
-  useEffect(() => {
-    if (loginUserNo > 0) {
-      axios({
-        method: 'get',
-        url: '/DM/selectChatList',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          userNo: loginUserNo,
-        },
-      })
-        .then((resp) => {
-          setDMRoomList(resp.data);
-        })
-        .catch((error) => console.log(error));
-    }
-  }, [loginUserNo]);
 
   useEffect(() => {
     if (loginUserNo > 0) {
