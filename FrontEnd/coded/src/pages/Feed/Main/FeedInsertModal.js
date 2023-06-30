@@ -285,7 +285,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                   <div className="uploadedImage" key={index}>
                     <div className="closeBtnLayout">
                       <button className="closeBtn" onClick={index}>
-                        x
+                        <p>x</p>
                       </button>
                     </div>
                     <div className="imageLayout">

@@ -13,8 +13,8 @@ const HeartIcons = {
       fill="currentColor"
       strokeWidth="0"
       viewBox="0 0 16 16"
-      height="1em"
-      width="1em"
+      height="5"
+      width="5"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -31,8 +31,8 @@ const HeartIcons = {
       fill="#ff0066"
       strokeWidth="0"
       viewBox="0 0 16 16"
-      height="1em"
-      width="1em"
+      height="5"
+      width="5"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -243,9 +243,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         </div>
       </div>
       <div className={style.feedCommentList2}>
-        <div className={style.writeDate}>
-          {commentInfo.formedWriteDate}
-        </div>
+        <div className={style.writeDate}>{commentInfo.formedWriteDate}</div>
         <div className={style.heartCount}>좋아요 {likeCount}</div>
         <div className={style.repleBtn}>
           {depth < 1 && accessToken && (
