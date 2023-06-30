@@ -95,6 +95,8 @@ function FeedModal({
 
   useEffect(() => {
 
+    console.log(selectHashTag.length);
+
     let arrTemp = [];
     hashTagList.forEach((item) => {
       let temp = { value: item.hashTag, label: item.hashTag };
@@ -106,8 +108,6 @@ function FeedModal({
       setHashTag([...HashTag,...arrTemp])
     });
 
-    console.log(feedPost);
-    console.log(HashTag);
 
     updateImageList();
     // 스크랩 여부 가져오기
@@ -126,6 +126,22 @@ function FeedModal({
         setWeatherIcon(weatherIcons.cloud);
       }
     }
+
+    axios({
+      method:"get",
+      url:'/PostHashs/selectAllPostTagNames',
+    })
+    .then((resp)=>{
+      const HashTagNameList = resp.data;
+            let arrTemp = [];
+            HashTagNameList.forEach((hashTag) => {
+              arrTemp = arrTemp.concat({
+                value: hashTag.hashTag,
+                label: hashTag.hashTag,
+              });
+              setOptions([...options, ...arrTemp]);
+            });
+    })
   }, []);
 
   function updateImageList() {
@@ -179,7 +195,7 @@ function FeedModal({
   }
   //  수정하기 ---------------------------------------
   const [FeedPost, setFeedPost] = useState(feedPost);
-  const [selectHashTag, setSelectHashTag] = useState(hashTagList);//수정 전
+  const [selectHashTag, setSelectHashTag] = useState([]);//수정 전
   const [HashTag, setHashTag] = useState(hashTagList);//삭제하고 나서의
   const [editYN, setEditYN] = useState(false);
   const [content, setContent] = useState("");//수정 후
@@ -188,7 +204,8 @@ function FeedModal({
   const [options, setOptions] = useState([]);//가져오기 해쉬태그 리스트
   // 수정 버튼 눌렀을때
 
- 
+
+
 
   function editFeedPost() {
     setOptionListDiv((prev) => {
@@ -200,8 +217,6 @@ function FeedModal({
   // 수정하기 완료
   function editComplate() {
     const formData = new FormData();
-
-    console.log(feedPost.body);
     formData.append('feedPostId', feedPost.feedPostId);
     formData.append('userNo', feedPost.userNo)
     formData.append('body', contentRef.current.value)
@@ -273,7 +288,6 @@ function FeedModal({
       },
     })
       .then((response) => {
-        console.log(response.data);
         setIsFeedScrap(response.data);
       })
       .catch((error) => {
@@ -599,11 +613,18 @@ function FeedModal({
                         className="crSelect"
                         placeholder="해시태그 추가"
                         isMulti
-                        // options={HashTag} 모든 해시태그 ex) select * from hashtag로 모든 해시태그 찾기
-                        options={hashTagList}
+                        options={options}
                         value={selectHashTag}
                         ref={selectRef}
-                        onChange={(value) => setSelectHashTag(value)}
+                        onChange={(selectedOptions) => {
+                          setSelectHashTag(selectedOptions);
+                          setTimeout(() => {
+                            if (selectRef.current.getValue().length > 5) {
+                              alert('해시 태그는 5개 까지 입력 가능합니다.');
+                              setSelectHashTag((prevValues) => prevValues.slice(0, -1));
+                            }
+                          }, 100);
+                        }}
                         menuPlacement="top"
                         styles={customStyles}
                       />
