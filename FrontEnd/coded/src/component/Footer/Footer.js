@@ -12,7 +12,9 @@ class Footer extends Component {
               <p>members.</p>
             </div>
             <div className="descList">
+              <div className="deleteAccountWrapper">
               <Link to="/deleteAccount">Delete Account</Link>
+              </div>
             </div>
           </div>
           <div className="middle">

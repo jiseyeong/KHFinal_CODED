@@ -80,5 +80,16 @@ public class WeeklyWeatherDTO {
 	}
 	public void setPtyCode(int ptyCode) {
 		this.ptyCode = ptyCode;
-	}    
+	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "WeeklyWeatherDTO [weekWeatherId=" + weekWeatherId + ", addressId=" + addressId + ", min=" + min
+				+ ", max=" + max + ", dDay=" + dDay + ", skyCode=" + skyCode + ", ptyCode=" + ptyCode + "]";
+	}
+	
+	
 }

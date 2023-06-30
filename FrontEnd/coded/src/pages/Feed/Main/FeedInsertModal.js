@@ -3,7 +3,7 @@ import './FeedInsertModal.scss';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
+import { Rain } from '../../../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
 import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
 import WeatherIcons from '../../../component/WeatherCommon/WeatherIcons';
@@ -59,20 +59,20 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
             response.data.today.ptyCode == 2
           ) {
             setWeatherIcon(WeatherIcons.rain);
-            setWeatherName('비');
+            setWeatherName('Rainy');
           } else if (response.data.today.ptyCode == 3) {
             setWeatherIcon(WeatherIcons.snow);
-            setWeatherName('눈');
+            setWeatherName('Snowy');
           } else if (response.data.today.ptyCode == 4) {
             setWeatherIcon(WeatherIcons.heavyRain);
-            setWeatherName('소나기');
+            setWeatherName('Heavy Rain');
           } else {
             if (response.data.today.skyCode == 1) {
               setWeatherIcon(WeatherIcons.sun);
-              setWeatherName('맑음');
+              setWeatherName('Sunny');
             } else {
               setWeatherIcon(WeatherIcons.cloud);
-              setWeatherName('구름많음');
+              setWeatherName('Cloudy');
             }
           }
           setFeedPost((prev) => ({
@@ -160,7 +160,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
     }
 
     if (imgBase64.length + event.target.files.length > 10) {
-      alert('사진은 최대 10개까지 밖에 안들어갑니다.');
+      alert('사진은 최대 10장까지 첨부 가능합니다');
       setImgBase64([...imgBase64]);
       return;
     } else {
@@ -216,15 +216,15 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   // 폼 입력
   const insertForm = () => {
     if (feedpost.body === '' || feedpost.body === undefined) {
-      alert('내용을 입력해 주세요.');
+      alert('내용을 입력해주세요');
       return;
     }
     if (selectRef.current.getValue().length === 0) {
-      alert('최소 한 개 이상의 해시 태그를 입력해 주세요.');
+      alert('최소 한 개 이상의 해시태그를 입력해 주세요');
       return;
     }
     if (file.length === 0) {
-      alert('최소 한 개 이상의 사진을 첨부해 주세요.');
+      alert('최소 한 장 이상의 사진을 첨부해 주세요');
       return;
     }
 
@@ -251,13 +251,28 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
       data: formData,
     })
       .then((resp) => {
-        alert('등록이 완료되었습니다.');
+        alert('등록이 완료되었습니다 :)');
         location.reload();
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  let [inputCount, setInputCount] = useState(0);
+  const inputCountRef = useRef();
+
+  const onTextareaHandler = (e) => {
+    const value = e.target.value.length;
+    const value2 = (200 - value);
+    setInputCount(value2);
+    if(value2 >= 0) {
+      inputCountRef.current.style.color = "blue";
+    }else{
+      inputCountRef.current.style.color = "red";
+    }
+  };
+
 
   const [select, setSelect] = useState([]);
   return (
@@ -269,7 +284,9 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
           ) : imgBase64.length > 0 ? (
             <img ref={bodyImageRef} className="bodyImage" src={imgBase64[0]} />
           ) : (
-            <div>이미지를 넣어주세요</div>
+            <div className="imgText">
+              <p>image</p>
+            </div>
           )}
         </div>
 
@@ -281,11 +298,11 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
               {imgBase64.map((item, index) => {
                 return (
                   <div className="uploadedImage" key={index}>
-                    <CloseBtn
-                      onClick={() => {
-                        Cancelpicture(index);
-                      }}
-                    />
+                    <div className="closeBtnLayout">
+                      <button className="closeBtn" onClick={index}>
+                        <p>x</p>
+                      </button>
+                    </div>
                     <div className="imageLayout">
                       <img src={item} onClick={viewImage} />
                     </div>
@@ -306,7 +323,28 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                       : 'none',
                 }}
               >
-                <div className="labelText">사진을 등록해주세요</div>
+                <div className="labelIconLayout">
+                  <svg
+                    height="30"
+                    viewBox="0 0 20 20"
+                    width="30"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.12412 2C7.55707 2 7.03849 2.31977 6.78386 2.82643L6.19437 3.9994H4.50488C3.12417 3.9994 2.00488 5.11868 2.00488 6.4994V14.5C2.00488 15.8807 3.12417 17 4.50488 17H9.59989C9.43795 16.6832 9.30582 16.3486 9.20722 16H4.50488C3.67646 16 3.00488 15.3284 3.00488 14.5V6.4994C3.00488 5.67097 3.67646 4.9994 4.50488 4.9994H6.50268C6.69169 4.9994 6.86455 4.89281 6.94943 4.72392L7.67736 3.27548C7.76224 3.10659 7.9351 3 8.12412 3H11.8883C12.0777 3 12.2509 3.10702 12.3356 3.27643L13.0587 4.72296C13.1433 4.89238 13.3165 4.9994 13.5059 4.9994H15.5049C16.3333 4.9994 17.0049 5.67097 17.0049 6.4994V9.60212C17.3627 9.78548 17.6978 10.0069 18.0049 10.261V6.4994C18.0049 5.11869 16.8856 3.9994 15.5049 3.9994H13.8149L13.23 2.8293C12.976 2.32106 12.4565 2 11.8883 2H8.12412Z"
+                      fill="#212121"
+                    />
+                    <path
+                      d="M10.0002 6.00003C11.8763 6.00003 13.4508 7.29169 13.8828 9.03426C13.5457 9.07192 13.2178 9.14004 12.902 9.23581C12.564 7.94911 11.3929 7.00003 10.0002 7.00003C8.34333 7.00003 7.00018 8.34318 7.00018 10C7.00018 11.3928 7.94927 12.5639 9.23598 12.9018C9.14021 13.2177 9.07209 13.5456 9.03444 13.8827C7.29186 13.4507 6.00018 11.8762 6.00018 10C6.00018 7.79089 7.79104 6.00003 10.0002 6.00003Z"
+                      fill="#212121"
+                    />
+                    <path
+                      className="plus"
+                      d="M19.0002 14.5C19.0002 16.9853 16.9855 19 14.5002 19C12.0149 19 10.0002 16.9853 10.0002 14.5C10.0002 12.0147 12.0149 10 14.5002 10C16.9855 10 19.0002 12.0147 19.0002 14.5ZM15.0002 12.5C15.0002 12.2239 14.7763 12 14.5002 12C14.224 12 14.0002 12.2239 14.0002 12.5V14H12.5002C12.224 14 12.0002 14.2239 12.0002 14.5C12.0002 14.7761 12.224 15 12.5002 15H14.0002V16.5C14.0002 16.7761 14.224 17 14.5002 17C14.7763 17 15.0002 16.7761 15.0002 16.5V15H16.5002C16.7763 15 17.0002 14.7761 17.0002 14.5C17.0002 14.2239 16.7763 14 16.5002 14H15.0002V12.5Z"
+                      fill="#212121"
+                    />
+                  </svg>
+                </div>
               </label>
               <input
                 type="file"
@@ -327,18 +365,21 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
           <div className="PostInfoLayout">
             <textarea
               className="post"
-              placeholder="내용을 입력해주세요"
+              placeholder="content"
+              maxLength="200"
               ref={contentRef}
+              onChange={onTextareaHandler}
               onInput={(e) => {
                 setFeedPost(() => {
                   return { ...feedpost, body: e.target.value };
                 });
               }}
             ></textarea>
+            <div className="inputCount" ref={inputCountRef}>{inputCount}</div>
           </div>
           <div className="hashLayout">
             <CreatableSelect
-              placeholder="해시태그 추가"
+              placeholder="hashtag"
               isMulti
               value={select}
               options={options}
@@ -347,7 +388,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                 setSelect(selectedOptions);
                 setTimeout(() => {
                   if (selectRef.current.getValue().length > 5) {
-                    alert('해시 태그는 5개 까지 입력 가능합니다.');
+                    alert('해시태그는 5개까지 입력 가능합니다.');
                     setSelect((prevValues) => prevValues.slice(0, -1));
                   }
                 }, 100);
@@ -362,20 +403,12 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
             </div>
             <div className="todayTemp">
               <div className="maxTemp">최고기온 : {maxTemp}°</div>
-              <div className="minTemp">{weatherMessage}</div>
+              <div className="tempMessage">{weatherMessage}</div>
             </div>
           </div>
-
           <div className="btnWrapper">
             <div className="btnLayout">
-              <button
-                onClick={() => {
-                  setFeedPostInsertOpen(false);
-                }}
-              >
-                취소
-              </button>
-              <button onClick={insertForm}>작성</button>
+              <button onClick={insertForm}>upload</button>
             </div>
           </div>
         </div>
