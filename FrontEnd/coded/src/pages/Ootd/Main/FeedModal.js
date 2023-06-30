@@ -49,9 +49,9 @@ function FeedModal({
     centerMode: true,
     centerPadding: '0px',
     vertical: false,
-    arrows: false,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    arrows: true,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
     pauseOnFocus: true,
     pauseOnHover: true,
     fade: false,
@@ -414,7 +414,7 @@ function FeedModal({
                           src={`/images/${item.sysName}`}
                           style={{
                             maxWidth: '100%',
-                            height: '100%',
+                            height: '585px',
                             objectFit: 'contain',
                             margin: 'auto',
                             display: 'block',
