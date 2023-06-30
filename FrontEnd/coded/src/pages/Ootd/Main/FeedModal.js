@@ -183,6 +183,7 @@ function FeedModal({
   const [content, setContent] = useState("");//수정 후
   const selectRef = useRef();
   const contentRef = useRef();// 바디 레퍼런스
+  const [options, setOptions] = useState([]);//가져오기 해쉬태그 리스트
   // 수정 버튼 눌렀을때
 
  
@@ -198,6 +199,7 @@ function FeedModal({
   function editComplate() {
     const formData = new FormData();
 
+    console.log(feedPost.body);
     formData.append('feedPostId', feedPost.feedPostId);
     formData.append('userNo', feedPost.userNo)
     formData.append('body', contentRef.current.value)
@@ -242,12 +244,6 @@ function FeedModal({
 
   function editCancel() {
     
-
-    console.log(feedPost)
-    console.log(contentRef.current.value)
-    console.log(feedPost.body)
-
-    // contentRef.current.innerText = commentInfo.body;
   }
 
   const handleInputChange = (event) => {
@@ -602,6 +598,7 @@ function FeedModal({
                         placeholder="해시태그 추가"
                         isMulti
                         // options={HashTag} 모든 해시태그 ex) select * from hashtag로 모든 해시태그 찾기
+                        options={hashTagList}
                         value={selectHashTag}
                         ref={selectRef}
                         onChange={(value) => setSelectHashTag(value)}
@@ -611,7 +608,7 @@ function FeedModal({
 
                     </div>
                     <div className="buttons">
-                      <button onClick={editComplate}>수정 완료</button>
+                      <Link to="/"> <button onClick={editComplate}>수정 완료</button></Link>
                       <button onClick={editCancel}>수정 취소</button>
                     </div>
                   </div>
