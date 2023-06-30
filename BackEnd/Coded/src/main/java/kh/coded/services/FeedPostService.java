@@ -449,6 +449,7 @@ public class FeedPostService {
     }
 
     public void updateHashTags(List<String> hashTag, int feedPostId) {
+    	feedpostDAO.updateFeedPostHashTag(feedPostId);
         for (String tagName : hashTag) {
             HashTagDTO hashTagDTO = feedpostDAO.HashTagJB(tagName);
             // 해시 태그 중복 체크
@@ -465,6 +466,9 @@ public class FeedPostService {
                     feedpostDAO.insertPostHashs(feedPostId,hashTagDTO.getTagId());
                 }
             }
+            
+            
+            
         }
     }
 }
