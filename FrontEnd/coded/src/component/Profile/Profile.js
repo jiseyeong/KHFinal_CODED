@@ -65,7 +65,7 @@ const ProfileTemplate = () => {
 
   // 정규식 적용
   const regexId = /^[a-z0-9_]{7,13}$/;
-  const regexNickName = /^[가-힣A-Za-z0-9_]{1,6}$/;
+  const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
 
@@ -320,12 +320,14 @@ const ProfileTemplate = () => {
     }
 
     if (!regexId.test(memberInfo.userId)) {
-      alert('7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
+      alert('아이디는 7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
       return;
     }
 
     if (!regexNickName.test(memberInfo.userNickName)) {
-      alert('6자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.');
+      alert(
+        '닉네임은 8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.',
+      );
       return;
     }
 
