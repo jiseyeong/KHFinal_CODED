@@ -255,26 +255,26 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
             (isUpdate ? (
               <div>
                 <button className={style.commentBtn} onClick={updateComment}>
-                  확정
+                  upload
                 </button>
                 <button
                   className={style.commentBtn}
                   onClick={cancelUpdateComment}
                 >
-                  취소
+                  cancel
                 </button>
               </div>
             ) : (
               <>
                 <button className={style.commentBtn} onClick={handleUpdate}>
-                  수정
+                  edit
                 </button>
                 {/* <span>／</span> */}
               </>
             ))}
           {userNo === commentInfo.userNo && (
             <button className={style.commentBtn} onClick={deleteComment}>
-              삭제
+              delete
             </button>
           )}
         </div>
@@ -287,7 +287,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
               ref={editorRef}
               contentEditable="true"
             />
-            <button onClick={writeComment}>전송</button>
+            <button onClick={writeComment}>upload</button>
           </div>
         )}
       </div>

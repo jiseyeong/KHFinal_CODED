@@ -24,8 +24,7 @@ const FeedPostDetail = (props) => {
   const [scale, setScale] = useState(1);
   const [loginCheckModal, setLoginCheckModal] = useState(false);
 
-  const [isLogintrue,setIsLogintrue] =useState(false);
-
+  const [isLogintrue, setIsLogintrue] = useState(false);
 
   // 모달 창 열기
   const openModal = () => {
@@ -132,38 +131,38 @@ const FeedPostDetail = (props) => {
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
   function setFeedLike() {
-    if( accessToken){
-    axios({
-      method: 'post',
-      url: '/feedpost/insertFeedLike',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        feedPostId: feedPost.feedPostId,
-      },
-    })
-      .then((resp) => {
-        // 반영된 좋아요 수 저장
-        setFeedLikeCount(resp.data);
-        // 좋아요 상태로 변경
-        setIsFeedLike((prev) => !prev);
-        // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
-        setScale(!isFeedLike ? 1.2 : 1);
-        setTimeout(() => {
-          setScale(1);
-        }, 200);
+    if (accessToken) {
+      axios({
+        method: 'post',
+        url: '/feedpost/insertFeedLike',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          feedPostId: feedPost.feedPostId,
+        },
       })
-      .catch((error) => {
-        if (error.request.status === 400) {
-          console.log(error.response.data);
-        } else {
-          console.log(error);
-        }
-      }); }
-      else{
-        setIsLogintrue(true)
-      }
+        .then((resp) => {
+          // 반영된 좋아요 수 저장
+          setFeedLikeCount(resp.data);
+          // 좋아요 상태로 변경
+          setIsFeedLike((prev) => !prev);
+          // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
+          setScale(!isFeedLike ? 1.2 : 1);
+          setTimeout(() => {
+            setScale(1);
+          }, 200);
+        })
+        .catch((error) => {
+          if (error.request.status === 400) {
+            console.log(error.response.data);
+          } else {
+            console.log(error);
+          }
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   }
 
   return (
@@ -253,7 +252,7 @@ const FeedPostDetail = (props) => {
                     </Link>
                   ))
                 ) : (
-                  <span>태그 없음</span>
+                  <span>no tag</span>
                 )}
               </div>
               <div className={styles.feedWeatherLayout}>
@@ -275,9 +274,7 @@ const FeedPostDetail = (props) => {
           />
         )}
 
-     {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue}/> }
-      
-
+        {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
       </div>
     </div>
   );
