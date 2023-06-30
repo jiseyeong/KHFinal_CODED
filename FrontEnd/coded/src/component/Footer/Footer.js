@@ -1,5 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './Footer.scss';
 import Modal from 'react-modal';
 import { motion, useScroll } from "framer-motion";

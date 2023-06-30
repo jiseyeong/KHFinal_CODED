@@ -36,7 +36,7 @@ public class ReportController {
 
 
 	// 피드 신고 접수
-	@PostMapping(value = "insertReport") // 구현중
+	@PostMapping(value = "insertReport")
 	public ResponseEntity<?> insertReport(@ModelAttribute ReportDTO dto){
 		int reportOk = feedReportService.insertReport(dto);
 		return ResponseEntity.ok().body(reportOk);
