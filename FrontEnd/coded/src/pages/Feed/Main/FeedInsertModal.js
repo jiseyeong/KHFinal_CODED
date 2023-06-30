@@ -259,6 +259,21 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
       });
   };
 
+  let [inputCount, setInputCount] = useState(0);
+  const inputCountRef = useRef();
+
+  const onTextareaHandler = (e) => {
+    const value = e.target.value.length;
+    const value2 = (200 - value);
+    setInputCount(value2);
+    if(value2 >= 0) {
+      inputCountRef.current.style.color = "blue";
+    }else{
+      inputCountRef.current.style.color = "red";
+    }
+  };
+
+
   const [select, setSelect] = useState([]);
   return (
     <div className="toastUIContainer">
@@ -351,13 +366,16 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
             <textarea
               className="post"
               placeholder="content"
+              maxLength="200"
               ref={contentRef}
+              onChange={onTextareaHandler}
               onInput={(e) => {
                 setFeedPost(() => {
                   return { ...feedpost, body: e.target.value };
                 });
               }}
             ></textarea>
+            <div className="inputCount" ref={inputCountRef}>{inputCount}</div>
           </div>
           <div className="hashLayout">
             <CreatableSelect
