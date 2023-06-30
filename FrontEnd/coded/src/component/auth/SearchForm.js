@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import style from './SearchForm.module.scss';
 
 const textMap = {
-  id: '아이디 찾기',
-  pw: '비밀번호 재발급',
+  id: 'SEARCH ID',
+  pw: 'RESET PASSWORD',
 };
 
 function SearchForm({ type }) {
@@ -104,7 +104,7 @@ function SearchForm({ type }) {
       <div className={style.searchMessage}>{message}</div>
 
       {loading ? (
-        <div className={style.searchMessage}>진행 중입니다.</div>
+        <div className={style.searchMessage}>임시 비밀번호를 발급 중입니다</div>
       ) : (
         <button
           className={style.searchBtn}

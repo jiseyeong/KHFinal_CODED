@@ -19,6 +19,7 @@ import {
 import Login from '../../pages/auth/Login/Login';
 import SignUp from '../../pages/auth/SignUp/SignUp';
 import Logo from './navLogo.png';
+import TodayWeather from '../TodayWeather/TodayWeather';
 
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
@@ -103,6 +104,7 @@ function Navbar() {
   return (
     <>
       <div className="navBarWrapper">
+        <TodayWeather></TodayWeather>
         <nav className="topNavBar">
           <div className="leftNavBar">
             <a className="navLogo" href="/">
@@ -114,7 +116,7 @@ function Navbar() {
                 <li value="feed" className="leftMenu">
                   <span
                     className={
-                      navbarIndex2===1 ? 'leftMenuOotdAct' : 'leftMenuOotd'
+                      navbarIndex2 === 1 ? 'leftMenuOotdAct' : 'leftMenuOotd'
                     }
                     onClick={handleClickOotd}
                   >
@@ -126,7 +128,9 @@ function Navbar() {
                   <li value="feed" className="leftMenu">
                     <span
                       className={
-                        navbarIndex2===2 ? 'leftMenuWeeklyAct' : 'leftMenuWeekly'
+                        navbarIndex2 === 2
+                          ? 'leftMenuWeeklyAct'
+                          : 'leftMenuWeekly'
                       }
                       onClick={handleClickWeekly}
                     >

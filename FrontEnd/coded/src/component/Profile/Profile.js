@@ -64,7 +64,7 @@ const ProfileTemplate = () => {
   const address2 = useRef();
 
   // 정규식 적용
-  const regexId = /^[A-Za-z0-9_]{7,13}$/;
+  const regexId = /^[a-z0-9_]{7,13}$/;
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
@@ -115,7 +115,6 @@ const ProfileTemplate = () => {
         .then(
           // axios의 다중 통신 이후 전달받은 데이터는 spread로 다른 매개 변수에 지정
           axios.spread((resp1, resp2) => {
-            console.log(resp1);
             const {
               userNo,
               userId,
@@ -259,7 +258,6 @@ const ProfileTemplate = () => {
 
   // 사진 등록 시, 바로 불러오기 기능
   const handleChangeFile = (event) => {
-    console.log(event.target.files);
     setImgBase64([]);
 
     if (event.target.files[0]) {
@@ -317,22 +315,24 @@ const ProfileTemplate = () => {
       memberInfo.bio === '' ||
       memberInfo.hashTag === ''
     ) {
-      alert('모든 입력박스를 입력해주세요.');
+      alert('모든 정보를 입력해주세요');
       return;
     }
 
     if (!regexId.test(memberInfo.userId)) {
-      alert('ID는 영문 대소문자 또는 숫자로 7~13 자리로 구성되어야 합니다.');
+      alert('아이디는 7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
       return;
     }
 
     if (!regexNickName.test(memberInfo.userNickName)) {
-      alert('닉네임은 특수문자를 제외, 8자리 이하 길이로 구성되어야 합니다.');
+      alert(
+        '닉네임은 8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.',
+      );
       return;
     }
 
     if (!regexEmail.test(memberInfo.email)) {
-      alert('이메일은 이메일 형식의 30자리 이하 길이로 구성되어야 합니다.');
+      alert('올바르지 않은 이메일 형식입니다.');
       return;
     }
 
@@ -435,7 +435,6 @@ const ProfileTemplate = () => {
       url: '/login/oauth2/google/codeInfo',
     })
       .then((response) => {
-        console.log(response);
         const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${response.data.client_id}&redirect_uri=${response.data.redirect_uri}&response_type=code&scope=profile`;
         window.location.href = GOOGLE_AUTH_URL;
       })
@@ -581,7 +580,7 @@ const ProfileTemplate = () => {
                     <input
                       type="text"
                       className="forEdit"
-                      placeholder="ID를 입력해주세요"
+                      placeholder="아이디를 입력해주세요"
                       name="userId"
                       onChange={handleMemberInfo}
                       value={memberInfo.userId || ''}

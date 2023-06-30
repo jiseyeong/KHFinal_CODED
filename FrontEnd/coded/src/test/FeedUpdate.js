@@ -5,9 +5,9 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { CloseBtn, Rain } from '../../../assets/ModalAsset/IconAsset';
+import { CloseBtn, Rain } from '../assets/ModalAsset/IconAsset';
 import Select from 'react-select';
-import { Temperature } from '../../../assets/ModalAsset/ModalAsset';
+import { Temperature } from '../assets/ModalAsset/ModalAsset';
 import './FeedUpdate.scss';
 
 const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
@@ -44,7 +44,7 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   const [weatherName, setWeatherName] = useState('');
 
   useEffect(() => {
-    if(accessToken){
+    if (accessToken) {
       axios({
         url: '/feedpost/updatefeed',
         method: 'get',
@@ -55,30 +55,28 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
       })
         .then((resp) => {
           const data = resp.data;
-  
-          
+
           data.hashTagList.forEach((item) => {
             let temp = { value: item.hashTag, label: item.hashTag };
             setSelectedOptions((preview) => [...preview, temp]);
           });
-  
+
           data.photoList.forEach((item) => {
             setCopyImgBase64((preview) => [...preview, item]);
-          });        
+          });
           // 지역, 날짜, 기온, 날씨 데이터 가져와야됨
-  
+
           setContentbody(data.feedPost.body);
-     axios({
-          method: 'get',
-          url: '/weather/today',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          params: {
-            time: new Date().getTime(),
-          },
-        })
-          .then((response) => {
+          axios({
+            method: 'get',
+            url: '/weather/today',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            params: {
+              time: new Date().getTime(),
+            },
+          }).then((response) => {
             setAddress1(response.data.address1);
             setAddress2(response.data.address2);
             setWeatherMessage(response.data.message); //메세지
@@ -106,77 +104,77 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
                 setWeatherName('구름많음');
               }
             }
-          })
-      // 1. 토큰 값으로 나의 고유 넘버를 반환
-        // + DB 내 1차 주소들을 가져옴
-        axios
-          .all([
-            axios.get('/auth/userDTO', {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }),
-            axios.get('/auth/getAddress1List'),
-            axios.get('/PostHashs/selectAllPostTagNames'),
-          ])
-          // 2. 고유 넘버로 유저 정보 반환 후 저장
-          // + 1차 주소들 저장
-  
-          // 3. 해시 태그의 기존 데이터들 반환
-          .then(
-            axios.spread((resp1, resp2, resp3) => {
-              // 내 정보 + 피드 정보
-              const { userNo, address1, address2 } = resp1.data;
-  
-              const feedPost = {
-                userNo: userNo,
-                address1: address1,
-                address2: address2,
-                // writeDate: date,
-              };
-  
-              setFeedPost((prev) => {
-                return {
-                  ...prev,
-                  ...feedPost,
+          });
+          // 1. 토큰 값으로 나의 고유 넘버를 반환
+          // + DB 내 1차 주소들을 가져옴
+          axios
+            .all([
+              axios.get('/auth/userDTO', {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }),
+              axios.get('/auth/getAddress1List'),
+              axios.get('/PostHashs/selectAllPostTagNames'),
+            ])
+            // 2. 고유 넘버로 유저 정보 반환 후 저장
+            // + 1차 주소들 저장
+
+            // 3. 해시 태그의 기존 데이터들 반환
+            .then(
+              axios.spread((resp1, resp2, resp3) => {
+                // 내 정보 + 피드 정보
+                const { userNo, address1, address2 } = resp1.data;
+
+                const feedPost = {
+                  userNo: userNo,
+                  address1: address1,
+                  address2: address2,
+                  // writeDate: date,
                 };
-              });
-  
-              // 주소 데이터
-              let address = [];
-              resp2.data.forEach((addressData) => {
-                address = address.concat({
-                  value: addressData,
-                  label: addressData,
+
+                setFeedPost((prev) => {
+                  return {
+                    ...prev,
+                    ...feedPost,
+                  };
                 });
-              });
-              setAddressList1(address);
-  
-              // 해시태그 데이터
-              const HashTagNameList = resp3.data;
-              let arrTemp = [];
-              HashTagNameList.forEach((hashTag) => {
-                arrTemp = arrTemp.concat({
-                  value: hashTag.hashTag,
-                  label: hashTag.hashTag,
+
+                // 주소 데이터
+                let address = [];
+                resp2.data.forEach((addressData) => {
+                  address = address.concat({
+                    value: addressData,
+                    label: addressData,
+                  });
                 });
-                setOptions([...options, ...arrTemp]);
-              });
-  
-              // 객체로 리턴
-              const obj = { feedpost: feedPost, addressList: address };
-              return obj;
-            }),
-            // 3. 내 정보에 등록된 1차 기본 주소 지정
-          )
-          .then((obj) => initAddress1(obj))
-          .then((obj) => getAddress2(obj))
+                setAddressList1(address);
+
+                // 해시태그 데이터
+                const HashTagNameList = resp3.data;
+                let arrTemp = [];
+                HashTagNameList.forEach((hashTag) => {
+                  arrTemp = arrTemp.concat({
+                    value: hashTag.hashTag,
+                    label: hashTag.hashTag,
+                  });
+                  setOptions([...options, ...arrTemp]);
+                });
+
+                // 객체로 리턴
+                const obj = { feedpost: feedPost, addressList: address };
+                return obj;
+              }),
+              // 3. 내 정보에 등록된 1차 기본 주소 지정
+            )
+            .then((obj) => initAddress1(obj))
+            .then((obj) => getAddress2(obj));
         })
         .catch((error) => {
           console.log(error);
         });
-     }
-    }, [accessToken]);
+    }
+  }, [accessToken]);
 
   // useEffect(() => {
   //   if (accessToken) {
@@ -368,7 +366,6 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
   //       });
 
   //       console.log(data.feedPost)
-        
 
   //       // 지역, 날짜, 기온, 날씨 데이터 가져와야됨
   //       // console.log(data.feedPost); //객체로 나옴
@@ -526,8 +523,8 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
     delete feedpost.address1;
     delete feedpost.address2;
     console.log(feedpost);
-    console.log(file.length)
-    console.log(imgBase64.length)
+    console.log(file.length);
+    console.log(imgBase64.length);
     formData.append('dto', feedpost);
     // formData.append('userNo', feedpost.userNo);
     // formData.append('body', feedpost.body);
@@ -659,7 +656,7 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
           </div>
           <div className="hashLayout">
             <CreatableSelect
-            className='Select'
+              className="Select"
               placeholder="해시태그 추가"
               isMulti
               options={options}
@@ -671,7 +668,9 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
 
           <div className="weatherResultLayout">
             <div className="todayName">{`${feedpost.writeDate} ${address1}, ${address2} 날씨`}</div>
-            <div className="todaySky">{weatherIcon} {weatherName}</div>
+            <div className="todaySky">
+              {weatherIcon} {weatherName}
+            </div>
             <div className="todayTemp">
               <div className="maxTemp">최고기온 : {maxTemp}°</div>
               <div className="minTemp">{weatherMessage}</div>

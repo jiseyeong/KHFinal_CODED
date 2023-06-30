@@ -4,12 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import kh.coded.dto.FeedPostDTO;
 import kh.coded.dto.ReportDTO;
@@ -40,15 +35,11 @@ public class ReportController {
 	}
 
 
-	@PostMapping(value = "/ReportOk") 
-	public ResponseEntity<?> ReportOk
-	(@RequestParam(value = "writerUserNo") int writerUserNo,@RequestParam(value = "title") String title){
-		try{
-			int ReportOk = feedReportService.ReportOk(writerUserNo,title);
-			return ResponseEntity.ok().body(ReportOk);
-		}catch(Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	// 피드 신고 접수
+	@PostMapping(value = "insertReport") // 구현중
+	public ResponseEntity<?> insertReport(@ModelAttribute ReportDTO dto){
+		int reportOk = feedReportService.insertReport(dto);
+		return ResponseEntity.ok().body(reportOk);
 	}
 
 	@GetMapping(value="report")

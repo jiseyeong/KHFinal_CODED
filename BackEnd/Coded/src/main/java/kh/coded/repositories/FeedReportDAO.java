@@ -21,4 +21,8 @@ public class FeedReportDAO {
 	public List<ReportDTO> selectAll(){
 		return mybatis.selectList("Report.selectAll");
 	}
+
+	public int insertReport(ReportDTO dto) {
+		return mybatis.insert("Report.insertReport",dto);
+	}
 }

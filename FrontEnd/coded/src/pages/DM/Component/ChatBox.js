@@ -5,13 +5,14 @@ import React, { useEffect, useRef } from 'react';
 
 
 const ChatBox = (props) => {
-
-    // console.log(props);
+    const stompClient = props.stompClient;
+    const setDMList =props.setDMList;
     const DMList = props.DMList;
     const loginUserNo = props.loginUserNo;
     const dmListRef = useRef(null);
     const DMRoom = props.DMRoom;
-    console.log(DMRoom)
+    const Send = props.Send;
+    const setMessage = props.setMessage;
 
     useEffect(() => {
         scrollToBottom();
@@ -77,18 +78,25 @@ const ChatBox = (props) => {
                 <MenuButton></MenuButton>
             </div>
             <div className='DMList' ref={dmListRef}>
-                {DMList.map(DMList => {
-                    return (
-                        <div className={DMList.userNo == loginUserNo ? 'mySend' : 'other'}>
-                            <div className={DMList.userNo == loginUserNo ? 'myMsg' : 'otherMsg'}>{DMList.message}</div>
-                            {DMList.userNo == loginUserNo && (<div className='mySendTime'>{DMList.formedWriteDate}</div>)}
-                            {!(DMList.userNo == loginUserNo) && (<div className='otherTime'>{DMList.formedWriteDate}</div>)}
-                        </div>
-                    );
-                })}
+                {DMList.length > 0 &&
+                    DMList.map((DMList) => {
+                        return (
+                            <div className={DMList.userNo === loginUserNo ? 'mySend' : 'other'}>
+                                <div className={DMList.userNo === loginUserNo ? 'myMsg' : 'otherMsg'}>
+                                    {DMList.message}
+                                </div>
+                                {DMList.userNo === loginUserNo ? (
+                                    <div className='mySendTime'>{DMList.formedWriteDate}</div>
+                                ) : (
+                                    <div className='otherTime'>{DMList.formedWriteDate}</div>
+                                )}
+                            </div>
+                        );
+                    })}
             </div>
             <div className='inputChat'>
-                <SendBtn></SendBtn>
+                <SendBtn setDMList={setDMList} DMRoom={DMRoom} stompClient={stompClient} Send={Send}
+                setMessage={setMessage}></SendBtn>
             </div>
         </ChatBox>
     );

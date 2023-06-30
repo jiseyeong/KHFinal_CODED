@@ -42,6 +42,7 @@ import Follow from './component/FollowList/Follow';
 import AdminPage from './pages/Admin/AdminPage';
 // import ConfirmDialog from './component/Common/ConfirmDialog';
 
+
 const ButtonContainer = styled.div`
   position: fixed;
   right: 5%;
@@ -160,6 +161,7 @@ function App() {
         <Route path="/feedInsertTest" element={<FeedInsertTest />} />
         <Route path="/followList" element={<Follow />} />
         <Route path="/imageSlide" element={<ImageSlide />} />
+  
 
         <Route
           path="/test/feedComment"
