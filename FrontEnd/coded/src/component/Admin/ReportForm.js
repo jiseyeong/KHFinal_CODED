@@ -42,6 +42,7 @@ function ReportForm() {
       })
         .then((response) => {
           setReportList(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           if (error.request.status === 403) {
@@ -71,12 +72,12 @@ function ReportForm() {
       .then((response) => {
         setFeedPost(response.data);
 
-        function getHashs() {
+        function getHashs(feedPostId) {
           return axios({
             method: 'get',
             url: '/feedpost/hashtagList',
             params: {
-              feedPostId: feedPost.feedPostId,
+              feedPostId: feedPostId,
             },
           }).then((response) => {
             setHashTagList((prev) => {
@@ -84,22 +85,19 @@ function ReportForm() {
             });
           });
         }
-        function getLikeCount() {
+        function getLikeCount(feedPostId) {
           return axios({
             method: 'get',
             url: '/feedpost/likeCount',
             params: {
-              feedPostId: feedPost.feedPostId,
+              feedPostId: feedPostId,
             },
           })
             .then((response) => {
               setFeedLikeCount(response.data);
             })
-            .catch((error) => {
-              console.log(error);
-            });
         }
-        function getIsLike() {
+        function getIsLike(feedPostId) {
           return axios({
             method: 'get',
             url: '/feedpost/isLike',
@@ -107,15 +105,18 @@ function ReportForm() {
               Authorization: `Bearer ${accessToken}`,
             },
             params: {
-              feedPostId: feedPost.feedPostId,
+              feedPostId: feedPostId,
             },
           }).then((response) => {
             setIsFeedLike(response.data);
           });
         }
 
-        axios.all([getHashs(), getLikeCount(), getIsLike()]).then(() => {
+        axios.all([getHashs(response.data.feedPostId), getLikeCount(response.data.feedPostId), getIsLike(response.data.feedPostId)]).then(() => {
           openModal();
+        })
+        .catch((error)=>{
+          console.log(error);
         });
       })
       .catch((error) => {
@@ -136,7 +137,7 @@ function ReportForm() {
               <th style={{ width: '5%' }}>
                 writer
                 <br />
-                userNo
+                UserNo
               </th>
               <th style={{ width: '70%' }}>Title</th>
               <th style={{ width: '15%' }}>

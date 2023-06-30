@@ -163,7 +163,7 @@ const SearchBox = () => {
       {isAutoCompleteOpen && (
         <div className={styles.autoSearchContainer} ref={autoSearchRef}>
           <div className={styles.autoSearchWrap}>
-            {completedData.map((i) => {
+            {completedData.map((i, index) => {
               return i.userId !== undefined ? (
                 <UserList
                   userNo={i.userNo}
@@ -172,12 +172,14 @@ const SearchBox = () => {
                   sysName={i.sysName}
                   setIsAutoCompleteOpen={setIsAutoCompleteOpen}
                   toSearch={toSearch}
+                  key={index}
                 />
               ) : (
                 <HashTagList
                   hashTag={i.hashTag}
                   setIsAutoCompleteOpen={setIsAutoCompleteOpen}
                   toSearch={toSearch}
+                  key={index}
                 />
               );
             })}
