@@ -74,7 +74,7 @@
 	</select>
 
 	<select id="selectUserListWithProfile" resultType="kh.coded.dto.MemberWithProfileDTO">
-		select * from member join photo using (userNo) order by userNo desc
+		select * from member left join photo using (userNo) order by userNo desc
 	</select>
 
 	<select id="selectUserWithProfileByUserNo" resultType="kh.coded.dto.MemberWithProfileDTO">
@@ -95,7 +95,7 @@
 	</update>
 
 	<select id="selectMyPickPageData" resultType="kh.coded.dto.MyPickPageDTO">
-		SELECT m.*,p.* ,fp.postCount, nvl(following.followingCount,0) as followingCount, nvl(follower.followerCount,0) as followerCount FROM member m
+		SELECT m.*,p.* ,fp.postCount, nvl(following.followingCount,0) as followingCount, nvl(follower.followerCount,0) as followerCount from member m
 		LEFT JOIN photo p ON m.userNo = p.userNo
 		LEFT JOIN ( SELECT userNo, COUNT(*) AS postCount FROM feedPost WHERE userNo = ${userNo} GROUP BY userNo ) fp ON m.userNo = fp.userNo
 		left join ( select toUserNo, count(*) as followingCount from follow where toUserNo = ${userNo} group by toUserNo ) following on m.userNo = following.toUserNo

@@ -135,7 +135,8 @@ public class SecurityConfiguration {
 			"/feedReport/insertReport",
 			"/feedList/search",
 			"/coded.ico",
-			"/feedpost/insertFeedPost"
+			"/feedpost/insertFeedPost",
+			"/follow/isfollow"
 
 	};
 	private final String[] API_USER_LIST = {

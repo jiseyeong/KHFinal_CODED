@@ -284,111 +284,6 @@ function FeedModal({
 
   //------------------------------------------------
 
-  // function handleClickLike(e) {
-  //   e.preventDefault();
-  //   if (!isLikeBtn) {
-  //     setIsLikeBtn(true);
-  //     setFollower(modalData?.modalData?.modalData?.follower + 1); //modalData?.follower + 1 로 고쳐봐도 될 것.
-  //   } else {
-  //     setIsLikeBtn(false);
-  //     setFollower(modalData?.modalData?.modalData?.follower - 1);
-  //   }
-  // }
-
-  // function handleRepleLike(e) {
-  //   if (!isRepleLikeBtn) {
-  //     setIsRepleLikeBtn(true);
-  //   } else {
-  //     setIsRepleLikeBtn(false);
-  //   }
-  // }
-
-  // function followBtnActive() {
-  //   if (isFollowBtn) {
-  //     setIsFollowBtn(false);
-  //   } else {
-  //     setIsFollowBtn(true);
-  //   }
-  // }
-
-  // function getData(e) {
-  //   e.preventDefault();
-  //   setComment(e.target.value);
-  //   setData(e.target.value);
-  // }
-
-  // function handleKeyPress(e) {
-  //   e.preventDefault();
-  //   if (e.key === 'Enter') {
-  //     if (!comment) {
-  //       e.preventDefault();
-  //     } else {
-  //       // handleComment();
-  //     }
-  //   }
-  // }
-
-  // useEffect(()=>{
-  //     axios({
-  //       method:'get',
-  //       url:'/feedpost/selectFeedDetail',
-  //       headers:{
-  //         Authorization:'Bearer '+accessToken
-  //     },
-  //     params:{
-  //       feedPostId:feedPostId
-  //    }
-  //     }).then((response)=>{
-  //       const {
-  //         feedPost,
-  //         photoList,
-  //         writeMember,
-  //         userProfile,
-  //         feedLikeCount,
-  //         isFeedLike
-  //       } = response.data;
-  //       setFeedPost(feedPost);
-  //       setPhotoList(photoList);
-  //       setWriteMember(writeMember);
-  //       setUserProfile(userProfile);
-  //       setFeedLikeCount(feedLikeCount);
-  //       setFeedLike(isFeedLike);
-  //     }).catch((error)=>{
-  //       console.log(error);
-
-  //     })
-  // },[])
-
-  // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
-  // function handleComment(e) {
-  //   axios({
-  //     method: 'post',
-  //     url: API,
-  //     headers: {
-  //       Authorization: 'Bearer ' + accessToken,
-  //     },
-  //     params: {
-  //       content: comment,
-  //       user_id: modalData?.modalData?.modalData?.id,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       setRes(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   setComments((prev) => {
-  //     return [...prev, comment];
-  //   });
-  //   setComment('');
-  //   num += 1;
-  // }
-
-  // useEffect(() => {
-  //   console.log('id값', modalData?.modalData?.modalData?.id);
-  // });
-
   const customStyles = {
     control: (provided) => ({
       ...provided,
@@ -426,36 +321,10 @@ function FeedModal({
                     );
                   })}
                 </Slider>
-                {/* <img
-                  className="image"
-                  //src={modalData?.modalData?.modalData?.contentImg}
-                  src={"/images/" + feedPost.thumbNailSysName}
-                /> */}
-                {/* <div
-                  className={
-                    modalData?.modalData?.modalData?.contentImg?.length > 1
-                      ? 'smallImages'
-                      : 'displayNone'
-                  }
-                > */}
-                {/* <figure className="smallImagesWrapper">
-                    <img
-                      className="smallImage"
-                      src={modalData?.modalData?.modalData?.contentImg[0]}
-                    />
-                  </figure>
-                  <figure className="smallImagesWrapper">
-                    <img
-                      className="smallImage"
-                      src={modalData?.modalData?.modalData?.contentImg[1]}
-                    />
-                  </figure> */}
-                {/* </div> */}
               </div>
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                    {console.log(feedPost)}
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
@@ -480,24 +349,33 @@ function FeedModal({
                   </div>
 
                   {/* 수정하기 눌렀을 때 숨김 */}
-
+                  {console.log(feedpost)}
                   {editYN === false && (
                     <div className="optionBox">
-                      {feedPost.userNo === userNo && (
-                        <div className="optionBox" onClick={optionBoxClick}>
-                          <OptionBox></OptionBox>
-                        </div>
-                      )}
-                      {optionListDiv && (
-                        <div className="optionList">
-                          <div className="optionListDiv">
-                            <a onClick={editFeedPost}>수정하기</a>
+                      <div className="optionBox" onClick={optionBoxClick}>
+                        <OptionBox></OptionBox>
+                      </div>
+                      {optionListDiv &&
+                        (feedPost.userNo === userNo ? (
+                          <div className="optionList">
+                            <div className="optionListDiv">
+                              <a onClick={editFeedPost}>수정하기</a>
+                            </div>
+                            <div className="optionListDiv">
+                              <a onClick={deleteFeedPost}>삭제</a>
+                            </div>
                           </div>
-                          <div className="optionListDiv">
-                            <a onClick={deleteFeedPost}>삭제</a>
+                        ) : (
+                          <div className="optionList">
+                            <div className="optionListDiv">
+                              <a
+                              // onClick={reportFeedPost}
+                              >
+                                신고하기
+                              </a>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        ))}
                     </div>
                   )}
                 </div>
