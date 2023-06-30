@@ -19,6 +19,8 @@ import { Link } from 'react-router-dom';
 import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
 
+
+
 const ImageLayout = styled('div')`
   max-width: 100%;
   max-height: 100%;
@@ -215,7 +217,7 @@ function Modal({
   }
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
-  function setFeedLike() {
+  function setFeedLike() { aa
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
@@ -636,9 +638,14 @@ function Modal({
                 depth={0}
                 parentId={0}
               />
+            
             </div>
           </div>
+          
         </div>
+        
+        
+
       </div>
     </div>
   );

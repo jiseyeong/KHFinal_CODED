@@ -40,7 +40,7 @@ public class ReportController {
 	}
 
 
-	@PostMapping(value = "/ReportOk") // 구현중
+	@PostMapping(value = "/ReportOk") 
 	public ResponseEntity<?> ReportOk
 	(@RequestParam(value = "writerUserNo") int writerUserNo,@RequestParam(value = "title") String title){
 		try{
