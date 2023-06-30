@@ -96,19 +96,17 @@ public class FeedPostController {
             // Axios로 보낼 때, FormData로 묶어서 Data:formData로 보냄
             // Post형식으로 dto를 묶어서 받을 경우 ModelAttribute를 사용합니다.
             @RequestParam List<String> hashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) throws Exception{
-//        System.out.println("dto" + dto);
-//        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
-//        System.out.println("유저넘버 : " + dto.getUserNo());
-//        System.out.println("내용 : " + dto.getBody());
-//        System.out.println("작성일자 : " + dto.getWriteDate()); // 작성 필요 x
-//        System.out.println("최고온도 : " + dto.getWriteTemp());
-//        System.out.println("일교차 : " + dto.getWriteTempRange());
-//        System.out.println("강수상태 : " + dto.getWritePtyCode());
-//        System.out.println("하늘상태 : " + dto.getWriteSkyCode());
-//        System.out.println("해시코드 : " + hashTag.get(0));
-//        System.out.println("파일명 : " + files.get(0).getOriginalFilename());
-//        dto.setUserNo(21);
-//        dto.setBody("test");
+        System.out.println("dto" + dto);
+        System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
+        System.out.println("유저넘버 : " + dto.getUserNo());
+        System.out.println("내용 : " + dto.getBody());
+        System.out.println("작성일자 : " + dto.getWriteDate()); // 작성 필요 x
+        System.out.println("최고온도 : " + dto.getWriteTemp());
+        System.out.println("일교차 : " + dto.getWriteTempRange());
+        System.out.println("강수상태 : " + dto.getWritePtyCode());
+        System.out.println("하늘상태 : " + dto.getWriteSkyCode());
+        System.out.println("해시코드 : " + hashTag.get(0));
+        System.out.println("파일명 : " + files.get(0).getOriginalFilename());
 
         // 피드 테이블 insert
         // insert후 feedPostId가 update된 dto를 리턴 받습니다. (selectKey)

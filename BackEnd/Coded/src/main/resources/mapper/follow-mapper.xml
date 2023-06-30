@@ -14,7 +14,7 @@
 		select touserno from follow where fromUserNo = ${FromUserNo}
 	</select> -->
 
-	<select id="isFollow" resultType="Boolean">
+	<select id="isFollow" resultType="int">
 		select count(*) from follow where ToUserNo = ${toUserNo} and FromUserNo = ${myUserNo}
 	</select>
 

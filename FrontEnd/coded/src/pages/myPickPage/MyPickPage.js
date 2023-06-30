@@ -35,9 +35,9 @@ const MyPickPage = () => {
   const cpage = useRef(1);
 
   const loginUserNo = useSelector((state) => state.member.userNo);
+  const accessToken = useSelector((state) => state.member.access);
 
   const dispatch = useDispatch();
-  const accessToken = useSelector((state) => state.member.access);
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
   const setNavIndeMyPick = useCallback(() =>
     dispatch(setIndexMyPick(), [dispatch]),
@@ -53,10 +53,11 @@ const MyPickPage = () => {
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
   );
+
   const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
   const [followModalMode, setFollowModalMode] = useState(true);
-
   const [feedWriteModal, setFeedWriteModal] = useState(false);
+  const [followStats, setFollowStats] = useState(false);
 
   // 피드 작성 모달창 세팅
   const insertModalStyle = {
@@ -112,46 +113,23 @@ const MyPickPage = () => {
           .catch((error) => {
             console.log(error);
           });
-      } else {
-        denyAccess();
       }
+    } else {
+      getMyPickData();
     }
     return () => {
       window.onscroll = null;
     };
-  }, [accessToken]);
+  }, [accessToken, currentUserNo]);
 
-  const handleDMButtonClick = () => {
-    if (accessToken) {
-      if (!subscribed) {
-        // 새로 구독
-        // TODO: 구독할 토픽 및 구독 관련 로직 추가
-
-        // 구독 시작 후 DMList 페이지로 이동
-        setSubscribed(true);
-        history.push('/dm-list');
-      } else {
-        // 이미 구독 중인 경우
-        // DMList 페이지로 이동
-        history.push('/dm-list');
-      }
-
-      // 토큰이 있을 때의 동작
-      // 구독 상태인지 확인하고, 구독되지 않았을 경우 구독 요청을 보내고 DMList 페이지로 이동
-      // 구독 상태라면 DMList 페이지로 이동
-    } else {
-      // 토큰이 없을 때의 동작
-      denyAccess();
-    }
-  };
-
-  useEffect(() => {
-    if (currentUserNo) {
-      getMyPickData();
-    }
-  }, [currentUserNo]);
+  // useEffect(() => {
+  //   if (currentUserNo) {
+  //     getMyPickData();
+  //   }
+  // }, [currentUserNo]);
 
   const getMyPickData = () => {
+    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -160,7 +138,6 @@ const MyPickPage = () => {
       },
     })
       .then((resp) => {
-        console.log(resp.data);
         const {
           userNo: userNo,
           userId: userId,
@@ -187,7 +164,11 @@ const MyPickPage = () => {
           followerCount: followerCount,
         });
       })
-      .then(addFeedList);
+      .then(checkFollow)
+      .then(addFeedList)
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const addFeedList = () => {
@@ -211,6 +192,68 @@ const MyPickPage = () => {
   window.onscroll = function () {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       addFeedList();
+    }
+  };
+
+  // 팔로우/팔로워 상태를 조회
+  const checkFollow = () => {
+    if (accessToken) {
+      axios({
+        url: '/follow/isfollow',
+        method: 'get',
+        params: {
+          toUserNo: currentUserNo,
+          fromUserNo: loginUserNo,
+        },
+      })
+        .then((resp) => {
+          setFollowStats(resp.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
+  // 팔로우/팔로워 버튼을 누를 때
+  const handleFollow = () => {
+    axios({
+      url: '/follow/insertfollow',
+      method: 'post',
+      params: {
+        toUserNo: currentUserNo,
+        fromUserNo: loginUserNo,
+      },
+    })
+      .then((resp) => {
+        setFollowStats((prev) => !prev);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleDMButtonClick = () => {
+    if (accessToken) {
+      if (!subscribed) {
+        // 새로 구독
+        // TODO: 구독할 토픽 및 구독 관련 로직 추가
+
+        // 구독 시작 후 DMList 페이지로 이동
+        setSubscribed(true);
+        history.push('/dm-list');
+      } else {
+        // 이미 구독 중인 경우
+        // DMList 페이지로 이동
+        history.push('/dm-list');
+      }
+
+      // 토큰이 있을 때의 동작
+      // 구독 상태인지 확인하고, 구독되지 않았을 경우 구독 요청을 보내고 DMList 페이지로 이동
+      // 구독 상태라면 DMList 페이지로 이동
+    } else {
+      // 토큰이 없을 때의 동작
+      denyAccess();
     }
   };
 
@@ -312,9 +355,21 @@ const MyPickPage = () => {
               )}
             </div>
             <div className="editBtnLayout">
-              <Link to="/profile">
-                <button className="editButton">Edit</button>
-              </Link>
+              {currentUserNo === loginUserNo ? (
+                <Link to="/profile">
+                  <button className="editButton btn">Edit</button>
+                </Link>
+              ) : followStats ? (
+                // 팔로우 되어있는 상태
+                <button className="followingBtn btn" onClick={handleFollow}>
+                  팔로잉
+                </button>
+              ) : (
+                // 팔로우 하지 않은 상태
+                <button className="followBtn btn" onClick={handleFollow}>
+                  팔로우
+                </button>
+              )}
             </div>
           </div>
         </div>

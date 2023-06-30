@@ -77,7 +77,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
           }
           setFeedPost((prev) => ({
             ...prev,
-            writeTemp: response.data.today.min,
+            writeTemp: response.data.today.max,
             writeTempRange: response.data.today.max - response.data.today.min,
             writePtyCode: response.data.today.ptyCode,
             writeSkyCode: response.data.today.skyCode,

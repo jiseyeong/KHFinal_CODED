@@ -197,4 +197,5 @@ public class MyPickPageDTO {
     public void setFollowerCount(int followerCount) {
         this.followerCount = followerCount;
     }
+
 }

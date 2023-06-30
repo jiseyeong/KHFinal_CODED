@@ -211,6 +211,7 @@ function FeedList({ type }) {
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
+      {console.log(feedPost[0])}
       {feedPost.length > 0 ? (
         <Masonry className={'my-masonry-grid'} options={masonryOptions}>
           {feedPost.map((e, i) => (
