@@ -20,6 +20,8 @@ import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
 import ReportModal from '../../../component/Report/component/ReportModal';
 
+
+
 const ImageLayout = styled('div')`
   max-width: 100%;
   max-height: 100%;
@@ -49,9 +51,9 @@ function FeedModal({
     centerMode: true,
     centerPadding: '0px',
     vertical: false,
-    arrows: false,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    arrows: true,
+    // autoplay: true,
+    // autoplaySpeed: 2000,
     pauseOnFocus: true,
     pauseOnHover: true,
     fade: false,
@@ -219,7 +221,7 @@ function FeedModal({
   }
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
-  function setFeedLike() {
+  function setFeedLike() { aa
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
@@ -413,8 +415,8 @@ function FeedModal({
                         <img
                           src={`/images/${item.sysName}`}
                           style={{
-                            maxWidth:'100%',
-                            height:'100%',
+                            maxWidth: '100%',
+                            height: '585px',
                             objectFit: 'contain',
                             margin: 'auto',
                             display: 'block',
@@ -649,7 +651,6 @@ function FeedModal({
                 depth={0}
                 parentId={0}
               />
-
               {/* Report insert 기능 완료 */}
               {/* Report 모달창 구현 완료 */}
               {/* 단 모달창 안에서 모달창을 띄우질 못함 */}
@@ -660,7 +661,11 @@ function FeedModal({
               {/* {reportModal && <ReportModal />} */}
             </div>
           </div>
+          
         </div>
+        
+        
+
       </div>
     </div>
   );
