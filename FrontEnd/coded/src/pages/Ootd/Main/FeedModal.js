@@ -20,8 +20,6 @@ import weatherIcons from '../../../component/WeatherCommon/WeatherIcons';
 import CreatableSelect from 'react-select/creatable';
 import ReportModal from '../../../component/Report/component/ReportModal';
 
-
-
 const ImageLayout = styled('div')`
   max-width: 100%;
   max-height: 100%;
@@ -152,6 +150,7 @@ function FeedModal({
         },
       })
         .then(() => {
+          alert('삭제가 완료 되었습니다.');
           closeModal();
           window.location.reload();
         })
@@ -221,7 +220,8 @@ function FeedModal({
   }
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
-  function setFeedLike() { aa
+  function setFeedLike() {
+    aa;
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
@@ -661,11 +661,7 @@ function FeedModal({
               {/* {reportModal && <ReportModal />} */}
             </div>
           </div>
-          
         </div>
-        
-        
-
       </div>
     </div>
   );
