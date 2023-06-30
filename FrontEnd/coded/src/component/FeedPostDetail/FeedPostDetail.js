@@ -8,6 +8,7 @@ import axios from 'axios';
 import LoadingBar from '../Common/LoadingBar';
 import FeedListNavi from './FeedListNavi';
 import { Like, Temperature } from '../../assets/ModalAsset/ModalAsset';
+import ConfirmDialog from '../Common/ConfirmDialog';
 
 const FeedPostDetail = (props) => {
   const { index, feedPost } = props;
@@ -22,6 +23,9 @@ const FeedPostDetail = (props) => {
   const [isFeedLike, setIsFeedLike] = useState(false);
   const [scale, setScale] = useState(1);
   const [loginCheckModal, setLoginCheckModal] = useState(false);
+
+  const [isLogintrue,setIsLogintrue] =useState(false);
+
 
   // 모달 창 열기
   const openModal = () => {
@@ -128,6 +132,7 @@ const FeedPostDetail = (props) => {
 
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
   function setFeedLike() {
+    if( accessToken){
     axios({
       method: 'post',
       url: '/feedpost/insertFeedLike',
@@ -155,7 +160,10 @@ const FeedPostDetail = (props) => {
         } else {
           console.log(error);
         }
-      });
+      }); }
+      else{
+        setIsLogintrue(true)
+      }
   }
 
   return (
@@ -266,6 +274,10 @@ const FeedPostDetail = (props) => {
             hashTagList={hashTagList}
           />
         )}
+
+     {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue}/> }
+      
+
       </div>
     </div>
   );
