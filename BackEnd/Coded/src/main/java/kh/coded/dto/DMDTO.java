@@ -9,7 +9,6 @@ public class DMDTO {
     private int userNo;
     private String message;
     private Timestamp writeDate;
-
     private char isDelete;
 
     public DMDTO() {
@@ -75,6 +74,12 @@ public class DMDTO {
 	public String getFormedWriteDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return sdf.format(writeDate);
+	}
+
+	@Override
+	public String toString() {
+		return "DMDTO [messageId=" + messageId + ", roomId=" + roomId + ", userNo=" + userNo + ", message=" + message
+				+ ", writeDate=" + writeDate + ", isDelete=" + isDelete + "]";
 	}
     
 }

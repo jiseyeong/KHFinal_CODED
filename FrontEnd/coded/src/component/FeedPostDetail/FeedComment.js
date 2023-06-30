@@ -158,12 +158,13 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         }
       });
   }
-
   function handleUpdate() {
     setIsUpdate((prev) => {
       return !prev;
     });
   }
+
+
   function updateComment() {
     handleUpdate();
     axios({
@@ -269,14 +270,12 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
                 <button className={style.commentBtn} onClick={handleUpdate}>
                   edit
                 </button>
+                <button className={style.commentBtn} onClick={deleteComment}>
+                  delete
+              </button>
                 {/* <span>／</span> */}
               </>
             ))}
-          {userNo === commentInfo.userNo && (
-            <button className={style.commentBtn} onClick={deleteComment}>
-              delete
-            </button>
-          )}
         </div>
       </div>
       <div className={style.nestedCommentReple}>

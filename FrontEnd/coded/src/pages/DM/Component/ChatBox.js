@@ -12,7 +12,6 @@ const ChatBox = (props) => {
     const dmListRef = useRef(null);
     const DMRoom = props.DMRoom;
     const Send = props.Send;
-    const setMessage = props.setMessage;
 
     useEffect(() => {
         scrollToBottom();
@@ -24,42 +23,10 @@ const ChatBox = (props) => {
         }
     };
 
-    const ChatBox = styled.div`
-    width:100%; height:100%; 
-
-    .chatNavBar{height:10%; width:100%; background-color: lightgray;
-        margin-bottom:10px; border-radius:5px; display:flex;}
-        .otherPhoto{height:100%; width:15%; display:flex; justify-content:center;}
-        .profileImg{height:100%;}
-        .otherInfo{height:100%; width:70%;}
-            .otherId{height:50%; width:100%; padding:5px;}
-            .otherNickname{height:50%; width:100%; padding:5px;}
-    .DMList{height:80%; width:100%; background-color: lightgray; display: flex; border-radius:5px;
-        flex-flow: wrap; overflow-wrap: break-word; overflow: overlay}   
-
-        .mySend{width: 100%;
-        padding: 5px;
-        display: flex;
-        margin-bottom: 10px;
-        justify-content: center;
-        flex-direction: column;
-        align-items: end;}
-        .other{width: 100%;
-            padding: 5px;
-            display: flex;
-            margin-bottom: 10px;
-            justify-content: center;
-            flex-direction: column;
-            align-items: start;}
-        
-        .myMsg{max-width:400px; text-align:right;}
-        .otherMsg{max-width:400px; text-align:left;}
-        .mySendTime{font-size:12px; text-align:right;}
-        .otherTime{font-size:12px; text-align:left;}
-    `
+  
 
     return (
-        <ChatBox>
+        <ChatBoxContainer>
             <div className='chatNavBar'>
                 <div className="otherPhoto">
                     {DMRoom.sysName != null ? (
@@ -79,9 +46,9 @@ const ChatBox = (props) => {
             </div>
             <div className='DMList' ref={dmListRef}>
                 {DMList.length > 0 &&
-                    DMList.map((DMList) => {
+                    DMList.map((DMList, index) => {
                         return (
-                            <div className={DMList.userNo === loginUserNo ? 'mySend' : 'other'}>
+                            <div key={index} className={DMList.userNo === loginUserNo ? 'mySend' : 'other'}>
                                 <div className={DMList.userNo === loginUserNo ? 'myMsg' : 'otherMsg'}>
                                     {DMList.message}
                                 </div>
@@ -96,10 +63,44 @@ const ChatBox = (props) => {
             </div>
             <div className='inputChat'>
                 <SendBtn setDMList={setDMList} DMRoom={DMRoom} stompClient={stompClient} Send={Send}
-                setMessage={setMessage}></SendBtn>
+                ></SendBtn>
             </div>
-        </ChatBox>
+        </ChatBoxContainer>
     );
 }
+
+const ChatBoxContainer = styled.div`
+width:100%; height:100%; 
+
+.chatNavBar{height:10%; width:100%; background-color: lightgray;
+    margin-bottom:10px; border-radius:5px; display:flex;}
+    .otherPhoto{height:100%; width:15%; display:flex; justify-content:center;}
+    .profileImg{height:100%;}
+    .otherInfo{height:100%; width:70%;}
+        .otherId{height:50%; width:100%; padding:5px;}
+        .otherNickname{height:50%; width:100%; padding:5px;}
+.DMList{height:80%; width:100%; background-color: lightgray; display: flex; border-radius:5px;
+    flex-flow: wrap; overflow-wrap: break-word; overflow: overlay}   
+
+    .mySend{width: 100%;
+    padding: 5px;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: end;}
+    .other{width: 100%;
+        padding: 5px;
+        display: flex;
+        margin-bottom: 10px;
+        justify-content: center;
+        flex-direction: column;
+        align-items: start;}
+    
+    .myMsg{max-width:400px; text-align:right;}
+    .otherMsg{max-width:400px; text-align:left;}
+    .mySendTime{font-size:12px; text-align:right;}
+    .otherTime{font-size:12px; text-align:left;}
+`
 
 export default ChatBox;
