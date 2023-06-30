@@ -269,11 +269,19 @@
           margin-left: 30px;
 
           .feedPostBody {
-            width: 80%;
+            width: 100%;
+            .post {
+              height: 100%;
+              width: 100%;
+              resize: none;
+              border: 1px solid hsl(0, 0%, 80%);
+            }
+            overflow: hidden;
           }
           .feedPostWeather {
-            width: 15%;
+            width: 14%;
             display: flex;
+            text-align: center;
             .weatherIcon {
               width: 50%;
               svg {
@@ -282,7 +290,6 @@
               }
             }
             .writeTemp {
-              padding-top: 7px;
               width: 50%;
               font-size: 20px;
             }
@@ -294,8 +301,9 @@
 
         .hashTagBody {
           display: flex;
-          height: 20%;
-          padding-left: 30px;
+          height: 24%;
+          margin-left: 30px;
+          padding-bottom: 10px;
           line-height: 50px;
           font-size: 12px;
           .selectLayout {
