@@ -21,7 +21,6 @@ import kh.coded.dto.DMRoomListDTO;
 import kh.coded.services.DMRoomService;
 import kh.coded.services.DMRoomUserService;
 import kh.coded.services.DMService;
-import utils.CustomWebSocketHandler;
 
 
 @RestController

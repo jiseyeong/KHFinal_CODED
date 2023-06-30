@@ -33,5 +33,12 @@ public class DMService {
 	public List<DMDTO> selectDMbyRoomid(int roomId) {
 		return dmDAO.selectDMbyRoomid(roomId);
 	}
+
+	public void inserDM(DMDTO dmDto) {
+		dmDAO.inserDM(dmDto);
+		
+	}
+	
+	
 	
 }

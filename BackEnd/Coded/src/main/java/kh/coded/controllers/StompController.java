@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 import kh.coded.dto.DMDTO;
 import kh.coded.services.DMRoomService;
@@ -34,6 +35,8 @@ public class StompController  {
 	private DMRoomUserService DMRoomUserService;
 	// -- 이하 STOMP 구독 및 메세지 송신 --
 	
+
+	
 		// 구독
 		@SubscribeMapping("/topic/{roomId}")
 		public List<DMDTO> handleSubscription(@DestinationVariable int roomId) {
@@ -43,17 +46,23 @@ public class StompController  {
 		    return list;
 		}
 		
-		// 메세지 송신 후 특정 roomId에 송신
+		// 메세지 수신 후 특정 roomId에 송신
 	    @MessageMapping("/chat/{roomId}")
-	    public void handleChatMessage(@DestinationVariable int roomId, String message, int userNo) {
-	    	System.out.println("방번호 "+roomId +" 보낸사람 "+userNo+" 메세지 "+message );
-	    	template.convertAndSend("/topic/{roomId}",message);
+	    public void handleChatMessage(@DestinationVariable int roomId,@Payload DMDTO dmDto) {
+	    	dmDto.setRoomId(roomId);
+	    	DMService.inserDM(dmDto);
+	    	dmDto.setIsDelete('F');
+	    	System.out.println(dmDto.toString());
+	    	template.convertAndSend("/topic/"+roomId,dmDto);
 		}
 	    
 	
-	    
-	    @MessageExceptionHandler()
-	    public void MessageExceptionHandler(){
+	    @MessageExceptionHandler
+	    public void MessageExceptionHandler(Exception exception){
+	    	exception.printStackTrace();
 	    	System.out.println("메세지 관련 에러발생");
 	    }
+	    
+	   
+	    
 }
