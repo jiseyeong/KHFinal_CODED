@@ -160,7 +160,7 @@ body {
           margin-left: 50px;
           margin-top: 0;
 
-          .editButton {
+          .btn {
             width: 150px;
             height: 40px;
             border: 1px solid silver;
@@ -168,6 +168,20 @@ body {
             font-size: 18px;
             font-weight: 500;
             cursor: pointer;
+          }
+          .editButton {
+            color: #222;
+            &:hover {
+              color: #ff0066;
+            }
+          }
+          .followingBtn {
+            color: #222;
+            &:hover {
+              color: #ff0066;
+            }
+          }
+          .followBtn {
             color: #222;
             &:hover {
               color: #ff0066;
