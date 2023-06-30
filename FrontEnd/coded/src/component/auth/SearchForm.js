@@ -104,7 +104,7 @@ function SearchForm({ type }) {
       <div className={style.searchMessage}>{message}</div>
 
       {loading ? (
-        <div className={style.searchMessage}>진행 중입니다.</div>
+        <div className={style.searchMessage}>임시 비밀번호를 발급 중입니다</div>
       ) : (
         <button
           className={style.searchBtn}

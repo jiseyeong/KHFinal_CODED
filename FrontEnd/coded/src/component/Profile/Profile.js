@@ -320,12 +320,14 @@ const ProfileTemplate = () => {
     }
 
     if (!regexId.test(memberInfo.userId)) {
-      alert('7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
+      alert('아이디는 7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
       return;
     }
 
     if (!regexNickName.test(memberInfo.userNickName)) {
-      alert('8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.');
+      alert(
+        '닉네임은 8자리 이하의 한글, 알파벳 대소문자, 숫자만 사용 가능 합니다.',
+      );
       return;
     }
 
