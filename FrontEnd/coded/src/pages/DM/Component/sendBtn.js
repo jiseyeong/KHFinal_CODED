@@ -4,15 +4,14 @@ import { styled } from 'styled-components';
 import { useSelector } from 'react-redux';
 
 function SendBtn(props) {
-    const setMessage = props.setMessage;
     const Send = props.Send;
 
 
     const sendRef = useRef(null);
 
     const sendToServer = () => {
-        setMessage(sendRef.current.value);
-        Send()
+
+        Send(sendRef.current.value)
         // 입력 필드 초기화
         sendRef.current.value = '';
       };

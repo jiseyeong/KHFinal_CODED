@@ -12,9 +12,9 @@ const HeartIcons = {
       stroke="currentColor"
       fill="currentColor"
       strokeWidth="0"
-      viewBox="0 0 16 16"
-      height="1em"
-      width="1em"
+      viewBox="0 0 20 20"
+      height="3"
+      width="3"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -30,9 +30,9 @@ const HeartIcons = {
       stroke="currentColor"
       fill="#ff0066"
       strokeWidth="0"
-      viewBox="0 0 16 16"
-      height="1em"
-      width="1em"
+      viewBox="0 0 20 20"
+      height="3"
+      width="3"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -158,12 +158,13 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         }
       });
   }
-
   function handleUpdate() {
     setIsUpdate((prev) => {
       return !prev;
     });
   }
+
+
   function updateComment() {
     handleUpdate();
     axios({
@@ -243,9 +244,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
         </div>
       </div>
       <div className={style.feedCommentList2}>
-        <div className={style.writeDate}>
-          {commentInfo.formedWriteDate}
-        </div>
+        <div className={style.writeDate}>{commentInfo.formedWriteDate}</div>
         <div className={style.heartCount}>좋아요 {likeCount}</div>
         <div className={style.repleBtn}>
           {depth < 1 && accessToken && (
@@ -257,28 +256,26 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
             (isUpdate ? (
               <div>
                 <button className={style.commentBtn} onClick={updateComment}>
-                  확정
+                  upload
                 </button>
                 <button
                   className={style.commentBtn}
                   onClick={cancelUpdateComment}
                 >
-                  취소
+                  cancel
                 </button>
               </div>
             ) : (
               <>
                 <button className={style.commentBtn} onClick={handleUpdate}>
-                  수정
+                  edit
                 </button>
+                <button className={style.commentBtn} onClick={deleteComment}>
+                  delete
+              </button>
                 {/* <span>／</span> */}
               </>
             ))}
-          {userNo === commentInfo.userNo && (
-            <button className={style.commentBtn} onClick={deleteComment}>
-              삭제
-            </button>
-          )}
         </div>
       </div>
       <div className={style.nestedCommentReple}>
@@ -289,7 +286,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
               ref={editorRef}
               contentEditable="true"
             />
-            <button onClick={writeComment}>전송</button>
+            <button onClick={writeComment}>upload</button>
           </div>
         )}
       </div>

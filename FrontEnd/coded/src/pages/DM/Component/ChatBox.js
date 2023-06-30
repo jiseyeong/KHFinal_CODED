@@ -12,7 +12,6 @@ const ChatBox = (props) => {
     const dmListRef = useRef(null);
     const DMRoom = props.DMRoom;
     const Send = props.Send;
-    const setMessage = props.setMessage;
 
     useEffect(() => {
         scrollToBottom();
@@ -79,9 +78,9 @@ const ChatBox = (props) => {
             </div>
             <div className='DMList' ref={dmListRef}>
                 {DMList.length > 0 &&
-                    DMList.map((DMList) => {
+                    DMList.map((DMList, index) => {
                         return (
-                            <div className={DMList.userNo === loginUserNo ? 'mySend' : 'other'}>
+                            <div key={index} className={DMList.userNo === loginUserNo ? 'mySend' : 'other'}>
                                 <div className={DMList.userNo === loginUserNo ? 'myMsg' : 'otherMsg'}>
                                     {DMList.message}
                                 </div>
@@ -96,7 +95,7 @@ const ChatBox = (props) => {
             </div>
             <div className='inputChat'>
                 <SendBtn setDMList={setDMList} DMRoom={DMRoom} stompClient={stompClient} Send={Send}
-                setMessage={setMessage}></SendBtn>
+                ></SendBtn>
             </div>
         </ChatBox>
     );

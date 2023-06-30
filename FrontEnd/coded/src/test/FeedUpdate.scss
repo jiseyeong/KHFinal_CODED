@@ -115,14 +115,23 @@ $imageHeight: 150px; // 하단 이미지 썸네일의 너비
       .PostInfoLayout {
         width: 100%;
         height: 40%;
+        position: relative;
 
         .post {
           width: 100%;
-          height: 100%;
+          height: 85%;
           border: 0px;
           font-size: 14px;
           padding: 10px;
           resize: none;
+        }
+        .inputCount{
+          position:absolute;
+          right:0;
+          padding-right:8px;
+          height:15%;
+          line-height:36px;
+          font-size:15px;
         }
       }
 
@@ -172,7 +181,7 @@ $imageHeight: 150px; // 하단 이미지 썸네일의 너비
           text-align: center;
         }
         .todaySky {
-            margin-top: 10px;
+            margin-top: 30px;
             margin-bottom: 10px;
           text-align: center;
           height: 40%;

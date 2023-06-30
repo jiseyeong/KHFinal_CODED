@@ -573,6 +573,20 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
     }
   }, [clickdata]);
 
+  const [inputCount, setInputCount] = useState(0);
+  const inputCountRef = useRef();
+
+  const onTextareaHandler = (e) => {
+    const value = e.target.value.length;
+    const value2 = (200 - value);
+    setInputCount(value2);
+    if(value2 >= 0) {
+      inputCountRef.current.style.color = "blue";
+    }else{
+      inputCountRef.current.style.color = "red";
+    }
+  };
+
   return (
     <div className="toastUIContainer">
       <div className="leftWrapper">
@@ -645,7 +659,9 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
             <textarea
               className="post"
               placeholder="내용을 입력해주세요"
+              maxLength="200"
               ref={contentRef}
+              onChange={onTextareaHandler}
               onInput={(e) => {
                 setFeedPost(() => {
                   return { ...feedpost, body: e.target.value };
@@ -653,6 +669,7 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
               }}
               defaultValue={contentbody}
             ></textarea>
+            <div className="inputCount">{inputCount}</div>
           </div>
           <div className="hashLayout">
             <CreatableSelect
