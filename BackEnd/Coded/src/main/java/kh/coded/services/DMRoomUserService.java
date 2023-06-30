@@ -1,6 +1,7 @@
 package kh.coded.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,10 @@ public class DMRoomUserService {
 
 	public List<DMRoomUserDTO> selectByUserNo(int userNo) {
 		return dmRoomUserDAO.selectByUserNo(userNo);
+	}
+	
+	public void deleteUserDMRoomUser(int roomId,int userNo) {
+		dmRoomUserDAO.deleteUserDMRoomUser(roomId,userNo);
 	}
 	
 }
