@@ -28,10 +28,11 @@ const Footer = () => {
 
       <>
       <div className="modal" onClick={closeModal}>
-        <div className="modalBody" ref={modalBodyRef}>
-        <motion.div
+      <motion.div
           className="progress-bar"
           style={{scaleX:scrollYProgress}}/>
+        <div className="modalBody" ref={modalBodyRef}>
+       
           <div className="tosContent">
               <Tos></Tos>
         </div>
