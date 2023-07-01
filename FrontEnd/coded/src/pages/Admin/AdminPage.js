@@ -62,7 +62,7 @@ function AdminPage() {
                     </table>
                 </div>
                 <Routes>
-                    <Route path="/feedReport" element={<ReportForm />} />
+                    <Route path="/feedReport" element={<ReportForm type={'feedPost'} />} />
                     <Route path="/feedList" element={<FeedListForm />} />
                     <Route path="/user" element={<UserForm />} />
                     <Route path="/chat" element={<ChatForm />} />
