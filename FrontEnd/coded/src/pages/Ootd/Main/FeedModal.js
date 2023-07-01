@@ -58,31 +58,9 @@ function FeedModal({
     fade: false,
   };
 
-  // const [feedPost,setFeedPost] = useState({});
-  // const [photoList,setPhotoList] = useState([]);
-  // const [writeMember,setWriteMember] = useState({});
-  // const [userProfile,setUserProfile] = useState({});
-  // const [feedLikeCount,setFeedLikeCount] = useState(0);
-  // const [isFeedLike,setFeedLike] = useState();
-
   const [userBio, setUserBio] = useState('');
-
   const [imageList, setImageList] = useState([]);
-
   const [optionListDiv, setOptionListDiv] = useState(false);
-
-  // const [comment, setComment] = useState('');
-  // const [comments, setComments] = useState([]);
-  // const [description, setDescription] = useState(
-  //   modalData?.modalData?.modalData?.description,
-  // ); // 그냥 modalData?.description으로 바꿔볼 것.
-  // const [res, setRes] = useState([]);
-  //const [isLikeBtn, setIsLikeBtn] = useState(false);
-  // const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
-  // const [follower, setFollower] = useState(
-  //   modalData?.modalData?.modalData?.follower,
-  // ); // 그냥 modalData?.follower로 바꿔볼 것.
-  // const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
   const userNo = useSelector((state) => state.member.userNo);
   const [weatherIcon, setWeatherIcon] = useState('');
@@ -354,11 +332,7 @@ function FeedModal({
         }, 200);
       })
       .catch((error) => {
-        // if (error.request.status === 400) {
-        //   console.log(error.response.data);
-        // } else {
         console.log(error);
-        // }
       });
   }
 
@@ -408,7 +382,6 @@ function FeedModal({
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
-                        //src={modalData?.modalData?.modalData?.authorImg}
                         src={'/images/' + feedPost.profileSysName}
                         width="40"
                         height="40"
@@ -417,13 +390,9 @@ function FeedModal({
                   </div>
                   <div className="authorInfomation">
                     <div className="author">
-                      {/* sungha123 */}
-                      {/* {modalData?.modalData?.modalData?.author} */}
                       {feedPost.userNickName}
                     </div>
                     <div className="introduction">
-                      {/* 김성하 */}
-                      {/* {modalData?.modalData?.modalData?.introdution} */}
                       {userBio}
                     </div>
                   </div>
@@ -458,7 +427,6 @@ function FeedModal({
                     </div>
                   )}
                 </div>
-                {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
                   {editYN === false ? (
                     <div className="feedPostBody">{feedPost.body}</div>
@@ -545,9 +513,6 @@ function FeedModal({
                   </div>
                   <div className="likeNumBox">
                     <span className="likeNum">
-                      {/* {' '} */}
-                      {/* 100 */}
-                      {/* {modalData?.modalData?.modalData?.follower} */}
                       {feedLikeCount}
                     </span>
                   </div>

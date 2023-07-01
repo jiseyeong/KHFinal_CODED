@@ -49,7 +49,6 @@ function DMList() {
         `/topic/${DMRoom.roomId}`,
         (receivedMessage) => {
           // console.log(receivedMessage.body);
-
           setDMList((prev) => [...prev, JSON.parse(receivedMessage.body)]);
         },{}
       );
@@ -61,7 +60,29 @@ function DMList() {
   }, [stompClient, DMRoom.roomId]);
 
 
-  //메세지 보내기
+  // More버튼을 통한 나가기 버튼 클릭시 채팅방 나가기
+  const disconnect =()=> {
+    if (stompClient && DMRoom.roomId) {
+      stompClient.disconnect();
+      axios({
+        method: 'get',
+        url: '/DM/',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          userNo: loginUserNo,
+        },
+      })
+        .then((resp) => {
+          setDMRoomList(resp.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }
+
+
+  //sendBtn 컴포넌트로 넘겨주어 send버튼 클릭시 메세지를 보내고 채팅내역에 추가
   const Send = (message) => {
     const currentTime = new Date().getTime();
     {console.log(currentTime);}
@@ -76,13 +97,13 @@ function DMList() {
     ))
   }
 
-
+  // ListElement(채팅목록 클릭시 채팅창에 유저정보 출력)
   const handleListElementClick = (room) => {
     setDMRoom(room);
   };
 
 
-
+  // 로그인UserNo를 통한 채팅목록 불러오기
   useEffect(() => {
     if (loginUserNo > 0) {
       axios({
@@ -102,6 +123,7 @@ function DMList() {
     }
   }, [loginUserNo]);
 
+  //ListElement(채팅목록 클릭시 DB를 통한 DM내역 불러오기)
   useEffect(() => {
     if (accessToken) {
       axios

@@ -45,6 +45,10 @@
             </when>
         </choose>
     </delete>
+    
+    <select id="selectByMessageId" resultType="kh.coded.dto.PhotoDTO">
+    	select * from photo where messageId=${messageId}
+    </select>
 
 </mapper>
 
