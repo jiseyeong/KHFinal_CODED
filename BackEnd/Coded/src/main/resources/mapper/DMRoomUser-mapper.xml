@@ -7,6 +7,14 @@
 		delete from dmroomuser where userno = ${userNo} and roomid=${roomId}
 	</delete>
 	
+	<insert id="insertLoginUserToRoom">
+		insert into dmroomuser values (listid_seq.nextval, ${loginUserNo}, ${roomId} ,2 ,2)
+	</insert>
+	<insert id="insertClickUserToRoom">
+		insert into dmroomuser values (listid_seq.nextval, ${clickuserNo}, ${roomId} ,2 ,2)
+	</insert>
+	
+	
 	<select id="selectByRoomId" resultType="kh.coded.dto.DMRoomUserDTO">
 		select * from DMRoomUser where RoomId=${roomId}
 	</select>

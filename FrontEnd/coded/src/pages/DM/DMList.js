@@ -81,6 +81,24 @@ function DMList() {
     }
   }
 
+  // 검색결과에서 클릭한 사람과 채팅 시작
+  const startChat = (userNo) => {
+      axios({
+        method: 'get',
+        url: '/DM/createRoom',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          loginUserNo: loginUserNo,
+          clickuserNo: userNo
+        },
+      })
+        .then((resp) => {
+          setDMRoomList(resp.data);
+        })
+        .catch((error) => console.log(error));
+  }
 
   //sendBtn 컴포넌트로 넘겨주어 send버튼 클릭시 메세지를 보내고 채팅내역에 추가
   const Send = (message) => {
@@ -162,7 +180,7 @@ function DMList() {
       </div>
       <div className="List">
         <div className="searchBox">
-          <SearchMember></SearchMember>
+          <SearchMember startChat={startChat}></SearchMember>
           {/* <input className='search' type='text'></input> */}
         </div>
         <div className="chatList">

@@ -15,9 +15,12 @@
 		]]>
 	</select>
 	
-	<select id="createRoomId" resultType="int">
-		select roomid_seq.nextval from dual
-	</select>
+	<insert id="createRoomId">
+		<selectKey resultType="int" keyProperty="roomId" order="BEFORE">
+			select roomid_seq.nextval from dual
+		</selectKey>
+		insert into dmroom values (${roomId}, 2)
+	</insert>
 	
 	<select id="selectPagingList" resultType="kh.coded.dto.DMRoomDTO">
 		select r.*

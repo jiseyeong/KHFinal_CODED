@@ -42,4 +42,14 @@ public class DMRoomUserDAO {
 	public int getRecordCountByUserNo(int userNo) {
 		return mybatis.selectOne("DMRoomUser.getRecordCountByUserNo", userNo);
 	}
+
+	public void insertUserToRoom(int loginUserNo,int clickuserNo, int roomId) {
+		Map<String, Integer> data = new HashMap<>();
+		data.put("loginUserNo", loginUserNo);
+		data.put("clickuserNo", clickuserNo);
+		data.put("roomId", roomId);
+		mybatis.insert("DMRoomUser.insertLoginUserToRoom",data);
+		mybatis.insert("DMRoomUser.insertClickUserToRoom",data);
+		
+	}
 }
