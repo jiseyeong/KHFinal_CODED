@@ -91,13 +91,14 @@
         font-size: 14px;
         line-height: normal;
         margin-top: 5px;
-
-        .deleteAccountWrapper{
         &:hover {
           color:#ff0066;
         }
+        .contactWrapper{
+          &:hover {
+            color:#454c53;
       }
       }
     }
   }
-
+}
