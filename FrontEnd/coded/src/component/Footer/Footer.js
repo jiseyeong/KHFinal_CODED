@@ -6,7 +6,32 @@ import { useSelector } from 'react-redux';
 class Footer extends Component {
   render() {
     
-
+    // const [isLogintrue,setIsLogintrue] =useState(false);
+    // const navigate = useNavigate();
+    // const accessToken = useSelector((state) => state.member.access);
+    // const checkToken = () => {
+    //  if (accessToken) {
+    //   axios({
+    //     method: 'get',
+    //     url: '/deleteAccount',
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //     params: {
+    //       commentId: commentInfo.feedCommentId,
+    //     },
+    //   })
+    //     .then((response) => {
+    //       setIsLike(response.data);
+    //     })
+    //     .catch((error) => {
+    //       if (error.request.status === 400) {
+    //         console.log('Login First!');
+    //       } else {
+    //         console.log(error);
+    //       }
+    //     });
+    // }
 
     return (
       <div className="Footer">
@@ -17,7 +42,7 @@ class Footer extends Component {
             </div>
             <div className="descList">
               <div className="deleteAccountWrapper">
-              <Link to="/deleteAccount">Delete Account</Link>
+             Delete Account
               </div>
             </div>
           </div>
