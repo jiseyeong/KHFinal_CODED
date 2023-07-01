@@ -2,7 +2,7 @@ import React from 'react';
 
 const TermsOfUse = () => {
   return (
-    <div style={{lineHeight:"25px",fontSize:"13px",textAlign:"left"}}>
+    <div style={{lineHeight:"25px",fontSize:"13px",textAlign:"left",color:"black"}}>
       <p style={{fontWeight:"bold",fontSize:"20px",textAlign:"center"}}>이용 약관</p><br/>
       제 1 장 총칙
       <br/><br/>
