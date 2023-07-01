@@ -55,9 +55,7 @@ const Footer = () => {
             <p>members.</p>
           </div>
           <div className="descList">
-            <div className="deleteAccountWrapper">
               <Link to="/deleteAccount">Delete Account</Link>
-            </div>
           </div>
         </div>
         <div className="middle">
@@ -79,7 +77,9 @@ const Footer = () => {
             <p>contact.</p>
           </div>
           <div className="descList">
+          <div className="contactWrapper">
             <p>coded@official.com</p>
+            </div>
           </div>
         </div>
       </div>
