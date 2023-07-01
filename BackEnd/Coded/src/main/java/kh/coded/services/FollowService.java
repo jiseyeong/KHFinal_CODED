@@ -25,31 +25,14 @@ public class FollowService {
 		return followDAO.isFollow(toUserNo, fromUserNo);
 	}
 
-	public Map<String,Object> selectFollowerList(int toUserNo, int myUserNo) { //나를 팔로우 하는 사람들 정보 뽑기
-		List<MemberWithProfileDTO> followerList = memberDAO.selectFollowerList(toUserNo);
-		List<Boolean> isFollowList = new ArrayList<>();
-		for(MemberWithProfileDTO dto : followerList) {
-			isFollowList.add(followDAO.isFollow(dto.getUserNo(), myUserNo));
-		}
-		Map<String,Object> followerListMap = new HashMap<>();
-		followerListMap.put("resp1FollowerList", followerList);
-		followerListMap.put("resp1IsFollowerList", isFollowList);
-		
-		return followerListMap;
-
+	public List<MemberWithProfileDTO> selectFollowingList(int targetUserNo, int myUserNo) { //내가 팔로우 하는 사람들 정보 뽑기
+		List<MemberWithProfileDTO> followingList = memberDAO.selectFollowingList(targetUserNo, myUserNo);
+		return followingList;
 	}
 
-	public Map<String,Object> selectFollowingList(int fromUserNo, int myUserNo) { //내가 팔로우 하는 사람들 정보 뽑기
-		List<MemberWithProfileDTO> followingList = memberDAO.selectFollowingList(fromUserNo);
-		List<Boolean> isFollowList = new ArrayList<>();
-		for(MemberWithProfileDTO dto : followingList) {
-			isFollowList.add(followDAO.isFollow(dto.getUserNo(),myUserNo));
-		}
-		Map<String,Object> followingListMap = new HashMap<>();
-		followingListMap.put("resp2FollowingList", followingList);
-		followingListMap.put("resp2isFollowingList", isFollowList);
-
-		return followingListMap;
+	public List<MemberWithProfileDTO> selectFollowerList(int targetUserNo, int myUserNo) { //나를 팔로우 하는 사람들 정보 뽑기
+		List<MemberWithProfileDTO> followerList = memberDAO.selectFollowerList(targetUserNo, myUserNo);
+		return followerList;
 	}
 
 	public int insertFollow(int toUserNo, int fromUserNo) {

@@ -22,18 +22,18 @@ public class FollowController {
 	@Autowired
 	private FollowService followService;
 
-	@GetMapping(value = "selectfollowerlist") //나를 팔로우 하는 사람들 정보와 팔로우 여부 (본인의 마이픽이나 타인의 마이픽)
-	public ResponseEntity<?> selectFollowerList(@RequestParam int toUserNo, @RequestParam(value="myUserNo") int myUserNo) {		
-		Map<String,Object> followerList = followService.selectFollowerList(toUserNo,myUserNo);
-
-		return ResponseEntity.ok().body(followerList);
+	@GetMapping(value = "selectfollowinglist") //내가 팔로우 하는 사람들 정보와 팔로우 여부 정보 뽑기 (본인의 마이픽이나 타인의 마이픽)
+	public ResponseEntity<?> selectFollowingList(@RequestParam int targetUserNo,
+												 @RequestParam(value="myUserNo", required = false, defaultValue = "0") int myUserNo) {
+		List<MemberWithProfileDTO> followingList = followService.selectFollowingList(targetUserNo,myUserNo);
+		return ResponseEntity.ok().body(followingList);
 	}
 
-	@GetMapping(value = "selectfollowinglist") //내가 팔로우 하는 사람들 정보와 팔로우 여부 정보 뽑기 (본인의 마이픽이나 타인의 마이픽)
-	public ResponseEntity<?> selectFollowingList(@RequestParam int fromUserNo, @RequestParam(value="myUserNo") int myUserNo) {
-		Map<String,Object> followingList = followService.selectFollowingList(fromUserNo,myUserNo);
-
-		return ResponseEntity.ok().body(followingList);
+	@GetMapping(value = "selectfollowerlist") //나를 팔로우 하는 사람들 정보와 팔로우 여부 (본인의 마이픽이나 타인의 마이픽)
+	public ResponseEntity<?> selectFollowerList(@RequestParam int targetUserNo,
+												@RequestParam(value="myUserNo", required = false, defaultValue = "0") int myUserNo) {
+		List<MemberWithProfileDTO> followerList = followService.selectFollowerList(targetUserNo,myUserNo);
+		return ResponseEntity.ok().body(followerList);
 	}
 
 		@GetMapping(value = "isfollow")
