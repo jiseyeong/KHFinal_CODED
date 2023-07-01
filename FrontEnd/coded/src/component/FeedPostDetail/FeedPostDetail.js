@@ -9,6 +9,7 @@ import LoadingBar from '../Common/LoadingBar';
 import FeedListNavi from './FeedListNavi';
 import { Like, Temperature } from '../../assets/ModalAsset/ModalAsset';
 import ConfirmDialog from '../Common/ConfirmDialog';
+import LoadingBar2 from '../Common/LoadingBar2';
 
 const FeedPostDetail = (props) => {
   const { index, feedPost } = props;
@@ -191,7 +192,7 @@ const FeedPostDetail = (props) => {
               onLoad={handleThumbNailLoaded}
             ></img>
           )}
-          {isThumbNailLoaded ? null : <LoadingBar />}
+          {isThumbNailLoaded ? null : <LoadingBar2 />}
         </div>
         <div className={styles.feedInfoDiv}>
           <div className={styles.userProfileLayout}>
@@ -212,7 +213,7 @@ const FeedPostDetail = (props) => {
                 ></img>
               )}
             </Link>
-            {isProfileLoaded ? null : <LoadingBar />}
+            {/* {isProfileLoaded ? null : <LoadingBar />} */}
 
             {/* 좋아요 버튼 */}
             <div

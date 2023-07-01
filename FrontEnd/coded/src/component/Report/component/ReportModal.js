@@ -159,7 +159,7 @@ function ReportModal({ feedPostId, onReportView }) {
     })
       .then((resp) => {
         alert('신고가 접수 되었습니다.');
-        onReportView(false);
+        onReportView();
       })
       .catch((error) => {
         console.log(error);
