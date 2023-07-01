@@ -227,9 +227,11 @@ function FeedModal({
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
       console.log(item.value);
-      setHashTag({})
-      setSelectHashTag((prev)=>{return [...prev, item.value]})
+      setSelectHashTag((prev) => {
+        return [...prev, item.value];
+      });
     });
+    console.log(contentRef.current.value)
     setContent(contentRef.current.value);
     setEditYN(false);
 
@@ -246,7 +248,6 @@ function FeedModal({
     })
       .then(() => {
         alert('수정이 완료되었습니다 :)');
-        
       })
       .catch((error) => {
         console.log(error);
@@ -267,13 +268,13 @@ function FeedModal({
     }),
   };
 
-  let [inputCount, setInputCount] = useState(0);
+  let [inputCount, setInputCount] = useState(200-feedPost.body.length);
   const inputCountRef = useRef();
 
   const onTextareaHandler = (e) => {
     const value = e.target.value.length;
     const value2 = 200 - value;
-    setInputCount(value2);
+  setInputCount(value2)
     if (value2 >= 0) {
       inputCountRef.current.style.color = 'blue';
     } else {
@@ -286,9 +287,12 @@ function FeedModal({
 
   function editCancel() {
     setSelectHashTag([]);
-  hashTagList.forEach((e)=>{
-    setSelectHashTag((prev)=>{return [...prev, {value : e.hashTag, label: e.hashTag}]})
-  })
+    hashTagList.forEach((e) => {
+      setSelectHashTag((prev) => {
+        return [...prev, { value: e.hashTag, label: e.hashTag }];
+      });
+    });
+      setInputCount(200-feedPost.body.length);
     setContent(feedPost.body);
     setEditYN(false);
   }
@@ -551,7 +555,7 @@ function FeedModal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                    {console.log(feedPost)}
+                    {/* {console.log(feedPost)} */}
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
@@ -638,14 +642,6 @@ function FeedModal({
                   </div>
                 </div>
 
-                {/* 수정 눌렀을때
-                {editYN === false ? (
-                    <div className="feedPostBody">{feedPost.body}</div>
-                  )
-                <div className="inputCount" ref={inputCountRef}>
-                  {inputCount}
-                </div> */}
-
                 {editYN === false ? (
                   <div className="hashTagBody">
                     {hashTagList.length > 0 ? (
@@ -687,7 +683,7 @@ function FeedModal({
                       />
                     </div>
                     <div className="buttons">
-                        <button onClick={editComplate}>수정 완료</button>
+                      <button onClick={editComplate}>수정 완료</button>
                       <button onClick={editCancel}>수정 취소</button>
                     </div>
                   </div>
