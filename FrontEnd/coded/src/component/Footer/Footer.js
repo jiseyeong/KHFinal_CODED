@@ -1,9 +1,11 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './Footer.scss';
 import Modal from 'react-modal';
 import { motion, useScroll } from "framer-motion";
 import Tos from './Component/Tos/TermsOfUse';
+
 
 
 const Footer = () => {
@@ -23,6 +25,7 @@ const Footer = () => {
       container:modalBodyRef
     });
     return (
+
       <>
       <div className="modal" onClick={closeModal}>
         <div className="modalBody" ref={modalBodyRef}>
@@ -37,7 +40,6 @@ const Footer = () => {
       </>
     );
   }
-
   // const openModal = () => {
   //   if (!modal) {
   //     setModal(true);

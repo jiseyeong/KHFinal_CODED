@@ -47,8 +47,9 @@ const MyPickPage = () => {
     [dispatch],
   );
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
   const navi = useNavigate();
+
+  const searchParams = new URLSearchParams(location.search);
 
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
@@ -121,12 +122,6 @@ const MyPickPage = () => {
       window.onscroll = null;
     };
   }, [accessToken, currentUserNo]);
-
-  // useEffect(() => {
-  //   if (currentUserNo) {
-  //     getMyPickData();
-  //   }
-  // }, [currentUserNo]);
 
   const getMyPickData = () => {
     console.log(currentUserNo);
@@ -381,7 +376,7 @@ const MyPickPage = () => {
             </div>
           ))}
         </div>
-        <Modal isOpen={FollowerIsOpen} style={modalStyle}>
+        <Modal isOpen={FollowerIsOpen} style={modalStyle} ariaHideApp={false}>
           <FollowerList
             setFollowerIsOpen={setFollowerIsOpen}
             followModalMode={followModalMode}
