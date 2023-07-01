@@ -1,23 +1,19 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import FeedModal from '../../pages/Ootd/Main/FeedModal';
 import { useNavigate } from 'react-router-dom';
 
-function FeedListForm() {
+function ChatForm() {
   const accessToken = useSelector((state) => state.member.access);
-  const [feedPostList, setFeedPostList] = useState([]);
+  const [chatRoomList, setChatRoomList] = useState([]);
   const [cpage, setCpage] = useState(1);
   const [naviList, setNaviList] = useState([]);
   const [needPrev, setNeedPrev] = useState(false);
   const [needNext, setNeedNext] = useState(false);
 
-  const [modal, setModal] = useState(false);
-  const [feedLikeCount, setFeedLikeCount] = useState(0);
-  const [isFeedLike, setIsFeedLike] = useState(false);
-  const [hashTagList, setHashTagList] = useState([]);
-  const [feedPost, setFeedPost] = useState([]);
-  
+  const [dmList, setDMList] = useState([]);
+  const [photoLists, setPhotoLists] = useState([]);
+
   const type = useRef('none');
   const selectBoxRef = useRef(null);
   const inputRef = useRef(null);
@@ -26,16 +22,16 @@ function FeedListForm() {
 
   useEffect(() => {
     if (accessToken) {
-      updateFeedList();
+      updateRoomList();
     }
-  }, [accessToken, cpage]);
+  }, [accessToken]);
 
-  function updateFeedList() {
+  function updateRoomList() {
     if (accessToken) {
       if (type.current === 'none') {
         axios({
           method: 'get',
-          url: '/feedpost/getNaviInfo',
+          url: '/DM/naviInfo',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -60,13 +56,20 @@ function FeedListForm() {
           });
         axios({
           method: 'get',
-          url: '/feedpost/selectAllFeedPost/',
+          url: '/DM/pagingList',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
           params: {
             cpage: cpage,
           },
         })
           .then((response) => {
-            setFeedPostList(response.data);
+            if (response.data) {
+              setChatRoomList(response.data);
+            } else {
+              setChatRoomList([]);
+            }
           })
           .catch((error) => {
             console.log(error);
@@ -74,13 +77,13 @@ function FeedListForm() {
       } else if (type.current === 'userNo') {
         axios({
           method: 'get',
-          url: '/feedpost/getNaviInfo/userNo',
+          url: '/DM/naviInfo/userNo',
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
           params: {
-            userNo: inputRef.current.value,
             cpage: cpage,
+            userNo: inputRef.current.value,
           },
         })
           .then((response) => {
@@ -100,49 +103,68 @@ function FeedListForm() {
           });
         axios({
           method: 'get',
-          url: '/feedpost/selectUserFeedPost',
+          url: '/DM/pagingList/userNo',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
           params: {
-            userNo: inputRef.current.value,
             cpage: cpage,
+            userNo: inputRef.current.value,
           },
         })
           .then((response) => {
-            setFeedPostList(response.data);
+            console.log(response.data);
+            if (response.data) {
+              setChatRoomList(response.data);
+            } else {
+              setChatRoomList([]);
+            }
           })
           .catch((error) => {
             console.log(error);
           });
-      } else if (type.current === 'feedPostId') {
+      } else if (type.current === 'roomId') {
         axios({
           method: 'get',
-          url: '/feedpost/selectOneFeedPost',
+          url: '/DM/getRoomByRoomId',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
           params: {
-            feedpostId: inputRef.current.value,
+            cpage: cpage,
+            roomId: inputRef.current.value,
           },
         })
           .then((response) => {
             if (response.data) {
-              setFeedPostList([response.data]);
+              setChatRoomList([response.data]);
               setNaviList([1]);
               setNeedPrev(false);
               setNeedNext(false);
             } else {
-              setFeedPostList([]);
+              setChatRoomList([]);
               setNaviList([]);
               setNeedPrev(false);
               setNeedNext(false);
             }
           })
           .catch((error) => {
-            console.log(error);
+            if (error.request.status === 403) {
+              console.log('Forbiddened. 권한이 없습니다.');
+              navigate('/');
+            } else if (error.request.status === 400) {
+              console.log('badRequest. : ' + error.response.data);
+            } else {
+              console.log(error);
+            }
           });
       }
     }
   }
 
   function handleSearchSelect() {
-    if (selectBoxRef.current.value === 'FeedPostID') {
-      type.current = 'feedPostId';
+    if (selectBoxRef.current.value === 'RoomID') {
+      type.current = 'roomId';
     } else if (selectBoxRef.current.value === 'UserNo') {
       type.current = 'userNo';
     } else {
@@ -154,7 +176,7 @@ function FeedListForm() {
     if (numberRegex.test(inputRef.current.value)) {
       handleSearchSelect();
       setCpage(1);
-      updateFeedList();
+      updateRoomList();
     } else {
       alert('해당 요소는 숫자만으로 검색 가능합니다.');
     }
@@ -164,143 +186,106 @@ function FeedListForm() {
     setCpage(index);
   }
 
-  // 모달 창 열기
-  const openModal = () => {
-    if (!modal) {
-      setModal(true);
-    }
-  };
-
-  // 모달 창 닫기
-  const closeModal = () => {
-    if (modal) {
-      setModal(false);
-    }
-  };
-
-  function moveToUser(userNo) {
-    navigate('/myPickPage?userNo=' + userNo);
-  }
-
-  function onFeedModal(targetFeedPostId) {
-    axios({
-      method: 'get',
-      url: '/feedpost/selectOneFeedPost',
-      params: {
-        feedpostId: targetFeedPostId,
-      },
-    })
-      .then((response) => {
-        setFeedPost(response.data);
-
-        function getHashs(feedPostId) {
-          return axios({
-            method: 'get',
-            url: '/feedpost/hashtagList',
-            params: {
-              feedPostId: feedPostId,
-            },
-          }).then((response) => {
-            setHashTagList((prev) => {
-              return [...prev, ...response.data];
-            });
-          });
-        }
-        function getLikeCount(feedPostId) {
-          return axios({
-            method: 'get',
-            url: '/feedpost/likeCount',
-            params: {
-              feedPostId: feedPostId,
-            },
-          })
-            .then((response) => {
-              setFeedLikeCount(response.data);
-            })
-        }
-        function getIsLike(feedPostId) {
-          return axios({
-            method: 'get',
-            url: '/feedpost/isLike',
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-            params: {
-              feedPostId: feedPostId,
-            },
-          }).then((response) => {
-            setIsFeedLike(response.data);
-          });
-        }
-
-        axios.all([getHashs(response.data.feedPostId), getLikeCount(response.data.feedPostId), getIsLike(response.data.feedPostId)]).then(() => {
-          openModal();
-        })
-        .catch((error)=>{
-          console.log(error);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function feedDelete(feedPostId) {
+  function roomDelete(roomId) {
     if (accessToken) {
       axios({
         method: 'delete',
-        url: '/feedpost/deleteFeedPost',
-        params: {
-          feedPostId: feedPostId,
-        },
+        url: '/DM/deleteRoom',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
+        params: {
+          roomId: roomId,
+        },
       })
         .then((response) => {
-          updateFeedList();
+          updateRoomList();
         })
         .catch((error) => {
-          console.log(error);
+          if (error.request.status === 403) {
+            console.log('Forbiddened. 권한이 없습니다.');
+            navigate('/');
+          } else if (error.request.status === 400) {
+            console.log('badRequest. : ' + error.response.data);
+          } else {
+            console.log(error);
+          }
         });
     }
   }
 
+  function updateDMList(roomId) {
+    axios({
+      method: 'get',
+      url: '/DM/selectDMbyRoomid',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        roomId: roomId,
+      },
+    })
+    .then((response)=>{
+        setDMList([...response.data]);
+        setPhotoLists([]);
+        response.data.forEach((item, index) => {
+            axios({
+                method:'get',
+                url:'/photo/dm',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                params:{
+                    messageId:item.messageId,
+                },
+            })
+            .then((response2)=>{
+                setPhotoLists((prev)=>{return [...prev, {index:index, list:[...response2.data]}]});
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        })
+    })
+    .catch((error)=>{
+        console.log(error);
+    })
+  }
+
+  useEffect(()=>{
+    console.log(dmList);
+  },[dmList]);
   return (
-    <div style={{ display: 'flex' }}>
-      <table border={1} style={{ flex: 1 }}>
+    <div>
+      <table
+        border={1}
+        align="center"
+        style={{ width: '100%', marginBottom: '50px' }}
+      >
         <thead>
           <tr>
-            <th colSpan={3}>FeedList</th>
+            <th colSpan={3}>Chat Room List</th>
           </tr>
           <tr>
-            <th>ID</th>
-            <th>UserNo</th>
+            <th>RoomID</th>
+            <th>UserNums</th>
             <th>Delete Button</th>
           </tr>
         </thead>
         <tbody>
-          {feedPostList.map((item, index) => {
+          {chatRoomList.map((item, index) => {
             return (
-              <tr key={item.feedPostId}>
-                <td
-                  onClick={() => {
-                    onFeedModal(item.feedPostId);
-                  }}
-                >
-                  {item.feedPostId}
+              <tr key={item.room.roomId}>
+                <td onClick={()=>{updateDMList(item.room.roomId)}}>{item.room.roomId}</td>
+                <td>
+                  {item.userList.map((item2, index2) => {
+                    return item2.userNo + ',';
+                  })}
                 </td>
-                <td
-                  onClick={() => {
-                    moveToUser(item.userNo);
-                  }}
-                >
-                  {item.userNo}
-                </td>
-                <td align="center">
+                <td>
                   <button
                     onClick={() => {
-                      feedDelete(item.feedPostId);
+                      roomDelete(item.room.roomId);
                     }}
                   >
                     삭제
@@ -346,7 +331,7 @@ function FeedListForm() {
           <tr>
             <td align="center" colSpan={3}>
               <select ref={selectBoxRef} onChange={handleSearchSelect}>
-                <option value="FeedPostID">FeedPostID</option>
+                <option value="RoomID">RoomID</option>
                 <option value="UserNo">UserNo</option>
               </select>
               <input type="text" ref={inputRef}></input>
@@ -354,7 +339,7 @@ function FeedListForm() {
               <button
                 onClick={() => {
                   type.current = 'none';
-                  updateFeedList();
+                  updateRoomList();
                 }}
               >
                 검색 취소
@@ -363,20 +348,51 @@ function FeedListForm() {
           </tr>
         </tbody>
       </table>
-      {modal && (
-        <FeedModal
-          // modal={modal}
-          closeModal={closeModal}
-          feedPost={feedPost}
-          feedLikeCount={feedLikeCount}
-          setFeedLikeCount={setFeedLikeCount}
-          isFeedLike={isFeedLike}
-          setIsFeedLike={setIsFeedLike}
-          hashTagList={hashTagList}
-        />
-      )}
+      <table
+        border={1}
+        align="center"
+        style={{ width: '100%', height: '1000px', overflowY: 'scroll' }}
+      >
+        <thead>
+          <tr>
+            <th colSpan={6}>Current Chat Room Message List</th>
+          </tr>
+          <tr>
+            <th width="5%">id</th>
+            <th width="5%">write user</th>
+            <th width="40%">Message</th>
+            <th width="40%">Photo</th>
+            <th width="5%">Write Date</th>
+            <th width="5%">isDelete</th>
+          </tr>
+        </thead>
+        <tbody>
+            {dmList.map((item, i)=>{
+                return(
+                    <tr key={item.messageId}>
+                        <td align='center'>{item.messageId}</td>
+                        <td align='center'>{item.userNo}</td>
+                        <td style={{wordBreak:'break-all'}}>{item.message}</td>
+                        <td align='center'>{photoLists.map((item2)=>{
+                            return item2.index === i ? (
+                                    <>
+                                        {item2.list.map((item3)=>{
+                                            return(
+                                                <image src={`/images/${item3.sysName}`} alt="ChatImg" Style={{width:'100%'}} />
+                                            )
+                                        })}
+                                    </>
+                                ):null;
+                        })}</td>
+                        <td align='center'>{item.formedWriteDate}</td>
+                        <td align='center'>{item.isDelete}</td>
+                    </tr>
+                );
+            })}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default FeedListForm;
+export default ChatForm;

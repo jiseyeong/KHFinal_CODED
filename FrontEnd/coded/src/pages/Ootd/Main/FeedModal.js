@@ -21,10 +21,6 @@ import CreatableSelect from 'react-select/creatable';
 import ReportModal from '../../../component/Report/component/ReportModal';
 import ConfirmDialog from '../../../component/Common/ConfirmDialog';
 
-
-
-
-
 const ImageLayout = styled('div')`
   max-width: 100%;
   max-height: 100%;
@@ -62,40 +58,14 @@ function FeedModal({
     fade: false,
   };
 
-  
-
-  // const [feedPost,setFeedPost] = useState({});
-  // const [photoList,setPhotoList] = useState([]);
-  // const [writeMember,setWriteMember] = useState({});
-  // const [userProfile,setUserProfile] = useState({});
-  // const [feedLikeCount,setFeedLikeCount] = useState(0);
-  // const [isFeedLike,setFeedLike] = useState();
-
-
-  
   const [userBio, setUserBio] = useState('');
-
   const [imageList, setImageList] = useState([]);
-
   const [optionListDiv, setOptionListDiv] = useState(false);
-
-  // const [comment, setComment] = useState('');
-  // const [comments, setComments] = useState([]);
-  // const [description, setDescription] = useState(
-  //   modalData?.modalData?.modalData?.description,
-  // ); // 그냥 modalData?.description으로 바꿔볼 것.
-  // const [res, setRes] = useState([]);
-  //const [isLikeBtn, setIsLikeBtn] = useState(false);
-  // const [isRepleLikeBtn, setIsRepleLikeBtn] = useState(false);
-  // const [follower, setFollower] = useState(
-  //   modalData?.modalData?.modalData?.follower,
-  // ); // 그냥 modalData?.follower로 바꿔볼 것.
-  // const [isFollowBtn, setIsFollowBtn] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
   const userNo = useSelector((state) => state.member.userNo);
   const [weatherIcon, setWeatherIcon] = useState('');
 
-  const [isLogintrue,setIsLogintrue] =useState(false);
+  const [isLogintrue, setIsLogintrue] = useState(false);
 
   // 신고 모달창 관련 on/off
   const [reportModal, setReportModal] = useState(false);
@@ -103,7 +73,6 @@ function FeedModal({
   let num = 0;
 
   useEffect(() => {
-
     console.log(selectHashTag.length);
 
     let arrTemp = [];
@@ -114,9 +83,8 @@ function FeedModal({
         value: item.hashTag,
         label: item.hashTag,
       });
-      setHashTag([...HashTag,...arrTemp])
+      setHashTag([...HashTag, ...arrTemp]);
     });
-
 
     updateImageList();
     // 스크랩 여부 가져오기
@@ -137,20 +105,19 @@ function FeedModal({
     }
 
     axios({
-      method:"get",
-      url:'/PostHashs/selectAllPostTagNames',
-    })
-    .then((resp)=>{
+      method: 'get',
+      url: '/PostHashs/selectAllPostTagNames',
+    }).then((resp) => {
       const HashTagNameList = resp.data;
-            let arrTemp = [];
-            HashTagNameList.forEach((hashTag) => {
-              arrTemp = arrTemp.concat({
-                value: hashTag.hashTag,
-                label: hashTag.hashTag,
-              });
-              setOptions([...options, ...arrTemp]);
-            });
-    })
+      let arrTemp = [];
+      HashTagNameList.forEach((hashTag) => {
+        arrTemp = arrTemp.concat({
+          value: hashTag.hashTag,
+          label: hashTag.hashTag,
+        });
+        setOptions([...options, ...arrTemp]);
+      });
+    });
   }, []);
 
   function updateImageList() {
@@ -194,6 +161,7 @@ function FeedModal({
         },
       })
         .then(() => {
+          alert('삭제가 완료 되었습니다.');
           closeModal();
           window.location.reload();
         })
@@ -204,17 +172,14 @@ function FeedModal({
   }
   //  수정하기 ---------------------------------------
   const [FeedPost, setFeedPost] = useState(feedPost);
-  const [selectHashTag, setSelectHashTag] = useState([]);//수정 전
-  const [HashTag, setHashTag] = useState(hashTagList);//삭제하고 나서의
+  const [selectHashTag, setSelectHashTag] = useState([]); //수정 전
+  const [HashTag, setHashTag] = useState(hashTagList); //삭제하고 나서의
   const [editYN, setEditYN] = useState(false);
-  const [content, setContent] = useState("");//수정 후
+  const [content, setContent] = useState(''); //수정 후
   const selectRef = useRef();
-  const contentRef = useRef();// 바디 레퍼런스
-  const [options, setOptions] = useState([]);//가져오기 해쉬태그 리스트
+  const contentRef = useRef(); // 바디 레퍼런스
+  const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
   // 수정 버튼 눌렀을때
-
-
-
 
   function editFeedPost() {
     setOptionListDiv((prev) => {
@@ -227,53 +192,36 @@ function FeedModal({
   function editComplate() {
     const formData = new FormData();
     formData.append('feedPostId', feedPost.feedPostId);
-    formData.append('userNo', feedPost.userNo)
-    formData.append('body', contentRef.current.value)
+    formData.append('userNo', feedPost.userNo);
+    formData.append('body', contentRef.current.value);
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
       console.log(item.value);
     });
 
-    setFeedPost(prevFeedPost=>{
-      return{
-        ...prevFeedPost, body : contentRef.current.value
-      }
-    })
+    setFeedPost((prevFeedPost) => {
+      return {
+        ...prevFeedPost,
+        body: contentRef.current.value,
+      };
+    });
     axios({
       method: 'put',
       url: '/feedpost/updatefeed',
-      data: formData
+      data: formData,
     })
       .then(() => {})
       .catch((error) => {
         console.log(error);
       });
-      setEditYN(false)
+    setEditYN(false);
   }
-
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: 520, // 원하는 가로 크기로 변경
-      height: 52.3, // 원하는 높이로 변경
-      lineHeight: 'normal',
-      fontSize: 14,
-    }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      transform: 'rotate(180deg)', // 화살표 회전
-    }),
-  };
-
 
   //글 수정
 
-  function editCancel() {
-    
-  }
+  function editCancel() {}
 
-  const handleInputChange = (event) => {
-  };
+  const handleInputChange = (event) => {};
 
   // const handleSaveClick = () => {
   //   setPreviousValue(value);
@@ -308,43 +256,41 @@ function FeedModal({
       });
   }
 
-
   // 피드의 좋아요 반영 ( 추가 / 삭제 )
 
-  function setFeedLike() { 
-    if(accessToken){
-
-    axios({
-      method: 'post',
-      url: '/feedpost/insertFeedLike',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        feedPostId: feedPost.feedPostId,
-      },
-    })
-      .then((resp) => {
-        // 반영된 좋아요 수 저장
-        setFeedLikeCount(resp.data);
-        // 좋아요 상태로 변경
-        setIsFeedLike((prev) => !prev);
-        // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
-        setLikeScale(!isFeedLike ? 1.2 : 1);
-        setTimeout(() => {
-          setLikeScale(1);
-        }, 200);
+  function setFeedLike() {
+    if (accessToken) {
+      axios({
+        method: 'post',
+        url: '/feedpost/insertFeedLike',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          feedPostId: feedPost.feedPostId,
+        },
       })
-      .catch((error) => {
-        // if (error.request.status === 400) {
-        //   console.log(error.response.data);
-        // } else {
-        console.log(error);
-        // }
-      });}
-      else{
-        setIsLogintrue(true)
-      }
+        .then((resp) => {
+          // 반영된 좋아요 수 저장
+          setFeedLikeCount(resp.data);
+          // 좋아요 상태로 변경
+          setIsFeedLike((prev) => !prev);
+          // 좋아요 눌렀을 시 카운트 반영 및 애니메이션
+          setLikeScale(!isFeedLike ? 1.2 : 1);
+          setTimeout(() => {
+            setLikeScale(1);
+          }, 200);
+        })
+        .catch((error) => {
+          // if (error.request.status === 400) {
+          //   console.log(error.response.data);
+          // } else {
+          console.log(error);
+          // }
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   }
 
   // 피드의 스크랩 반영 ( 추가 / 삭제 )
@@ -367,123 +313,27 @@ function FeedModal({
         setTimeout(() => {
           setScrapScale(1);
         }, 200);
-
       })
       .catch((error) => {
-        // if (error.request.status === 400) {
-        //   console.log(error.response.data);
-        // } else {
         console.log(error);
-        // }
       });
   }
 
   //------------------------------------------------
 
-  // function handleClickLike(e) {
-  //   e.preventDefault();
-  //   if (!isLikeBtn) {
-  //     setIsLikeBtn(true);
-  //     setFollower(modalData?.modalData?.modalData?.follower + 1); //modalData?.follower + 1 로 고쳐봐도 될 것.
-  //   } else {
-  //     setIsLikeBtn(false);
-  //     setFollower(modalData?.modalData?.modalData?.follower - 1);
-  //   }
-  // }
-
-  // function handleRepleLike(e) {
-  //   if (!isRepleLikeBtn) {
-  //     setIsRepleLikeBtn(true);
-  //   } else {
-  //     setIsRepleLikeBtn(false);
-  //   }
-  // }
-
-  // function followBtnActive() {
-  //   if (isFollowBtn) {
-  //     setIsFollowBtn(false);
-  //   } else {
-  //     setIsFollowBtn(true);
-  //   }
-  // }
-
-  // function getData(e) {
-  //   e.preventDefault();
-  //   setComment(e.target.value);
-  //   setData(e.target.value);
-  // }
-
-  // function handleKeyPress(e) {
-  //   e.preventDefault();
-  //   if (e.key === 'Enter') {
-  //     if (!comment) {
-  //       e.preventDefault();
-  //     } else {
-  //       // handleComment();
-  //     }
-  //   }
-  // }
-
-  // useEffect(()=>{
-  //     axios({
-  //       method:'get',
-  //       url:'/feedpost/selectFeedDetail',
-  //       headers:{
-  //         Authorization:'Bearer '+accessToken
-  //     },
-  //     params:{
-  //       feedPostId:feedPostId
-  //    }
-  //     }).then((response)=>{
-  //       const {
-  //         feedPost,
-  //         photoList,
-  //         writeMember,
-  //         userProfile,
-  //         feedLikeCount,
-  //         isFeedLike
-  //       } = response.data;
-  //       setFeedPost(feedPost);
-  //       setPhotoList(photoList);
-  //       setWriteMember(writeMember);
-  //       setUserProfile(userProfile);
-  //       setFeedLikeCount(feedLikeCount);
-  //       setFeedLike(isFeedLike);
-  //     }).catch((error)=>{
-  //       console.log(error);
-
-  //     })
-  // },[])
-
-  // const API = `http://   /ootds/${modalData?.modalData?.modalData?.id}/comments`;
-  // function handleComment(e) {
-  //   axios({
-  //     method: 'post',
-  //     url: API,
-  //     headers: {
-  //       Authorization: 'Bearer ' + accessToken,
-  //     },
-  //     params: {
-  //       content: comment,
-  //       user_id: modalData?.modalData?.modalData?.id,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       setRes(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   setComments((prev) => {
-  //     return [...prev, comment];
-  //   });
-  //   setComment('');
-  //   num += 1;
-  // }
-
-  // useEffect(() => {
-  //   console.log('id값', modalData?.modalData?.modalData?.id);
-  // });
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: 520, // 원하는 가로 크기로 변경
+      height: 52.3, // 원하는 높이로 변경
+      lineHeight: 'normal',
+      fontSize: 14,
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      transform: 'rotate(180deg)', // 화살표 회전
+    }),
+  };
 
   return (
     <div className="wrapper">
@@ -510,40 +360,13 @@ function FeedModal({
                     );
                   })}
                 </Slider>
-                {/* <img
-                  className="image"
-                  //src={modalData?.modalData?.modalData?.contentImg}
-                  src={"/images/" + feedPost.thumbNailSysName}
-                /> */}
-                {/* <div
-                  className={
-                    modalData?.modalData?.modalData?.contentImg?.length > 1
-                      ? 'smallImages'
-                      : 'displayNone'
-                  }
-                > */}
-                {/* <figure className="smallImagesWrapper">
-                    <img
-                      className="smallImage"
-                      src={modalData?.modalData?.modalData?.contentImg[0]}
-                    />
-                  </figure>
-                  <figure className="smallImagesWrapper">
-                    <img
-                      className="smallImage"
-                      src={modalData?.modalData?.modalData?.contentImg[1]}
-                    />
-                  </figure> */}
-                {/* </div> */}
               </div>
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                    {console.log(feedPost)}
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
-                        //src={modalData?.modalData?.modalData?.authorImg}
                         src={'/images/' + feedPost.profileSysName}
                         width="40"
                         height="40"
@@ -551,43 +374,41 @@ function FeedModal({
                     </Link>
                   </div>
                   <div className="authorInfomation">
-                    <div className="author">
-                      {/* sungha123 */}
-                      {/* {modalData?.modalData?.modalData?.author} */}
-                      {feedPost.userNickName}
-                    </div>
-                    <div className="introduction">
-                      {/* 김성하 */}
-                      {/* {modalData?.modalData?.modalData?.introdution} */}
-                      {userBio}
-                    </div>
+                    <div className="author">{feedPost.userNickName}</div>
+                    <div className="introduction">{userBio}</div>
                   </div>
 
                   {/* 수정하기 눌렀을 때 숨김 */}
-
                   {editYN === false && (
                     <div className="optionBox">
-                      {feedPost.userNo === userNo && (
-                        <div className="optionBox" onClick={optionBoxClick}>
-                          <OptionBox></OptionBox>
-                        </div>
-                      )}
-                      {optionListDiv && (
-                        <div className="optionList">
-                          <div className="optionListDiv">
-                            <a onClick={editFeedPost}>수정하기</a>
+                      <div className="optionBox" onClick={optionBoxClick}>
+                        <OptionBox></OptionBox>
+                      </div>
+                      {optionListDiv &&
+                        (feedPost.userNo === userNo ? (
+                          <div className="optionList">
+                            <div className="optionListDiv">
+                              <a onClick={editFeedPost}>수정하기</a>
+                            </div>
+                            <div className="optionListDiv">
+                              <a onClick={deleteFeedPost}>삭제</a>
+                            </div>
                           </div>
-                          <div className="optionListDiv">
-                            <a onClick={deleteFeedPost}>삭제</a>
+                        ) : (
+                          <div className="optionList">
+                            <div className="optionListDiv">
+                              <a
+                              // onClick={reportFeedPost}
+                              >
+                                신고하기
+                              </a>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        ))}
                     </div>
                   )}
                 </div>
-                {/* <hr className="hrTag"></hr> */}
                 <div className="authorDescription">
-
                   {editYN === false ? (
                     <div className="feedPostBody">{feedPost.body}</div>
                   ) : (
@@ -596,7 +417,9 @@ function FeedModal({
                         className="post"
                         placeholder="내용을 입력해주세요"
                         ref={contentRef}
-                      >{feedPost.body}</textarea>
+                      >
+                        {feedPost.body}
+                      </textarea>
                     </div>
                   )}
                   <div className="feedPostWidth"></div>
@@ -606,7 +429,6 @@ function FeedModal({
                   </div>
                   <div className="feedPostWidth"></div>
                 </div>
-
 
                 {editYN === false ? (
                   <div className="hashTagBody">
@@ -638,17 +460,21 @@ function FeedModal({
                           setTimeout(() => {
                             if (selectRef.current.getValue().length > 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');
-                              setSelectHashTag((prevValues) => prevValues.slice(0, -1));
+                              setSelectHashTag((prevValues) =>
+                                prevValues.slice(0, -1),
+                              );
                             }
                           }, 100);
                         }}
                         menuPlacement="top"
                         styles={customStyles}
                       />
-
                     </div>
                     <div className="buttons">
-                      <Link to="/"> <button onClick={editComplate}>수정 완료</button></Link>
+                      <Link to="/">
+                        {' '}
+                        <button onClick={editComplate}>수정 완료</button>
+                      </Link>
                       <button onClick={editCancel}>수정 취소</button>
                     </div>
                   </div>
@@ -667,12 +493,7 @@ function FeedModal({
                     <Like />
                   </div>
                   <div className="likeNumBox">
-                    <span className="likeNum">
-                      {/* {' '} */}
-                      {/* 100 */}
-                      {/* {modalData?.modalData?.modalData?.follower} */}
-                      {feedLikeCount}
-                    </span>
+                    <span className="likeNum">{feedLikeCount}</span>
                   </div>
                 </div>
                 <div
@@ -680,7 +501,12 @@ function FeedModal({
                   style={{ transform: `scale(${scrapScale})` }}
                   onClick={setFeedScrap}
                 >
-                  <div className={isFeedScrap ? 'scrapBox' : 'disScrapBox'} onClick={()=>{setReportModal(true)}}>
+                  <div
+                    className={isFeedScrap ? 'scrapBox' : 'disScrapBox'}
+                    onClick={() => {
+                      setReportModal(true);
+                    }}
+                  >
                     <ScrapImage />
                   </div>
                   {/* <button
@@ -709,11 +535,9 @@ function FeedModal({
               {/* {reportModal && <ReportModal />} */}
             </div>
           </div>
-          
         </div>
-        
-        {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue}/> }
 
+        {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
       </div>
     </div>
   );

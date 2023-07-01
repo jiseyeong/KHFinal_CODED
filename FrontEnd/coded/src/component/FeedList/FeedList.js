@@ -55,6 +55,7 @@ const FeedPostOuter = styled('div')`
     // 행 사이 간격
     margin-bottom: 30px;
     border: 0px;
+    width: 250px;
   }
 `;
 
@@ -211,6 +212,7 @@ function FeedList({ type }) {
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
+      {console.log(feedPost[0])}
       {feedPost.length > 0 ? (
         <Masonry className={'my-masonry-grid'} options={masonryOptions}>
           {feedPost.map((e, i) => (

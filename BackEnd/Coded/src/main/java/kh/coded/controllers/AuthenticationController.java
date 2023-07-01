@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import kh.coded.dto.MyPickPageDTO;
+import kh.coded.dto.Role;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -496,7 +498,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/auth/selectMyPickPageData")
-    public ResponseEntity<?> selectMyPickPageData(@RequestParam("userNo") int userNo) {
+    public ResponseEntity<?> selectMyPickPageData(@RequestParam("userNo") int userNo
+    ){
         MyPickPageDTO dto = memberService.selectMyPickPageData(userNo);
         return ResponseEntity.ok().body(dto);
     }
@@ -684,6 +687,20 @@ public class AuthenticationController {
 			if (jwtProvider.validateToken(accessToken)) {
 				MemberDTO data = memberService.selectByUserNo(userNo);
 				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
+    }
+    
+    @GetMapping("/auth/isAdmin")
+    public ResponseEntity<?> isAdmin(
+    		@RequestHeader(value="authorization") String authorization
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				MemberDTO member = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
+				return ResponseEntity.ok().body(member.getRole().equals(Role.ADMIN.getValue()));
 			}
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");

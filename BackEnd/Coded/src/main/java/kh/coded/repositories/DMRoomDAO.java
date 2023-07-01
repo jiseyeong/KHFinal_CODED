@@ -1,6 +1,8 @@
 package kh.coded.repositories;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,23 @@ public class DMRoomDAO {
 	public int createRoomId() {
 		return mybatis.insert("DMRoom.createRoomId");
 	}
-
 	
+	public void deleteRoomByRoomId(int roomId) {
+		mybatis.delete("DMRoom.deleteByRoomId");
+	}
+
+	public List<DMRoomDTO> selectPagingList(int startNum, int endNum){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("startNum", startNum);
+		data.put("endNum", endNum);
+		return mybatis.selectList("DMRoom.selectPagingList", data);
+	}
+	
+	public int getRecordCount() {
+		return mybatis.selectOne("DMRoom.getRecordCount");
+	}
+	
+	public DMRoomDTO selectOneByRoomId(int roomId) {
+		return mybatis.selectOne("DMRoom.selectOneByRoomId", roomId);
+	}
 }
