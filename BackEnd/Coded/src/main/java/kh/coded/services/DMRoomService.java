@@ -34,9 +34,10 @@ public class DMRoomService {
 	public List<DMRoomListDTO> selectByUserNo (int userNo) {
 		return dmRoomDAO.selectByUserNo(userNo);	
 	}
-
-	public int createRoomId () {
-		return dmRoomDAO.createRoomId();
+	
+	//방하나 만들어 RoomId return
+	public int createRoomId (DMRoomDTO DMRoomDto) {
+		return dmRoomDAO.createRoomId(DMRoomDto);
 	}
 	
 	//Admin page 기능
@@ -105,4 +106,10 @@ public class DMRoomService {
 
         return data;
 	}
+	
+	
+	
+	
+	
+	
 }

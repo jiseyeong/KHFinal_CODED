@@ -101,5 +101,10 @@ public class DMRoomUserService {
 
         return data;
 	}
+
+	public void insertUserToRoom(int loginUserNo,int clickuserNo,  int roomId) {
+		dmRoomUserDAO.insertUserToRoom(loginUserNo,clickuserNo,roomId);
+		
+	}
 	
 }

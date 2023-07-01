@@ -7,7 +7,7 @@ public class DMRoomDTO {
     public DMRoomDTO(int roomId, int lastMessageId) {
 		super();
 		this.roomId = roomId;
-		lastMessageId = lastMessageId;
+		this.lastMessageId = lastMessageId;
 	}
 
 	public DMRoomDTO() {
@@ -27,7 +27,7 @@ public class DMRoomDTO {
 	}
 
 	public void setLastMessageId(int lastMessageId) {
-		lastMessageId = lastMessageId;
+		this.lastMessageId = lastMessageId;
 	}
     
 }

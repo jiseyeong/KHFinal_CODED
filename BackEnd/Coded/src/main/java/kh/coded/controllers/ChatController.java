@@ -67,6 +67,19 @@ public class ChatController {
 		}
 	}
 
+	// 방하나 만들어 방에 참가자 추가하기
+	@GetMapping("createRoom")
+	public ResponseEntity<?> createRoom (@RequestParam(value = "loginUserNo") int loginUserNo,
+			@RequestParam(value = "clickuserNo") int clickuserNo
+			){
+		DMRoomDTO DMRoomDto = new DMRoomDTO(0,0);
+		int roomId = DMRoomService.createRoomId(DMRoomDto);
+		DMRoomUserService.insertUserToRoom(loginUserNo,clickuserNo,roomId);
+		
+		List<DMRoomListDTO> list = DMRoomService.selectByUserNo(loginUserNo);
+		return ResponseEntity.ok().body(list);}
+	
+	
 	@DeleteMapping("deleteUserDMRoomUser")
 	public void deleteUserDMRoomUser (@RequestParam(value = "roomId") int roomId,@RequestParam(value = "userNo") int userNo) {
 		DMRoomUserService.deleteUserDMRoomUser(roomId, userNo);
