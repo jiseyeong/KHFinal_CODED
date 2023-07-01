@@ -13,27 +13,27 @@
   align-items: center;
   padding-top:none;
 
+  .progress-bar {
+    position:absolute;
+    bottom:670px;
+    width:500px;
+    height: 15px;
+    background: var(--red);
+    transform-origin: 0%;
+    z-index:100;
+  }
+
   .modalBody{
     position: absolute;
     width:500px;
     height:500px;
-    bottom:200px;
+    bottom:170px;
     padding: 40px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
+    border-top-right-radius:0;
+    border-top-left-radius:0;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-    .progress-bar {
-      position: fixed;
-      top:237px;
-      left: 702px;
-      right: 0;
-      width:482px;
-      height: 15px;
-      background: var(--red);
-      transform-origin: 0%;
-      border-radius:5px;
-    }
 
     .tosContent{
       width:100%;
