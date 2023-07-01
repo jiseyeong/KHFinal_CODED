@@ -60,8 +60,6 @@ const MyPickPage = () => {
   const [feedWriteModal, setFeedWriteModal] = useState(false);
   const [followStats, setFollowStats] = useState(false);
 
-  console.log(location);
-
   // 피드 작성 모달창 세팅
   const insertModalStyle = {
     overlay: {
@@ -124,44 +122,6 @@ const MyPickPage = () => {
       window.onscroll = null;
     };
   }, [accessToken, currentUserNo]);
-
-<<<<<<< Updated upstream
-  // useEffect(() => {
-  //   if (currentUserNo) {
-  //     getMyPickData();
-  //   }
-  // }, [currentUserNo]);
-=======
-  const handleDMButtonClick = () => {
-    if (accessToken) {
-      if (!subscribed) {
-        // 새로 구독
-        // TODO: 구독할 토픽 및 구독 관련 로직 추가
-
-        // 구독 시작 후 DMList 페이지로 이동
-        setSubscribed(true);
-        history.push('/dm-list');
-      } else {
-        // 이미 구독 중인 경우
-        // DMList 페이지로 이동
-        history.push('/dm-list');
-      }
-
-      // 토큰이 있을 때의 동작
-      // 구독 상태인지 확인하고, 구독되지 않았을 경우 구독 요청을 보내고 DMList 페이지로 이동
-      // 구독 상태라면 DMList 페이지로 이동
-    } else {
-      // 토큰이 없을 때의 동작
-      denyAccess();
-    }
-  };
-
-  useEffect(() => {
-    if (currentUserNo) {
-      getMyPickData();
-    }
-  }, [currentUserNo, location.search]);
->>>>>>> Stashed changes
 
   const getMyPickData = () => {
     console.log(currentUserNo);

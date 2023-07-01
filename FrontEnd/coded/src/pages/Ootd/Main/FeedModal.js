@@ -217,23 +217,6 @@ function FeedModal({
     setEditYN(false);
   }
 
-<<<<<<< Updated upstream
-=======
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: 520, // 원하는 가로 크기로 변경
-      height: 52.3, // 원하는 높이로 변경
-      lineHeight: 'normal',
-      fontSize: 14,
-    }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      transform: 'rotate(180deg)', // 화살표 회전
-    }),
-  };
-
->>>>>>> Stashed changes
   //글 수정
 
   function editCancel() {}
@@ -342,7 +325,9 @@ function FeedModal({
     control: (provided) => ({
       ...provided,
       width: 520, // 원하는 가로 크기로 변경
-      height: 50, // 원하는 높이로 변경
+      height: 52.3, // 원하는 높이로 변경
+      lineHeight: 'normal',
+      fontSize: 14,
     }),
     dropdownIndicator: (provided, state) => ({
       ...provided,
@@ -389,12 +374,8 @@ function FeedModal({
                     </Link>
                   </div>
                   <div className="authorInfomation">
-                    <div className="author">
-                      {feedPost.userNickName}
-                    </div>
-                    <div className="introduction">
-                      {userBio}
-                    </div>
+                    <div className="author">{feedPost.userNickName}</div>
+                    <div className="introduction">{userBio}</div>
                   </div>
 
                   {/* 수정하기 눌렀을 때 숨김 */}
@@ -512,9 +493,7 @@ function FeedModal({
                     <Like />
                   </div>
                   <div className="likeNumBox">
-                    <span className="likeNum">
-                      {feedLikeCount}
-                    </span>
+                    <span className="likeNum">{feedLikeCount}</span>
                   </div>
                 </div>
                 <div

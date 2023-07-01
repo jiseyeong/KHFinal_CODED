@@ -30,8 +30,6 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
       ])
 
       .then(([resp1, resp2]) => {
-        console.log(resp1.data);
-        console.log(resp2.data);
         setFollowingList(resp1.data);
         setFollowerList(resp2.data);
 
@@ -90,31 +88,32 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
       </div>
       <div className="modalBody">
         <ul className="userList">
-          {showFollowingStats
-            ? followingList &&
-              followingList.map((item, index) => {
-                console.log(item);
-                return (
-                  <FollowUser
-                    key={index}
-                    followUser={item}
-                    isFollow={item.isFollow === 1 ? true : false}
-                    myUserNo={myUserNo}
-                  />
-                );
-              })
-            : followerList &&
-              followerList.map((item, index) => {
-                console.log(item);
-                return (
-                  <FollowUser
-                    key={index}
-                    followUser={item}
-                    isFollow={item.isFollow === 1 ? true : false}
-                    myUserNo={myUserNo}
-                  />
-                );
-              })}
+          {showFollowingStats &&
+            followingList &&
+            followingList.map((item, index) => {
+              console.log(item);
+              return (
+                <FollowUser
+                  key={index}
+                  followUser={item}
+                  isFollow={item.isFollow === 1 ? true : false}
+                  myUserNo={myUserNo}
+                />
+              );
+            })}
+          {!showFollowingStats &&
+            followerList &&
+            followerList.map((item, index) => {
+              console.log(item);
+              return (
+                <FollowUser
+                  key={index}
+                  followUser={item}
+                  isFollow={item.isFollow === 1 ? true : false}
+                  myUserNo={myUserNo}
+                />
+              );
+            })}
         </ul>
       </div>
     </div>
@@ -123,6 +122,7 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
 
 const FollowUser = ({ followUser, isFollow, myUserNo }) => {
   const [followCheck, setFollowCheck] = useState(isFollow);
+  // console.log(followCheck + ' / ' + followUser.userNo);
   function follow(toUserNo) {
     //버튼 클릭시 insert, delete..
 
