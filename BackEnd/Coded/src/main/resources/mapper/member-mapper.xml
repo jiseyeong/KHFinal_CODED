@@ -81,12 +81,20 @@
 		select * from member left join photo using (userNo) where userNo=${userNo}
 	</select>
 
-	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
-		select * from member left join photo using (userNo) where userno in(select fromuserno from follow where touserNo = ${toUserNo})
+	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
+		select m.*, (select count(*) from follow where fromuserno = ${myUserNo} and touserno=m.userno) isFollow
+		from (select * from member
+		left join photo using (userNo)
+		where userno in
+		(select touserno from follow where fromuserno = ${targetUserNo})) m
 	</select>
 
-	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
-		select * from member left join photo using (userNo) where userno in(select touserno from follow where fromuserNo = ${fromUserNo})
+	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
+		select m.*, (select count(*) from follow where fromuserno = ${myUserNo} and touserno=m.userno) isFollow
+		from (select * from member
+		left join photo using (userNo)
+		where userno in
+		(select fromuserno from follow where touserNo = ${targetUserNo})) m
 	</select>
 
 	<update id="updateMemberByUserNo">

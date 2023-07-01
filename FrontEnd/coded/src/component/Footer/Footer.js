@@ -1,119 +1,49 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './Footer.scss';
 import Modal from 'react-modal';
 import { motion, useScroll } from "framer-motion";
+import Tos from './Component/Tos/TermsOfUse';
+
 
 
 const Footer = () => {
 
   const [modal, setModal] = useState(false);
-  const { scrollYProgress } = useScroll();
+
+  //모달 창 닫기
+  const closeModal = () => {
+    if (modal) {
+        setModal(false);
+      }
+    };
 
   function Modal() {
+    const modalBodyRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+      container:modalBodyRef
+    });
     return (
+
       <>
-      <div className="modal">
-        <div className="modalBody">
-        <motion.div
+      <div className="modal" onClick={closeModal}>
+      <motion.div
           className="progress-bar"
           style={{scaleX:scrollYProgress}}/>
-          <div className="tosContent">testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-        testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+        <div className="modalBody" ref={modalBodyRef}>
+       
+          <div className="tosContent">
+              <Tos></Tos>
         </div>
         </div>
         </div>
       </>
     );
   }
-
   // const openModal = () => {
   //   if (!modal) {
   //     setModal(true);
-  //   }
-  // };
-
-  // // 모달 창 닫기
-  // const closeModal = () => {
-  //   if (modal) {
-  //     setModal(false);
   //   }
   // };
 
@@ -125,9 +55,7 @@ const Footer = () => {
             <p>members.</p>
           </div>
           <div className="descList">
-            <div className="deleteAccountWrapper">
               <Link to="/deleteAccount">Delete Account</Link>
-            </div>
           </div>
         </div>
         <div className="middle">
@@ -149,7 +77,9 @@ const Footer = () => {
             <p>contact.</p>
           </div>
           <div className="descList">
+          <div className="contactWrapper">
             <p>coded@official.com</p>
+            </div>
           </div>
         </div>
       </div>

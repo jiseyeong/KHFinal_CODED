@@ -20,6 +20,7 @@ import Login from '../../pages/auth/Login/Login';
 import SignUp from '../../pages/auth/SignUp/SignUp';
 import Logo from './navLogo.png';
 import TodayWeather from '../TodayWeather/TodayWeather';
+import { logout } from '../../modules/Redux/members';
 
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
@@ -40,6 +41,7 @@ function Navbar() {
     () => dispatch(setWeekly()),
     [dispatch],
   );
+  const onLogout = useCallback(()=>dispatch(logout()),[dispatch]);
 
   const navigate = useNavigate();
 
@@ -104,7 +106,10 @@ function Navbar() {
   return (
     <>
       <div className="navBarWrapper">
-        <TodayWeather></TodayWeather>
+        {
+          accessToken && <TodayWeather></TodayWeather>
+        }
+        
         <nav className="topNavBar">
           <div className="leftNavBar">
             <a className="navLogo" href="/">
@@ -152,9 +157,19 @@ function Navbar() {
 
           <div className="rightNavBar">
             <div className="rightMenuWrapper">
-              <button onClick={loginPage} className="loginBtn">
-                로그인 / 회원가입
-              </button>
+              {accessToken ?
+              (
+                <button onClick={onLogout} className='loginBtn'>
+                  로그아웃
+                </button>
+              )
+              :
+              (
+                <button onClick={loginPage} className="loginBtn">
+                  로그인 / 회원가입
+                </button>
+              )}
+              
               {/* <button onClick={myPage} className='mypage'>마이페이지</button> */}
               {/* <svg
                 stroke="currentColor"

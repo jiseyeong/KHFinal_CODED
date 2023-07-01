@@ -25,4 +25,5 @@
 	<delete id="deleteFollow">
 		delete from Follow where ToUserNo = ${toUserNo} and FromUserNo = ${fromUserNo}
 	</delete>
+
 </mapper>
