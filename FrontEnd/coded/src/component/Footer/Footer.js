@@ -1,9 +1,11 @@
 import React, { Component, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 import './Footer.scss';
 import Modal from 'react-modal';
 import { motion, useScroll } from "framer-motion";
+
 
 
 const Footer = () => {
@@ -13,6 +15,7 @@ const Footer = () => {
 
   function Modal() {
     return (
+
       <>
       <div className="modal">
         <div className="modalBody">
@@ -104,18 +107,6 @@ const Footer = () => {
     );
   }
 
-  // const openModal = () => {
-  //   if (!modal) {
-  //     setModal(true);
-  //   }
-  // };
-
-  // // 모달 창 닫기
-  // const closeModal = () => {
-  //   if (modal) {
-  //     setModal(false);
-  //   }
-  // };
 
   return (
     <div className="Footer">
