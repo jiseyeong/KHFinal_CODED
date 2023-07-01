@@ -274,7 +274,6 @@ const FeedPostDetail = (props) => {
             hashTagList={hashTagList}
           />
         )}
-
         {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
       </div>
     </div>
