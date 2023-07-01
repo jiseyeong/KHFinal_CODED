@@ -106,4 +106,8 @@ public class PhotoService {
     public List<PhotoDTO> selectByFeedpostId(int feedPostId){
     	return photoDAO.selectByFeedpostId(feedPostId);
     }
+    
+    public List<PhotoDTO> selectByMessageId(int messageId){
+    	return photoDAO.selectByMessageId(messageId);
+    }
 }

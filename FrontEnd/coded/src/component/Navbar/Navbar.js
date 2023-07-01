@@ -143,9 +143,11 @@ function Navbar() {
             </div>
           </div>
 
-          {navbarType !== 'Weekly' && (
+          {navbarType !== 'Weekly' ? (
             // 검색 박스 관련 js와 css는 SearchBox.js로 옮겨 넣었습니다.
             <SearchBox />
+          ) : (
+            <div style={{ width: '35%' }} />
           )}
 
           <div className="rightNavBar">

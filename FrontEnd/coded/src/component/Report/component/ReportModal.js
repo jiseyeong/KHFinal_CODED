@@ -190,6 +190,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="a"
+                      name='test'
                       onChange={handleReportNumber}
                     />
                     개인정보 침해 및 명예훼손 게시물
@@ -202,6 +203,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="b"
+                      name='test'
                       onChange={handleReportNumber}
                     />
                     불법 광고 게시물
@@ -214,6 +216,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="c"
+                      name='test'
                       onChange={handleReportNumber}
                     />
                     도배성 게시물
@@ -226,6 +229,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="d"
+                      name='test'
                       onChange={handleReportNumber}
                     />
                     저작권 침해 게시물
@@ -238,6 +242,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="e"
+                      name='test'
                       onChange={handleReportNumber}
                     />
                     기타 (직접입력)

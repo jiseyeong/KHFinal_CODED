@@ -23,7 +23,7 @@ public class FollowService {
 
 	public boolean isFollow(int toUserNo, int fromUserNo) {
 		return followDAO.isFollow(toUserNo, fromUserNo);
-	}	
+	}
 
 	public Map<String,Object> selectFollowerList(int toUserNo, int myUserNo) { //나를 팔로우 하는 사람들 정보 뽑기
 		List<MemberWithProfileDTO> followerList = memberDAO.selectFollowerList(toUserNo);

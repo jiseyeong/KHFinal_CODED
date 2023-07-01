@@ -1,3 +1,50 @@
+
+.modal{
+  --red: #ff0055;
+  position: fixed;
+  top: 0;
+  bottom:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top:none;
+
+  .modalBody{
+    position: absolute;
+    width:1000px;
+    height: 700px;
+    padding: 40px;
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+    .progress-bar {
+      position: fixed;
+      top:200px;
+      left: 500px;
+      right: 0;
+      width:1000px;
+      height: 10px;
+      background: var(--red);
+      transform-origin: 0%;
+    }
+
+    .tosContent{
+      width:100%;
+      height:80%;
+    }
+
+  }
+  
+}
+
+
+
 .Footer {
   display: block;
   // width: 1180px;

@@ -135,7 +135,8 @@ public class SecurityConfiguration {
 			"/feedReport/insertReport",
 			"/feedList/search",
 			"/coded.ico",
-			"/feedpost/insertFeedPost"
+			"/feedpost/insertFeedPost",
+			"/follow/isfollow"
 
 	};
 	private final String[] API_USER_LIST = {
@@ -168,6 +169,8 @@ public class SecurityConfiguration {
 			"/mypick/selectMember",
 			"/mypick/selectFeedPost",
 			
+			"/photo/dm",
+			
 			"v/**",
 			"/DM/**",
 			"/topic/**",
@@ -189,7 +192,14 @@ public class SecurityConfiguration {
 			"/auth/pagingMember/email",
 			"/auth/deleteMemberByAdmin",
 			"/auth/getUserByUserNo",
+			"/auth/isAdmin",
 			"/feedpost/getNaviInfo/userNo",
+			"/DM/naviInfo",
+			"/DM/pagingList",
+			"/DM/naviInfo/userNo",
+			"/DM/pagingList/userNo",
+			"/DM/getRoomByRoomId",
+			"/DM/deleteRoom",
 	};
 	
 //	@Autowired

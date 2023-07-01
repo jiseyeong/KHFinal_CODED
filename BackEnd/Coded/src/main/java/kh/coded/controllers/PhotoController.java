@@ -1,18 +1,26 @@
 package kh.coded.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
-import kh.coded.dto.MemberWithProfileDTO;
-import kh.coded.dto.PhotoDTO;
-import kh.coded.services.PhotoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.servlet.http.HttpServletRequest;
+import kh.coded.dto.MemberDTO;
+import kh.coded.dto.PhotoDTO;
+import kh.coded.dto.Role;
+import kh.coded.security.JwtProvider;
+import kh.coded.services.PhotoService;
 
 @RequestMapping("/photo/")
 @RestController
@@ -20,6 +28,8 @@ public class PhotoController {
 
     @Autowired
     private PhotoService photoService;
+    @Autowired
+    private JwtProvider jwtProvider;
 
     // 사진 입력 전용 메소드
     // 어떤 파라미터를 넘기냐에 따라 각각 해당 컬럼으로 값을 넣고 나머지 값은 null로 고정
@@ -81,6 +91,21 @@ public class PhotoController {
     		){
     	List<PhotoDTO> list = photoService.selectByFeedpostId(feedPostId);
     	return ResponseEntity.ok().body(list);
+    }
+    
+    @GetMapping("dm")
+    public ResponseEntity<?> selectDMPhoto(
+    		@RequestHeader(value="authorization") String authorization,
+    		@RequestParam(value="messageId") int messageId
+    		){
+    	if (authorization.length() > 7) {
+			String accessToken = authorization.substring("Bearer ".length(), authorization.length());
+			if (jwtProvider.validateToken(accessToken)) {
+				List<PhotoDTO> data = photoService.selectByMessageId(messageId);
+				return ResponseEntity.ok().body(data);
+			}
+		}
+		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
     }
     
 }

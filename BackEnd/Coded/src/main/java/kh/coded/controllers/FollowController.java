@@ -36,11 +36,11 @@ public class FollowController {
 		return ResponseEntity.ok().body(followingList);
 	}
 
-	//	@GetMapping(value = "isfollow")
-	//	public ResponseEntity<?> isfollow(@RequestParam int ToUserNo, @RequestParam int FromUserNo) {
-	//		boolean isFollow = followService.isFollow(ToUserNo, FromUserNo);
-	//		return ResponseEntity.ok().body(isFollow);
-	//	}
+		@GetMapping(value = "isfollow")
+		public ResponseEntity<?> isfollow(@RequestParam int toUserNo, @RequestParam int fromUserNo) {
+			boolean isFollow = followService.isFollow(toUserNo, fromUserNo);
+			return ResponseEntity.ok().body(isFollow);
+		}
 
 	@PostMapping(value = "insertfollow")
 	public ResponseEntity<?> insertfollow(@RequestParam int toUserNo, @RequestParam int fromUserNo) {
@@ -48,10 +48,10 @@ public class FollowController {
 		boolean isFollow = followService.isFollow(toUserNo, fromUserNo);
 		if (!isFollow) {
 			int insertFollow = followService.insertFollow(toUserNo, fromUserNo);
-			return ResponseEntity.ok().body(insertFollow);
+			return ResponseEntity.ok().body("insert");
 		} else {
 			int deleteFollow = followService.deleteFollow(toUserNo, fromUserNo);
-			return ResponseEntity.ok().body(deleteFollow);
+			return ResponseEntity.ok().body("deleteFollow");
 		}
 	}
 }

@@ -17,13 +17,11 @@ function FeedListForm() {
   const [isFeedLike, setIsFeedLike] = useState(false);
   const [hashTagList, setHashTagList] = useState([]);
   const [feedPost, setFeedPost] = useState([]);
+  
   const type = useRef('none');
-
   const selectBoxRef = useRef(null);
   const inputRef = useRef(null);
-
   const numberRegex = /^[0-9]+$/;
-
   const navigate = useNavigate();
 
   useEffect(() => {
