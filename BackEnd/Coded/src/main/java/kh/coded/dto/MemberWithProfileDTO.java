@@ -21,8 +21,11 @@ public class MemberWithProfileDTO{
     private String oriName;
     private String sysName;
 
+    // 나를 팔로우 했는 지 여부를 가져올 멤버필드 추가
+    private int isFollow;
+
     //select용
-    public MemberWithProfileDTO(int userNo, String userId, String pw, String userNickName, String bio, String hashTag, String email, String address1, String address2, String role, String naverToken, String kakaoToken, String googleToken, int photoId, String oriName, String sysName) {
+    public MemberWithProfileDTO(int userNo, String userId, String pw, String userNickName, String bio, String hashTag, String email, String address1, String address2, String role, String naverToken, String kakaoToken, String googleToken, int photoId, String oriName, String sysName, int isFollow) {
         this.userNo = userNo;
         this.userId = userId;
         this.pw = pw;
@@ -39,6 +42,7 @@ public class MemberWithProfileDTO{
         this.photoId = photoId;
         this.oriName = oriName;
         this.sysName = sysName;
+        this.isFollow = isFollow;
     }
 
     //join 용
@@ -166,4 +170,11 @@ public class MemberWithProfileDTO{
         this.sysName = sysName;
     }
 
+    public int getIsFollow() {
+        return isFollow;
+    }
+
+    public void setIsFollow(int isFollow) {
+        this.isFollow = isFollow;
+    }
 }
