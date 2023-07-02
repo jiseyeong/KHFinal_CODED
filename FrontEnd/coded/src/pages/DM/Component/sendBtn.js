@@ -32,7 +32,7 @@ const SendChat = styled.input`
     margin-top:10px;
     font-size: 15px;
     color: #222222;
-    border:1px solid black;
+    border:1px solid lightgray;
     border-radius:5px;
     padding:10px;
     font-size:12px;

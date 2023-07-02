@@ -32,30 +32,31 @@ const ListElement = (props) => {
 
 const RoomElement = styled.div`
   .RoomElement {
-    height: 80px;
+    height: 55px;
     width: 100%;
     padding: 5px;
     display: flex;
+    margin-bottom:10px;
   }
   .RoomElement:hover {
     cursor: pointer;
-    background-color: lightgray;
+    background-color:rgb(240,240,240);
   }
   .profilePic {
-    width: 25%;
+    width: 20%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .profileImg {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
     border: 1px solid #d3d3d3;
     border-radius: 30px;
   }
   .profile {
-    width: 75%;
+    width: 80%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -68,19 +69,20 @@ const RoomElement = styled.div`
   }
   .roomUserNickname {
     width: 50%;
-    height: 45%;
-    font-size: 18px;
+    height: 50%;
+    font-size: 15px;
     font-weight: 600;
     display: flex;
     align-items: center;
+    line-height:20px;
   }
   .roomUserId {
     width: 50%;
-    height: 30%;
+    height: 50%;
     font-size: 14px;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    line-height:20px;
   }
 `;
 
