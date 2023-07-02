@@ -1,24 +1,32 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import ChatBox from './Component/ChatBox';
 import SearchMember from './Component/SearchMember';
 import ListElement from './Component/ListElement';
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import { setDMNONE } from '../../modules/Redux/DMSetting';
+
 
 
 
 function DMList() {
   const accessToken = useSelector((state) => state.member.access);
   const loginUserNo = useSelector((state) => state.member.userNo);
+  const settingChatUserNo = useSelector((state)=> state.dmSetting.userNo); // 마이픽에서 넘어올 시 userNo
+  const settingIsUserAlert = useSelector((state)=> state.dmSetting.isUserAlert)
   const [DMRoomList, setDMRoomList] = useState([]); //채팅중인 모든 방 정보
   const [DMRoom, setDMRoom] = useState({}); // 클릭한 한사람의 정보
   const [DMList, setDMList] = useState([]); // 클릭한 사람과의 대화 내용
 
   const [stompClient, setStompClient] = useState();
   
+  const dispatch = useDispatch();
+  const onSetDMNONE = useCallback(()=> dispatch(setDMNONE(), [dispatch]))
+
+
   // DMList 페이지에 올 시 웹소켓 연결을 준비하여 STOMP를 연결하는 코드
   useEffect(() => {
     const socketUrl = `http://localhost:9999/ws`;
@@ -63,26 +71,30 @@ function DMList() {
   // More버튼을 통한 나가기 버튼 클릭시 채팅방 나가기
   const disconnect =()=> {
     if (stompClient && DMRoom.roomId) {
-      stompClient.disconnect();
       axios({
-        method: 'get',
-        url: '/DM/',
+        method: 'delete',
+        url: '/DM/deleteUserDMRoomUser',
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
         params: {
           userNo: loginUserNo,
+          roomId: DMRoom.roomId
         },
       })
-        .then((resp) => {
-          setDMRoomList(resp.data);
+        .then(() => {
+          onSetDMNONE();
+          updateRoomList();
+          updateDMList();
         })
         .catch((error) => console.log(error));
     }
   }
 
   // 검색결과에서 클릭한 사람과 채팅 시작
-  const startChat = (userNo) => {
+  
+  useEffect(()=>{
+    if(settingChatUserNo){
       axios({
         method: 'get',
         url: '/DM/createRoom',
@@ -91,14 +103,25 @@ function DMList() {
         },
         params: {
           loginUserNo: loginUserNo,
-          clickuserNo: userNo
+          clickuserNo: settingChatUserNo
         },
       })
         .then((resp) => {
+          console.log(resp.data)
+          if (resp.data!==''){
+          
           setDMRoomList(resp.data);
+          }else{
+            if(settingIsUserAlert){
+            alert("이미 채팅중인 유저입니다.")
+            }
+          }
         })
         .catch((error) => console.log(error));
-  }
+      }
+  },[settingChatUserNo])
+
+
 
   //sendBtn 컴포넌트로 넘겨주어 send버튼 클릭시 메세지를 보내고 채팅내역에 추가
   const Send = (message) => {
@@ -122,7 +145,7 @@ function DMList() {
 
 
   // 로그인UserNo를 통한 채팅목록 불러오기
-  useEffect(() => {
+  const updateRoomList = () =>{
     if (loginUserNo > 0) {
       axios({
         method: 'get',
@@ -139,27 +162,36 @@ function DMList() {
         })
         .catch((error) => console.log(error));
     }
+  }
+
+  useEffect(() => {
+    updateRoomList()
   }, [loginUserNo]);
+  
 
   //ListElement(채팅목록 클릭시 DB를 통한 DM내역 불러오기)
+  const updateDMList = () => {
+  if (accessToken) {
+    axios
+      .request({
+        url: '/DM/selectDMbyRoomid',
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          roomId: DMRoom.roomId,
+        },
+      })
+      .then((resp) => {
+        setDMList(resp.data);
+      })
+      .catch((error) => console.log(error));
+  }
+}
+
   useEffect(() => {
-    if (accessToken) {
-      axios
-        .request({
-          url: '/DM/selectDMbyRoomid',
-          method: 'get',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          params: {
-            roomId: DMRoom.roomId,
-          },
-        })
-        .then((resp) => {
-          setDMList(resp.data);
-        })
-        .catch((error) => console.log(error));
-    }
+    updateDMList();
   }, [DMRoom.roomId]);
 
 
@@ -176,11 +208,12 @@ function DMList() {
           DMRoomList={DMRoomList}
           DMRoom={DMRoom}
           Send={Send}
+          disconnect={disconnect}
         ></ChatBox>
       </div>
       <div className="List">
         <div className="searchBox">
-          <SearchMember startChat={startChat}></SearchMember>
+          <SearchMember></SearchMember>
           {/* <input className='search' type='text'></input> */}
         </div>
         <div className="chatList">
@@ -228,6 +261,8 @@ const DMListOuter = styled.div`
       width: 100%;
       background-color: lightgray;
       border-radius: 5px;
+      overflow-wrap: break-word; 
+      overflow: overlay
     }
   `;
 

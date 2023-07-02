@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import kh.coded.dto.DMRoomDTO;
 import kh.coded.dto.DMRoomListDTO;
 
+
 @Repository
 public class DMRoomDAO {
 
@@ -46,4 +47,7 @@ public class DMRoomDAO {
 	public DMRoomDTO selectOneByRoomId(int roomId) {
 		return mybatis.selectOne("DMRoom.selectOneByRoomId", roomId);
 	}
+	
+	
+	
 }

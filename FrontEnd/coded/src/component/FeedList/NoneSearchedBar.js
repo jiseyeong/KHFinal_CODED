@@ -1,6 +1,5 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { FadeLoader } from 'react-spinners';
 
 const NoticeDataDiv = styled('div')`
   height: 400px;

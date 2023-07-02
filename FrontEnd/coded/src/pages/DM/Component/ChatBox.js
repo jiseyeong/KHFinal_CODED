@@ -12,6 +12,7 @@ const ChatBox = (props) => {
     const dmListRef = useRef(null);
     const DMRoom = props.DMRoom;
     const Send = props.Send;
+    const disconnect = props.disconnect;
 
     useEffect(() => {
         scrollToBottom();
@@ -42,7 +43,7 @@ const ChatBox = (props) => {
                     <div className="otherId">{DMRoom.userId}</div>
                     <div className="otherNickname">{DMRoom.userNickname}</div>
                 </div>
-                <MenuButton></MenuButton>
+                <MenuButton disconnect={disconnect}></MenuButton>
             </div>
             <div className='DMList' ref={dmListRef}>
                 {DMList.length > 0 &&

@@ -19,7 +19,9 @@ import FollowerList from '../../component/FollowList/FollowList';
 import FeedInsert from '../../test/FeedUpdateTestOuter';
 import FeedInsertModal from '../Feed/Main/FeedInsertModal';
 import { CloseBtn } from '../../assets/ModalAsset/IconAsset';
+import { setDMSETUSER } from '../../modules/Redux/DMSetting';
 import ConfirmDialog from '../../component/Common/ConfirmDialog';
+
 
 const customStyle = {
   position: 'absolute',
@@ -51,6 +53,8 @@ const MyPickPage = () => {
   const navi = useNavigate();
 
   const searchParams = new URLSearchParams(location.search);
+
+  const onSetDMSETUSER = useCallback((userNo)=> dispatch(setDMSETUSER(userNo,false), [dispatch]))
 
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
@@ -324,6 +328,7 @@ const MyPickPage = () => {
                     viewBox="0 0 20 20"
                     width="30"
                     xmlns="http://www.w3.org/2000/svg"
+                    onClick={()=>{onSetDMSETUSER(currentUserNo); navi('/DMList'); }}
                   >
                     <path
                       className="dmButton"
