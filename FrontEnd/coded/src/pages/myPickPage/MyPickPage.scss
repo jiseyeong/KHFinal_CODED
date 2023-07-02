@@ -8,13 +8,6 @@ body {
 
 .myPickPageLayout {
   .profile {
-    hr {
-      margin-top: 20px;
-      margin-bottom: 70px;
-      border: none;
-      height: 1px;
-      background-color: #fff;
-    }
     max-width: 1100px;
     margin: 40px auto;
     padding: 20px;
@@ -26,6 +19,7 @@ body {
       display: flex;
       justify-content: center;
       align-items: center;
+      border-bottom: 1px solid rgb(222, 222, 222);
 
       .imageLayout {
         width: 230px;
@@ -148,7 +142,6 @@ body {
             cursor: pointer;
             color: #ffffff;
             background-color: #000000;
-
           }
         }
 
@@ -171,15 +164,12 @@ body {
           }
           .editButton {
             color: #ffffff;
-
           }
           .followingBtn {
             color: #222;
-
           }
           .followBtn {
             color: #222;
-            
           }
         }
       }

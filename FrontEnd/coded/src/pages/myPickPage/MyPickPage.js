@@ -21,7 +21,7 @@ import FeedInsertModal from '../Feed/Main/FeedInsertModal';
 import { CloseBtn } from '../../assets/ModalAsset/IconAsset';
 import { setDMSETUSER } from '../../modules/Redux/DMSetting';
 import ConfirmDialog from '../../component/Common/ConfirmDialog';
-
+import ErrorConfirmPage from '../../assets/ButtonAsset/ErrorConfirmPage';
 
 const customStyle = {
   position: 'absolute',
@@ -54,7 +54,9 @@ const MyPickPage = () => {
 
   const searchParams = new URLSearchParams(location.search);
 
-  const onSetDMSETUSER = useCallback((userNo)=> dispatch(setDMSETUSER(userNo,false), [dispatch]))
+  const onSetDMSETUSER = useCallback((userNo) =>
+    dispatch(setDMSETUSER(userNo, false), [dispatch]),
+  );
 
   const [currentUserNo, setCurrentUserNo] = useState(
     searchParams.get('userNo'),
@@ -328,7 +330,10 @@ const MyPickPage = () => {
                     viewBox="0 0 20 20"
                     width="30"
                     xmlns="http://www.w3.org/2000/svg"
-                    onClick={()=>{onSetDMSETUSER(currentUserNo); navi('/DMList'); }}
+                    onClick={() => {
+                      onSetDMSETUSER(currentUserNo);
+                      navi('/DMList');
+                    }}
                   >
                     <path
                       className="dmButton"
@@ -386,14 +391,21 @@ const MyPickPage = () => {
             </div>
           </div>
         </div>
-        <hr />
-        <div className="feed">
-          {feedPost.map((e, i) => (
-            <div className="grid-item" key={i}>
-              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
-            </div>
-          ))}
-        </div>
+        {feedPost.length > 0 ? (
+          <div className="feed">
+            {feedPost.map((e, i) => (
+              <div className="grid-item" key={i}>
+                <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ErrorConfirmPage
+            message={'새로운 글을 작성해보세요!!'}
+            backPagesCount={-1}
+            removeButton={true}
+          />
+        )}
         <Modal isOpen={FollowerIsOpen} style={modalStyle} ariaHideApp={false}>
           <FollowerList
             setFollowerIsOpen={setFollowerIsOpen}
