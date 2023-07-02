@@ -19,6 +19,7 @@ import FollowerList from '../../component/FollowList/FollowList';
 import FeedInsert from '../../test/FeedUpdateTestOuter';
 import FeedInsertModal from '../Feed/Main/FeedInsertModal';
 import { CloseBtn } from '../../assets/ModalAsset/IconAsset';
+import ConfirmDialog from '../../component/Common/ConfirmDialog';
 
 const customStyle = {
   position: 'absolute',
@@ -59,6 +60,7 @@ const MyPickPage = () => {
   const [followModalMode, setFollowModalMode] = useState(true);
   const [feedWriteModal, setFeedWriteModal] = useState(false);
   const [followStats, setFollowStats] = useState(false);
+  const [isLogintrue, setIsLogintrue] = useState(false);
 
   // 피드 작성 모달창 세팅
   const insertModalStyle = {
@@ -212,20 +214,24 @@ const MyPickPage = () => {
 
   // 팔로우/팔로워 버튼을 누를 때
   const handleFollow = () => {
-    axios({
-      url: '/follow/handleFollow',
-      method: 'post',
-      params: {
-        toUserNo: currentUserNo,
-        fromUserNo: loginUserNo,
-      },
-    })
-      .then((resp) => {
-        setFollowStats((prev) => !prev);
+    if (accessToken) {
+      axios({
+        url: '/follow/handleFollow',
+        method: 'post',
+        params: {
+          toUserNo: currentUserNo,
+          fromUserNo: loginUserNo,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((resp) => {
+          setFollowStats((prev) => !prev);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   };
 
   const handleDMButtonClick = () => {
@@ -356,7 +362,14 @@ const MyPickPage = () => {
                 </Link>
               ) : followStats ? (
                 // 팔로우 되어있는 상태
-                <button className="followingBtn btn" onClick={handleFollow}>
+
+                <button
+                  className="followingBtn btn"
+                  onClick={() => {
+                    handleFollow();
+                    setIsLogintrue(true);
+                  }}
+                >
                   팔로잉
                 </button>
               ) : (
@@ -396,6 +409,7 @@ const MyPickPage = () => {
           />
           <FeedInsertModal setFeedPostInsertOpen={setFeedWriteModal} />
         </Modal>
+        {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
       </div>
     </div>
   );

@@ -377,6 +377,7 @@ function FeedModal({
 
   // 피드의 스크랩 반영 ( 추가 / 삭제 )
   function setFeedScrap() {
+    if (accessToken) {
     axios({
       method: 'post',
       url: '/feedpost/insertFeedScrap',
@@ -399,6 +400,9 @@ function FeedModal({
       .catch((error) => {
         console.log(error);
       });
+     } else {
+        setIsLogintrue(true);
+      }
   }
 
   //------------------------------------------------
