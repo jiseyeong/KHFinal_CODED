@@ -259,10 +259,12 @@ const DMListOuter = styled.div`
     .chatList {
       height: 88%;
       width: 100%;
-      background-color: lightgray;
+      background-color: white;
+      border: 1px solid lightgray;
       border-radius: 5px;
       overflow-wrap: break-word; 
-      overflow: overlay
+      overflow: overlay;
+      padding:1rem;
     }
   `;
 
