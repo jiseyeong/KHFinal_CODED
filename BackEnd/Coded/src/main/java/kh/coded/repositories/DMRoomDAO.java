@@ -21,9 +21,11 @@ public class DMRoomDAO {
 	public List<DMRoomListDTO> selectByUserNo(int userNo) {
 		return mybatis.selectList("DMRoom.selectByUserNo",userNo);
 	}
-
-	public int createRoomId() {
-		return mybatis.insert("DMRoom.createRoomId");
+	
+	// DM방 하나 만들어 RoomId return 
+	public int createRoomId(DMRoomDTO DMRoomDto) {
+		mybatis.insert("DMRoom.createRoomId",DMRoomDto);
+		return DMRoomDto.getRoomId();
 	}
 	
 	public void deleteRoomByRoomId(int roomId) {

@@ -47,7 +47,11 @@ function MenuButton(props) {
         </div>
       )}
       {ReportModalOpen && (
-        <ReportModal onReportView={handleReportModalToggle} />
+        <ReportModal
+          // feedPostId={}
+          // feedPostId를 넘겨야 신고 기능 구현됩니다.
+          onReportView={handleReportModalToggle}
+        />
       )}
     </MenuButtonContainer>
   );

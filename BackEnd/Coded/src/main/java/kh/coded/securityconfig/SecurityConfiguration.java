@@ -136,7 +136,7 @@ public class SecurityConfiguration {
 			"/feedList/search",
 			"/coded.ico",
 			"/feedpost/insertFeedPost",
-			"/follow/isfollow"
+			"/follow/isfollow",
 
 	};
 	private final String[] API_USER_LIST = {
@@ -179,6 +179,7 @@ public class SecurityConfiguration {
 	};
 	private final String[] API_ADMIN_LIST = {
 			"/feedReport/report",
+			"/feedReport/feed",
 			"/feedpost/getNaviInfo",
 			"/auth/getNaviInfo",
 			"/auth/pagingMember",

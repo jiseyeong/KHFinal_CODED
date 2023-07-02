@@ -2,7 +2,7 @@
 .modal{
   --red: #ff0055;
   position: fixed;
-  top: 0;
+  top:0;
   bottom:0;
   left: 0;
   width: 100%;
@@ -13,26 +13,27 @@
   align-items: center;
   padding-top:none;
 
+  .progress-bar {
+    position:absolute;
+    bottom:670px;
+    width:500px;
+    height: 15px;
+    background: var(--red);
+    transform-origin: 0%;
+    z-index:100;
+  }
+
   .modalBody{
     position: absolute;
-    width:1000px;
-    height: 700px;
+    width:500px;
+    height:500px;
+    bottom:170px;
     padding: 40px;
-    text-align: center;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
+    border-top-right-radius:0;
+    border-top-left-radius:0;
     box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-    .progress-bar {
-      position: fixed;
-      top:200px;
-      left: 500px;
-      right: 0;
-      width:1000px;
-      height: 10px;
-      background: var(--red);
-      transform-origin: 0%;
-    }
 
     .tosContent{
       width:100%;
@@ -90,13 +91,14 @@
         font-size: 14px;
         line-height: normal;
         margin-top: 5px;
-
-        .deleteAccountWrapper{
         &:hover {
           color:#ff0066;
         }
+        .contactWrapper{
+          &:hover {
+            color:#454c53;
       }
       }
     }
   }
-
+}
