@@ -163,7 +163,7 @@ const FollowUser = ({ followUser, isFollow, myUserNo }) => {
         {myUserNo !== followUser.userNo &&
           (followCheck ? (
             <button
-              className="followBtn"
+              className="followingBtn"
               onClick={() => {
                 follow(followUser.userNo);
               }}
