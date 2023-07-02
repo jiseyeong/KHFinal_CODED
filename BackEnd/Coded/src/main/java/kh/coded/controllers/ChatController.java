@@ -43,10 +43,10 @@ public class ChatController {
     // UserNo를 통한 DMRoomListDTO(로그인사용자와 대화중인 상대방의 id, nickname, 사진 등) 데이터 얻어오기
     @GetMapping("selectChatList")
     public ResponseEntity<?> selectChatList(@RequestParam(value = "userNo") int userNo) {
-        System.out.println("채팅 참가자 조회" + userNo);
+//        System.out.println("채팅 참가자 조회" + userNo);
         try {
             List<DMRoomListDTO> list = DMRoomService.selectByUserNo(userNo);
-            System.out.println(list);
+//            System.out.println(list);
             return ResponseEntity.ok().body(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,6 +90,7 @@ public class ChatController {
 
     @DeleteMapping("deleteUserDMRoomUser")
     public void deleteUserDMRoomUser(@RequestParam(value = "roomId") int roomId, @RequestParam(value = "userNo") int userNo) {
+        // 상대방에게 나갔다는 신호를 알려줌
         DMRoomUserService.deleteUserDMRoomUser(roomId, userNo);
     }
 

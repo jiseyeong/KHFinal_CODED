@@ -90,27 +90,32 @@ function DMList() {
 
   useEffect(() => {
     if (settingChatUserNo) {
-      axios({
-        method: 'get',
-        url: '/DM/createRoom',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          loginUserNo: loginUserNo,
-          clickuserNo: settingChatUserNo,
-        },
-      })
-        .then((resp) => {
-          if (resp.data !== '') {
-            setDMRoomList(resp.data);
-          } else {
-            if (settingIsUserAlert) {
-              alert('이미 채팅중인 유저입니다.');
-            }
-          }
+      if (settingChatUserNo !== loginUserNo) {
+        axios({
+          method: 'get',
+          url: '/DM/createRoom',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          params: {
+            loginUserNo: loginUserNo,
+            clickuserNo: settingChatUserNo,
+          },
         })
-        .catch((error) => console.log(error));
+          .then((resp) => {
+            console.log(resp.data);
+            if (resp.data !== '') {
+              setDMRoomList(resp.data);
+            } else {
+              if (settingIsUserAlert) {
+                alert('이미 채팅중인 유저입니다.');
+              }
+            }
+          })
+          .catch((error) => console.log(error));
+      } else {
+        alert('유저 본인을 추가할 수 없습니다.');
+      }
     }
   }, [settingChatUserNo]);
 
