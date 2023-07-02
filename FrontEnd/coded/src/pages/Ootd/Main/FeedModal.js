@@ -40,6 +40,8 @@ function FeedModal({
   isFeedLike,
   setIsFeedLike,
   hashTagList,
+  setfeedPost,
+  updatehashTagList,
 }) {
   const carrouselSettings = {
     dots: true,
@@ -86,8 +88,6 @@ function FeedModal({
 
     let arrTemp = [];
     hashTagList.forEach((item) => {
-      console.log("item")
-      console.log(item)
       let tempselect = item.hashTag
       let temp = { value: item.hashTag, label: item.hashTag };
       setSelectHashTag((preview) => [...preview, item.hashTag]);
@@ -135,13 +135,9 @@ function FeedModal({
   // 옵션을 가져와서 가져옴
 
   useEffect(()=>{
-    console.log("SelectHashTag")
-    console.log(selectHashTag);
   },[selectHashTag])
 
   useEffect(()=>{
-    console.log("HashTag")
-    console.log(HashTag)
   },[HashTag])
 
   function updateImageList() {
@@ -153,7 +149,6 @@ function FeedModal({
       },
     })
       .then((response) => {
-        console.log(response);
         setImageList((prev) => {
           return [...response.data];
         });
@@ -206,6 +201,8 @@ function FeedModal({
 
   // 수정하기 완료
   function editComplate() {
+    const Contentvalue = contentRef.current.value;
+    console.log(Contentvalue)
     if (
       contentRef.current.value === '' ||
       contentRef.current.value === undefined
@@ -218,12 +215,8 @@ function FeedModal({
       return;
     }
     setSelectHashTag([]);
-    setHashTag([]);
+    
 
-
-    setContent(contentRef.current.value);
-    console.log(content);
-    console.log(HashTag);
 
     const formData = new FormData();
     formData.append('feedPostId', feedPost.feedPostId);
@@ -231,13 +224,10 @@ function FeedModal({
     formData.append('body', contentRef.current.value);
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
-      console.log(item.value);
       setSelectHashTag((prev) => {
         return [...prev, item.value];
       });
     });
-    console.log(contentRef.current.value);
-    setContent(contentRef.current.value);
     setEditYN(false);
 
     setFeedPost((prevFeedPost) => {
@@ -253,7 +243,11 @@ function FeedModal({
     })
       .then(() => {
         alert('수정이 완료되었습니다 :)');
-        window.location.reload();
+        setfeedPost((prev)=>{
+          return {...prev, body:Contentvalue}
+        })
+        setContent(Contentvalue)
+        updatehashTagList();
       })
       .catch((error) => {
         console.log(error);
@@ -293,13 +287,13 @@ function FeedModal({
 
   function editCancel() {
     setSelectHashTag([]);
-    hashTagList.forEach((e) => {
+    HashTag.forEach((e) => {
       setSelectHashTag((prev) => {
-        return [...prev, e.hashTag];
+        return [...prev, e.value];
       });
     });
-    setInputCount(200 - feedPost.body.length);
-    setContent(feedPost.body);
+    // setInputCount(200 - content.value.length);
+    setContent(content);
     setEditYN(false);
   }
 
