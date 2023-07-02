@@ -4,14 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="DMRoomUser">
 	<delete id="deleteUserDMRoomUser">
-		delete from dmroomuser where userno = ${userNo} and roomid=${roomId}
+		delete from dmroom where roomid=${roomId}
 	</delete>
 	
 	<insert id="insertLoginUserToRoom">
-		insert into dmroomuser values (listid_seq.nextval, ${loginUserNo}, ${roomId} ,2 ,2)
+		insert into dmroomuser values (listid_seq.nextval, ${loginUserNo}, ${roomId})
 	</insert>
 	<insert id="insertClickUserToRoom">
-		insert into dmroomuser values (listid_seq.nextval, ${clickuserNo}, ${roomId} ,2 ,2)
+		insert into dmroomuser values (listid_seq.nextval, ${clickuserNo}, ${roomId})
 	</insert>
 	
 	
@@ -36,6 +36,18 @@
 	
 	<select id="getRecordCountByUserNo" resultType="int">
 		select count(*) from DMRoomUser where userNo=${userNo}
+	</select>
+	
+	<select id="selectAlreadyChat" resultType="int">
+		<![CDATA[
+		select count(*)
+		from member m
+		join dmroomuser dm on m.userno=dm.userno
+		left join photo p on m.userno=p.userno
+		where m.userno = any(select userno from dmroomuser where roomid = 
+		any(select roomid from dmroomuser where userno = #{loginUserNo}) 
+		and userno <> ${loginUserNo}) and dm.roomid = any(select roomid from dmroomuser where userno = #{loginUserNo}) and m.userno = #{clickuserNo}
+		]]>
 	</select>
 </mapper>
 

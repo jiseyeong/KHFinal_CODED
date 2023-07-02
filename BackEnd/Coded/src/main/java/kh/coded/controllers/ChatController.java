@@ -72,12 +72,21 @@ public class ChatController {
 	public ResponseEntity<?> createRoom (@RequestParam(value = "loginUserNo") int loginUserNo,
 			@RequestParam(value = "clickuserNo") int clickuserNo
 			){
+		//채팅방이 있는지에대한 조회 
+		 int checkRoom = DMRoomUserService.selectAlreadyChat(loginUserNo, clickuserNo);
+		
+		if (checkRoom == 0) {
+		//채팅방 생성
 		DMRoomDTO DMRoomDto = new DMRoomDTO(0,0);
 		int roomId = DMRoomService.createRoomId(DMRoomDto);
 		DMRoomUserService.insertUserToRoom(loginUserNo,clickuserNo,roomId);
 		
 		List<DMRoomListDTO> list = DMRoomService.selectByUserNo(loginUserNo);
-		return ResponseEntity.ok().body(list);}
+		return ResponseEntity.ok().body(list);
+	}else {
+		return ResponseEntity.ok().body(null);
+	}
+	}
 	
 	
 	@DeleteMapping("deleteUserDMRoomUser")
