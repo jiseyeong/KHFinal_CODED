@@ -19,6 +19,7 @@ const FeedPostDetail = (props) => {
   const [isProfileLoaded, setIsProfileLoaded] = useState(false);
   const accessToken = useSelector((state) => state.member.access);
   const myRef = useRef(null);
+  const [myfeedpost, setMyFeedPost] = useState(feedPost);
 
   const [feedLikeCount, setFeedLikeCount] = useState(0);
   const [isFeedLike, setIsFeedLike] = useState(false);
@@ -65,14 +66,19 @@ const FeedPostDetail = (props) => {
     //likeCount 초기값 세팅
     getFeedLikeCount();
     //hashTagList 초기값 세팅
+    updatehashTagList();
+  }, []);
+
+  function updatehashTagList() {
     axios({
       method: 'get',
       url: '/feedpost/hashtagList',
       params: {
-        feedPostId: feedPost.feedPostId,
+        feedPostId: myfeedpost.feedPostId,
       },
     })
       .then((response) => {
+        setHashTagList([]);
         setHashTagList((prev) => {
           return [...prev, ...response.data];
         });
@@ -80,7 +86,7 @@ const FeedPostDetail = (props) => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
 
   useEffect(() => {
     //피드 라이크가 변경된다면, likeCount 갱신하기.
@@ -97,7 +103,7 @@ const FeedPostDetail = (props) => {
           Authorization: `Bearer ${accessToken}`,
         },
         params: {
-          feedPostId: feedPost.feedPostId,
+          feedPostId: myfeedpost.feedPostId,
         },
       })
         .then((response) => {
@@ -119,7 +125,7 @@ const FeedPostDetail = (props) => {
       method: 'get',
       url: '/feedpost/likeCount',
       params: {
-        feedPostId: feedPost.feedPostId,
+        feedPostId: myfeedpost.feedPostId,
       },
     })
       .then((response) => {
@@ -140,7 +146,7 @@ const FeedPostDetail = (props) => {
           Authorization: `Bearer ${accessToken}`,
         },
         params: {
-          feedPostId: feedPost.feedPostId,
+          feedPostId: myfeedpost.feedPostId,
         },
       })
         .then((resp) => {
@@ -178,11 +184,11 @@ const FeedPostDetail = (props) => {
           {/* <nav className={styles.shortCutMenu} ref={shortCutRef}>
             <FeedListNavi></FeedListNavi>
           </nav> */}
-          {feedPost.thumbNailSysName != null ? (
+          {myfeedpost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
               // 수정
-              src={`/images/${feedPost.thumbNailSysName}`}
+              src={`/images/${myfeedpost.thumbNailSysName}`}
               onLoad={handleThumbNailLoaded}
               onError={handleThumbNailLoaded}
             ></img>
@@ -198,12 +204,12 @@ const FeedPostDetail = (props) => {
         </div>
         <div className={styles.feedInfoDiv}>
           <div className={styles.userProfileLayout}>
-            <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
-              {feedPost.profileSysName != null ? (
+            <Link to={`/myPickPage?userNo=${myfeedpost.userNo}`}>
+              {myfeedpost.profileSysName != null ? (
                 <img
                   className={styles.userProfile}
                   // 수정
-                  src={`/images/${feedPost.profileSysName}`}
+                  src={`/images/${myfeedpost.profileSysName}`}
                   onLoad={handleProfileLoaded}
                   onError={handleProfileLoaded}
                 ></img>
@@ -234,13 +240,13 @@ const FeedPostDetail = (props) => {
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
-              <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
+              <Link to={`/myPickPage?userNo=${myfeedpost.userNo}`}>
                 <span className={styles.userNameLayout}>
-                  {feedPost.userNickName}
+                  {myfeedpost.userNickName}
                 </span>
               </Link>
               <div className={styles.feedWriteDateLayout}>
-                {feedPost.formedWriteDate}
+                {myfeedpost.formedWriteDate}
               </div>
             </div>
             <div className={styles.feedBottomLayout}>
@@ -260,7 +266,7 @@ const FeedPostDetail = (props) => {
               </div>
               <div className={styles.feedWeatherLayout}>
                 <Temperature />
-                <span>{feedPost.writeTemp}º</span>
+                <span>{myfeedpost.writeTemp}º</span>
               </div>
             </div>
           </div>
@@ -268,12 +274,14 @@ const FeedPostDetail = (props) => {
         {modal && (
           <FeedModal
             closeModal={closeModal}
-            feedPost={feedPost}
+            feedPost={myfeedpost}
+            setfeedPost={setMyFeedPost}
             feedLikeCount={feedLikeCount}
             setFeedLikeCount={setFeedLikeCount}
             isFeedLike={isFeedLike}
             setIsFeedLike={setIsFeedLike}
             hashTagList={hashTagList}
+            updatehashTagList={updatehashTagList}
           />
         )}
         {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
