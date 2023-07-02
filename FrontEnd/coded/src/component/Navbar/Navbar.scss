@@ -1,11 +1,11 @@
 .navBarWrapper * {
   margin: 0;
   padding: 0;
-//   font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
-//     'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-//     sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
+  //   font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto',
+  //     'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  //     sans-serif;
+  //   -webkit-font-smoothing: antialiased;
+  //   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
 }
 
@@ -34,7 +34,7 @@ $storeBorderColor: #f0f1f4;
   background-color: white;
 
   .topNavBar {
-    padding-top:20px;
+    padding-top: 20px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -110,7 +110,7 @@ $storeBorderColor: #f0f1f4;
         }
         &:hover {
           transform: scale(1.05);
-          color:#ff0066;
+          color: #ff0066;
         }
       }
 
@@ -138,7 +138,7 @@ $storeBorderColor: #f0f1f4;
 
         &:hover {
           transform: scale(1.05);
-          color:#ff0066;
+          color: #ff0066;
         }
       }
 
@@ -167,7 +167,7 @@ $storeBorderColor: #f0f1f4;
 
         &:hover {
           transform: scale(1.05);
-          color:#ff0066;
+          color: #ff0066;
         }
       }
 
@@ -191,7 +191,7 @@ $storeBorderColor: #f0f1f4;
         }
         &:hover {
           transform: scale(1.05);
-          color:#ff0066;
+          color: #ff0066;
         }
       }
       span {
@@ -202,11 +202,12 @@ $storeBorderColor: #f0f1f4;
     .rightNavBar {
       align-items: center;
       right: 80px;
+      display: flex;
 
       .rightMenuWrapper {
         display: flex;
         align-items: center;
-        margin-left: 4px;
+        margin-left: 25px;
         // svg {
         //   width: 28px;
         //   height: 28px;
@@ -303,7 +304,7 @@ $storeBorderColor: #f0f1f4;
       transition: transform 0.25s ease-out;
       &:hover {
         transform: scale(1.05);
-        color:#ff0066;
+        color: #ff0066;
       }
     }
   }

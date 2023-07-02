@@ -59,7 +59,7 @@ const MyPickPage = () => {
   );
 
   const [currentUserNo, setCurrentUserNo] = useState(
-    searchParams.get('userNo'),
+    Number(searchParams.get('userNo')),
   );
 
   const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
@@ -104,7 +104,7 @@ const MyPickPage = () => {
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
-    if (currentUserNo === null) {
+    if (currentUserNo === 0) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
         axios({
@@ -118,7 +118,7 @@ const MyPickPage = () => {
             setCurrentUserNo(resp.data);
           })
           // 2. 고유 넘버로 유저 정보 반환
-          // .then(getMyPickData)
+          .then(getMyPickData)
           .catch((error) => {
             console.log(error);
           });
@@ -132,7 +132,7 @@ const MyPickPage = () => {
   }, [accessToken, currentUserNo]);
 
   const getMyPickData = () => {
-    // console.log(currentUserNo);
+    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -380,12 +380,12 @@ const MyPickPage = () => {
                     setIsLogintrue(true);
                   }}
                 >
-                  팔로잉
+                  Following
                 </button>
               ) : (
                 // 팔로우 하지 않은 상태
                 <button className="followBtn btn" onClick={handleFollow}>
-                  팔로우
+                  Follow
                 </button>
               )}
             </div>

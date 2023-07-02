@@ -17,6 +17,13 @@ const ImageLayout = styled('div')`
 const ReportH3 = styled('h3')`
   width: 100%;
   font-size: 26px;
+  margin-top: 40px;
+  color: black;
+  line-height: 18.2px;
+  text-decoration: none solid rgb(114, 120, 127);
+  text-align: center;
+  vertical-align: middle;
+  word-spacing: 0px;
 `;
 
 const Reportdiv = styled('div')`
@@ -35,6 +42,7 @@ const Reportdiv2 = styled('div')`
   color: #ff0066;
   font-size: 14px;
   font-weight: 500;
+  margin-bottom: 20px;
 `;
 
 const EtcArea = styled('textarea')`
@@ -43,14 +51,12 @@ const EtcArea = styled('textarea')`
 `;
 
 const Buttonok = styled('button')`
-  margin-left: 43.5%;
   text-align: center;
-  font-size: 13px;
-  border-radius: 13px;
+  font-size: 15px;
+  border-radius: 20px;
   position: relative;
-  margin-right: 8px;
-  width: 62px;
-  height: 28px;
+  width: 110px;
+  height: 60px;
   background-color: black;
   border: none;
   color: white;
