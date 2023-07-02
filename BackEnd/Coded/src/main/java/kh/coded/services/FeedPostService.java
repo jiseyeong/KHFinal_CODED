@@ -449,17 +449,19 @@ public class FeedPostService {
     }
 
     public void updateHashTags(List<String> hashTag, int feedPostId) {
-    	feedpostDAO.updateFeedPostHashTag(feedPostId);
-        for (String tagName : hashTag) {
-            HashTagDTO hashTagDTO = feedpostDAO.HashTagJB(tagName);
-            // 해시 태그 중복 체크
-            if (hashTagDTO == null) {
-                // 해시태그가 존재하지 않는 경우
-                // 새로 등록 후 tagId가 저장된 DTO를 가져옴
-                hashTagDTO = feedpostDAO.insertHashTag(new HashTagDTO(0, tagName));
+    	feedpostDAO.updateFeedPostHashTag(feedPostId);//피드 해시태그 초기화
+    	if (hashTag.size()>0) {
+            for (String tagName : hashTag) {
+                HashTagDTO hashTagDTO = feedpostDAO.HashTagJB(tagName);
+                // 해시 태그 중복 체크
+                if (hashTagDTO == null) {
+                    // 해시태그가 존재하지 않는 경우
+                    // 새로 등록 후 tagId가 저장된 DTO를 가져옴
+                    hashTagDTO = feedpostDAO.insertHashTag(new HashTagDTO(0, tagName));
+                }
+
+                feedpostDAO.insertPostHashs(feedPostId,hashTagDTO.getTagId());
             }
-            feedpostDAO.insertPostHashs(feedPostId,hashTagDTO.getTagId());
-            
 //            else{
                 // 기존의 해시태그가 존재하면 (tagId로 조회)
                 // 기존의 해시캐그를 내가 넣었는지 2차로 조회
