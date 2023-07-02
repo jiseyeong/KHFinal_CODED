@@ -32,7 +32,7 @@ const ChatBox = (props) => {
             
                 <div className={style.otherInfo}>
                     <div className={style.otherNickname}>{DMRoom.userNickname}</div>
-                    <div className={style.otherId}>@{DMRoom.userId}</div>
+                    <div className={style.otherId}>{DMRoom.userId}</div>
                 </div>
                 <MenuButton disconnect={disconnect}></MenuButton>
             </div>

@@ -249,15 +249,14 @@ const DMListOuter = styled.div`
       padding: 5px;
     }
     .searchBox {
-      height: 10%;
+      height: 7%;
       width: 100%;
-      background-color: lightgray;
+      border:1px solid lightgray;
       border-radius: 5px;
       margin-bottom: 10px;
-      padding-top: 15px;
     }
     .chatList {
-      height: 88%;
+      height: 90%;
       width: 100%;
       background-color: white;
       border: 1px solid lightgray;
