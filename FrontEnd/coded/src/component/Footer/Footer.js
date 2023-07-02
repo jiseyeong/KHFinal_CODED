@@ -11,7 +11,9 @@ import Tos from './Component/Tos/TermsOfUse';
 const Footer = () => {
 
   const [modal, setModal] = useState(false);
-
+  const accessToken = useSelector((state)=>state.member.access);
+  
+  const navigate = useNavigate();
   //모달 창 닫기
   const closeModal = () => {
     if (modal) {
@@ -19,11 +21,24 @@ const Footer = () => {
       }
     };
 
+  function toDeleteAccount() {
+      if(accessToken){
+        navigate("/deleteAccount");
+      }else{
+        let confirmResult = confirm("로그인 후 이용 가능한 서비스입니다. 로그인 하시겠습니까?");
+        if(confirmResult){
+          navigate("/login")
+        }else{
+          navigate("/");
+        }
+      }
+    };
+
   function Modal() {
     const modalBodyRef = useRef(null);
     const { scrollYProgress } = useScroll({
       container:modalBodyRef
-    });
+    }); 
     return (
 
       <>
@@ -55,7 +70,7 @@ const Footer = () => {
             <p>members.</p>
           </div>
           <div className="descList">
-              <Link to="/deleteAccount">Delete Account</Link>
+              <div onClick={toDeleteAccount}>Delete Account</div>
           </div>
         </div>
         <div className="middle">
@@ -65,10 +80,10 @@ const Footer = () => {
           <div className="descList">
             <Link to="" onClick={()=>{setModal(true)}}>Terms of Use</Link>
             {modal === true ? <Modal/> : null}
-            {console.log(modal)}
+            {/* {console.log(modal)} */}
           </div>
           <div className="descList">
-            <Link to="/privacyPolicy">Privacy Policy</Link>
+            <Link to="" onClick={()=>{setModal(true)}}>Privacy Policy</Link>
           </div>
         </div>
 

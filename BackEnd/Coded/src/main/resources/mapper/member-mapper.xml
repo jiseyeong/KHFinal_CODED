@@ -81,7 +81,8 @@
 		select * from member left join photo using (userNo) where userNo=${userNo}
 	</select>
 
-	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
+	<!--	다른사람이 나를 팔로우-->
+	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 내가 팔로우 하는 사람들 정보(photo,member정보)-->
 		select m.*, (select count(*) from follow where fromuserno = ${myUserNo} and touserno=m.userno) isFollow
 		from (select * from member
 		left join photo using (userNo)
@@ -89,7 +90,8 @@
 		(select touserno from follow where fromuserno = ${targetUserNo})) m
 	</select>
 
-	<select id="followerList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
+	<!--	내가 다른사람을 팔로우중-->
+	<select id="followingList" resultType="kh.coded.dto.MemberWithProfileDTO"> <!-- 나를 팔로우 하는 사람들 정보(photo,member정보)-->
 		select m.*, (select count(*) from follow where fromuserno = ${myUserNo} and touserno=m.userno) isFollow
 		from (select * from member
 		left join photo using (userNo)
@@ -103,11 +105,11 @@
 	</update>
 
 	<select id="selectMyPickPageData" resultType="kh.coded.dto.MyPickPageDTO">
-		SELECT m.*,p.* ,fp.postCount, nvl(following.followingCount,0) as followingCount, nvl(follower.followerCount,0) as followerCount from member m
+		SELECT m.*,p.* ,fp.postCount, nvl(follower.followingCount,0) as followerCount, nvl(following.followerCount,0) as followingCount from member m
 		LEFT JOIN photo p ON m.userNo = p.userNo
 		LEFT JOIN ( SELECT userNo, COUNT(*) AS postCount FROM feedPost WHERE userNo = ${userNo} GROUP BY userNo ) fp ON m.userNo = fp.userNo
-		left join ( select toUserNo, count(*) as followingCount from follow where toUserNo = ${userNo} group by toUserNo ) following on m.userNo = following.toUserNo
-		left join ( select fromUserNo, count(*) as followerCount from follow where fromUserNo = ${userNo} group by fromUserNo ) follower on m.userNo = follower.fromUserNo
+		left join ( select toUserNo, count(*) as followingCount from follow where toUserNo = ${userNo} group by toUserNo ) follower on m.userNo = follower.toUserNo
+		left join ( select fromUserNo, count(*) as followerCount from follow where fromUserNo = ${userNo} group by fromUserNo ) following on m.userNo = following.fromUserNo
 		WHERE m.userNo = ${userNo}
 	</select>
 	

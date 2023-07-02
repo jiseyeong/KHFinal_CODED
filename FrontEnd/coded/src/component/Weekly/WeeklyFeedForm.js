@@ -125,7 +125,7 @@ function WeeklyFeedForm() {
   }
 
   if (needLogin) {
-    return <div>MEMBER-ONLY SERVICE. Login First!</div>;
+    return <h3>MEMBER-ONLY SERVICE. Login First!</h3>;
   }
 
   return (

@@ -29,11 +29,8 @@ public class FollowDAO {
 	// 팔로잉, 팔로워 여부
 	public boolean isFollow (int toUserNo, int myUserNo) {
 		Map<String, Integer> isFollow = new HashMap<>();
-		System.out.println(toUserNo);
-		System.out.println(myUserNo);
 		isFollow.put("toUserNo", toUserNo);
 		isFollow.put("myUserNo", myUserNo);
-		System.out.println((int) mybatis.selectOne("Follow.isFollow", isFollow));
 		if((int)mybatis.selectOne("Follow.isFollow", isFollow) == 1) {
 			return true;
 		}else {
