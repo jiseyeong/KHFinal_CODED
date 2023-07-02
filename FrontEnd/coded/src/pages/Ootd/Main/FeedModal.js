@@ -72,19 +72,32 @@ function FeedModal({
 
   let num = 0;
 
+    //  수정하기 ---------------------------------------
+    const [FeedPost, setFeedPost] = useState({});
+    const [selectHashTag, setSelectHashTag] = useState([]); // 해시태그 벨류값만 보내는거
+    const [HashTag, setHashTag] = useState([]); // 해시태그 벨류랑 라벨 다보내야됨
+    const [editYN, setEditYN] = useState(false);
+    const [content, setContent] = useState(feedPost.body); //콘텐트 기본값, 수정하기
+    const selectRef = useRef();
+    const contentRef = useRef(); // 바디 레퍼런스
+    const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
+
   useEffect(() => {
-    console.log(selectHashTag.length);
 
     let arrTemp = [];
     hashTagList.forEach((item) => {
+      console.log("item")
+      console.log(item)
+      let tempselect = item.hashTag
       let temp = { value: item.hashTag, label: item.hashTag };
-      setSelectHashTag((preview) => [...preview, temp]);
+      setSelectHashTag((preview) => [...preview, item.hashTag]);
       arrTemp = arrTemp.concat({
         value: item.hashTag,
         label: item.hashTag,
       });
-      setHashTag([...HashTag, ...arrTemp]);
+      setHashTag([...arrTemp]);
     });
+    
 
     updateImageList();
     // 스크랩 여부 가져오기
@@ -119,6 +132,17 @@ function FeedModal({
       });
     });
   }, []);
+  // 옵션을 가져와서 가져옴
+
+  useEffect(()=>{
+    console.log("SelectHashTag")
+    console.log(selectHashTag);
+  },[selectHashTag])
+
+  useEffect(()=>{
+    console.log("HashTag")
+    console.log(HashTag)
+  },[HashTag])
 
   function updateImageList() {
     axios({
@@ -170,15 +194,7 @@ function FeedModal({
         });
     }
   }
-  //  수정하기 ---------------------------------------
-  const [FeedPost, setFeedPost] = useState({});
-  const [selectHashTag, setSelectHashTag] = useState([]); //수정 전
-  const [HashTag, setHashTag] = useState(hashTagList); //삭제하고 나서의
-  const [editYN, setEditYN] = useState(false);
-  const [content, setContent] = useState(''); //수정 후
-  const selectRef = useRef();
-  const contentRef = useRef(); // 바디 레퍼런스
-  const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
+
   // 수정 버튼 눌렀을때
 
   function editFeedPost() {
@@ -202,6 +218,13 @@ function FeedModal({
       return;
     }
     setSelectHashTag([]);
+    setHashTag([]);
+
+
+    setContent(contentRef.current.value);
+    console.log(content);
+    console.log(HashTag);
+
     const formData = new FormData();
     formData.append('feedPostId', feedPost.feedPostId);
     formData.append('userNo', feedPost.userNo);
@@ -213,7 +236,7 @@ function FeedModal({
         return [...prev, item.value];
       });
     });
-    console.log(contentRef.current.value)
+    console.log(contentRef.current.value);
     setContent(contentRef.current.value);
     setEditYN(false);
 
@@ -230,6 +253,7 @@ function FeedModal({
     })
       .then(() => {
         alert('수정이 완료되었습니다 :)');
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -250,13 +274,13 @@ function FeedModal({
     }),
   };
 
-  let [inputCount, setInputCount] = useState(200-feedPost.body.length);
+  let [inputCount, setInputCount] = useState(200 - feedPost.body.length);
   const inputCountRef = useRef();
 
   const onTextareaHandler = (e) => {
     const value = e.target.value.length;
     const value2 = 200 - value;
-  setInputCount(value2)
+    setInputCount(value2);
     if (value2 >= 0) {
       inputCountRef.current.style.color = 'blue';
     } else {
@@ -271,10 +295,10 @@ function FeedModal({
     setSelectHashTag([]);
     hashTagList.forEach((e) => {
       setSelectHashTag((prev) => {
-        return [...prev, { value: e.hashTag, label: e.hashTag }];
+        return [...prev, e.hashTag];
       });
     });
-      setInputCount(200-feedPost.body.length);
+    setInputCount(200 - feedPost.body.length);
     setContent(feedPost.body);
     setEditYN(false);
   }
@@ -379,7 +403,6 @@ function FeedModal({
 
   //------------------------------------------------
 
-
   return (
     <div className="wrapper">
       <div className="mainWrapper">
@@ -420,12 +443,8 @@ function FeedModal({
                     </Link>
                   </div>
                   <div className="authorInfomation">
-                    <div className="author">
-                      {feedPost.userNickName}
-                    </div>
-                    <div className="introduction">
-                      {userBio}
-                    </div>
+                    <div className="author">{feedPost.userNickName}</div>
+                    <div className="introduction">{userBio}</div>
                   </div>
 
                   {/* 수정하기 눌렀을 때 숨김 */}
@@ -460,7 +479,7 @@ function FeedModal({
                 </div>
                 <div className="authorDescription">
                   {editYN === false ? (
-                    <div className="feedPostBody">{feedPost.body}</div>
+                    <div className="feedPostBody">{content}</div>
                   ) : (
                     <div className="feedPostBody">
                       <textarea
@@ -475,7 +494,7 @@ function FeedModal({
                           });
                         }}
                       >
-                        {feedPost.body}
+                        {content}
                       </textarea>
                     </div>
                   )}
@@ -500,11 +519,11 @@ function FeedModal({
 
                 {editYN === false ? (
                   <div className="hashTagBody">
-                    {hashTagList.length > 0 ? (
-                      hashTagList.map((e, i) => (
-                        <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                    {selectHashTag.length > 0 ? (
+                      selectHashTag.map((e, i) => (
+                        <Link to={`/feed/search?keyword=${e}`} key={i}>
                           <span>
-                            #{e.hashTag}
+                            #{e}
                             &nbsp;&nbsp;
                           </span>
                         </Link>
@@ -521,10 +540,17 @@ function FeedModal({
                         placeholder="해시태그 추가"
                         isMulti
                         options={options}
-                        value={selectHashTag}
+                        value={HashTag}
                         ref={selectRef}
                         onChange={(selectedOptions) => {
-                          setSelectHashTag(selectedOptions);
+                          setHashTag(selectedOptions)
+                          setSelectHashTag([])
+                          selectedOptions.forEach((e)=>{
+                            setSelectHashTag((prev)=>{
+                              return [...prev, e.value]
+                            })
+                          })
+                          
                           setTimeout(() => {
                             if (selectRef.current.getValue().length > 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');
@@ -558,9 +584,7 @@ function FeedModal({
                     <Like />
                   </div>
                   <div className="likeNumBox">
-                    <span className="likeNum">
-                      {feedLikeCount}
-                    </span>
+                    <span className="likeNum">{feedLikeCount}</span>
                   </div>
                 </div>
                 <div

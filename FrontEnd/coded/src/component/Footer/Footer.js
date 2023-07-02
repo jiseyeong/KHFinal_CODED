@@ -137,7 +137,7 @@ const Footer = () => {
           <div className="descList">
             <Link to="" onClick={()=>{setModal(true)}}>Terms of Use</Link>
             {modal === true ? <Modal/> : null}
-            {console.log(modal)}
+            {/* {console.log(modal)} */}
           </div>
           <div className="descList">
             <Link to="/privacyPolicy">Privacy Policy</Link>
