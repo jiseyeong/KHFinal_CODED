@@ -12,7 +12,7 @@ import ConfirmDialog from '../Common/ConfirmDialog';
 import FeedListImgLoadingBar from '../Common/FeedListImgLoadingBar';
 
 const FeedPostDetail = (props) => {
-  const { index, feedPost, ImageComponent } = props;
+  const { index, feedPost } = props;
   const [modal, setModal] = useState(false);
   const [hashTagList, setHashTagList] = useState([]);
   const [isThumbNailLoaded, setIsTuhmbNailLoaded] = useState(false);
