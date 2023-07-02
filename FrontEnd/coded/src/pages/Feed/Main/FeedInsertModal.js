@@ -20,7 +20,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
 
   const selectRef = useRef();
   const contentRef = useRef();
-  const fileRef = useRef();
   const [options, setOptions] = useState([]);
 
   const accessToken = useSelector((state) => state.member.access);
@@ -154,36 +153,31 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
 
   // 이미지 변경 시 적용,
   const handleChangeFile = (event) => {
-    const addfile = event.target.files;
+    setFile(event.target.files); //파일 갯수 추가
 
-    setFile(file.concat(addfile)); //파일 갯수 추가
-
-    if (file.length + addfile.length == 10) {
+    if (imgBase64.length + event.target.files.length == 10) {
       setInputFileButtonStyle({ display: 'none' });
     }
 
-    if (file.length + addfile.length > 10) {
+    if (imgBase64.length + event.target.files.length > 10) {
       alert('사진은 최대 10장까지 첨부 가능합니다');
       setImgBase64([...imgBase64]);
       return;
     } else {
-      for (var i = 0; i < addfile.length; i++) {
-        if (addfile[i]) {
+      for (var i = 0; i < event.target.files.length; i++) {
+        if (event.target.files[i]) {
+          console.log(event.target.files[i].size);
           let reader = new FileReader();
-          reader.readAsDataURL(addfile[i]); // 1. 파일을 읽어 버퍼에 저장.
+          reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장.
           // 파일 상태 업데이트
           reader.onloadend = () => {
             // 2. 읽기가 완료되면 아래코드가 실행.
             const base64 = reader.result;
-            console.log(base64);
-            console.log(imgBase64);
-            if (imgBase64.some((e) => base64 === e)) {
-              alert('같은 사진은 넣지 못합니다.');
-              return
-            }
             if (base64) {
               // 문자 형태로 저장
-              setImgBase64((imgBase64) => [...imgBase64, base64]);
+              var base64Sub = base64.toString();
+              // 배열 state 업데이트
+              setImgBase64((imgBase64) => [...imgBase64, base64Sub]);
             }
           };
         }
@@ -193,7 +187,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
 
   // 취소 버튼 클릭 시
   const Cancelpicture = (index) => {
-    const updatedImgBase64 = imgBase64;
+    const updatedImgBase64 = [...imgBase64];
     if (bodyImageRef.current.src === updatedImgBase64[index]) {
       setBodyImage('');
     }
@@ -216,6 +210,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
 
   useEffect(() => {
     if (file.length > 0) {
+      console.log(file[0].size);
     }
   }, [file]);
   // 폼 입력
@@ -269,14 +264,15 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
 
   const onTextareaHandler = (e) => {
     const value = e.target.value.length;
-    const value2 = 200 - value;
+    const value2 = (200 - value);
     setInputCount(value2);
-    if (value2 >= 0) {
-      inputCountRef.current.style.color = 'blue';
-    } else {
-      inputCountRef.current.style.color = 'red';
+    if(value2 >= 0) {
+      inputCountRef.current.style.color = "blue";
+    }else{
+      inputCountRef.current.style.color = "red";
     }
   };
+
 
   const [select, setSelect] = useState([]);
   return (
@@ -303,12 +299,8 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                 return (
                   <div className="uploadedImage" key={index}>
                     <div className="closeBtnLayout">
-                      <button
-                        className="closeBtn"
-                        onClick={() => {
-                          Cancelpicture(index);
-                        }}
-                      >
+                      <button className="closeBtn" onClick={() => {
+                          Cancelpicture(index);}}>
                         <p className="closeXBtn">x</p>
                       </button>
                     </div>
@@ -358,7 +350,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
               <input
                 type="file"
                 id="input-file"
-                ref={fileRef}
                 onChange={handleChangeFile}
                 style={{ display: 'none' }}
                 accept="image/gif,image/jpeg,image/png"
@@ -385,9 +376,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                 });
               }}
             ></textarea>
-            <div className="inputCount" ref={inputCountRef}>
-              {inputCount}
-            </div>
+            <div className="inputCount" ref={inputCountRef}>{inputCount}</div>
           </div>
           <div className="hashLayout">
             <CreatableSelect
