@@ -21,6 +21,7 @@ import SignUp from '../../pages/auth/SignUp/SignUp';
 import Logo from './navLogo.png';
 import TodayWeather from '../TodayWeather/TodayWeather';
 import { logout } from '../../modules/Redux/members';
+import { motion } from 'framer-motion';
 
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
@@ -41,7 +42,7 @@ function Navbar() {
     () => dispatch(setWeekly()),
     [dispatch],
   );
-  const onLogout = useCallback(()=>dispatch(logout()),[dispatch]);
+  const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
 
   const navigate = useNavigate();
 
@@ -106,10 +107,8 @@ function Navbar() {
   return (
     <>
       <div className="navBarWrapper">
-        {
-          accessToken && <TodayWeather></TodayWeather>
-        }
-        
+        {accessToken && <TodayWeather></TodayWeather>}
+
         <nav className="topNavBar">
           <div className="leftNavBar">
             <a className="navLogo" href="/">
@@ -156,33 +155,20 @@ function Navbar() {
           )}
 
           <div className="rightNavBar">
-            <div className="rightMenuWrapper">
-              {accessToken ?
-              (
-                <button onClick={onLogout} className='loginBtn'>
+            <motion.div
+              className="rightMenuWrapper"
+              whileHover={{ scale: 1.1 }}
+            >
+              {accessToken ? (
+                <button onClick={onLogout} className="loginBtn">
                   로그아웃
                 </button>
-              )
-              :
-              (
+              ) : (
                 <button onClick={loginPage} className="loginBtn">
                   로그인 / 회원가입
                 </button>
               )}
-              
-              {/* <button onClick={myPage} className='mypage'>마이페이지</button> */}
-              {/* <svg
-                stroke="currentColor"
-                fill="currentColor"
-                strokeWidth="0"
-                viewBox="0 0 16 16"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-              </svg> */}
-            </div>
+            </motion.div>
           </div>
         </nav>
         {navbarType === 'Mem' && (

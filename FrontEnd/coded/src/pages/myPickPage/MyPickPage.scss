@@ -148,9 +148,7 @@ body {
             cursor: pointer;
             color: #ffffff;
             background-color: #000000;
-            &:hover {
-              color: #ff0066;
-            }
+
           }
         }
 
@@ -173,21 +171,15 @@ body {
           }
           .editButton {
             color: #ffffff;
-            &:hover {
-              color: #ff0066;
-            }
+
           }
           .followingBtn {
             color: #222;
-            &:hover {
-              color: #ff0066;
-            }
+
           }
           .followBtn {
             color: #222;
-            &:hover {
-              color: #ff0066;
-            }
+            
           }
         }
       }
