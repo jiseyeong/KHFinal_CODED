@@ -9,7 +9,6 @@ import React, {
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import LoadingBar from '../Common/LoadingBar';
 import NoticeBar from './NoticeBar';
 import NoneSearchedBar from './NoneSearchedBar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +22,6 @@ import {
 } from '../../modules/Redux/navbarSetting';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
-
 // masonry의 옵션 세팅
 const masonryOptions = {
   // 내부 요소들 선택자 지정
@@ -55,6 +53,7 @@ const FeedPostOuter = styled('div')`
     // 행 사이 간격
     margin-bottom: 30px;
     border: 0px;
+    width: 250px;
   }
 `;
 
@@ -132,7 +131,9 @@ function FeedList({ type }) {
             console.log(error);
             setPageLoading(false);
           });
-      } else if (type === 'popular') {
+      } 
+      
+      else if (type === 'popular') {
         axios({
           method: 'get',
           url: '/feedpost/selectPopularFeedPost',
@@ -199,19 +200,21 @@ function FeedList({ type }) {
       }
     }
   };
+
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
-  // document.body.offsetHeight 페이지 전체 높이
-
+  // document.body.offsetHeight 페이지 전체 총 높이
   window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY + 100 >=
+      document.body.offsetHeight
+    ) {
       addFeedList();
     }
   };
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
-      {console.log(feedPost[0])}
       {feedPost.length > 0 ? (
         <Masonry className={'my-masonry-grid'} options={masonryOptions}>
           {feedPost.map((e, i) => (

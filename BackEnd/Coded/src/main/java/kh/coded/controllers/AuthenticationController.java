@@ -449,8 +449,6 @@ public class AuthenticationController {
     @PutMapping(value = "/auth/updateMemberByUserNo")
     public ResponseEntity<?> updateMemberByUserNo(
             @RequestBody MemberWithProfileDTO dto) {
-        System.out.println(dto.getUserNickName());
-        System.out.println(dto.getUserNo());
         int result = memberService.updateMemberByUserNo(dto);
         return ResponseEntity.ok().body(null);
     }
@@ -489,7 +487,6 @@ public class AuthenticationController {
                 MemberDTO dto = memberService.selectByUserNo(jwtProvider.getLoginUserNo(accessToken));
                 if (dto != null) {
                     int check = memberService.deleteMember(dto.getUserId(), checkPw);
-                    System.out.println(check);
                     return ResponseEntity.ok().body(check);
                 }
             }

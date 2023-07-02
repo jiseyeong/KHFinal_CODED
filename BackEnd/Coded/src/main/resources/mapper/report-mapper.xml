@@ -11,5 +11,68 @@
 	<select id="selectAll" resultType="kh.coded.dto.ReportDTO">
 		select * from Report
 	</select>
-
+	
+	<select id="selectOneByReportId" resultType="kh.coded.dto.ReportDTO">
+		select * from Report where ReportId=${reportId}
+	</select>
+	
+	<select id="selectFeedPagingList" resultType="kh.coded.dto.ReportDTO">
+		select r.*
+		from(select re.*,
+				row_number() over(order by re.ReportId desc) rn
+			from Report re
+			where re.TargetFeedPostId is not null
+			)r
+		where rn Between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByFeedList" resultType="int">
+		select count(*) from Report where TargetFeedPostId is not null
+	</select>
+	
+	<select id="selectFeedPagingListByWriterUserNo" resultType="kh.coded.dto.ReportDTO">
+		select r.*
+		from(select re.*,
+				row_number() over(order by re.ReportId desc) rn
+			from Report re
+			where re.TargetFeedPostId is not null and re.WriterUserNo=${writerUserNo}
+			)r
+		where rn Between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByFeedListAndWriterUserNo" resultType="int">
+		select count(*) from Report where TargetFeedPostId is not null And WriterUserNo=${writerUserNo}
+	</select>
+	
+	<select id="selectFeedPagingListByTitle" resultType="kh.coded.dto.ReportDTO">
+		select r.*
+		from(select re.*,
+				row_number() over(order by re.ReportId desc) rn
+			from Report re
+			where re.TargetFeedPostId is not null And re.Title Like '%'||#{title}||'%'
+			)r
+		where rn Between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByFeedListAndTitle" resultType="int">
+		select count(*) from Report where TargetFeedPostId is not null And Title Like '%'||#{title}||'%'
+	</select>
+	
+	<select id="selectFeedPagingListByTargetId" resultType="kh.coded.dto.ReportDTO">
+		select r.*
+		from(select re.*,
+				row_number() over(order by re.ReportId desc) rn
+			from Report re
+			where re.TargetFeedPostId is not null And re.TargetFeedPostId=${targetId}
+			)r
+		where rn Between ${startNum} and ${endNum}
+		order by rn asc
+	</select>
+	
+	<select id="getRecordCountByFeedListAndTargetId" resultType="int">
+		select count(*) from Report where TargetFeedPostId is not null And TargetFeedPostId=${targetId}
+	</select>
 </mapper>

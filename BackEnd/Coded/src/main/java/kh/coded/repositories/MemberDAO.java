@@ -139,13 +139,19 @@ public class MemberDAO {
 		return mybatis.selectOne("Member.selectMyPickPageData",userNo);
 	}
 	
-	public List<MemberWithProfileDTO> selectFollowerList(int toUserNo) { //팔로워 리스트(사진,멤버정보)
-		return mybatis.selectList("Member.followerList", toUserNo);
+	public List<MemberWithProfileDTO> selectFollowingList(int targetUserNo, int myUserNo) { //팔로잉 리스트(사진,멤버정보)
+		Map<String, Integer> map = new HashMap<>();
+		map.put("targetUserNo", targetUserNo);
+		map.put("myUserNo", myUserNo);
+		return mybatis.selectList("Member.followingList",map);
 	}
-	
-	public List<MemberWithProfileDTO> selectFollowingList(int fromUserNo) { //팔로잉 리스트(사진,멤버정보)
-		return mybatis.selectList("Member.followingList",fromUserNo);
+	public List<MemberWithProfileDTO> selectFollowerList(int targetUserNo, int myUserNo) { //팔로워 리스트(사진,멤버정보)
+		Map<String, Integer> map = new HashMap<>();
+		map.put("targetUserNo", targetUserNo);
+		map.put("myUserNo", myUserNo);
+		return mybatis.selectList("Member.followerList", map);
 	}
+
 	public int getRecordCount() {
 		return mybatis.selectOne("Member.getRecordCount");
 	}

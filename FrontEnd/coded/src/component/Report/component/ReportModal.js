@@ -30,7 +30,7 @@ const Reportdiv = styled('div')`
 `;
 
 const Reportdiv2 = styled('div')`
-  text-align:center;
+  text-align: center;
   margin-top: 20px;
   color: #ff0066;
   font-size: 14px;
@@ -43,7 +43,7 @@ const EtcArea = styled('textarea')`
 `;
 
 const Buttonok = styled('button')`
-  margin-left:43.5%;
+  margin-left: 43.5%;
   text-align: center;
   font-size: 13px;
   border-radius: 13px;
@@ -72,6 +72,9 @@ const Buttonok2 = styled('button')`
   color: white;
   cursor: pointer;
 `;
+
+// 푸터 회원탈퇴 ,팔로우 좋아요,채팅 댓글,대댓글(일반 피드클릭이랑 서치 검색후 피드)
+//=>로그인안했을경우에 로그인창 뜨게하기 
 
 function ReportModal({ feedPostId, onReportView }) {
   const [text, setText] = useState('');
@@ -190,7 +193,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="a"
-                      name='test'
+                      name="test"
                       onChange={handleReportNumber}
                     />
                     개인정보 침해 및 명예훼손 게시물
@@ -203,7 +206,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="b"
-                      name='test'
+                      name="test"
                       onChange={handleReportNumber}
                     />
                     불법 광고 게시물
@@ -216,10 +219,10 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="c"
-                      name='test'
+                      name="test"
                       onChange={handleReportNumber}
                     />
-                    도배성 게시물
+                    도배성 게시물 
                   </label>
                 </p>
               </div>
@@ -229,7 +232,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="d"
-                      name='test'
+                      name="test"
                       onChange={handleReportNumber}
                     />
                     저작권 침해 게시물
@@ -242,7 +245,7 @@ function ReportModal({ feedPostId, onReportView }) {
                     <input
                       type="radio"
                       value="e"
-                      name='test'
+                      name="test"
                       onChange={handleReportNumber}
                     />
                     기타 (직접입력)
@@ -250,7 +253,7 @@ function ReportModal({ feedPostId, onReportView }) {
                 </p>
               </div>
             </div>
-            <div style={{textAlign: "center"}}>
+            <div style={{ textAlign: 'center' }}>
               {reportType === 'e' ? (
                 <EtcArea
                   style={{ padding: '4px', backgroundColor: 'white' }}

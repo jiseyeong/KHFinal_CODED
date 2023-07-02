@@ -3,10 +3,12 @@ import styled from './SearchMember.module.scss';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
+
 // UserList Li
-const UserList = ({ userId, userNickName, sysName }) => {
+const UserList = ({ startChat, userNo, userId, userNickName, sysName }) => {
     return (
-        <li className={styled.userList}>
+        <li className={styled.userList} onClick={()=>{startChat(userNo)}}>
             <a href="#">
                 <div className={styled.userLeftSide}>
                     {sysName !== null ? (
@@ -24,12 +26,13 @@ const UserList = ({ userId, userNickName, sysName }) => {
 };
 
 
-const SearchBox = () => {
+const SearchBox = (props) => {
     const [searchData, setSearchData] = useState([]);
     const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
     const [completedData, setCompletedData] = useState([]);
     const [searchInput, setSearchInput] = useState('');
 
+    const startChat = props.startChat;
     const autoSearchRef = useRef();
 
     const toSearch = useNavigate();
@@ -110,6 +113,8 @@ const SearchBox = () => {
                         {completedData.map((i) => {
                             return i.userId !== undefined ? (
                                 <UserList
+                                    startChat={startChat}
+                                    userNo={i.userNo}
                                     userId={i.userId}
                                     userNickName={i.userNickName}
                                     sysName={i.sysName}
