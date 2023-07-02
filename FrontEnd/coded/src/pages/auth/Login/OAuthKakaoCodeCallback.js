@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import PageLoadingBar from '../../../component/Common/PageLoadingBar';
 
 function KakaoCodeCallbackPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -9,15 +10,15 @@ function KakaoCodeCallbackPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const accessToken = useSelector((state)=>state.member.access);
+  const accessToken = useSelector((state) => state.member.access);
   const [change, setChange] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
   }, []);
 
   useEffect(() => {
-    if(change){
+    if (change) {
       const code = searchParams.get('code');
       if (code) {
         axios({
@@ -42,8 +43,8 @@ function KakaoCodeCallbackPage() {
                 params: {
                   accessToken: response.data.access_token,
                 },
-                headers:{
-                  Authorization:`Bearer ${accessToken}`
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
                 },
               }).then((response) => {
                 setLoading(false);
@@ -63,18 +64,22 @@ function KakaoCodeCallbackPage() {
     }
   }, [change]);
 
-  useEffect(()=>{
-    if(accessToken){
-      setChange((prev)=>{return !prev});
-    }else{
-      setTimeout(()=>{
-        setChange((prev)=>{return !prev});
-      }, 1000)
+  useEffect(() => {
+    if (accessToken) {
+      setChange((prev) => {
+        return !prev;
+      });
+    } else {
+      setTimeout(() => {
+        setChange((prev) => {
+          return !prev;
+        });
+      }, 1000);
     }
-  }, [accessToken])
+  }, [accessToken]);
 
   if (loading) {
-    return <div>진행 중...</div>;
+    return <PageLoadingBar />;
   }
   if (error) {
     return <div>에러 발생!</div>;
