@@ -69,16 +69,22 @@ $imageHeight: 150px; // 하단 이미지 썸네일의 너비
             justify-content: right;
             padding: 5px 5px 0px 0px;
             display: flex;
-          .closeBtn {
-            z-index: 1;
-            width: 30px;
-            height: 30px;
-            border-radius: 30px;
-            background-color: white;
-            border-color: silver;
-            cursor: pointer;
+            .closeBtn {
+              display: flex;
+              text-align: center;
+              align-items: center;
+              z-index: 1;
+              width: 30px;
+              height: 30px;
+              border-radius: 30px;
+              background-color: white;
+              border-color: silver;
+              cursor: pointer;
+              .closeXBtn{
+                width: 100%;
+              }
+            }
           }
-        }
 
           .imageLayout {
             float: left;
@@ -114,11 +120,11 @@ $imageHeight: 150px; // 하단 이미지 썸네일의 너비
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            .plus{
-            &:hover {
-              fill: #ff0066;
+            .plus {
+              &:hover {
+                fill: #ff0066;
+              }
             }
-          }
           }
         }
       }
@@ -147,13 +153,13 @@ $imageHeight: 150px; // 하단 이미지 썸네일의 너비
           padding: 10px;
           resize: none;
         }
-        .inputCount{
-          position:absolute;
-          right:0;
-          padding-right:8px;
-          height:15%;
-          line-height:36px;
-          font-size:15px;
+        .inputCount {
+          position: absolute;
+          right: 0;
+          padding-right: 8px;
+          height: 15%;
+          line-height: 36px;
+          font-size: 15px;
         }
       }
 
@@ -204,18 +210,18 @@ $imageHeight: 150px; // 하단 이미지 썸네일의 너비
           height: 40%;
           svg {
             height: 100%;
-            filter:drop-shadow(3px 3px 3px rgb(197, 197, 197));
+            filter: drop-shadow(3px 3px 3px rgb(197, 197, 197));
           }
         }
         .todayTemp {
           position: relative;
           margin-top: 25px;
           text-align: center;
-          .maxTemp{
+          .maxTemp {
             font-size: 16px;
             color: red;
           }
-          .tempMessage{
+          .tempMessage {
             margin-top: 10px;
             font-size: 14px;
             font-weight: 600;
