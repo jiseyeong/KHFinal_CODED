@@ -28,9 +28,6 @@ const DeleteFormBlock = styled.div`
   border-radius: 10px;
   background-color: #ffffff;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const DeleteAccount = () => {

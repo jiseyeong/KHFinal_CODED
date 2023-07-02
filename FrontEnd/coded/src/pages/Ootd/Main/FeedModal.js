@@ -369,31 +369,31 @@ function FeedModal({
   // 피드의 스크랩 반영 ( 추가 / 삭제 )
   function setFeedScrap() {
     if (accessToken) {
-    axios({
-      method: 'post',
-      url: '/feedpost/insertFeedScrap',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      params: {
-        feedPostId: feedPost.feedPostId,
-      },
-    })
-      .then((resp) => {
-        // 스크랩 상태로 변경
-        setIsFeedScrap((prev) => !prev);
-        // 스크랩 눌렀을 시 카운트 반영 및 애니메이션
-        setScrapScale(!isFeedScrap ? 1.2 : 1);
-        setTimeout(() => {
-          setScrapScale(1);
-        }, 200);
+      axios({
+        method: 'post',
+        url: '/feedpost/insertFeedScrap',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          feedPostId: feedPost.feedPostId,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
-     } else {
-        setIsLogintrue(true);
-      }
+        .then((resp) => {
+          // 스크랩 상태로 변경
+          setIsFeedScrap((prev) => !prev);
+          // 스크랩 눌렀을 시 카운트 반영 및 애니메이션
+          setScrapScale(!isFeedScrap ? 1.2 : 1);
+          setTimeout(() => {
+            setScrapScale(1);
+          }, 200);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   }
 
   //------------------------------------------------
@@ -515,7 +515,7 @@ function FeedModal({
                   <div className="hashTagBody">
                     {selectHashTag.length > 0 ? (
                       selectHashTag.map((e, i) => (
-                        <Link to={`/feed/search?keyword=${e}`} key={i}>
+                        <Link to={`/feedList/search?keyword=${e}`} key={i}>
                           <span>
                             #{e}
                             &nbsp;&nbsp;

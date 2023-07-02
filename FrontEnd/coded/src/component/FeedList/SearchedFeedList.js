@@ -46,7 +46,7 @@ const FeedPostOuter = styled('div')`
 
 function SearchedFeedList() {
   const [feedPost, setFeedPost] = useState([]);
-  const [newSearch, setNewSearch] = useState(false);
+  // const [newSearch, setNewSearch] = useState(false);
   const feedPostOuterRef = useRef(null);
   const cpage = useRef(1);
   const location = useLocation();
@@ -56,12 +56,12 @@ function SearchedFeedList() {
 
   useEffect(() => {
     cpage.current = 1;
-    setNewSearch(true);
-    addSearchedFeedList(keyword);
+    let newSearch = true;
+    addSearchedFeedList(keyword, newSearch);
     window.onscroll = function () {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        setNewSearch(false);
-        addSearchedFeedList(keyword);
+        newSearch = false;
+        addSearchedFeedList(keyword, newSearch);
       }
     };
     return () => {
@@ -70,8 +70,9 @@ function SearchedFeedList() {
   }, [keyword]);
 
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
-  const addSearchedFeedList = (keyword) => {
+  const addSearchedFeedList = (keyword, newSearch) => {
     if (!pageLoading) {
+      console.log(newSearch);
       pageLoading = true;
       axios
         .request({
