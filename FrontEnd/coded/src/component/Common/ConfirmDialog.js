@@ -18,7 +18,9 @@ const ConfirmDialog = (props) => {
     setAlertCheck(false);
   };
   const test2 = () => {
+    setAlertCheck(false);
     navi('/login');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -30,7 +32,7 @@ const ConfirmDialog = (props) => {
         </IconButton>
       </Box>
       <DialogContent>
-        <Typography>로그인 후 이용해주세요</Typography>
+        <Typography>로그인 후 이용해주세요.</Typography>
       </DialogContent>
       <DialogActions>
         <Button

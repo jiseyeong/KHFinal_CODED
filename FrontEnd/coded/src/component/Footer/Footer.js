@@ -3,40 +3,48 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './Footer.scss';
 import Modal from 'react-modal';
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll } from 'framer-motion';
 import Tos from './Component/Tos/TermsOfUse';
-
-
+import ConfirmDialog from '../Common/ConfirmDialog';
 
 const Footer = () => {
-
   const [modal, setModal] = useState(false);
+  const accessToken = useSelector((state) => state.member.access);
+  const [loginConfirm, setLoginConfirm] = useState(false);
 
+  const navigate = useNavigate();
   //모달 창 닫기
   const closeModal = () => {
     if (modal) {
-        setModal(false);
-      }
-    };
+      setModal(false);
+    }
+  };
+
+  function toDeleteAccount() {
+    if (accessToken) {
+      navigate('/deleteAccount');
+    } else {
+      setLoginConfirm(true);
+    }
+  }
 
   function Modal() {
     const modalBodyRef = useRef(null);
     const { scrollYProgress } = useScroll({
-      container:modalBodyRef
+      container: modalBodyRef,
     });
     return (
-
       <>
-      <div className="modal" onClick={closeModal}>
-      <motion.div
-          className="progress-bar"
-          style={{scaleX:scrollYProgress}}/>
-        <div className="modalBody" ref={modalBodyRef}>
-       
-          <div className="tosContent">
+        <div className="modal" onClick={closeModal}>
+          <motion.div
+            className="progress-bar"
+            style={{ scaleX: scrollYProgress }}
+          />
+          <div className="modalBody" ref={modalBodyRef}>
+            <div className="tosContent">
               <Tos></Tos>
-        </div>
-        </div>
+            </div>
+          </div>
         </div>
       </>
     );
@@ -55,7 +63,9 @@ const Footer = () => {
             <p>members.</p>
           </div>
           <div className="descList">
-              <Link to="/deleteAccount">Delete Account</Link>
+            <div style={{ cursor: 'pointer' }} onClick={toDeleteAccount}>
+              Delete Account
+            </div>
           </div>
         </div>
         <div className="middle">
@@ -63,12 +73,26 @@ const Footer = () => {
             <p>us.</p>
           </div>
           <div className="descList">
-            <Link to="" onClick={()=>{setModal(true)}}>Terms of Use</Link>
-            {modal === true ? <Modal/> : null}
-            {console.log(modal)}
+            <Link
+              to=""
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              Terms of Use
+            </Link>
+            {modal === true ? <Modal /> : null}
+            {/* {console.log(modal)} */}
           </div>
           <div className="descList">
-            <Link to="/privacyPolicy">Privacy Policy</Link>
+            <Link
+              to=""
+              onClick={() => {
+                setModal(true);
+              }}
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
 
@@ -77,11 +101,12 @@ const Footer = () => {
             <p>contact.</p>
           </div>
           <div className="descList">
-          <div className="contactWrapper">
-            <p>coded@official.com</p>
+            <div className="contactWrapper">
+              <p>coded@official.com</p>
             </div>
           </div>
         </div>
+        {loginConfirm && <ConfirmDialog setAlertCheck={setLoginConfirm} />}
       </div>
     </div>
   );

@@ -47,7 +47,7 @@
     right: 0;
     background: rgba(0, 0, 0, 0.5);
 
-    .innerWrapper {
+    .reportInnerWrapper {
       display: flex;
       width: 500px;
 
@@ -62,16 +62,16 @@
         justify-content: right;
         padding: 5px 5px 0px 0px;
         display: flex;
-      .closeBtn {
-        cursor: pointer;
-        z-index: 1;
-        width: 30px;
-        height: 30px;
-        border-radius: 30px;
-        background-color: white;
-        border-color: silver;
+        .closeBtn {
+          cursor: pointer;
+          z-index: 1;
+          width: 30px;
+          height: 30px;
+          border-radius: 30px;
+          background-color: white;
+          border-color: silver;
+        }
       }
-    }
 
       .radioLayout {
         width: 60%;

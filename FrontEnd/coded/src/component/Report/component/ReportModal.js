@@ -74,7 +74,7 @@ const Buttonok2 = styled('button')`
 `;
 
 // 푸터 회원탈퇴 ,팔로우 좋아요,채팅 댓글,대댓글(일반 피드클릭이랑 서치 검색후 피드)
-//=>로그인안했을경우에 로그인창 뜨게하기 
+//=>로그인안했을경우에 로그인창 뜨게하기
 
 function ReportModal({ feedPostId, onReportView }) {
   const [text, setText] = useState('');
@@ -174,7 +174,7 @@ function ReportModal({ feedPostId, onReportView }) {
       <div className="mainWrapper">
         <div className="modalWrapper">
           <div
-            className="innerWrapper"
+            className="reportInnerWrapper"
             style={{ flexDirection: 'column' }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -222,7 +222,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    도배성 게시물 
+                    도배성 게시물
                   </label>
                 </p>
               </div>
