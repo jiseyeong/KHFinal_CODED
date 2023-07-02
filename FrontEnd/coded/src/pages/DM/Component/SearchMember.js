@@ -8,15 +8,13 @@ import { setDMSETUSER } from '../../../modules/Redux/DMSetting';
 
 
 // UserList Li
-const UserList = ({userNo, userId, userNickName, sysName }) => {
+const UserList = ({userNo, userId, userNickName, sysName, setIsAutoCompleteOpen }) => {
 
     const dispatch = useDispatch();
     const onSetDMSETUSER = useCallback((userNo)=> dispatch(setDMSETUSER(userNo,true), [dispatch]))
 
-    
-
     return (
-        <li className={styled.userList} onClick={()=>{onSetDMSETUSER(userNo)}}>
+        <li className={styled.userList} onClick={()=>{onSetDMSETUSER(userNo); setIsAutoCompleteOpen(false);}}>
             <a href="#">
                 <div className={styled.userLeftSide}>
                     {sysName !== null ? (
@@ -27,7 +25,6 @@ const UserList = ({userNo, userId, userNickName, sysName }) => {
                 </div>
                 <div className={styled.userMiddleSide1}>{userNickName}</div>
                 <div className={styled.userMiddleSide2}>{userId}</div>
-
             </a>
         </li>
     );
@@ -117,6 +114,7 @@ const SearchBox = (props) => {
             />
             {isAutoCompleteOpen && (
                 <div className={styled.searchResultContainer}>
+                    <div className={styled.searchTitleBar}> 새 유저 추가</div>
                     <div className={styled.searchResulthWrap}>
                         {completedData.map((i) => {
                             return i.userId !== undefined ? (
@@ -126,6 +124,7 @@ const SearchBox = (props) => {
                                     userId={i.userId}
                                     userNickName={i.userNickName}
                                     sysName={i.sysName}
+                                    setIsAutoCompleteOpen={setIsAutoCompleteOpen}
                                 />
                             ) : (
                                 <></>
