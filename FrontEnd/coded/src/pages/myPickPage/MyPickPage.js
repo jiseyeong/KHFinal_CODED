@@ -124,7 +124,7 @@ const MyPickPage = () => {
   }, [accessToken, currentUserNo]);
 
   const getMyPickData = () => {
-    console.log(currentUserNo);
+    // console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -213,7 +213,7 @@ const MyPickPage = () => {
   // 팔로우/팔로워 버튼을 누를 때
   const handleFollow = () => {
     axios({
-      url: '/follow/insertfollow',
+      url: '/follow/handleFollow',
       method: 'post',
       params: {
         toUserNo: currentUserNo,

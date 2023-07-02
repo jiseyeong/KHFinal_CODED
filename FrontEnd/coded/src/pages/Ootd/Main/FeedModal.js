@@ -72,19 +72,32 @@ function FeedModal({
 
   let num = 0;
 
+    //  수정하기 ---------------------------------------
+    const [FeedPost, setFeedPost] = useState({});
+    const [selectHashTag, setSelectHashTag] = useState([]); // 해시태그 벨류값만 보내는거
+    const [HashTag, setHashTag] = useState([]); // 해시태그 벨류랑 라벨 다보내야됨
+    const [editYN, setEditYN] = useState(false);
+    const [content, setContent] = useState(feedPost.body); //콘텐트 기본값, 수정하기
+    const selectRef = useRef();
+    const contentRef = useRef(); // 바디 레퍼런스
+    const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
+
   useEffect(() => {
-    console.log(selectHashTag.length);
 
     let arrTemp = [];
     hashTagList.forEach((item) => {
+      console.log("item")
+      console.log(item)
+      let tempselect = item.hashTag
       let temp = { value: item.hashTag, label: item.hashTag };
-      setSelectHashTag((preview) => [...preview, temp]);
+      setSelectHashTag((preview) => [...preview, item.hashTag]);
       arrTemp = arrTemp.concat({
         value: item.hashTag,
         label: item.hashTag,
       });
-      setHashTag([...HashTag, ...arrTemp]);
+      setHashTag([...arrTemp]);
     });
+    
 
     updateImageList();
     // 스크랩 여부 가져오기
@@ -119,6 +132,17 @@ function FeedModal({
       });
     });
   }, []);
+  // 옵션을 가져와서 가져옴
+
+  useEffect(()=>{
+    console.log("SelectHashTag")
+    console.log(selectHashTag);
+  },[selectHashTag])
+
+  useEffect(()=>{
+    console.log("HashTag")
+    console.log(HashTag)
+  },[HashTag])
 
   function updateImageList() {
     axios({
@@ -170,15 +194,7 @@ function FeedModal({
         });
     }
   }
-  //  수정하기 ---------------------------------------
-  const [FeedPost, setFeedPost] = useState(feedPost);
-  const [selectHashTag, setSelectHashTag] = useState([]); //수정 전
-  const [HashTag, setHashTag] = useState(hashTagList); //삭제하고 나서의
-  const [editYN, setEditYN] = useState(false);
-  const [content, setContent] = useState(''); //수정 후
-  const selectRef = useRef();
-  const contentRef = useRef(); // 바디 레퍼런스
-  const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
+
   // 수정 버튼 눌렀을때
 
   function editFeedPost() {
@@ -190,6 +206,25 @@ function FeedModal({
 
   // 수정하기 완료
   function editComplate() {
+    if (
+      contentRef.current.value === '' ||
+      contentRef.current.value === undefined
+    ) {
+      alert('내용을 입력해주세요');
+      return;
+    }
+    if (selectRef.current.getValue().length === 0) {
+      alert('최소 한 개 이상의 해시태그를 입력해 주세요');
+      return;
+    }
+    setSelectHashTag([]);
+    setHashTag([]);
+
+
+    setContent(contentRef.current.value);
+    console.log(content);
+    console.log(HashTag);
+
     const formData = new FormData();
     formData.append('feedPostId', feedPost.feedPostId);
     formData.append('userNo', feedPost.userNo);
@@ -197,7 +232,13 @@ function FeedModal({
     selectRef.current.getValue().forEach((item) => {
       formData.append('hashTag', item.value);
       console.log(item.value);
+      setSelectHashTag((prev) => {
+        return [...prev, item.value];
+      });
     });
+    console.log(contentRef.current.value);
+    setContent(contentRef.current.value);
+    setEditYN(false);
 
     setFeedPost((prevFeedPost) => {
       return {
@@ -210,16 +251,57 @@ function FeedModal({
       url: '/feedpost/updatefeed',
       data: formData,
     })
-      .then(() => {})
+      .then(() => {
+        alert('수정이 완료되었습니다 :)');
+        window.location.reload();
+      })
       .catch((error) => {
         console.log(error);
       });
-    setEditYN(false);
   }
 
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      width: 520, // 원하는 가로 크기로 변경
+      height: 52.3, // 원하는 높이로 변경
+      lineHeight: 'normal',
+      fontSize: 14,
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      transform: 'rotate(180deg)', // 화살표 회전
+    }),
+  };
+
+  let [inputCount, setInputCount] = useState(200 - feedPost.body.length);
+  const inputCountRef = useRef();
+
+  const onTextareaHandler = (e) => {
+    const value = e.target.value.length;
+    const value2 = 200 - value;
+    setInputCount(value2);
+    if (value2 >= 0) {
+      inputCountRef.current.style.color = 'blue';
+    } else {
+      inputCountRef.current.style.color = 'red';
+    }
+  };
   //글 수정
 
-  function editCancel() {}
+  // 글 취소
+
+  function editCancel() {
+    setSelectHashTag([]);
+    hashTagList.forEach((e) => {
+      setSelectHashTag((prev) => {
+        return [...prev, e.hashTag];
+      });
+    });
+    setInputCount(200 - feedPost.body.length);
+    setContent(feedPost.body);
+    setEditYN(false);
+  }
 
   const handleInputChange = (event) => {};
 
@@ -321,19 +403,6 @@ function FeedModal({
 
   //------------------------------------------------
 
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      width: 520, // 원하는 가로 크기로 변경
-      height: 52.3, // 원하는 높이로 변경
-      lineHeight: 'normal',
-      fontSize: 14,
-    }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      transform: 'rotate(180deg)', // 화살표 회전
-    }),
-  };
 
   return (
     <div className="wrapper">
@@ -364,6 +433,7 @@ function FeedModal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
+                    {/* {console.log(feedPost)} */}
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
@@ -410,33 +480,51 @@ function FeedModal({
                 </div>
                 <div className="authorDescription">
                   {editYN === false ? (
-                    <div className="feedPostBody">{feedPost.body}</div>
+                    <div className="feedPostBody">{content}</div>
                   ) : (
                     <div className="feedPostBody">
                       <textarea
                         className="post"
-                        placeholder="내용을 입력해주세요"
+                        placeholder="content"
+                        maxLength="200"
                         ref={contentRef}
+                        onChange={onTextareaHandler}
+                        onInput={(e) => {
+                          setFeedPost(() => {
+                            return { ...FeedPost, body: e.target.value };
+                          });
+                        }}
                       >
-                        {feedPost.body}
+                        {content}
                       </textarea>
                     </div>
                   )}
-                  <div className="feedPostWidth"></div>
-                  <div className="feedPostWeather">
-                    <div className="weatherIcon">{weatherIcon}</div>
-                    <div className="writeTemp">{feedPost.writeTemp}º</div>
+                  <div className="feedPostBodyRight">
+                    <div className="feedPostBodyRightTop">
+                      <div className="feedPostWidth"></div>
+                      <div className="feedPostWeather">
+                        <div className="weatherIcon">{weatherIcon}</div>
+                        <div className="writeTemp">{feedPost.writeTemp}º</div>
+                      </div>
+                      <div className="feedPostWidth"></div>
+                    </div>
+                    <div className="feedPostBodyRightBottom">
+                      {editYN !== false && (
+                        <div className="inputCount" ref={inputCountRef}>
+                          {inputCount}자
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="feedPostWidth"></div>
                 </div>
 
                 {editYN === false ? (
                   <div className="hashTagBody">
-                    {hashTagList.length > 0 ? (
-                      hashTagList.map((e, i) => (
-                        <Link to={`/feed/search?keyword=${e.hashTag}`} key={i}>
+                    {selectHashTag.length > 0 ? (
+                      selectHashTag.map((e, i) => (
+                        <Link to={`/feed/search?keyword=${e}`} key={i}>
                           <span>
-                            #{e.hashTag}
+                            #{e}
                             &nbsp;&nbsp;
                           </span>
                         </Link>
@@ -453,10 +541,17 @@ function FeedModal({
                         placeholder="해시태그 추가"
                         isMulti
                         options={options}
-                        value={selectHashTag}
+                        value={HashTag}
                         ref={selectRef}
                         onChange={(selectedOptions) => {
-                          setSelectHashTag(selectedOptions);
+                          setHashTag(selectedOptions)
+                          setSelectHashTag([])
+                          selectedOptions.forEach((e)=>{
+                            setSelectHashTag((prev)=>{
+                              return [...prev, e.value]
+                            })
+                          })
+                          
                           setTimeout(() => {
                             if (selectRef.current.getValue().length > 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');
@@ -471,10 +566,7 @@ function FeedModal({
                       />
                     </div>
                     <div className="buttons">
-                      <Link to="/">
-                        {' '}
-                        <button onClick={editComplate}>수정 완료</button>
-                      </Link>
+                      <button onClick={editComplate}>수정 완료</button>
                       <button onClick={editCancel}>수정 취소</button>
                     </div>
                   </div>
@@ -536,7 +628,6 @@ function FeedModal({
             </div>
           </div>
         </div>
-
         {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
       </div>
     </div>

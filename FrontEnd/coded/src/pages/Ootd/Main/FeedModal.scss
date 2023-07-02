@@ -281,24 +281,47 @@
             }
             overflow: hidden;
           }
-          .feedPostWeather {
-            width: 14%;
-            display: flex;
-            text-align: center;
-            .weatherIcon {
-              width: 50%;
-              svg {
+
+          .feedPostBodyRight {
+            width: 20%;
+            .feedPostBodyRightTop {
+              display: flex;
+              height: 50%;
+              .feedPostWeather {
                 width: 80%;
-                height: 20%;
+                display: flex;
+                text-align: center;
+                align-items: center;
+                .weatherIcon {
+                  width: 50%;
+                  svg {
+                    width: 100%;
+                    height: 100%;
+                    filter:drop-shadow(3px 3px 3px rgb(197, 197, 197));
+                  }
+                }
+                .writeTemp {
+                  width: 50%;
+                  font-size: 20px;
+                }
+              }
+              .feedPostWidth {
+                width: 10%;
               }
             }
-            .writeTemp {
-              width: 50%;
-              font-size: 20px;
+
+            .feedPostBodyRightBottom{
+              height: 50%;
+              .inputCount{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+              text-align: center;
+                font-size: 15px;
+              }
             }
-          }
-          .feedPostWidth {
-            width: 3%;
+            
           }
         }
 
