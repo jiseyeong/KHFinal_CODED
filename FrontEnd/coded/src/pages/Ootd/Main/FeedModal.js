@@ -69,9 +69,6 @@ function FeedModal({
 
   const [isLogintrue, setIsLogintrue] = useState(false);
 
-  // 신고 모달창 관련 on/off
-  const [reportModal, setReportModal] = useState(false);
-
   let num = 0;
 
   //  수정하기 ---------------------------------------
@@ -396,6 +393,11 @@ function FeedModal({
     }
   }
 
+  // 신고 모달창 닫기
+  const handleFeedReportModal = () => {
+    setReportFeedPost(false);
+  };
+
   //------------------------------------------------
 
   return (
@@ -462,7 +464,9 @@ function FeedModal({
                           <div className="optionList">
                             <div
                               className="optionListDiv"
-                              onClick={reportFeedPost}
+                              onClick={() => {
+                                setReportFeedPost(true);
+                              }}
                             >
                               신고하기
                             </div>
@@ -622,6 +626,12 @@ function FeedModal({
           </div>
         </div>
         {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
+        {reportFeedPost && (
+          <ReportModal
+            feedPostId={feedPost.feedPostId}
+            onReportView={handleFeedReportModal}
+          />
+        )}
       </div>
     </div>
   );
