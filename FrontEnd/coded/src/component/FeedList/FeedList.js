@@ -9,7 +9,6 @@ import React, {
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import LoadingBar from '../Common/LoadingBar';
 import NoticeBar from './NoticeBar';
 import NoneSearchedBar from './NoneSearchedBar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,12 +56,6 @@ const FeedPostOuter = styled('div')`
     width: 250px;
   }
 `;
-
-const ImageComponent = () => {
-  return (
-    <img style={{ width: '100%', height: '100%' }} src={Spinner} alt="이미지" />
-  );
-};
 
 function FeedList({ type }) {
   const [feedPost, setFeedPost] = useState([]);
@@ -205,12 +198,15 @@ function FeedList({ type }) {
       }
     }
   };
+
   // window.innerHeight 실제 보이는 창의 높이
   // window.scrollY 페이지 상단에서부터 스크롤된 값
-  // document.body.offsetHeight 페이지 전체 높이
-
+  // document.body.offsetHeight 페이지 전체 총 높이
   window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY + 100 >=
+      document.body.offsetHeight
+    ) {
       addFeedList();
     }
   };
@@ -221,11 +217,7 @@ function FeedList({ type }) {
         <Masonry className={'my-masonry-grid'} options={masonryOptions}>
           {feedPost.map((e, i) => (
             <div className="grid-item" key={i}>
-              <FeedPostDetail
-                index={i}
-                feedPost={e}
-                ImageComponent={ImageComponent}
-              ></FeedPostDetail>
+              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
             </div>
           ))}
         </Masonry>

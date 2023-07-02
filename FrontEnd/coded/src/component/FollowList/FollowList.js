@@ -15,13 +15,13 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
   useEffect(() => {
     axios
       .all([
-        axios.get('/follow/selectfollowinglist', {
+        axios.get('/follow/selectfollowerlist', {
           params: {
             targetUserNo: userNo,
             myUserNo: myUserNo,
           },
         }),
-        axios.get('/follow/selectfollowerlist', {
+        axios.get('/follow/selectfollowinglist', {
           params: {
             targetUserNo: userNo,
             myUserNo: myUserNo,
@@ -30,9 +30,10 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
       ])
 
       .then(([resp1, resp2]) => {
-        setFollowingList(resp1.data);
-        setFollowerList(resp2.data);
-
+        setFollowerList(resp1.data);
+        setFollowingList(resp2.data);
+        console.log(resp1.data);
+        console.log(resp2.data);
         // 리스트 내에 내가 그 유저를 팔로우 했는 지 여부도 가져옴
         // 로그인 되어있지 않다면 무조건 언팔로우 상태 (userNo : defaultValue=0)
       })
@@ -67,7 +68,7 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
               : {}
           }
         >
-          팔로잉
+          팔로워
         </div>
         <div
           className="followBox"
@@ -83,14 +84,14 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
               : {}
           }
         >
-          팔로워
+          팔로잉
         </div>
       </div>
       <div className="modalBody">
         <ul className="userList">
-          {showFollowingStats &&
-            followingList &&
-            followingList.map((item, index) => {
+          {!showFollowingStats &&
+            followerList &&
+            followerList.map((item, index) => {
               console.log(item);
               return (
                 <FollowUser
@@ -101,9 +102,9 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
                 />
               );
             })}
-          {!showFollowingStats &&
-            followerList &&
-            followerList.map((item, index) => {
+          {showFollowingStats &&
+            followingList &&
+            followingList.map((item, index) => {
               console.log(item);
               return (
                 <FollowUser
@@ -123,12 +124,13 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
 const FollowUser = ({ followUser, isFollow, myUserNo }) => {
   const [followCheck, setFollowCheck] = useState(isFollow);
   // console.log(followCheck + ' / ' + followUser.userNo);
+
   function follow(toUserNo) {
     //버튼 클릭시 insert, delete..
 
     axios({
       method: 'post',
-      url: '/follow/insertfollow',
+      url: '/follow/handleFollow',
       params: {
         toUserNo: toUserNo,
         fromUserNo: myUserNo,

@@ -131,7 +131,7 @@ public class SecurityConfiguration {
 			"/follow/selectfollowinglist",
 			"/follow/selectfollowerlist",
 			"/feedpost/selectOneFeedPost",
-			"/follow/insertfollow",
+			"/follow/handleFollow",
 			"/feedReport/insertReport",
 			"/feedList/search",
 			"/coded.ico",
