@@ -299,7 +299,8 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                 return (
                   <div className="uploadedImage" key={index}>
                     <div className="closeBtnLayout">
-                      <button className="closeBtn" onClick={index}>
+                      <button className="closeBtn" onClick={() => {
+                          Cancelpicture(index);}}>
                         <p className="closeXBtn">x</p>
                       </button>
                     </div>
