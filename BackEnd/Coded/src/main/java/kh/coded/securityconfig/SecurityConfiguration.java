@@ -137,7 +137,8 @@ public class SecurityConfiguration {
 			"/coded.ico",
 			"/feedpost/insertFeedPost",
 			"/follow/isfollow",
-			"/feedpost/isScrap"
+			"/feedpost/isScrap",
+			"/auth/logout"
 
 	};
 	private final String[] API_USER_LIST = {

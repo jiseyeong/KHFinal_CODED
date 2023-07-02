@@ -19,10 +19,16 @@ function LastCallbackPage() {
     const paramMessage = searchParams.get('message');
     if (paramMessage != 'T' && paramMessage != 'F' && paramMessage != 'FF') {
       onLogin(paramMessage);
-      navigate('/');
+      location.href = '/';
+      // navi로 이동하는 경우 App.js에서 '/auth/refresh'로 accessToken을 못 받는 경우가 있어
+      // 별도의 새로고침 과정이 없이 login정보가 필요한 곳에 바로 접근 시, 에러가 납니다.
+      // location.href로 임시로 바꿔놨으니 나중에 확인하시면 되겠습니다.
+      // 서버쪽 로그 :  토큰이 Bearer String 으로 시작하지 않습니다. target : /login/oauth2/google (kakao, 기타...)
+      // navigate('/');
     } else if (paramMessage == 'T') {
+      location.href = '/profile';
       // setMessage('등록되었습니다.');
-      navigate('/profile');
+      // navigate('/profile');
     } else if (paramMessage == 'F') {
       setMessage('MEMBER-ONLY SERVICE. SignUp/Login First!');
     } else if (paramMessage == 'FF') {

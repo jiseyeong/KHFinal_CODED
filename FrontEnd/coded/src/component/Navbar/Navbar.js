@@ -22,6 +22,7 @@ import Logo from './navLogo.png';
 import TodayWeather from '../TodayWeather/TodayWeather';
 import { logout } from '../../modules/Redux/members';
 import { motion } from 'framer-motion';
+import ChatButton from '../../assets/ButtonAsset/ChatButton';
 
 function Navbar() {
   const [isOotdBorder, setIsOotdBorder] = useState(true);
@@ -155,14 +156,24 @@ function Navbar() {
           )}
 
           <div className="rightNavBar">
+            {accessToken && (
+              <motion.div
+                className="rightMenuWrapper"
+                whileHover={{ scale: 1.1 }}
+              >
+                <ChatButton />
+              </motion.div>
+            )}
             <motion.div
               className="rightMenuWrapper"
               whileHover={{ scale: 1.1 }}
             >
               {accessToken ? (
-                <button onClick={onLogout} className="loginBtn">
-                  로그아웃
-                </button>
+                <>
+                  <button onClick={onLogout} className="loginBtn">
+                    로그아웃
+                  </button>
+                </>
               ) : (
                 <button onClick={loginPage} className="loginBtn">
                   로그인 / 회원가입
