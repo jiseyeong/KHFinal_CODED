@@ -103,14 +103,14 @@ function FeedModal({
     // 스크랩 여부 가져오기
     updateScrap();
 
-    if (feedPost.ptyCode == 1 || feedPost.ptyCode == 2) {
+    if (feedPost.writePtyCode == 1 || feedPost.writePtyCode == 2) {
       setWeatherIcon(weatherIcons.rain);
-    } else if (feedPost.ptyCode == 3) {
+    } else if (feedPost.writePtyCode == 3) {
       setWeatherIcon(weatherIcons.snow);
-    } else if (feedPost.ptyCode == 4) {
+    } else if (feedPost.writePtyCode == 4) {
       setWeatherIcon(weatherIcons.heavyRain);
     } else {
-      if (feedPost.skyCode == 1) {
+      if (feedPost.writeSkyCode == 1) {
         setWeatherIcon(weatherIcons.sun);
       } else {
         setWeatherIcon(weatherIcons.cloud);
