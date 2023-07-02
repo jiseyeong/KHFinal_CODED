@@ -68,7 +68,7 @@ const Footer = () => {
             {console.log(modal)}
           </div>
           <div className="descList">
-            <Link to="/privacyPolicy">Privacy Policy</Link>
+            <Link to="" onClick={()=>{setModal(true)}}>Privacy Policy</Link>
           </div>
         </div>
 
