@@ -72,23 +72,25 @@ function FeedModal({
 
   let num = 0;
 
-    //  수정하기 ---------------------------------------
-    const [FeedPost, setFeedPost] = useState({});
-    const [selectHashTag, setSelectHashTag] = useState([]); // 해시태그 벨류값만 보내는거
-    const [HashTag, setHashTag] = useState([]); // 해시태그 벨류랑 라벨 다보내야됨
-    const [editYN, setEditYN] = useState(false);
-    const [content, setContent] = useState(feedPost.body); //콘텐트 기본값, 수정하기
-    const selectRef = useRef();
-    const contentRef = useRef(); // 바디 레퍼런스
-    const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
+  //  수정하기 ---------------------------------------
+  const [FeedPost, setFeedPost] = useState({});
+  const [selectHashTag, setSelectHashTag] = useState([]); // 해시태그 벨류값만 보내는거
+  const [HashTag, setHashTag] = useState([]); // 해시태그 벨류랑 라벨 다보내야됨
+  const [editYN, setEditYN] = useState(false);
+  const [content, setContent] = useState(feedPost.body); //콘텐트 기본값, 수정하기
+  const selectRef = useRef();
+  const contentRef = useRef(); // 바디 레퍼런스
+  const [options, setOptions] = useState([]); //가져오기 해쉬태그 리스트
+
+  // 신고 모달 온오프
+  const [reportFeedPost, setReportFeedPost] = useState(false);
 
   useEffect(() => {
-
     let arrTemp = [];
     hashTagList.forEach((item) => {
-      console.log("item")
-      console.log(item)
-      let tempselect = item.hashTag
+      console.log('item');
+      console.log(item);
+      let tempselect = item.hashTag;
       let temp = { value: item.hashTag, label: item.hashTag };
       setSelectHashTag((preview) => [...preview, item.hashTag]);
       arrTemp = arrTemp.concat({
@@ -97,7 +99,6 @@ function FeedModal({
       });
       setHashTag([...arrTemp]);
     });
-    
 
     updateImageList();
     // 스크랩 여부 가져오기
@@ -134,15 +135,15 @@ function FeedModal({
   }, []);
   // 옵션을 가져와서 가져옴
 
-  useEffect(()=>{
-    console.log("SelectHashTag")
+  useEffect(() => {
+    console.log('SelectHashTag');
     console.log(selectHashTag);
-  },[selectHashTag])
+  }, [selectHashTag]);
 
-  useEffect(()=>{
-    console.log("HashTag")
-    console.log(HashTag)
-  },[HashTag])
+  useEffect(() => {
+    console.log('HashTag');
+    console.log(HashTag);
+  }, [HashTag]);
 
   function updateImageList() {
     axios({
@@ -219,7 +220,6 @@ function FeedModal({
     }
     setSelectHashTag([]);
     setHashTag([]);
-
 
     setContent(contentRef.current.value);
     console.log(content);
@@ -403,7 +403,6 @@ function FeedModal({
 
   //------------------------------------------------
 
-
   return (
     <div className="wrapper">
       <div className="mainWrapper">
@@ -466,12 +465,11 @@ function FeedModal({
                           </div>
                         ) : (
                           <div className="optionList">
-                            <div className="optionListDiv">
-                              <a
-                              // onClick={reportFeedPost}
-                              >
-                                신고하기
-                              </a>
+                            <div
+                              className="optionListDiv"
+                              onClick={reportFeedPost}
+                            >
+                              신고하기
                             </div>
                           </div>
                         ))}
@@ -544,14 +542,14 @@ function FeedModal({
                         value={HashTag}
                         ref={selectRef}
                         onChange={(selectedOptions) => {
-                          setHashTag(selectedOptions)
-                          setSelectHashTag([])
-                          selectedOptions.forEach((e)=>{
-                            setSelectHashTag((prev)=>{
-                              return [...prev, e.value]
-                            })
-                          })
-                          
+                          setHashTag(selectedOptions);
+                          setSelectHashTag([]);
+                          selectedOptions.forEach((e) => {
+                            setSelectHashTag((prev) => {
+                              return [...prev, e.value];
+                            });
+                          });
+
                           setTimeout(() => {
                             if (selectRef.current.getValue().length > 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');

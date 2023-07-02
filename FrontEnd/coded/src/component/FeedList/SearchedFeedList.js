@@ -40,6 +40,7 @@ const FeedPostOuter = styled('div')`
     // 행 사이 간격
     margin-bottom: 30px;
     border: 0px;
+    width: 250px;
   }
 `;
 
