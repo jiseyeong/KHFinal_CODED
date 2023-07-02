@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../modules/Redux/members';
+import ErrorConfirmPage from '../../../assets/ButtonAsset/ErrorConfirmPage';
 
 function LastCallbackPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,10 +19,10 @@ function LastCallbackPage() {
     const paramMessage = searchParams.get('message');
     if (paramMessage != 'T' && paramMessage != 'F' && paramMessage != 'FF') {
       onLogin(paramMessage);
-      navigate("/");
+      navigate('/');
     } else if (paramMessage == 'T') {
       // setMessage('등록되었습니다.');
-      navigate("/profile");
+      navigate('/profile');
     } else if (paramMessage == 'F') {
       setMessage('MEMBER-ONLY SERVICE. SignUp/Login First!');
     } else if (paramMessage == 'FF') {
@@ -32,7 +33,7 @@ function LastCallbackPage() {
   }, []);
   return (
     <div>
-      <div>{message}</div>
+      <ErrorConfirmPage message={message} backPagesCount={-2} />
     </div>
   );
 }

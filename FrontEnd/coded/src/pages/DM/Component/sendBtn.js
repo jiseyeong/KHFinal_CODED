@@ -13,9 +13,17 @@ function SendBtn(props) {
         sendRef.current.value = '';
       };
 
+      const sentToServerByEnter = (e) => {
+        if(e.key === "Enter"){
+            Send(sendRef.current.value)
+            // 입력 필드 초기화
+            sendRef.current.value = '';
+        }
+      }
+
     return (
         <SendBtnContainer >
-            <SendChat type="text" ref={sendRef}/>
+            <SendChat type="text" ref={sendRef} onKeyUp={sentToServerByEnter}/>
             <SendButton onClick={(sendToServer) }>Send</SendButton>
         </SendBtnContainer>
     );
