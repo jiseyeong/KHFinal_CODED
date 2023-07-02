@@ -124,7 +124,7 @@ const MyPickPage = () => {
   }, [accessToken, currentUserNo]);
 
   const getMyPickData = () => {
-    console.log(currentUserNo);
+    // console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
