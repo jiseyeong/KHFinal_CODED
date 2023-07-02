@@ -32,7 +32,8 @@ const WhiteBox = styled.div`
 `;
 
 const ProfileFormBlock = styled.div`
-  width: 60%;
+  width: 1100px;
+  height: 660px;
   margin: 1rem;
   border-radius: 10px;
   background-color: #ffffff;
