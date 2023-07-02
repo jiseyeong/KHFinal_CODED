@@ -9,10 +9,10 @@ import LoadingBar from '../Common/LoadingBar';
 import FeedListNavi from './FeedListNavi';
 import { Like, Temperature } from '../../assets/ModalAsset/ModalAsset';
 import ConfirmDialog from '../Common/ConfirmDialog';
-import LoadingBar2 from '../Common/LoadingBar2';
+import FeedListImgLoadingBar from '../Common/FeedListImgLoadingBar';
 
 const FeedPostDetail = (props) => {
-  const { index, feedPost } = props;
+  const { index, feedPost, ImageComponent } = props;
   const [modal, setModal] = useState(false);
   const [hashTagList, setHashTagList] = useState([]);
   const [isThumbNailLoaded, setIsTuhmbNailLoaded] = useState(false);
@@ -175,12 +175,13 @@ const FeedPostDetail = (props) => {
           // onMouseOver={viewShortCutMenu}
           // onMouseLeave={noneShortCutMenu}
         >
-          <nav className={styles.shortCutMenu} ref={shortCutRef}>
+          {/* <nav className={styles.shortCutMenu} ref={shortCutRef}>
             <FeedListNavi></FeedListNavi>
-          </nav>
+          </nav> */}
           {feedPost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
+              // 수정
               src={`/images/${feedPost.thumbNailSysName}`}
               onLoad={handleThumbNailLoaded}
               onError={handleThumbNailLoaded}
@@ -188,19 +189,20 @@ const FeedPostDetail = (props) => {
           ) : (
             <img
               className={styles.thumbNail}
+              // 수정
               src={`/images/test.jpg`}
               onLoad={handleThumbNailLoaded}
             ></img>
           )}
-          {isThumbNailLoaded ? null : <LoadingBar2 />}
+          {isThumbNailLoaded ? null : <FeedListImgLoadingBar />}
         </div>
         <div className={styles.feedInfoDiv}>
           <div className={styles.userProfileLayout}>
-            {/* 해당 유저의 마이픽 페이지로 이동 */}
             <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
               {feedPost.profileSysName != null ? (
                 <img
                   className={styles.userProfile}
+                  // 수정
                   src={`/images/${feedPost.profileSysName}`}
                   onLoad={handleProfileLoaded}
                   onError={handleProfileLoaded}
@@ -208,12 +210,13 @@ const FeedPostDetail = (props) => {
               ) : (
                 <img
                   className={styles.userProfile}
+                  // 수정
                   src={`/images/test.jpg`}
                   onLoad={handleProfileLoaded}
                 ></img>
               )}
+              {/* {isProfileLoaded ? null : <FadeLoader color="#ffc6dc" />} */}
             </Link>
-            {/* {isProfileLoaded ? null : <LoadingBar />} */}
 
             {/* 좋아요 버튼 */}
             <div
@@ -231,8 +234,7 @@ const FeedPostDetail = (props) => {
           </div>
           <div className={styles.userInfoLayout}>
             <div className={styles.userInfo}>
-              {/* 해당 유저의 마이픽 페이지로 이동 */}
-              <Link to="#">
+              <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                 <span className={styles.userNameLayout}>
                   {feedPost.userNickName}
                 </span>

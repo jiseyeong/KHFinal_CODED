@@ -23,7 +23,6 @@ import {
 } from '../../modules/Redux/navbarSetting';
 
 // 벽돌형 리스트 출력을 위해 react-masonry-component를 사용
-
 // masonry의 옵션 세팅
 const masonryOptions = {
   // 내부 요소들 선택자 지정
@@ -58,6 +57,12 @@ const FeedPostOuter = styled('div')`
     width: 250px;
   }
 `;
+
+const ImageComponent = () => {
+  return (
+    <img style={{ width: '100%', height: '100%' }} src={Spinner} alt="이미지" />
+  );
+};
 
 function FeedList({ type }) {
   const [feedPost, setFeedPost] = useState([]);
@@ -212,12 +217,15 @@ function FeedList({ type }) {
 
   return (
     <FeedPostOuter ref={feedPostOuterRef}>
-      {console.log(feedPost[0])}
       {feedPost.length > 0 ? (
         <Masonry className={'my-masonry-grid'} options={masonryOptions}>
           {feedPost.map((e, i) => (
             <div className="grid-item" key={i}>
-              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+              <FeedPostDetail
+                index={i}
+                feedPost={e}
+                ImageComponent={ImageComponent}
+              ></FeedPostDetail>
             </div>
           ))}
         </Masonry>
