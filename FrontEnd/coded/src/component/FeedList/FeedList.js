@@ -133,7 +133,9 @@ function FeedList({ type }) {
             console.log(error);
             setPageLoading(false);
           });
-      } else if (type === 'popular') {
+      } 
+      
+      else if (type === 'popular') {
         axios({
           method: 'get',
           url: '/feedpost/selectPopularFeedPost',
