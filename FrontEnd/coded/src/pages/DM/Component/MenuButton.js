@@ -16,7 +16,7 @@ function MenuButton(props) {
   };
 
   return (
-    <MenuButtonContainer>
+    <MenuButtonContainer style={{width:"20%",textAlign:"center"}}>
       <button className="moreBtn" onClick={handleModalToggle}>
         More
       </button>
@@ -61,8 +61,8 @@ function MenuButton(props) {
 
 const MenuButtonContainer = styled.div`
   .moreBtn {
-    margin-top: 15px;
-    margin-left: 20px;
+    margin-top:7px;
+    margin-left: 35px;
     width: 50px;
     height: 30px;
     border: none;
@@ -71,25 +71,30 @@ const MenuButtonContainer = styled.div`
   }
   .moreBtn:hover {
     cursor: pointer;
+    color:#ff0066; 
   }
   .ul {
     list-style: none;
     background-color: white;
     margin-left: 15px;
     padding: 0px;
-    width: 60px;
+    width: 70px;
     margin-top: 30px;
-    border-radius: 10px;
     position: relative;
+    top:-20px;
+    left:25px;
+    border:1px solid silver;
   }
   .li {
     margin: 5px;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;
+    font-size:11px;
   }
   .li:hover {
     cursor: pointer;
+    color:#ff0066; 
   }
   .closeBtn2 {
     display: none;
