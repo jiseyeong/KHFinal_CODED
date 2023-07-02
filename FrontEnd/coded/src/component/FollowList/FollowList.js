@@ -45,7 +45,7 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
   return (
     <div className="followContainer">
       <div className="modalTitle">
-        팔로우 리스트
+        Follow List
         <CloseBtn2
           className="closeBtn"
           onClick={() => {
@@ -68,7 +68,7 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
               : {}
           }
         >
-          팔로워
+          Follower
         </div>
         <div
           className="followBox"
@@ -84,7 +84,7 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
               : {}
           }
         >
-          팔로잉
+          Following
         </div>
       </div>
       <div className="modalBody">
@@ -168,7 +168,7 @@ const FollowUser = ({ followUser, isFollow, myUserNo }) => {
                 follow(followUser.userNo);
               }}
             >
-              팔로잉
+              Following
             </button>
           ) : (
             <button
@@ -177,7 +177,7 @@ const FollowUser = ({ followUser, isFollow, myUserNo }) => {
                 follow(followUser.userNo);
               }}
             >
-              팔로우
+              Follow
             </button>
           ))}
       </div>

@@ -1,5 +1,4 @@
 .profileContainer {
-  height: 660px;
   padding-top: 3rem;
   padding-right: 3rem;
   padding-bottom: 3rem;
@@ -160,7 +159,7 @@
         .pLayout {
           display: flex;
           justify-content: right;
-          
+
           p {
             margin-top: 0;
             cursor: pointer;
@@ -215,30 +214,29 @@
           height: 40px;
           margin: 0px 10px 0px;
           cursor: pointer;
-        }     
+        }
         .socialBtn2 {
           width: 40px;
           height: 40px;
           margin: 0px 10px 0px;
           cursor: pointer;
         }
-        .googleBtn{
-          width:40px;
-          height:40px;
+        .googleBtn {
+          width: 40px;
+          height: 40px;
           margin: 0px 10px 0px;
-          border:1px solid silver;
-          border-radius:20px;
-          text-align:center;
-          padding-top:6px;
-          padding-left:2px;
-          padding-right:2px;
-        .socialBtn3 {
-          width:83%;
-          height:83%;
-          cursor: pointer;
+          border: 1px solid silver;
+          border-radius: 20px;
+          text-align: center;
+          padding-top: 6px;
+          padding-left: 2px;
+          padding-right: 2px;
+          .socialBtn3 {
+            width: 83%;
+            height: 83%;
+            cursor: pointer;
+          }
         }
-      }
-
       }
     }
   }
