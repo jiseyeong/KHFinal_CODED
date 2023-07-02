@@ -22,24 +22,30 @@ function SendBtn(props) {
 }
 
 const SendBtnContainer  = styled.div`
-height:8%; width:100%; display:flex;
+height:8%; 
+width:100%; 
+display:flex;
 `
 const SendChat = styled.input`
-width:85%; height:30px;
-    margin-left:10px;
+    width:85%; 
+    height:30px;
     margin-top:10px;
     font-size: 15px;
     color: #222222;
-    border: none;
-    background: lightgray;
+    border:1px solid black;
     border-radius:5px;
     padding:10px;
+    font-size:12px;
     &:focus{outline:none;}
 `
 const SendButton = styled.button`
-margin-top:10px; margin-left:15px; width:50px; height:30px;
-border:none; background-color:lightgray; border-radius:5px;
-&:hover{cursor:pointer;}
+margin-top:10px; width:13%; height:30px;
+margin-left:auto; color:white;
+border:none; background-color:#ff0066; border-radius:5px;
+&:hover{
+    cursor:pointer;
+    opacity:70%;
+}
 `
 
 export default SendBtn;
