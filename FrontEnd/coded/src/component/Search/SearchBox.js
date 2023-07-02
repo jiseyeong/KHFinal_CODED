@@ -65,16 +65,15 @@ const HashTagList = ({ hashTag, setIsAutoCompleteOpen, toSearch }) => {
 };
 
 const SearchBox = () => {
-  const [searchData, setSearchData] = useState([]);
   const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
-  const [completedData, setCompletedData] = useState([]);
-  const [searchInput, setSearchInput] = useState('');
 
   const autoSearchRef = useRef();
   const toSearch = useNavigate();
 
-  // 검색 자동완성 출력 개수
-  const [searchCount, setSearchCount] = useState(5);
+  const [searchData, setSearchData] = useState([]); // 전체 검색대상 데이터
+  const [completedData, setCompletedData] = useState([]); // 자동완성 데이터
+  const [searchInput, setSearchInput] = useState(''); // 검색어 입력 데이터
+  const [searchCount, setSearchCount] = useState(5); // 검색 자동완성 출력 개수
 
   // 검색 전 자동완성 시 보여줄 해시태그 데이터를 가져옴
   useEffect(() => {
@@ -86,7 +85,7 @@ const SearchBox = () => {
       .then(
         axios.spread((resp1, resp2) => {
           setSearchData([...resp1.data, ...resp2.data]);
-        }),
+        }), // 전체 검색대상 데이터를 리스트로 상태 저장
       )
       .catch((error) => {
         console.log(error);
@@ -113,12 +112,13 @@ const SearchBox = () => {
 
     let input = e.target.value;
 
-    const temp = [];
+    const temp = []; // 임시 배열 지정
     searchData.forEach((item) => {
       if (temp.length == searchCount) {
         return;
       }
       if (item.userId !== undefined) {
+        // id나 닉네임이 검색어에 포함되면 해당 요소를
         if (
           item.userId.indexOf(input) !== -1 ||
           item.userNickName.indexOf(input) !== -1
@@ -134,13 +134,13 @@ const SearchBox = () => {
       }
       if (item.tagId !== undefined) {
         if (item.hashTag.indexOf(input) !== -1) {
-          temp.push(item);
+          temp.push(item); // 조건에 맞는 데이터들을 push
         }
       }
     });
 
-    setSearchInput(input);
-    setCompletedData(temp);
+    setSearchInput(input); // 검색어 상태 저장
+    setCompletedData(temp); // 검색 자동완성 데이터 상태 저장
   };
 
   // 엔터 누를 시 입력된 검색어로 submit
