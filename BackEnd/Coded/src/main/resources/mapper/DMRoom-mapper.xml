@@ -44,4 +44,6 @@
 	<delete id="deleteByRoomId">
 		delete from DMRoom where roomId=${roomId}
 	</delete>
+	
+	
 </mapper>

@@ -1,14 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styled from './SearchMember.module.scss';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setDMSETUSER } from '../../../modules/Redux/DMSetting';
 
 
 
 // UserList Li
-const UserList = ({ startChat, userNo, userId, userNickName, sysName }) => {
+const UserList = ({userNo, userId, userNickName, sysName }) => {
+
+    const dispatch = useDispatch();
+    const onSetDMSETUSER = useCallback((userNo)=> dispatch(setDMSETUSER(userNo,true), [dispatch]))
+
+    
+
     return (
-        <li className={styled.userList} onClick={()=>{startChat(userNo)}}>
+        <li className={styled.userList} onClick={()=>{onSetDMSETUSER(userNo)}}>
             <a href="#">
                 <div className={styled.userLeftSide}>
                     {sysName !== null ? (

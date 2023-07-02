@@ -52,4 +52,11 @@ public class DMRoomUserDAO {
 		mybatis.insert("DMRoomUser.insertClickUserToRoom",data);
 		
 	}
+	
+	public int selectAlreadyChat (int loginUserNo,int clickuserNo){
+		Map<String, Integer> data = new HashMap<>();
+		data.put("loginUserNo", loginUserNo);
+		data.put("clickuserNo", clickuserNo);
+		return mybatis.selectOne("DMRoomUser.selectAlreadyChat",data);
+	}
 }

@@ -5,6 +5,7 @@ import ReportModal from '../../../component/Report/component/ReportModal';
 function MenuButton(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ReportModalOpen, setReportModalOpen] = useState(false);
+  const disconnect = props.disconnect;
 
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen); // 모달 상태를 반전시킴 (true이면 false로, false이면 true로)
@@ -30,6 +31,7 @@ function MenuButton(props) {
               className="li"
               onClick={() => {
                 handleModalToggle();
+                disconnect();
               }}
             >
               나가기

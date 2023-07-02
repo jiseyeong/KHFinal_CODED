@@ -2,10 +2,12 @@
 import { combineReducers } from "redux";
 import member from './members'
 import navbarSetting from './navbarSetting'
+import dmSetting from './DMSetting'
 
 const rootReducer = combineReducers({
     member,
-    navbarSetting
+    navbarSetting,
+    dmSetting
 });
 
 export default rootReducer;
