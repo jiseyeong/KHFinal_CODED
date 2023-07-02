@@ -141,12 +141,13 @@ body {
           .followButton {
             width: 150px;
             height: 40px;
-            border: 1px solid silver;
-            border-radius: 5px;
+            border: 1px solid black;
+            border-radius: 20px;
             font-size: 18px;
             font-weight: 500;
             cursor: pointer;
-            color: #222;
+            color: #ffffff;
+            background-color: #000000;
             &:hover {
               color: #ff0066;
             }
@@ -163,14 +164,15 @@ body {
           .btn {
             width: 150px;
             height: 40px;
-            border: 1px solid silver;
-            border-radius: 5px;
+            border: 1px solid black;
+            border-radius: 20px;
             font-size: 18px;
             font-weight: 500;
+            background-color: #000000;
             cursor: pointer;
           }
           .editButton {
-            color: #222;
+            color: #ffffff;
             &:hover {
               color: #ff0066;
             }
