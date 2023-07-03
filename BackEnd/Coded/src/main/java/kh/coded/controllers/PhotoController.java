@@ -7,12 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,19 +35,13 @@ public class PhotoController {
             @RequestParam(value = "feedPostId", required = false, defaultValue = "0") int feedPostId,
             @RequestParam("files") List<MultipartFile> files,
             HttpServletRequest request
-    ) {
-        try {
+    ) throws Exception{
             Map<String, Integer> map = new HashMap<>();
             map.put("userNo", userNo);
             map.put("feedPostId", feedPostId);
             String realPath = request.getServletContext().getRealPath("images");
             photoService.insertPhoto(realPath, files, map);
-            System.out.println(request.getServletContext().getRealPath("images"));
             return ResponseEntity.ok().body("success");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @PostMapping("updatePhoto")
@@ -107,7 +96,17 @@ public class PhotoController {
 		}
 		return ResponseEntity.badRequest().body("유효하지 않은 헤더입니다.");
     }
-    
+
+    @PostMapping("/insertChatPhoto")
+    public ResponseEntity<?> insertChatPhoto(
+            List<MultipartFile> files,
+            HttpServletRequest request
+    ) throws Exception{
+        System.out.println(files);
+        String realPath = request.getServletContext().getRealPath("images");
+        int messageId = photoService.insertChatPhoto(realPath,files);
+        return ResponseEntity.ok().body(messageId);
+    }
 }
 //    @PostMapping("/removeFile")
 //    public ResponseEntity<Boolean> removeFile(String fileName){

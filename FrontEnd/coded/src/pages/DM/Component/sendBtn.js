@@ -7,17 +7,24 @@ import './sendBtn.scss';
 
 function SendBtn(props) {
   const Send = props.Send;
+  const imageSend = props.imageSend;
+  const DMRoom = props.DMRoom;
   const sendRef = useRef(null);
   const [upLoadForm, setUploadForm] = useState(false);
 
-  const sendToServer = () => {
-    Send(sendRef.current.value);
-    // 입력 필드 초기화
-    sendRef.current.value = '';
+  // DMRoom 지정하지 않으면 입력 불가
+  const isReadOnly = Object.keys(DMRoom).length !== 0 ? false : true;
+
+  const sendToServer = (e) => {
+    if (e.target.value !== undefined) {
+      Send(sendRef.current.value);
+      // 입력 필드 초기화
+      sendRef.current.value = '';
+    }
   };
 
   const sentToServerByEnter = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && e.target.value !== undefined) {
       Send(sendRef.current.value);
       // 입력 필드 초기화
       sendRef.current.value = '';
@@ -35,15 +42,26 @@ function SendBtn(props) {
       >
         <ImageAddButton />
       </IconLayout>
-      {upLoadForm && <ImageUpload setUploadForm={setUploadForm} Send={Send} />}
-      <SendChat type="text" ref={sendRef} onKeyUp={sentToServerByEnter} />
+      {upLoadForm && !isReadOnly && (
+        <ImageUpload
+          setUploadForm={setUploadForm}
+          Send={Send}
+          imageSend={imageSend}
+        />
+      )}
+      <SendChat
+        type="text"
+        ref={sendRef}
+        onKeyUp={sentToServerByEnter}
+        readOnly={isReadOnly}
+      />
       <SendButton onClick={sendToServer}>Send</SendButton>
     </SendBtnContainer>
   );
 }
 
-const ImageUpload = ({ setUploadForm, Send }) => {
-  const [file, setFile] = useState({}); //파일
+const ImageUpload = ({ setUploadForm, imageSend }) => {
+  const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState(null); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
     display: 'inline-block',
@@ -59,7 +77,7 @@ const ImageUpload = ({ setUploadForm, Send }) => {
 
   // 이미지 변경 시 적용,
   const handleChangeFile = (event) => {
-    setFile(event.target.files[0]); //파일 갯수 추가
+    setFile(event.target.files); //파일 갯수 추가
 
     if (event.target.files[0]) {
       let reader = new FileReader();
@@ -80,7 +98,7 @@ const ImageUpload = ({ setUploadForm, Send }) => {
   };
 
   const submit = () => {
-    Send(file);
+    imageSend(file);
     // 입력 필드 초기화
     setUploadForm(false);
   };

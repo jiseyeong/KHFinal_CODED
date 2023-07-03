@@ -34,11 +34,11 @@ public class DMService {
 		return dmDAO.selectDMbyRoomid(roomId);
 	}
 
-	public void inserDM(DMDTO dmDto) {
-		dmDAO.inserDM(dmDto);
-		
+	public DMDTO inserDM(DMDTO dmDto) {
+		return dmDAO.inserDM(dmDto);
 	}
-	
-	
-	
+
+	public void insertDMImage(DMDTO dmDto) {
+		dmDAO.insertDMImage(dmDto);
+	}
 }

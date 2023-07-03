@@ -49,4 +49,15 @@ public class PhotoDAO {
 	public List<PhotoDTO> selectByMessageId(int messageId){
 		return mybatis.selectList("Photo.selectByMessageId", messageId);
 	}
+
+	public int insertChatPhoto(PhotoDTO photoDTO) {
+		mybatis.insert("Photo.insertChatPhoto", photoDTO);
+		return photoDTO.getMessageId();
+	}
+
+    public List<PhotoDTO> deleteAllMessagePhotos(int roomId) {
+		List<PhotoDTO> list =  mybatis.selectList("Photo.selectAllMessagePhotos",roomId);
+		mybatis.delete("Photo.deleteAllMessagePhotos",roomId);
+		return list;
+    }
 }
