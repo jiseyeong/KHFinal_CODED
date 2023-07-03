@@ -204,15 +204,19 @@ $storeBorderColor: #f0f1f4;
       right: 80px;
       display: flex;
 
+      .myId{
+        font-size:14px;
+        cursor: pointer;
+      }
+
+      .myId:hover{
+        color:#ff0066;
+      }
       .rightMenuWrapper {
         display: flex;
         align-items: center;
         margin-left: 25px;
-        // svg {
-        //   width: 28px;
-        //   height: 28px;
-        //   cursor: pointer;
-        // }
+
         .loginBtn {
           border: none;
           border-radius: 20px;
@@ -225,17 +229,17 @@ $storeBorderColor: #f0f1f4;
           font-size: 12px;
         }
 
-        .mypage {
-          border: none;
-          border-radius: 20px;
-          width: 90px;
-          height: 35px;
-          background-color: black;
-          color: white;
-          margin-left: 10px;
-          cursor: pointer;
-          font-size: 12px;
-        }
+        // .mypage {
+        //   border: none;
+        //   border-radius: 20px;
+        //   width: 90px;
+        //   height: 35px;
+        //   background-color: black;
+        //   color: white;
+        //   margin-left: 10px;
+        //   cursor: pointer;
+        //   font-size: 12px;
+        // }
       }
     }
   }
