@@ -156,12 +156,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   const [newimgBase64, setNewimgBase64] = useState([]);
   const newfileRef = useRef(null);
   const handleChangeFile = (event) => {
-    console.log(imgBase64)
-        console.log(newimgBase64)
     const addfile = event.target.files;
-    // console.log(imgBase64);
-    // console.log(addfile);
-    // console.log(file);
     setFile([...file, ...addfile]); //파일 갯수 추가
     if (file.length + addfile.length == 10) {
       setInputFileButtonStyle({ display: 'none' });
@@ -173,31 +168,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
       setImgBase64([...imgBase64]);
       return;
     } else {
-      // addfile.forEach((e) => {
-      //   if (e[i]) {
-      //     let reader = new FileReader();
-      //     reader.readAsDataURL(e[i]); // 1. 파일을 읽어 버퍼에 저장.
-      //     // 파일 상태 업데이트
-      //     reader.onloadend = () => {
-      //       // 2. 읽기가 완료되면 아래코드가 실행.
-      //       const base64 = reader.result;
-
-      //       if (base64) {
-      //         const imageJB = imgBase64.some((e) => e === base64);
-      //         if (imageJB) {
-      //           alert('중복된 사진이 있습니다.');
-      //           return; // 중복된 사진이 있을 경우 함수 종료
-      //         }
-      //       }
-      //       // 문자 형태로 저장
-      //       // 배열 state 업데이트
-      //       setImgBase64((imgBase64) => [...imgBase64, base64]);
-      //     };
-      //   }
-      // });
-
-    // const base64 = reader.result;에서 뽑은걸 또 배열에 저장
-    // const newimgBase64 = [];
       for (var i = 0; i < addfile.length; i++) {
         // console.log(addfile)
         if (addfile[i]) {
@@ -211,28 +181,22 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
             console.log(base64)
             if (base64) {
             
-              setNewimgBase64([...newimgBase64, base64])
+              setNewimgBase64((prevNewimgBase64) => [...prevNewimgBase64, base64]);
             }
             // 문자 형태로 저장
             // 배열 state 업데이트
           };
         }
       }
-      // const imageJB= imgBase64.some((e) => newimgBase64.includes(e));
-      // if(imageJB){
-      //   alert("같은 사진이 있습니다.")
-      // }else{
-      //   setImgBase64((imgBase64) => [...imgBase64, ...newimgBase64]);
-      // }
     }
   };
 
   useEffect(() => {
     console.log(imgBase64)
-    console.log(newimgBase64)
+    console.log(newimgBase64.length)
     const imageJB = imgBase64.some((e) => newimgBase64.includes(e));
     if (imageJB) {
-      alert("같은 사진이 있습니다.");
+      alert("같은 사진이 존재합니다.");
       setNewimgBase64([]);
       newfileRef.current.value=null;
     } else if(newimgBase64.length > 0) {
