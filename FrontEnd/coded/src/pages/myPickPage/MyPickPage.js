@@ -21,7 +21,7 @@ import FeedInsertModal from '../Feed/Main/FeedInsertModal';
 import { CloseBtn } from '../../assets/ModalAsset/IconAsset';
 import { setDMSETUSER } from '../../modules/Redux/DMSetting';
 import ConfirmDialog from '../../component/Common/ConfirmDialog';
-
+import ErrorConfirmPage from '../../assets/ButtonAsset/ErrorConfirmPage';
 
 const customStyle = {
   position: 'absolute',
@@ -54,10 +54,12 @@ const MyPickPage = () => {
 
   const searchParams = new URLSearchParams(location.search);
 
-  const onSetDMSETUSER = useCallback((userNo)=> dispatch(setDMSETUSER(userNo,false), [dispatch]))
+  const onSetDMSETUSER = useCallback((userNo) =>
+    dispatch(setDMSETUSER(userNo, true), [dispatch]),
+  );
 
   const [currentUserNo, setCurrentUserNo] = useState(
-    searchParams.get('userNo'),
+    Number(searchParams.get('userNo')),
   );
 
   const [FollowerIsOpen, setFollowerIsOpen] = useState(false);
@@ -102,7 +104,7 @@ const MyPickPage = () => {
 
   useEffect(() => {
     // 쿼리스트링으로 해당 유저의 userNo를 가져옴
-    if (currentUserNo === null) {
+    if (currentUserNo === 0) {
       if (accessToken) {
         // 1. 토큰 값으로 나의 고유 넘버를 반환
         axios({
@@ -116,7 +118,7 @@ const MyPickPage = () => {
             setCurrentUserNo(resp.data);
           })
           // 2. 고유 넘버로 유저 정보 반환
-          // .then(getMyPickData)
+          .then(getMyPickData)
           .catch((error) => {
             console.log(error);
           });
@@ -130,7 +132,7 @@ const MyPickPage = () => {
   }, [accessToken, currentUserNo]);
 
   const getMyPickData = () => {
-    // console.log(currentUserNo);
+    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -191,7 +193,10 @@ const MyPickPage = () => {
   };
 
   window.onscroll = function () {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (
+      window.innerHeight + window.scrollY + 200 >=
+      document.body.offsetHeight
+    ) {
       addFeedList();
     }
   };
@@ -328,7 +333,10 @@ const MyPickPage = () => {
                     viewBox="0 0 20 20"
                     width="30"
                     xmlns="http://www.w3.org/2000/svg"
-                    onClick={()=>{onSetDMSETUSER(currentUserNo); navi('/DMList'); }}
+                    onClick={() => {
+                      onSetDMSETUSER(currentUserNo);
+                      navi('/DMList');
+                    }}
                   >
                     <path
                       className="dmButton"
@@ -375,25 +383,32 @@ const MyPickPage = () => {
                     setIsLogintrue(true);
                   }}
                 >
-                  팔로잉
+                  Following
                 </button>
               ) : (
                 // 팔로우 하지 않은 상태
                 <button className="followBtn btn" onClick={handleFollow}>
-                  팔로우
+                  Follow
                 </button>
               )}
             </div>
           </div>
         </div>
-        <hr />
-        <div className="feed">
-          {feedPost.map((e, i) => (
-            <div className="grid-item" key={i}>
-              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
-            </div>
-          ))}
-        </div>
+        {feedPost.length > 0 ? (
+          <div className="feed">
+            {feedPost.map((e, i) => (
+              <div className="grid-item" key={i}>
+                <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ErrorConfirmPage
+            message={'새로운 글을 작성해보세요!!'}
+            backPagesCount={-1}
+            removeButton={true}
+          />
+        )}
         <Modal isOpen={FollowerIsOpen} style={modalStyle} ariaHideApp={false}>
           <FollowerList
             setFollowerIsOpen={setFollowerIsOpen}

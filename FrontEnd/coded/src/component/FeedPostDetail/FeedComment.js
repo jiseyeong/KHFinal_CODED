@@ -221,9 +221,11 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   return (
     <div className={style.feedCommentBox}>
       <div className={style.feedCommentList}>
-        <div className={style.imageBox}>
-          <img src={`/images/${profileSysName}`}></img>
-        </div>
+        <a href={`/myPickPage?userNo=${commentInfo.userNo}`}>
+          <div className={style.imageBox}>
+            <img src={`/images/${profileSysName}`}></img>
+          </div>
+        </a>
         <div className={style.contentsBox}>
           <div className={style.userInfo}>
             <span className={style.userNickname}>

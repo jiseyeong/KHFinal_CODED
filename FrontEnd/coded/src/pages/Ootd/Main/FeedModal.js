@@ -454,10 +454,10 @@ function FeedModal({
                         (feedPost.userNo === userNo ? (
                           <div className="optionList">
                             <div className="optionListDiv">
-                              <a onClick={editFeedPost}>수정하기</a>
+                              <a onClick={editFeedPost}>edit</a>
                             </div>
                             <div className="optionListDiv">
-                              <a onClick={deleteFeedPost}>삭제</a>
+                              <a onClick={deleteFeedPost}>delete</a>
                             </div>
                           </div>
                         ) : (
@@ -527,7 +527,7 @@ function FeedModal({
                         </Link>
                       ))
                     ) : (
-                      <span>태그 없음</span>
+                      <span>no tag</span>
                     )}
                   </div>
                 ) : (
@@ -563,8 +563,8 @@ function FeedModal({
                       />
                     </div>
                     <div className="buttons">
-                      <button onClick={editComplate}>수정 완료</button>
-                      <button onClick={editCancel}>수정 취소</button>
+                      <button onClick={editComplate}>upload</button>
+                      <button onClick={editCancel}>cancel</button>
                     </div>
                   </div>
                 )}
