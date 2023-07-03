@@ -1,7 +1,6 @@
 .chatImageUploadForm {
   width: 200px;
   height: 150px;
-  border: 1px solid black;
   background-color: white;
   position: absolute;
   left: 0;
@@ -30,7 +29,6 @@
         align-items: center;
         cursor: pointer;
         background-color: white;
-        border-right: 1px solid silver;
 
         img {
           width: 100%;
@@ -48,8 +46,6 @@
       .labelIconLayout {
         width: 100%;
         height: 100%;
-        border-left: 1px solid silver;
-        border-right: 1px solid silver;
         border-radius: 5px;
         display: flex;
         justify-content: center;
@@ -70,8 +66,9 @@
     width: 55px;
     height: 30px;
     border-radius: 30px;
-    background-color: white;
-    border-color: silver;
+    color: white;
+    background-color: #ff0066;
+    border: none;
     cursor: pointer;
     position: absolute;
     right: -60px;

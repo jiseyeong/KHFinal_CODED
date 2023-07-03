@@ -35,38 +35,33 @@ function SendBtn(props) {
       >
         <ImageAddButton />
       </IconLayout>
-      {upLoadForm && <ImageUpload setUploadForm={setUploadForm} />}
+      {upLoadForm && <ImageUpload setUploadForm={setUploadForm} Send={Send} />}
       <SendChat type="text" ref={sendRef} onKeyUp={sentToServerByEnter} />
       <SendButton onClick={sendToServer}>Send</SendButton>
     </SendBtnContainer>
   );
 }
 
-const ImageUpload = ({ setUploadForm }) => {
+const ImageUpload = ({ setUploadForm, Send }) => {
   const [file, setFile] = useState({}); //파일
   const [imgBase64, setImgBase64] = useState(null); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
     display: 'inline-block',
   });
   const [uploadStats, setUploadStats] = useState(false);
-
-  // 이미지 띄워주기
-  const [bodyImage, setBodyImage] = useState('');
+  const fileRef = useRef();
 
   // 취소 버튼 클릭 시
   const Cancelpicture = () => {
-    setBodyImage('');
     setImgBase64(null);
-    // setInputFileButtonStyle({ display: 'inline-block' });
+    setFile(null);
   };
 
   // 이미지 변경 시 적용,
   const handleChangeFile = (event) => {
     setFile(event.target.files[0]); //파일 갯수 추가
-    console.log(event.target.files);
 
     if (event.target.files[0]) {
-      console.log(event.target.files[0].size);
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       // 1. 파일을 읽어 버퍼에 저장.
@@ -84,7 +79,11 @@ const ImageUpload = ({ setUploadForm }) => {
     }
   };
 
-  const submit = () => {};
+  const submit = () => {
+    Send(file);
+    // 입력 필드 초기화
+    setUploadForm(false);
+  };
 
   return (
     <div className="chatImageUploadForm">
@@ -145,6 +144,7 @@ const ImageUpload = ({ setUploadForm }) => {
           id="input-file"
           onChange={handleChangeFile}
           style={{ display: 'none' }}
+          ref={fileRef}
           accept="image/gif,image/jpeg,image/png"
         ></input>
       </div>
