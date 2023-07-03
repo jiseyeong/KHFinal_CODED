@@ -24,12 +24,25 @@ function DMList() {
 
   const dispatch = useDispatch();
   const onSetDMNONE = useCallback(() => dispatch(setDMNONE(), [dispatch]));
+  
+  var headers = {
+    login: '1',
+    passcode: '1',
+    accessToken : accessToken,
+    loginUserNo :loginUserNo,
+    roomId : DMRoom.roomId,
+    settingChatUserNo : settingChatUserNo
+  }
 
   // DMList 페이지에 올 시 웹소켓 연결을 준비하여 STOMP를 연결하는 코드
   useEffect(() => {
     const socketUrl = `http://localhost:9999/ws`;
     const socket = new SockJS(socketUrl);
     const client = Stomp.over(socket);
+    client.heartbeat.outgoing=10000;
+    client.heartbeat.incoming=10000;
+
+
     setStompClient(client);
     console.log('웹소켓 준비');
 
@@ -54,7 +67,7 @@ function DMList() {
           // console.log(receivedMessage.body);
           setDMList((prev) => [...prev, JSON.parse(receivedMessage.body)]);
         },
-        {},
+        headers,
       );
 
       return () => {

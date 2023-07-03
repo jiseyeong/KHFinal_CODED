@@ -35,13 +35,17 @@ public class StompController {
     private DMRoomUserService DMRoomUserService;
     // -- 이하 STOMP 구독 및 메세지 송신 --
 
+    
+    
 
     // 구독
     @SubscribeMapping("/topic/{roomId}")
     public List<DMDTO> handleSubscription(@DestinationVariable int roomId) {
         // 해당 방 번호를 기반으로 구독 처리 로직을 수행하고 채팅 내역을 반환
         System.out.println(roomId + "를 구독함");
+        
         List<DMDTO> list = DMService.selectDMbyRoomid(roomId);
+        
         return list;
     }
 
@@ -61,5 +65,7 @@ public class StompController {
         System.out.println("메세지 관련 에러발생");
     }
 
+    
+    
 
 }
