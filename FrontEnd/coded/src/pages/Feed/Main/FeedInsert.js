@@ -14,6 +14,7 @@ const customStyle = {
   cursor: 'pointer',
 };
 
+
 function FeedInsert({ feedWriteModal, setFeedWriteModal }) {
   const insertModalStyle = {
     overlay: {

@@ -31,8 +31,11 @@ function NaverCodeCallbackPage() {
         })
           .then((response) => {
             setLoading(false);
-            let url = '/login/oauth2/callback?message=' + response.data;
-            navigate(url);
+            if(response.status === 202){
+              navigate('/login/oauth2/callback?message=' + response.data.message);
+            }else{
+              navigate('/login/oauth2/callback?message=' + response.data.message +"&userId="+response.data.userId+"&userNo="+response.data.userNo);
+            }
           })
           .catch((error) => {
             setLoading(false);

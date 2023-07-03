@@ -24,6 +24,15 @@ function DMList() {
 
   const dispatch = useDispatch();
   const onSetDMNONE = useCallback(() => dispatch(setDMNONE(), [dispatch]));
+  
+  var headers = {
+    login: '1',
+    passcode: '1',
+    accessToken : accessToken,
+    loginUserNo :loginUserNo,
+    roomId : DMRoom.roomId,
+    settingChatUserNo : settingChatUserNo
+  }
 
   let currentPhoto = useMemo(() => {}, []);
 
@@ -32,6 +41,10 @@ function DMList() {
     const socketUrl = `http://localhost:9999/ws`;
     const socket = new SockJS(socketUrl);
     const client = Stomp.over(socket);
+    client.heartbeat.outgoing=10000;
+    client.heartbeat.incoming=10000;
+
+
     setStompClient(client);
     console.log('웹소켓 준비');
 
@@ -55,7 +68,7 @@ function DMList() {
         (receivedMessage) => {
           setDMList((prev) => [...prev, JSON.parse(receivedMessage.body)]);
         },
-        {},
+        headers,
       );
 
       return () => {

@@ -33,6 +33,7 @@ function Navbar() {
   const navbarType = useSelector((state) => state.navbarSetting.type);
   const navbarIndex = useSelector((state) => state.navbarSetting.navbarIndex);
   const navbarIndex2 = useSelector((state) => state.navbarSetting.navbarIndex2);
+  const userId = useSelector((state) => state.member.userId);
   const dispatch = useDispatch();
   const onNavbarSetNonMem = useCallback(
     () => dispatch(setNonMember()),
@@ -157,12 +158,16 @@ function Navbar() {
 
           <div className="rightNavBar">
             {accessToken && (
+              <>
+              <div className="myId" style={{fontSize:"14px",cursor:"pointer"}} 
+                      onClick={()=>navigate('/myPickPage')}>{userId + "님 환영합니다."}</div>
               <motion.div
                 className="rightMenuWrapper"
                 whileHover={{ scale: 1.1 }}
               >
                 <ChatButton />
               </motion.div>
+              </>
             )}
             <motion.div
               className="rightMenuWrapper"

@@ -16,6 +16,7 @@ const initialState = {
 }
 
 function tokenReducer(state = initialState, action){
+    
     switch (action.type){
         case LOGIN  :
             state = {...state, access : action.payload, userId : action.payload2, userNo: action.payload3};
@@ -30,6 +31,10 @@ function tokenReducer(state = initialState, action){
                 headers:{
                     Authorization:`Bearer ${state.access}`
                 }
+            })
+            .then((response)=>{
+                //여기선 invalid Hook call 이 발생하여서 navigate 사용 곤란함.
+                location.href = "/";
             })
             .catch((error)=>{
                 console.log(error);
