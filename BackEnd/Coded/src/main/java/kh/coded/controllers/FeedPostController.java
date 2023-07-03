@@ -95,7 +95,7 @@ public class FeedPostController {
             // 파일 데이터를 전송하는 겨웅 Header에 nultipart-form/data를 추가하여 보냅니다.
             // Axios로 보낼 때, FormData로 묶어서 Data:formData로 보냄
             // Post형식으로 dto를 묶어서 받을 경우 ModelAttribute를 사용합니다.
-            @RequestParam List<String> hashTag, @RequestParam List<MultipartFile> files, HttpServletRequest request) throws Exception{
+            @RequestParam List<String> hashTag, @RequestParam(value ="files", required=false) List<MultipartFile> files, HttpServletRequest request) throws Exception{
         System.out.println("dto" + dto);
         System.out.println("피드id : " + dto.getFeedPostId()); // 받아올 필요 x
         System.out.println("유저넘버 : " + dto.getUserNo());
