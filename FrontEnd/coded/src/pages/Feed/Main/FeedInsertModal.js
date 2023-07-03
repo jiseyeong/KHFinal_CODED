@@ -11,6 +11,7 @@ import { setNonMember } from '../../../modules/Redux/navbarSetting';
 
 function FeedInsertModal({ setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
+  const [newfile, setNewfile]=useState([])
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
     display: 'inline-block',
@@ -152,11 +153,15 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   }, [accessToken]);
 
   // 이미지 변경 시 적용,
+  const [newimgBase64, setNewimgBase64] = useState([]);
+  const newfileRef = useRef(null);
   const handleChangeFile = (event) => {
+    console.log(imgBase64)
+        console.log(newimgBase64)
     const addfile = event.target.files;
-    console.log(imgBase64);
-    console.log(addfile);
-    console.log(file);
+    // console.log(imgBase64);
+    // console.log(addfile);
+    // console.log(file);
     setFile([...file, ...addfile]); //파일 갯수 추가
     if (file.length + addfile.length == 10) {
       setInputFileButtonStyle({ display: 'none' });
@@ -191,30 +196,52 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
       //   }
       // });
 
+    // const base64 = reader.result;에서 뽑은걸 또 배열에 저장
+    // const newimgBase64 = [];
       for (var i = 0; i < addfile.length; i++) {
-        console.log(addfile)
+        // console.log(addfile)
         if (addfile[i]) {
           let reader = new FileReader();
+          console.log(addfile[i])
           reader.readAsDataURL(addfile[i]); // 1. 파일을 읽어 버퍼에 저장.
           // 파일 상태 업데이트
           reader.onloadend = () => {
             // 2. 읽기가 완료되면 아래코드가 실행.
             const base64 = reader.result;
+            console.log(base64)
             if (base64) {
-              const imageJB = imgBase64.some((e) => e === base64);
-              if (imageJB) {
-                alert('중복된 사진이 있습니다.');
-                return; // 중복된 사진이 있을 경우 함수 종료
-              }
+            
+              setNewimgBase64([...newimgBase64, base64])
             }
             // 문자 형태로 저장
             // 배열 state 업데이트
-            setImgBase64((imgBase64) => [...imgBase64, base64]);
           };
         }
       }
+      // const imageJB= imgBase64.some((e) => newimgBase64.includes(e));
+      // if(imageJB){
+      //   alert("같은 사진이 있습니다.")
+      // }else{
+      //   setImgBase64((imgBase64) => [...imgBase64, ...newimgBase64]);
+      // }
     }
   };
+
+  useEffect(() => {
+    console.log(imgBase64)
+    console.log(newimgBase64)
+    const imageJB = imgBase64.some((e) => newimgBase64.includes(e));
+    if (imageJB) {
+      alert("같은 사진이 있습니다.");
+      setNewimgBase64([]);
+      newfileRef.current.value=null;
+    } else if(newimgBase64.length > 0) {
+      setImgBase64((prevImgBase64) => [...prevImgBase64, ...newimgBase64]);
+      setNewimgBase64([]);
+      newfileRef.current.value=null;
+    }
+  }, [newimgBase64, imgBase64]);
+  
 
   // 취소 버튼 클릭 시
   const Cancelpicture = (index) => {
@@ -249,8 +276,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
     }
   }, [file]);
   useEffect(() => {
-    if (imgBase64 > 0) {
-    }
   }, [imgBase64]);
   // 폼 입력
   const insertForm = () => {
@@ -393,6 +418,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
                 type="file"
                 id="input-file"
                 onChange={handleChangeFile}
+                ref={newfileRef}
                 style={{ display: 'none' }}
                 accept="image/gif,image/jpeg,image/png"
                 multiple
