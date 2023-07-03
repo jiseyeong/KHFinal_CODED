@@ -4,6 +4,7 @@ import FeedCommentList from './FeedCommentList';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import style from './FeedComment.module.scss';
+import ConfirmDialog from '../Common/ConfirmDialog';
 
 const HeartIcons = {
   empty: (
@@ -56,45 +57,15 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   const [likeCount, setLikeCount] = useState(0);
   const commentRef = useRef(null);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [isLogintrue, setIsLogintrue] = useState(false);
 
   useEffect(() => {
     handleLikeCount();
   }, []);
 
   useEffect(() => {
-    if (accessToken) {
-      axios({
-        method: 'get',
-        url: '/feedpost/comment/like',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        params: {
-          commentId: commentInfo.feedCommentId,
-        },
-      })
-        .then((response) => {
-          setIsLike(response.data);
-        })
-        .catch((error) => {
-          if (error.request.status === 400) {
-            console.log('Login First!');
-          } else {
-            console.log(error);
-          }
-        });
-    }
-  }, [accessToken]);
-
-  function handleOnReply() {
-    setOnReply((prev) => {
-      return !prev;
-    });
-  }
-
-  function handleIsLike() {
     axios({
-      method: 'post',
+      method: 'get',
       url: '/feedpost/comment/like',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -105,7 +76,6 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
     })
       .then((response) => {
         setIsLike(response.data);
-        handleLikeCount();
       })
       .catch((error) => {
         if (error.request.status === 400) {
@@ -114,6 +84,40 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
           console.log(error);
         }
       });
+  }, [accessToken]);
+
+  function handleOnReply() {
+    setOnReply((prev) => {
+      return !prev;
+    });
+  }
+
+  function handleIsLike() {
+    if (accessToken) {
+      axios({
+        method: 'post',
+        url: '/feedpost/comment/like',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        params: {
+          commentId: commentInfo.feedCommentId,
+        },
+      })
+        .then((response) => {
+          setIsLike(response.data);
+          handleLikeCount();
+        })
+        .catch((error) => {
+          if (error.request.status === 400) {
+            console.log('Login First!');
+          } else {
+            console.log(error);
+          }
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   }
 
   function handleLikeCount() {
@@ -163,7 +167,6 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       return !prev;
     });
   }
-
 
   function updateComment() {
     handleUpdate();
@@ -218,9 +221,11 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   return (
     <div className={style.feedCommentBox}>
       <div className={style.feedCommentList}>
-        <div className={style.imageBox}>
-          <img src={`/images/${profileSysName}`}></img>
-        </div>
+        <a href={`/myPickPage?userNo=${commentInfo.userNo}`}>
+          <div className={style.imageBox}>
+            <img src={`/images/${profileSysName}`}></img>
+          </div>
+        </a>
         <div className={style.contentsBox}>
           <div className={style.userInfo}>
             <span className={style.userNickname}>
@@ -272,7 +277,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
                 </button>
                 <button className={style.commentBtn} onClick={deleteComment}>
                   delete
-              </button>
+                </button>
                 {/* <span>／</span> */}
               </>
             ))}
@@ -298,6 +303,7 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
           parentId={commentInfo.feedCommentId}
         />
       </div>
+      {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
     </div>
   );
 }

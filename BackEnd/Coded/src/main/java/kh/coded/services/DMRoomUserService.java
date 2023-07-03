@@ -107,4 +107,7 @@ public class DMRoomUserService {
 		
 	}
 	
+	public int selectAlreadyChat(int loginUserNo,int clickuserNo) {
+		return dmRoomUserDAO.selectAlreadyChat(loginUserNo,clickuserNo);
+	}
 }

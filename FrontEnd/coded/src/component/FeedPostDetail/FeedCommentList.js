@@ -103,9 +103,11 @@ function FeedCommentList({ feedPostId, depth, parentId }) {
       {depth === 0 && accessToken && (
         <div className={style.repleWriteBox}>
           <div ref={editorRef} contentEditable="true" />
+
           <button onClick={writeComment}>
             <FeedCommentWrite></FeedCommentWrite>
           </button>
+          
         </div>
       )}
       {commentList && (

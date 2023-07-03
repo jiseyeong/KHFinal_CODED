@@ -204,7 +204,7 @@ function FeedList({ type }) {
   // document.body.offsetHeight 페이지 전체 총 높이
   window.onscroll = function () {
     if (
-      window.innerHeight + window.scrollY + 100 >=
+      window.innerHeight + window.scrollY + 200 >=
       document.body.offsetHeight
     ) {
       addFeedList();

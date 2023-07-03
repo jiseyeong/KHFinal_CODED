@@ -17,6 +17,13 @@ const ImageLayout = styled('div')`
 const ReportH3 = styled('h3')`
   width: 100%;
   font-size: 26px;
+  margin-top: 40px;
+  color: black;
+  line-height: 18.2px;
+  text-decoration: none solid rgb(114, 120, 127);
+  text-align: center;
+  vertical-align: middle;
+  word-spacing: 0px;
 `;
 
 const Reportdiv = styled('div')`
@@ -35,6 +42,7 @@ const Reportdiv2 = styled('div')`
   color: #ff0066;
   font-size: 14px;
   font-weight: 500;
+  margin-bottom: 20px;
 `;
 
 const EtcArea = styled('textarea')`
@@ -43,14 +51,12 @@ const EtcArea = styled('textarea')`
 `;
 
 const Buttonok = styled('button')`
-  margin-left: 43.5%;
   text-align: center;
-  font-size: 13px;
-  border-radius: 13px;
+  font-size: 15px;
+  border-radius: 20px;
   position: relative;
-  margin-right: 8px;
-  width: 62px;
-  height: 28px;
+  width: 110px;
+  height: 60px;
   background-color: black;
   border: none;
   color: white;
@@ -74,7 +80,7 @@ const Buttonok2 = styled('button')`
 `;
 
 // 푸터 회원탈퇴 ,팔로우 좋아요,채팅 댓글,대댓글(일반 피드클릭이랑 서치 검색후 피드)
-//=>로그인안했을경우에 로그인창 뜨게하기 
+//=>로그인안했을경우에 로그인창 뜨게하기
 
 function ReportModal({ feedPostId, onReportView }) {
   const [text, setText] = useState('');
@@ -174,7 +180,7 @@ function ReportModal({ feedPostId, onReportView }) {
       <div className="mainWrapper">
         <div className="modalWrapper">
           <div
-            className="innerWrapper"
+            className="reportInnerWrapper"
             style={{ flexDirection: 'column' }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -222,7 +228,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    도배성 게시물 
+                    도배성 게시물
                   </label>
                 </p>
               </div>

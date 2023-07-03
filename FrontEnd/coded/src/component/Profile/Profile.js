@@ -13,6 +13,7 @@ import naverImage from '../../assets/imageAsset/naver.png';
 import naverImage_hb from '../../assets/imageAsset/naver_hb.png';
 import googleImage from '../../assets/imageAsset/google.png';
 import googleImage_hb from '../../assets/imageAsset/google_hb.png';
+import BackButton from '../../assets/ButtonAsset/BackButton';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -32,11 +33,13 @@ const WhiteBox = styled.div`
 `;
 
 const ProfileFormBlock = styled.div`
-  width: 60%;
+  width: 1100px;
+  height: 660px;
   margin: 1rem;
   border-radius: 10px;
   background-color: #ffffff;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
+  position: relative;
 `;
 
 const ProfileTemplate = () => {
@@ -679,45 +682,45 @@ const ProfileTemplate = () => {
                   {isKakao ? (
                     <img
                       src={kakaoImage}
-                      className={styles.socialBtn1}
+                      className={styles.socialBtn}
                       onClick={kakaoUnlink}
                     ></img>
                   ) : (
                     <img
                       src={kakaoImage_hb}
-                      className={styles.socialBtn1}
+                      className={styles.socialBtn}
                       onClick={doKakaoLogin}
                     ></img>
                   )}
                   {isNaver ? (
                     <img
                       src={naverImage}
-                      className={styles.socialBtn2}
+                      className={styles.socialBtn}
                       onClick={naverUnlink}
                     ></img>
                   ) : (
                     <img
                       src={naverImage_hb}
-                      className={styles.socialBtn2}
+                      className={styles.socialBtn}
                       onClick={doNaverLogin}
                     ></img>
                   )}
                   {isGoogle ? (
-                    <div className={styles.googleBtn}>
-                      <img
-                        src={googleImage}
-                        className={styles.socialBtn3}
-                        onClick={googleUnlink}
-                      ></img>
-                    </div>
+                    // <div className={styles.googleBtn}>
+                    <img
+                      src={googleImage}
+                      className={styles.socialBtn}
+                      onClick={googleUnlink}
+                    ></img>
                   ) : (
-                    <div className={styles.googleBtn}>
-                      <img
-                        src={googleImage_hb}
-                        className={styles.socialBtn3}
-                        onClick={doGoogleLogin}
-                      ></img>
-                    </div>
+                    // </div>
+                    // <div className={styles.googleBtn}>
+                    <img
+                      src={googleImage_hb}
+                      className={styles.socialBtn}
+                      onClick={doGoogleLogin}
+                    ></img>
+                    // </div>
                   )}
                 </div>
                 {editing ? (
@@ -757,6 +760,9 @@ const ProfileTemplate = () => {
                 )}
               </div>
             </div>
+          </div>
+          <div className={styles.backButtonLayout}>
+            <BackButton backPagesCount={-1} />
           </div>
         </ProfileFormBlock>
       </WhiteBox>
