@@ -159,7 +159,9 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   const [forEnd, setForEnd] = useState(false);
 
   const handleChangeFile = (event) => {
+    const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
     const addfile = event.target.files;
+
 
     if (file.length + addfile.length == 10) {
       setInputFileButtonStyle({ display: 'none' });
@@ -176,6 +178,15 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
           const currentfile = addfile[i];
           let reader = new FileReader();
           console.log(addfile[i]);
+          if (!regexImage.test(event.target.files[0].name)) {
+            alert('이미지 파일만 등록이 가능합니다.');
+            return;
+          }
+      
+          if (event.target.files[0].size > 20000000) {
+            alert('20MB 이하의 이미지 파일만 등록이 가능합니다.');
+            return;
+          }
           reader.readAsDataURL(addfile[i]); // 1. 파일을 읽어 버퍼에 저장.
           // 파일 상태 업데이트
           reader.onloadend = () => {
