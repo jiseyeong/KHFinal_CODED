@@ -40,11 +40,17 @@ public class DMRoomService {
 		return dmRoomDAO.createRoomId(DMRoomDto);
 	}
 	
-	//Admin page 기능
-	
 	public void deleteRoomByRoomId(int roomId) {
 		dmRoomDAO.deleteRoomByRoomId(roomId);
 	}
+	
+	public void deleteRoomByUserNo(int userNo) {
+		dmRoomDAO.deleteRoomByUserNo(userNo);
+	}
+	
+	//Admin page 기능
+	
+
 	
 	public DMRoomDTO selectOneByRoomId(int roomId) {
 		return dmRoomDAO.selectOneByRoomId(roomId);

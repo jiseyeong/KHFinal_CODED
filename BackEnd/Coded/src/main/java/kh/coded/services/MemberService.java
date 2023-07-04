@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import kh.coded.dto.MyPickPageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -25,8 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,6 +36,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
 import kh.coded.dto.MemberWithProfileDTO;
+import kh.coded.dto.MyPickPageDTO;
 import kh.coded.repositories.AddressCoordDAO;
 import kh.coded.repositories.MemberDAO;
 import kh.coded.security.JwtProvider;
@@ -58,6 +56,8 @@ public class MemberService implements UserDetailsService {
 	private JwtProvider jwtProvider;
 	@Autowired
 	private JavaMailSender javaMailSender;
+	@Autowired
+	private DMRoomService dmRoomService;
 
 	@Value("${spring.security.oauth2.client.registration.kakao.client-id}")
 	private String KAKAO_CLIENT_ID;
@@ -175,6 +175,7 @@ public class MemberService implements UserDetailsService {
 	public int deleteMember(String userId, String pw) {
 		MemberDTO member = memberDAO.selectMemberById(userId);
 		if (passwordEncoder.matches(pw, member.getPw())) {
+			dmRoomService.deleteRoomByUserNo(member.getUserNo());
 			return memberDAO.deleteMember(userId);
 		} else {
 			return 0;
@@ -182,6 +183,7 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	public int deleteMember_Admin(int userNo) {
+		dmRoomService.deleteRoomByUserNo(userNo);
 		return memberDAO.deleteMemberAdmin(userNo);
 	}
 

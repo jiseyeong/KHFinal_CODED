@@ -4,22 +4,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kh.coded.dto.MyPickPageDTO;
-import kh.coded.dto.Role;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kh.coded.dto.MemberDTO;
 import kh.coded.dto.MemberPrincipal;
 import kh.coded.dto.MemberWithProfileDTO;
+import kh.coded.dto.MyPickPageDTO;
+import kh.coded.dto.Role;
 import kh.coded.security.JwtProvider;
 import kh.coded.services.AddressCoordService;
 import kh.coded.services.MemberService;
@@ -130,7 +135,7 @@ public class AuthenticationController {
             Map<String, Object> data = new HashMap<>();
             data.put("accessToken", accessToken);
             data.put("userNo", jwtProvider.getLoginUserNo(accessToken));
-            data.put("userId", jwtProvider.getLoiginUserID(accessToken));
+            data.put("userId", jwtProvider.getLoginUserID(accessToken));
             return ResponseEntity.ok().body(data);
         }
         return ResponseEntity.badRequest().body("Refresh Failed. Please Login");
@@ -256,15 +261,24 @@ public class AuthenticationController {
             authUser = (MemberPrincipal) memberService.loadUserByUsername((String) auth.getPrincipal());
         }
         String result = memberService.kakaoLogin(accessToken, response, authUser);
+        Map<String, Object> data = new HashMap<>();
         if (result.equals("T")) {
             //accepted - header 202. 원래라면 put, post 용.
-            return ResponseEntity.accepted().body("T");
+        	data.put("message", "T");
+            return ResponseEntity.accepted().body(data);
         } else if (result.equals("F")) {
             //badRequest - header 400
-            return ResponseEntity.accepted().body("F");
+        	data.put("message", "F");
+            return ResponseEntity.accepted().body(data);
+        } else if(result.equals("FF")) {
+        	data.put("message", "FF");
+        	return ResponseEntity.accepted().body(data);
         }
         //ok - header 200
-        return ResponseEntity.ok().body(result);
+        data.put("message", result); //accessToken
+        data.put("userNo", jwtProvider.getLoginUserNo(result));
+        data.put("userId", jwtProvider.getLoginUserID(result));
+        return ResponseEntity.ok().body(data);
     }
 
     @GetMapping(value = "/login/oauth2/naver/codeInfo")
@@ -286,14 +300,24 @@ public class AuthenticationController {
             authUser = (MemberPrincipal) memberService.loadUserByUsername((String) auth.getPrincipal());
         }
         String result = memberService.naverLogin(code, response, authUser);
+        Map<String, Object> data = new HashMap<>();
         if (result.equals("T")) {
             //accepted - header 202. 원래라면 put, post 용.
-            return ResponseEntity.accepted().body("T");
+        	data.put("message", "T");
+            return ResponseEntity.accepted().body(data);
         } else if (result.equals("F")) {
-            return ResponseEntity.accepted().body("F");
+            //badRequest - header 400
+        	data.put("message", "F");
+            return ResponseEntity.accepted().body(data);
+        } else if(result.equals("FF")) {
+        	data.put("message", "FF");
+        	return ResponseEntity.accepted().body(data);
         }
         //ok - header 200
-        return ResponseEntity.ok().body(result);
+        data.put("message", result); //accessToken
+        data.put("userNo", jwtProvider.getLoginUserNo(result));
+        data.put("userId", jwtProvider.getLoginUserID(result));
+        return ResponseEntity.ok().body(data);
     }
 
     @GetMapping(value = "/login/oauth2/google/codeInfo")
@@ -315,12 +339,24 @@ public class AuthenticationController {
             authUser = (MemberPrincipal) memberService.loadUserByUsername((String) auth.getPrincipal());
         }
         String result = memberService.googleLogin(code, response, authUser);
+        Map<String, Object> data = new HashMap<>();
         if (result.equals("T")) {
-            return ResponseEntity.accepted().body("T");
+            //accepted - header 202. 원래라면 put, post 용.
+        	data.put("message", "T");
+            return ResponseEntity.accepted().body(data);
         } else if (result.equals("F")) {
-            return ResponseEntity.accepted().body("F");
+            //badRequest - header 400
+        	data.put("message", "F");
+            return ResponseEntity.accepted().body(data);
+        } else if(result.equals("FF")) {
+        	data.put("message", "FF");
+        	return ResponseEntity.accepted().body(data);
         }
-        return ResponseEntity.ok().body(result);
+        //ok - header 200
+        data.put("message", result); //accessToken
+        data.put("userNo", jwtProvider.getLoginUserNo(result));
+        data.put("userId", jwtProvider.getLoginUserID(result));
+        return ResponseEntity.ok().body(data);
     }
 
     @PutMapping(value = "/auth/kakaoUnlink")

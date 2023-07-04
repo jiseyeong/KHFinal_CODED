@@ -1,106 +1,108 @@
+.chatBox {
+  width: 100%;
+  height: 100%;
 
-.chatBox{
-    width:100%; 
-    height:100%;
+  .chatNavBar {
+    padding: 10px;
+    height: 11%;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    border: 1px solid lightgray;
 
-    .chatNavBar{
-        padding:10px;
-        height:11%; 
-        width:100%; 
-        margin-bottom:10px; 
-        border-radius:5px; 
-        display:flex;
-        border:1px solid lightgray;
+    .otherInfo {
+      height: 100%;
+      width: 80%;
+      padding-left: 10px;
 
-        .otherInfo{
-            height:100%;
-            width:80%;
-            padding-left:10px;
+      .otherId {
+        height: 50%;
+        line-height: 25px;
+        font-size: 13px;
+      }
+      .otherNickname {
+        height: 50%;
+        line-height: 25px;
+        font-size: 15px;
+        font-weight: bold;
+      }
+    }
+  }
+  .DMList {
+    height: 79%;
+    width: 100%;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    overflow-wrap: break-word;
+    overflow: overlay;
+    padding: 20px;
+    background-color: #f2f2f2;
 
-            .otherId{
-                height:50%;
-                line-height:25px;
-                font-size:13px;
-            }
-            .otherNickname{
-                height:50%;
-                line-height:25px;
-                font-size:15px;
-                font-weight:bold;
-                }
-            }
-         }
-                .DMList{
-                    height:79%;
-                    width:100%;
-                    border:1px solid lightgray;
-                    border-radius:5px;
-                    overflow-wrap: break-word;
-                    overflow: overlay;
-                    padding:20px;
-                    background-color: #f2f2f2;
-        
-                    .messageBox{
-                        width:100%;
-                        margin-bottom:20px;
-                       
-                    .mySend{   
-                        text-align:right;
-                        margin-left:auto;
+    .messageBox {
+      width: 100%;
+      margin-bottom: 20px;
 
-                        img{
-                            display:none;
-                        }
-                                        
-                        .myMsg{
-                        padding:10px;
-                        background-color:#ffffff; 
-                        font-size:12px;
-                        max-height:30%;
-                        border-radius:10px;
-                        color:black;
-                        
-                        }
-                    }
-                        .other{
-                            display:flex;
+      .mySend {
+        text-align: right;
+        margin-left: auto;
+        display: flex;
+        justify-content: right;
 
-                        .otherPhoto{
-                            display: inline-block;
-                            width:40px;
-                            height:40px;
-                            margin-top:auto;
-                            margin-right:10px;
-                            
-                            
-                            .profileImg{
-                                width:100%;
-                                height:100%;
-                            }
-                        }
-
-                        .otherMsg{
-                            padding:10px;
-                            font-size:12px;
-                            background-color:black;
-                            max-height:30%;
-                            border-radius:10px;
-                            color:white;
-                        }
-                    }
-                    .otherTime{
-                        font-size:11px;
-                        margin-top:8px;
-                        margin-left:48px;
-                    }
-
-                    .mySendTime{
-                        font-size:11px;
-                        text-align:right;
-                        margin-left:auto;
-                        margin-top:15px;
-                       }
-                }  
-            } 
+        .profileImg {
+          display: none;
         }
 
+        .myMsg {
+          padding: 10px;
+          background-color: #ffffff;
+          font-size: 12px;
+          max-height: 30%;
+          border-radius: 10px;
+          color: black;
+        }
+      }
+      .other {
+        display: flex;
+
+        .otherPhoto {
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          margin-top: auto;
+          margin-right: 10px;
+
+          .profileImg {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .otherMsg {
+          padding: 10px;
+          font-size: 12px;
+          background-color: black;
+          max-height: 30%;
+          border-radius: 10px;
+          color: white;
+        }
+      }
+      .otherTime {
+        font-size: 11px;
+        margin-top: 8px;
+        margin-left: 48px;
+      }
+
+      .mySendTime {
+        font-size: 11px;
+        text-align: right;
+        margin-left: auto;
+        margin-top: 15px;
+      }
+    }
+    .wideImage {
+      width: 400px;
+      height: 600px;
+    }
+  }
+}

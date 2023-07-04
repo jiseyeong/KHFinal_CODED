@@ -123,7 +123,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route path="/" element={<IndexPage />} />
+        <Route path="/" element={<FeedList type="recent" key={1} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/feedList" element={<FeedList type="recent" key={1} />} />
