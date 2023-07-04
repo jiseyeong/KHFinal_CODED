@@ -217,6 +217,12 @@ $storeBorderColor: #f0f1f4;
         align-items: center;
         margin-left: 25px;
 
+        .dmButton{
+          &:hover {
+            fill: #ff0066;
+          }
+        }
+
         .loginBtn {
           border: none;
           border-radius: 20px;
