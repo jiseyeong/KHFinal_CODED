@@ -52,23 +52,30 @@ public class StompController {
     // 메세지 수신 후 특정 roomId에 송신
     @MessageMapping("/chat/{roomId}")
     public void handleChatMessage(@DestinationVariable int roomId, @Payload DMDTO dmDto) {
-        dmDto.setRoomId(roomId);
+        int isRoomCheck = DMRoomService.isRoomCheck(roomId);
+        
+    	if(isRoomCheck==1) {
+    	dmDto.setRoomId(roomId);
         int messageId = DMService.insertDM(roomId ,dmDto).getMessageId();
         dmDto.setMessageId(messageId);
         // messageId를 받아오도록 구성하였씁니다.
         dmDto.setIsDelete('F');
         System.out.println(dmDto.toString());
         template.convertAndSend("/topic/" + roomId, dmDto);
+    	}
     }
 
     @MessageMapping("/chatImage/{roomId}")
     public void handleChatImage(@DestinationVariable int roomId, @Payload DMDTO dmDto) {
-        dmDto.setRoomId(roomId);
-        // messageId를 받아오도록 구성하였씁니다.
+int isRoomCheck = DMRoomService.isRoomCheck(roomId);
+        
+    	if(isRoomCheck==1) {
+    	dmDto.setRoomId(roomId);
         DMService.insertDMImage(dmDto);
         dmDto.setIsDelete('F');
         System.out.println(dmDto.toString());
         template.convertAndSend("/topic/" + roomId, dmDto);
+    	}
     }
 
     @MessageExceptionHandler
