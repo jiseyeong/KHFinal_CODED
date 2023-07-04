@@ -236,9 +236,7 @@ function DMList() {
         },
       })
         .then((resp) => {
-          console.log(resp.data);
           setDMRoomList(resp.data);
-          
         })
         .catch((error) => console.log(error));
     }

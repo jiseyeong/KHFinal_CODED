@@ -66,4 +66,8 @@ public class DMRoomDAO {
 		return mybatis.selectOne("DMRoom.readCheckFromUserNo", data);
 	}
 	
+	public int isRoomCheck(int roomId) {
+		return mybatis.selectOne("DMRoom.isRoomCheck",roomId);
+	}
+	
 }

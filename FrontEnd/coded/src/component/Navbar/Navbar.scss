@@ -113,7 +113,7 @@ $storeBorderColor: #f0f1f4;
         }
         &:hover {
           transform: scale(1.05);
-          color: #ff0066;
+          color: $hotpink;
         }
       }
 
@@ -133,7 +133,7 @@ $storeBorderColor: #f0f1f4;
         transition: transform 0.25s ease-out;
 
         hr {
-          border: 1px solid #ff0066;
+          border: 1px solid $hotpink;
           width: 55px;
           margin-left: 3px;
           margin-top: 5px;
@@ -141,7 +141,7 @@ $storeBorderColor: #f0f1f4;
 
         &:hover {
           transform: scale(1.05);
-          color: #ff0066;
+          color: $hotpink;
         }
       }
 
@@ -162,7 +162,7 @@ $storeBorderColor: #f0f1f4;
         transition: transform 0.25s ease-out;
 
         hr {
-          border: 1px solid #ff0066;
+          border: 1px solid $hotpink;
           width: 55px;
           margin-left: 3px;
           margin-top: 5px;
@@ -170,7 +170,7 @@ $storeBorderColor: #f0f1f4;
 
         &:hover {
           transform: scale(1.05);
-          color: #ff0066;
+          color: $hotpink;
         }
       }
 
@@ -194,7 +194,7 @@ $storeBorderColor: #f0f1f4;
         }
         &:hover {
           transform: scale(1.05);
-          color: #ff0066;
+          color: $hotpink;
         }
       }
       span {
@@ -213,9 +213,10 @@ $storeBorderColor: #f0f1f4;
         cursor: pointer;
       }
 
-      .myId:hover {
-        color: #ff0066;
+      .myId:hover{
+        color:$hotpink;
       }
+      
       .rightMenuWrapper {
         display: flex;
         align-items: center;
@@ -223,7 +224,7 @@ $storeBorderColor: #f0f1f4;
 
         .dmButton {
           &:hover {
-            fill: #ff0066;
+            fill: $hotpink;
           }
         }
 
@@ -322,7 +323,7 @@ $storeBorderColor: #f0f1f4;
       transition: transform 0.25s ease-out;
       &:hover {
         transform: scale(1.05);
-        color: #ff0066;
+        color: $hotpink;
       }
     }
   }
@@ -335,6 +336,6 @@ $storeBorderColor: #f0f1f4;
   }
 
   .isListOotdBorder {
-    border-bottom: 1px solid #ff0066;
+    border-bottom: 1px solid $hotpink;
   }
 }
