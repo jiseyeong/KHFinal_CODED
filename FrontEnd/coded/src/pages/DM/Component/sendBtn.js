@@ -9,6 +9,7 @@ function SendBtn(props) {
   const Send = props.Send;
   const imageSend = props.imageSend;
   const DMRoom = props.DMRoom;
+  const setViewImage = props.setViewImage;
   const sendRef = useRef(null);
   const [upLoadForm, setUploadForm] = useState(false);
 
@@ -221,6 +222,7 @@ const SendButton = styled.button`
 const IconLayout = styled('div')`
   width: 5%;
   height: 100%;
+  margin: 10px 0px 0px 10px;
   display: flex;
   justify-content: center;
   align-items: center;

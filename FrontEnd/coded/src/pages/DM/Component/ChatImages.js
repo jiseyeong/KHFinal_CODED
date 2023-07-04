@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
+import { setIndexOOTD } from '../../../modules/Redux/navbarSetting';
 
 const UploadImageLayout = styled('div')`
   display: flex;
@@ -15,7 +16,7 @@ const UploadImage = styled('img')`
   object-fit: contain;
 `;
 
-const ChatImages = ({ messageId }) => {
+const ChatImages = ({ messageId, setViewImage, setImage }) => {
   const [photoList, setPhotoList] = useState([]);
   const accessToken = useSelector((state) => state.member.access);
 
@@ -48,6 +49,10 @@ const ChatImages = ({ messageId }) => {
             key={index}
             src={`/images/${item.sysName}`}
             alt="이미지"
+            onClick={() => {
+              setViewImage(true);
+              setImage(item.sysName);
+            }}
           />
         );
       })}
