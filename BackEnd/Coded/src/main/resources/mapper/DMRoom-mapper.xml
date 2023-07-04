@@ -55,5 +55,11 @@
 		where roomid = ${roomId} and lastmessageid > 
 		(select lastreadmessageid from dmroomuser where userno = ${userNo} and roomid =${roomId})
 	</select>
+
+	<delete id="deleteByUserId">
+		delete from DMRoom where roomid In (select RoomId from DMRoomUser where UserNo=${userNo})
+	</delete>
+	
+
 	
 </mapper>

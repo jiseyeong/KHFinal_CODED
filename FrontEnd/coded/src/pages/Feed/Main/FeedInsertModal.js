@@ -11,7 +11,7 @@ import { setNonMember } from '../../../modules/Redux/navbarSetting';
 
 function FeedInsertModal({ setFeedPostInsertOpen }) {
   const [file, setFile] = useState([]); //파일
-  const [newfile, setNewfile]=useState([])
+  const [newfile, setNewfile] = useState([]);
   const [imgBase64, setImgBase64] = useState([]); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
     display: 'inline-block',
@@ -155,9 +155,14 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   // 이미지 변경 시 적용,
   const [newimgBase64, setNewimgBase64] = useState([]);
   const newfileRef = useRef(null);
+  const [addfiles, setaddfiles] = useState([]);
+  const [forEnd, setForEnd] = useState(false);
+
   const handleChangeFile = (event) => {
+    const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
     const addfile = event.target.files;
-    setFile([...file, ...addfile]); //파일 갯수 추가
+
+
     if (file.length + addfile.length == 10) {
       setInputFileButtonStyle({ display: 'none' });
     }
@@ -169,43 +174,75 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
       return;
     } else {
       for (var i = 0; i < addfile.length; i++) {
-        // console.log(addfile)
         if (addfile[i]) {
+          const currentfile = addfile[i];
           let reader = new FileReader();
-          console.log(addfile[i])
+          console.log(addfile[i]);
+          if (!regexImage.test(event.target.files[0].name)) {
+            alert('이미지 파일만 등록이 가능합니다.');
+            return;
+          }
+      
+          if (event.target.files[0].size > 20000000) {
+            alert('20MB 이하의 이미지 파일만 등록이 가능합니다.');
+            return;
+          }
           reader.readAsDataURL(addfile[i]); // 1. 파일을 읽어 버퍼에 저장.
           // 파일 상태 업데이트
           reader.onloadend = () => {
             // 2. 읽기가 완료되면 아래코드가 실행.
             const base64 = reader.result;
-            console.log(base64)
             if (base64) {
-            
-              setNewimgBase64((prevNewimgBase64) => [...prevNewimgBase64, base64]);
+              console.log(currentfile)
+              setaddfiles((prevAddfiles) => [...prevAddfiles, currentfile]);
+              console.log(addfiles)
+              setNewimgBase64((prevNewimgBase64) => [
+                ...prevNewimgBase64,
+                base64,
+              ]);
             }
             // 문자 형태로 저장
             // 배열 state 업데이트
           };
         }
       }
+      setForEnd(true);
     }
   };
 
   useEffect(() => {
-    console.log(imgBase64)
-    console.log(newimgBase64.length)
+  }, [addfiles]);
+
+
+  useEffect(() => {
+    console.log(forEnd);
+    const imageJB = imgBase64.some((e) => newimgBase64.includes(e));
+    if (imageJB&&forEnd) {
+      alert('같은 사진이 존재합니다.');
+      setFile([...file]);
+      setNewimgBase64([]);
+      setaddfiles([])
+      newfileRef.current.value = null;
+    }
+    if (forEnd) {
+      setForEnd(false);
+    }
+  }, [forEnd]);
+
+  useEffect(() => {
+    
     const imageJB = imgBase64.some((e) => newimgBase64.includes(e));
     if (imageJB) {
-      alert("같은 사진이 존재합니다.");
-      setNewimgBase64([]);
-      newfileRef.current.value=null;
-    } else if(newimgBase64.length > 0) {
+      console.log(forEnd);
+      setForEnd(true);
+    } else if (newimgBase64.length > 0) {
       setImgBase64((prevImgBase64) => [...prevImgBase64, ...newimgBase64]);
+      setFile([...file, ...addfiles]);
+      setaddfiles([])
       setNewimgBase64([]);
-      newfileRef.current.value=null;
+      newfileRef.current.value = null;
     }
   }, [newimgBase64, imgBase64]);
-  
 
   // 취소 버튼 클릭 시
   const Cancelpicture = (index) => {
@@ -239,10 +276,11 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
     if (file.length > 0) {
     }
   }, [file]);
-  useEffect(() => {
-  }, [imgBase64]);
+  useEffect(() => {}, [imgBase64]);
   // 폼 입력
   const insertForm = () => {
+    console.log(addfiles)
+    console.log(file)
     if (feedpost.body === '' || feedpost.body === undefined) {
       alert('내용을 입력해주세요');
       return;

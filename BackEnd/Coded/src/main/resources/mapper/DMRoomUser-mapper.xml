@@ -14,7 +14,6 @@
 		insert into dmroomuser values (listid_seq.nextval, ${clickuserNo}, ${roomId} ,0)
 	</insert>
 	
-	
 	<select id="selectByRoomId" resultType="kh.coded.dto.DMRoomUserDTO">
 		select * from DMRoomUser where RoomId=${roomId}
 	</select>

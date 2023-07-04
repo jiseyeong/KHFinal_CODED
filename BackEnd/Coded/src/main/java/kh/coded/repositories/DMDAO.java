@@ -28,6 +28,8 @@ public class DMDAO {
 		mybatis.insert("DM.insertDM",dmDto);
 		return dmDto;
 	}
-	
-	
+
+	public void insertDMImage(DMDTO dmDto) {
+		mybatis.insert("DM.insertDMImage",dmDto);
+	}
 }

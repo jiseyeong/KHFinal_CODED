@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Update;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -107,9 +108,10 @@ public class ChatController {
     
 
     @DeleteMapping("deleteUserDMRoomUser")
-    public void deleteUserDMRoomUser(@RequestParam(value = "roomId") int roomId, @RequestParam(value = "userNo") int userNo) {
+    public void deleteUserDMRoomUser(@RequestParam(value = "roomId") int roomId, @RequestParam(value = "userNo") int userNo, HttpServletRequest request) {
         // 상대방에게 나갔다는 신호를 알려줌
-        DMRoomUserService.deleteUserDMRoomUser(roomId, userNo);
+        String realPath = request.getServletContext().getRealPath("images");
+        DMRoomUserService.deleteUserDMRoomUser(roomId, userNo, realPath);
     }
 
 

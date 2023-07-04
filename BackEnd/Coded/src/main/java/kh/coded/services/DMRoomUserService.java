@@ -1,18 +1,17 @@
 package kh.coded.services;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kh.coded.dto.PhotoDTO;
+import kh.coded.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.coded.dto.DMRoomUserDTO;
-import kh.coded.repositories.DMDAO;
-import kh.coded.repositories.DMRoomDAO;
-import kh.coded.repositories.DMRoomUserDAO;
-import kh.coded.repositories.MemberDAO;
 import utils.StaticValue;
 
 @Service
@@ -30,12 +29,22 @@ public class DMRoomUserService {
 	@Autowired
 	private DMRoomUserDAO dmRoomUserDAO;
 
+    @Autowired
+    private PhotoDAO photoDAO;
+
 	public List<DMRoomUserDTO> selectByUserNo(int userNo) {
 		return dmRoomUserDAO.selectByUserNo(userNo);
 	}
 	
-	public void deleteUserDMRoomUser(int roomId,int userNo) {
+	public void deleteUserDMRoomUser(int roomId,int userNo, String realPath) {
 		dmRoomUserDAO.deleteUserDMRoomUser(roomId,userNo);
+        // 이미지 DB 삭제, 리스트 추출
+        List<PhotoDTO> list = photoDAO.deleteAllMessagePhotos(roomId);
+        // HDD 파일 삭제
+        for(PhotoDTO dto : list){
+            File file = new File(realPath+"/"+dto.getSysName());
+            file.delete();
+        }
 	}
 	
 	public List<DMRoomUserDTO> selectByRoomId(int roomId){
