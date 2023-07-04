@@ -334,8 +334,12 @@ const MyPickPage = () => {
                     width="30"
                     xmlns="http://www.w3.org/2000/svg"
                     onClick={() => {
-                      onSetDMSETUSER(currentUserNo);
-                      navi('/DMList');
+                      if (accessToken) {
+                        onSetDMSETUSER(currentUserNo);
+                        navi('/DMList');
+                      } else {
+                        setIsLogintrue(true);
+                      }
                     }}
                   >
                     <path

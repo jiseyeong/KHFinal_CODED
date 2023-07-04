@@ -465,7 +465,11 @@ function FeedModal({
                             <div
                               className="optionListDiv"
                               onClick={() => {
-                                setReportFeedPost(true);
+                                if (accessToken) {
+                                  setReportFeedPost(true);
+                                } else {
+                                  setIsLogintrue(true);
+                                }
                               }}
                             >
                               신고하기

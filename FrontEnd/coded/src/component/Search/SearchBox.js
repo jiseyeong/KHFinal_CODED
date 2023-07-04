@@ -147,13 +147,14 @@ const SearchBox = () => {
   const searchHashList = (event) => {
     event.preventDefault();
     setIsAutoCompleteOpen(false);
-    toSearch(`/feedList/search?keyword=${searchInput}`);
+    location.href = '/feedList/search?keyword=' + searchInput;
+    // 페이지 이동으로 임시로 두었습니다.
+    // toSearch(`/feedList/search?keyword=${searchInput}`);
   };
 
   return (
     <form className={styles.searchBar} onSubmit={searchHashList}>
       <input
-        id="search-keyword"
         type="search"
         value={searchInput}
         placeholder="유저와 스타일을 검색해보세요"
