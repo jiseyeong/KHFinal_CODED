@@ -45,5 +45,9 @@
 		delete from DMRoom where roomId=${roomId}
 	</delete>
 	
+	<delete id="deleteByUserId">
+		delete from DMRoom where roomid In (select RoomId from DMRoomUser where UserNo=${userNo})
+	</delete>
+	
 	
 </mapper>
