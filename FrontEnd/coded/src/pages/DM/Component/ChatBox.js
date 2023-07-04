@@ -47,6 +47,7 @@ const ChatBox = (props) => {
   return (
     <div className={style.chatBox}>
       <div className={style.chatNavBar}>
+      {Object.keys(DMRoom).length !== 0 && <>
         <div className={style.otherInfo}>
           <a href={`/myPickPage?userNo=${DMRoom.userNo}`}>
             <div className={style.otherNickname}>{DMRoom.userNickname}</div>
@@ -54,6 +55,8 @@ const ChatBox = (props) => {
           <div className={style.otherId}>{DMRoom.userId}</div>
         </div>
         <MenuButton disconnect={disconnect}></MenuButton>
+        </>
+      }
       </div>
       <div className={style.DMList} ref={dmListRef}>
         {DMList.length > 0 &&
@@ -110,12 +113,16 @@ const ChatBox = (props) => {
           })}
       </div>
       <div className={style.inputChat}>
+      {Object.keys(DMRoom).length !== 0 &&
         <SendBtn
           DMRoom={DMRoom}
           stompClient={stompClient}
           Send={Send}
           imageSend={imageSend}
-        ></SendBtn>
+        ></SendBtn>}
+        
+        
+        
       </div>
       <Modal isOpen={viewImage} style={viewImageModalStyle} ariaHideApp={false}>
         <img

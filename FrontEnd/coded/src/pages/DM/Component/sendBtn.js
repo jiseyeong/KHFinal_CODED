@@ -12,11 +12,13 @@ function SendBtn(props) {
   const sendRef = useRef(null);
   const [upLoadForm, setUploadForm] = useState(false);
 
+  const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
+
   // DMRoom 지정하지 않으면 입력 불가
   const isReadOnly = Object.keys(DMRoom).length !== 0 ? false : true;
 
   const sendToServer = (e) => {
-    if (e.target.value !== undefined) {
+    if (sendRef.current.value !== '') {
       Send(sendRef.current.value);
       // 입력 필드 초기화
       sendRef.current.value = '';
@@ -24,7 +26,7 @@ function SendBtn(props) {
   };
 
   const sentToServerByEnter = (e) => {
-    if (e.key === 'Enter' && e.target.value !== undefined) {
+    if (e.key === 'Enter' && e.target.value !== '') {
       Send(sendRef.current.value);
       // 입력 필드 초기화
       sendRef.current.value = '';
@@ -77,6 +79,16 @@ const ImageUpload = ({ setUploadForm, imageSend }) => {
 
   // 이미지 변경 시 적용,
   const handleChangeFile = (event) => {
+    if (!regexImage.test(event.target.files[0].name)) {
+      alert('이미지 파일만 등록이 가능합니다.');
+      return;
+    }
+
+    if (event.target.files[0].size > 20000000) {
+      alert('20MB 이하의 이미지 파일만 등록이 가능합니다.');
+      return;
+    }
+
     setFile(event.target.files); //파일 갯수 추가
 
     if (event.target.files[0]) {
@@ -163,7 +175,7 @@ const ImageUpload = ({ setUploadForm, imageSend }) => {
           onChange={handleChangeFile}
           style={{ display: 'none' }}
           ref={fileRef}
-          accept="image/gif,image/jpeg,image/png"
+          accept="image/*"
         ></input>
       </div>
       {imgBase64 && (

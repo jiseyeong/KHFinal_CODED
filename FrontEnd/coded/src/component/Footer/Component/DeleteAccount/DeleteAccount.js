@@ -75,7 +75,7 @@ const DeleteAccount = () => {
                 <button
                   className={styles.DeleteCanBtn}
                   onClick={() => {
-                    navi('/');
+                    navi(-1);
                   }}
                 >
                   no
