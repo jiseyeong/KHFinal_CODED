@@ -93,6 +93,9 @@ function ReportModal({ feedPostId, onReportView }) {
 
   const handleReportNumber = (ev) => {
     setReportType(ev.target.value);
+    if (String(ev.target.value) !== 'e') {
+      setText('');
+    }
   };
 
   const handleEtcContents = (ev) => {
@@ -153,6 +156,9 @@ function ReportModal({ feedPostId, onReportView }) {
           str = '기타';
         }
         break;
+    }
+    if (!reportType === 'e') {
+      body;
     }
 
     const form = new FormData();
@@ -262,7 +268,13 @@ function ReportModal({ feedPostId, onReportView }) {
             <div style={{ textAlign: 'center' }}>
               {reportType === 'e' ? (
                 <EtcArea
-                  style={{ padding: '4px', backgroundColor: 'white' }}
+                  style={{
+                    padding: '4px',
+                    backgroundColor: 'white',
+                    border: '1px solid #c9cdd2',
+                    borderRadius: '10px',
+                    padding: '10px',
+                  }}
                   rows="7"
                   cols="50"
                   value={text}
@@ -273,7 +285,10 @@ function ReportModal({ feedPostId, onReportView }) {
                   readOnly
                   style={{
                     pointerEvents: 'none',
-                    backgroundColor: '#B6B6B6',
+                    border: '1px solid #c9cdd2',
+                    backgroundColor: '#f3f3f3',
+                    borderRadius: '10px',
+                    padding: '10px',
                   }}
                   rows="7"
                   cols="50"
