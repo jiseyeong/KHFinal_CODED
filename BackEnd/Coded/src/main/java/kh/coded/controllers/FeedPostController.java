@@ -70,6 +70,7 @@ public class FeedPostController {
         for(int i = 0; i<hashTag.size(); i++) {
         	System.out.println("해시코드 : " + hashTag.get(i));
         }
+        
 //        System.out.println("해시코드 : " + hashTag.get(0));
 
         // 피드 테이블 update
