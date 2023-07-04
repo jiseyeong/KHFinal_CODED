@@ -12,8 +12,6 @@ function SendBtn(props) {
   const sendRef = useRef(null);
   const [upLoadForm, setUploadForm] = useState(false);
 
-  const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
-
   // DMRoom 지정하지 않으면 입력 불가
   const isReadOnly = Object.keys(DMRoom).length !== 0 ? false : true;
 
@@ -70,6 +68,8 @@ const ImageUpload = ({ setUploadForm, imageSend }) => {
   });
   const [uploadStats, setUploadStats] = useState(false);
   const fileRef = useRef();
+
+  const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
 
   // 취소 버튼 클릭 시
   const Cancelpicture = () => {
