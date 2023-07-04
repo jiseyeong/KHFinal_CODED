@@ -48,12 +48,14 @@
         margin-left: auto;
         display: flex;
         justify-content: right;
+        
 
         .profileImg {
           display: none;
         }
 
         .myMsg {
+          max-width: 80%;
           padding: 10px;
           background-color: #ffffff;
           font-size: 12px;
@@ -79,6 +81,7 @@
         }
 
         .otherMsg {
+          max-width: 80%;
           padding: 10px;
           font-size: 12px;
           background-color: black;
@@ -99,10 +102,6 @@
         margin-left: auto;
         margin-top: 15px;
       }
-    }
-    .wideImage {
-      width: 400px;
-      height: 600px;
     }
   }
 }

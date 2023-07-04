@@ -93,6 +93,9 @@ function ReportModal({ feedPostId, onReportView }) {
 
   const handleReportNumber = (ev) => {
     setReportType(ev.target.value);
+    if (String(ev.target.value) !== 'e') {
+      setText('');
+    }
   };
 
   const handleEtcContents = (ev) => {
@@ -126,25 +129,25 @@ function ReportModal({ feedPostId, onReportView }) {
     switch (reportType) {
       case 'a':
         {
-          str = '개인정보 침해 및 명예훼손 게시물';
+          str = '개인정보 침해 및 명예훼손';
         }
         break;
 
       case 'b':
         {
-          str = '불법 광고 게시물';
+          str = '불법 광고';
         }
         break;
 
       case 'c':
         {
-          str = '도배성 게시물';
+          str = '도배';
         }
         break;
 
       case 'd':
         {
-          str = '저작권 침해 게시물';
+          str = '저작권 침해';
         }
         break;
 
@@ -153,6 +156,9 @@ function ReportModal({ feedPostId, onReportView }) {
           str = '기타';
         }
         break;
+    }
+    if (!reportType === 'e') {
+      body;
     }
 
     const form = new FormData();
@@ -202,7 +208,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    개인정보 침해 및 명예훼손 게시물
+                    개인정보 침해 및 명예훼손
                   </label>
                 </p>
               </div>
@@ -215,7 +221,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    불법 광고 게시물
+                    불법 광고
                   </label>
                 </p>
               </div>
@@ -228,7 +234,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    도배성 게시물
+                    도배
                   </label>
                 </p>
               </div>
@@ -241,7 +247,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    저작권 침해 게시물
+                    저작권 침해
                   </label>
                 </p>
               </div>
@@ -262,7 +268,13 @@ function ReportModal({ feedPostId, onReportView }) {
             <div style={{ textAlign: 'center' }}>
               {reportType === 'e' ? (
                 <EtcArea
-                  style={{ padding: '4px', backgroundColor: 'white' }}
+                  style={{
+                    padding: '4px',
+                    backgroundColor: 'white',
+                    border: '1px solid #c9cdd2',
+                    borderRadius: '10px',
+                    padding: '10px',
+                  }}
                   rows="7"
                   cols="50"
                   value={text}
@@ -273,7 +285,10 @@ function ReportModal({ feedPostId, onReportView }) {
                   readOnly
                   style={{
                     pointerEvents: 'none',
-                    backgroundColor: '#B6B6B6',
+                    border: '1px solid #c9cdd2',
+                    backgroundColor: '#f3f3f3',
+                    borderRadius: '10px',
+                    padding: '10px',
                   }}
                   rows="7"
                   cols="50"

@@ -92,7 +92,7 @@ const AuthForm = ({ type }) => {
   const [addressList2, setAddressList2] = useState([]);
 
   const [isIdSaveChecked, setIdSaveChecked] = useState(
-    !cookie.load('userId') ? true : false,
+    cookie.load('userId') ? true : false,
   );
   const [isPwView, setIsPwView] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();

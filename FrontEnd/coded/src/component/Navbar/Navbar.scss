@@ -34,6 +34,7 @@ $storeBorderColor: #f0f1f4;
   background-color: white;
 
   .topNavBar {
+    width: 100%;
     padding-top: 20px;
     display: flex;
     align-items: center;
@@ -42,9 +43,11 @@ $storeBorderColor: #f0f1f4;
     background: $white;
 
     .leftNavBar {
+      width: 20%;
       display: flex;
       -webkit-box-align: center;
       align-items: center;
+      padding-left: 100px;
 
       .navLogo {
         outline: none;
@@ -200,22 +203,29 @@ $storeBorderColor: #f0f1f4;
     }
 
     .rightNavBar {
+      width: 20%;
       align-items: center;
       right: 80px;
       display: flex;
 
-      .myId{
-        font-size:14px;
+      .myId {
+        font-size: 14px;
         cursor: pointer;
       }
 
-      .myId:hover{
-        color:#ff0066;
+      .myId:hover {
+        color: #ff0066;
       }
       .rightMenuWrapper {
         display: flex;
         align-items: center;
         margin-left: 25px;
+
+        .dmButton {
+          &:hover {
+            fill: #ff0066;
+          }
+        }
 
         .loginBtn {
           border: none;
@@ -285,6 +295,7 @@ $storeBorderColor: #f0f1f4;
 }
 
 .bottomNavBar {
+  width: 100%;
   display: flex;
   height: 64px;
   justify-content: center;
@@ -292,17 +303,20 @@ $storeBorderColor: #f0f1f4;
   z-index: 0;
 
   .categories {
+    width: 23%;
     list-style: none;
     text-align: left;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.4px;
     line-height: 1.31;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 
     li {
       display: inline-block;
       vertical-align: middle;
-      margin-right: 30px;
       cursor: pointer;
       transform: translateZ(0);
       transition: transform 0.25s ease-out;

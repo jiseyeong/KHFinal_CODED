@@ -8,10 +8,10 @@
 	</delete>
 	
 	<insert id="insertLoginUserToRoom">
-		insert into dmroomuser values (listid_seq.nextval, ${loginUserNo}, ${roomId})
+		insert into dmroomuser values (listid_seq.nextval, ${loginUserNo}, ${roomId}, 0)
 	</insert>
 	<insert id="insertClickUserToRoom">
-		insert into dmroomuser values (listid_seq.nextval, ${clickuserNo}, ${roomId})
+		insert into dmroomuser values (listid_seq.nextval, ${clickuserNo}, ${roomId} ,0)
 	</insert>
 	
 	<select id="selectByRoomId" resultType="kh.coded.dto.DMRoomUserDTO">
@@ -48,6 +48,11 @@
 		and userno <> ${loginUserNo}) and dm.roomid = any(select roomid from dmroomuser where userno = #{loginUserNo}) and m.userno = #{clickuserNo}
 		]]>
 	</select>
+	
+	<update id="updateDMRead">
+		 update dmroomuser set lastreadmessageid = ${messageId} where roomid = ${roomId} and userno = ${userNo}
+	</update>
+	
 </mapper>
 
 <!--16 20-->
