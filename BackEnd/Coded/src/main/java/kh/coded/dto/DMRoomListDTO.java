@@ -9,11 +9,12 @@ public class DMRoomListDTO {
 	private int photoId;
 	private String oriName;
 	private String sysName;
+	private int chk;
 	public DMRoomListDTO() {
 		super();
 	}
 	public DMRoomListDTO(int roomId, int userNo, String userId, String userNickname, int photoId, String oriName,
-			String sysName) {
+			String sysName ,int chk) {
 		super();
 		this.roomId = roomId;
 		this.userNo = userNo;
@@ -22,6 +23,7 @@ public class DMRoomListDTO {
 		this.photoId = photoId;
 		this.oriName = oriName;
 		this.sysName = sysName;
+		this.chk = chk;
 	}
 	public int getRoomId() {
 		return roomId;
@@ -64,6 +66,12 @@ public class DMRoomListDTO {
 	}
 	public void setSysName(String sysName) {
 		this.sysName = sysName;
+	}
+	public int getChk() {
+		return chk;
+	}
+	public void setChk(int chk) {
+		this.chk = chk;
 	}
 	@Override
 	public String toString() {

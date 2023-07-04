@@ -119,4 +119,9 @@ public class DMRoomUserService {
 	public int selectAlreadyChat(int loginUserNo,int clickuserNo) {
 		return dmRoomUserDAO.selectAlreadyChat(loginUserNo,clickuserNo);
 	}
+
+	public void updateDMRead(int roomId, int userNo, int messageId) {
+		dmRoomUserDAO.updateDMRead(roomId,userNo,messageId);
+		
+	}
 }
