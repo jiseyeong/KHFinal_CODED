@@ -35,3 +35,5 @@ public class AddressCoordDAO {
 		return mybatis.selectOne("AddressCoord.selectByAddresses", data);
 	}
 }
+
+
