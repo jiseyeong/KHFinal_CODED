@@ -213,10 +213,10 @@ $storeBorderColor: #f0f1f4;
         cursor: pointer;
       }
 
-      .myId:hover{
-        color:$hotpink;
+      .myId:hover {
+        color: $hotpink;
       }
-      
+
       .rightMenuWrapper {
         display: flex;
         align-items: center;
@@ -304,7 +304,7 @@ $storeBorderColor: #f0f1f4;
   z-index: 0;
 
   .categories {
-    width: 23%;
+    width: 380px;
     list-style: none;
     text-align: left;
     font-size: 16px;
