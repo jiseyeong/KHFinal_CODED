@@ -34,6 +34,7 @@ $storeBorderColor: #f0f1f4;
   background-color: white;
 
   .topNavBar {
+    width: 100%;
     padding-top: 20px;
     display: flex;
     align-items: center;
@@ -42,9 +43,11 @@ $storeBorderColor: #f0f1f4;
     background: $white;
 
     .leftNavBar {
+      width: 20%;
       display: flex;
       -webkit-box-align: center;
       align-items: center;
+      padding-left: 100px;
 
       .navLogo {
         outline: none;
@@ -200,24 +203,25 @@ $storeBorderColor: #f0f1f4;
     }
 
     .rightNavBar {
+      width: 20%;
       align-items: center;
       right: 80px;
       display: flex;
 
-      .myId{
-        font-size:14px;
+      .myId {
+        font-size: 14px;
         cursor: pointer;
       }
 
-      .myId:hover{
-        color:#ff0066;
+      .myId:hover {
+        color: #ff0066;
       }
       .rightMenuWrapper {
         display: flex;
         align-items: center;
         margin-left: 25px;
 
-        .dmButton{
+        .dmButton {
           &:hover {
             fill: #ff0066;
           }
