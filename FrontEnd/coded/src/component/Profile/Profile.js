@@ -14,6 +14,7 @@ import naverImage_hb from '../../assets/imageAsset/naver_hb.png';
 import googleImage from '../../assets/imageAsset/google.png';
 import googleImage_hb from '../../assets/imageAsset/google_hb.png';
 import BackButton from '../../assets/ButtonAsset/BackButton';
+import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 
 const ProfileTemplateBlock = styled.div`
   display: flex;
@@ -72,6 +73,7 @@ const ProfileTemplate = () => {
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const regexBio = /^.{0,30}$/;
   const regexHashTag = /^.{0,10}$/;
+  const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
 
   //계정 연동 창
   const accountLinkRef = useRef();
@@ -161,7 +163,7 @@ const ProfileTemplate = () => {
         )
         // 3. 내 정보에 등록된 1차 기본 주소 지정
         .then((obj) => initAddress1(obj))
-        // 4. 1차 주소를 토대로 2차 주소를 가져옴 (getAddress2와 setAddress2를 매개변수로 구분)
+        // 4. 1차 주소를 토대로 2차 주소를 가져옴 (getAddress2와 setAddress1를 매개변수로 구분)
         .then((obj) => getAddress2(obj))
         // // 5. 내 정보에 등록된 2차 기본 주소 지정
         // .then((obj) => initAddress2(obj))
@@ -218,6 +220,7 @@ const ProfileTemplate = () => {
     if (addressList.length > 0) {
       addressList.forEach((item, index) => {
         if (item.value === member.address2) {
+          console.log('true');
           setAddressIndex2(index);
           return;
         }
@@ -227,8 +230,8 @@ const ProfileTemplate = () => {
     }
   };
 
-  // 1차 주소 지정에 따른 2차 주소 지정 (target을 통한 지정된 내용 불러오기)
-  const setAddress2 = (target) => {
+  // 1차 주소 지정에 따른 반영 및 2차 주소 가져오기 (target을 통한 지정된 내용 불러오기)
+  const setAddress1 = (target) => {
     setMemberInfo((prev) => ({ ...prev, address1: target.value }));
     axios
       .get('/auth/getAddress2List', {
@@ -252,6 +255,11 @@ const ProfileTemplate = () => {
       });
   };
 
+  // 2차 주소 지정 반영 (target을 통한 지정된 내용 불러오기)
+  const setAddress2 = (target) => {
+    setMemberInfo((prev) => ({ ...prev, address2: target.value }));
+  };
+
   // 첫 렌더링, 새로고침 시 초기 데이터 불러오기 작업 시작
   useEffect(() => {
     getInitData();
@@ -262,6 +270,17 @@ const ProfileTemplate = () => {
 
   // 사진 등록 시, 바로 불러오기 기능
   const handleChangeFile = (event) => {
+    // event.target.files[0] => 파일 객체 (input type=file)
+    if (!regexImage.test(event.target.files[0].name)) {
+      alert('이미지 파일만 등록이 가능합니다.');
+      return;
+    }
+
+    if (event.target.files[0].size > 20000000) {
+      alert('20MB 이하의 이미지 파일만 등록이 가능합니다.');
+      return;
+    }
+
     setImgBase64([]);
 
     if (event.target.files[0]) {
@@ -338,6 +357,11 @@ const ProfileTemplate = () => {
       alert('유저 해시태그는 10자 이하로 작성해주세요.');
       return;
     }
+    if (address2.current.getValue().length === 0) {
+      alert('2차 주소까지 모두 지정해주세요.');
+      return;
+    }
+    // if(address2.current.getValue())
     // if (!regexEmail.test(memberInfo.email)) {
     //   alert('올바르지 않은 이메일 형식입니다.');
     //   return;
@@ -541,6 +565,7 @@ const ProfileTemplate = () => {
                   ref={fileInputRef}
                   style={{ display: 'none' }}
                   name="file"
+                  accept="image/*"
                   onChange={handleChangeFile}
                 />
                 <button
@@ -663,7 +688,7 @@ const ProfileTemplate = () => {
                           ref={address1}
                           options={addressList1}
                           defaultValue={addressList1[addressIndex1]}
-                          onChange={setAddress2}
+                          onChange={setAddress1}
                           isDisabled={!editing}
                         />
                       )}
@@ -674,6 +699,7 @@ const ProfileTemplate = () => {
                           ref={address2}
                           options={addressList2}
                           defaultValue={addressList2[addressIndex2]}
+                          onChange={setAddress2}
                           isDisabled={!editing}
                         />
                       )}
