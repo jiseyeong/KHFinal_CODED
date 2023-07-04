@@ -175,7 +175,23 @@ function Navbar() {
             >
               {accessToken ? (
                 <>
-                  <button onClick={onLogout} className="loginBtn">
+                  <button onClick={()=>{
+                    axios({
+                      method:"get",
+                      url:"/auth/logout",
+                      headers:{
+                          Authorization:`Bearer ${accessToken}`
+                      }
+                  })
+                  .then((response)=>{
+                      onLogout();
+                      navigate("/");
+                  })
+                  .catch((error)=>{
+                      console.log(error);
+                  })
+                  }}
+                  className="loginBtn">
                     로그아웃
                   </button>
                 </>
