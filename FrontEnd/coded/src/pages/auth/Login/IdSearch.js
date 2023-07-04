@@ -1,11 +1,7 @@
-import SearchForm from "../../../component/auth/SearchForm";
+import SearchForm from '../../../component/auth/SearchForm';
 
-
-function IdSearch(){
-
-    return(
-        <SearchForm type="id"/>
-    );
+function IdSearch() {
+  return <SearchForm type="id" />;
 }
 
 export default IdSearch;
