@@ -17,8 +17,9 @@ const ConfirmDialog = (props) => {
   const test = () => {
     setAlertCheck(false);
   };
+  
   const test2 = () => {
-    setAlertCheck(false);
+    setAlertCheck(false);  
     navi('/login');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
