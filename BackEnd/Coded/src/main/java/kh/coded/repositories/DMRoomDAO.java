@@ -48,6 +48,18 @@ public class DMRoomDAO {
 		return mybatis.selectOne("DMRoom.selectOneByRoomId", roomId);
 	}
 	
+	public void updateDMRoomMessageId(int roomId, int messageId) {
+		Map<String, Integer> data = new HashMap<>();
+		data.put("roomId", roomId);
+		data.put("messageId", messageId);
+		mybatis.update("DMRoom.updateDMRoomMessageId",data);
+	}
 	
+	public int readCheckFromUserNo(int roomId, int userNo) {
+		Map<String, Integer> data = new HashMap<>();
+		data.put("roomId", roomId);
+		data.put("userNo", userNo);
+		return mybatis.selectOne("DMRoom.readCheckFromUserNo", data);
+	}
 	
 }

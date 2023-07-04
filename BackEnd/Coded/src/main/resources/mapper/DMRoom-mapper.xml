@@ -45,5 +45,15 @@
 		delete from DMRoom where roomId=${roomId}
 	</delete>
 	
+	<update id="updateDMRoomMessageId">
+		update dmroom set lastmessageid =${messageId}  where roomid = ${roomId}
+	</update>
+	
+	<select id="readCheckFromUserNo" resultType="int">
+		select count(*) 
+		from dmroom 
+		where roomid = ${roomId} and lastmessageid > 
+		(select lastreadmessageid from dmroomuser where userno = ${userNo} and roomid =${roomId})
+	</select>
 	
 </mapper>

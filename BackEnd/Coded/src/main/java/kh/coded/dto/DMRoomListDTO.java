@@ -9,6 +9,7 @@ public class DMRoomListDTO {
 	private int photoId;
 	private String oriName;
 	private String sysName;
+	private int messageId;
 	public DMRoomListDTO() {
 		super();
 	}

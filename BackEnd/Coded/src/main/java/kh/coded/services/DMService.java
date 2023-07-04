@@ -34,9 +34,10 @@ public class DMService {
 		return dmDAO.selectDMbyRoomid(roomId);
 	}
 
-	public void inserDM(DMDTO dmDto) {
-		dmDAO.inserDM(dmDto);
-		
+	public DMDTO insertDM(int roomId, DMDTO dmDto) {
+		 dmDAO.insertDM(dmDto);
+		 dmRoomDAO.updateDMRoomMessageId(roomId, dmDto.getMessageId());
+		 return dmDto;
 	}
 	
 	

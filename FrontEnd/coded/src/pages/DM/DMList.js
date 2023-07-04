@@ -19,6 +19,7 @@ function DMList() {
   const [DMRoomList, setDMRoomList] = useState([]); //채팅중인 모든 방 정보
   const [DMRoom, setDMRoom] = useState({}); // 클릭한 한사람의 정보
   const [DMList, setDMList] = useState([]); // 클릭한 사람과의 대화 내용
+  const [CheckList, setCheckList] = useState([]); // 채팅읽음 유무 확인
 
   const [stompClient, setStompClient] = useState();
 
@@ -99,6 +100,32 @@ function DMList() {
     }
   };
 
+  // DM수신시 DM 업데이트
+
+  useEffect(()=>{
+    if(accessToken) {
+      if(DMList.length>0) {
+        console.log(DMList);
+    axios({
+      method : 'put',
+      url : '/DM/updateDMRead',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        userNo: loginUserNo,
+        roomId: DMRoom.roomId,
+        messageId : DMList[DMList.length-1].messageId
+      },
+    }).then(() => {
+      
+    })
+  }}
+  },[DMList])
+  
+
+
+
   // 검색결과에서 클릭한 사람과 채팅 시작
 
   useEffect(() => {
@@ -169,7 +196,10 @@ function DMList() {
         },
       })
         .then((resp) => {
-          setDMRoomList(resp.data);
+          console.log(resp.data);
+          
+          setDMRoomList(resp.data.list);
+
         })
         .catch((error) => console.log(error));
     }

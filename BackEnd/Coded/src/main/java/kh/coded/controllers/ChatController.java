@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,9 +47,17 @@ public class ChatController {
     public ResponseEntity<?> selectChatList(@RequestParam(value = "userNo") int userNo) {
 //        System.out.println("채팅 참가자 조회" + userNo);
         try {
+        	Map<String, Object> data = new HashMap<>(); 
             List<DMRoomListDTO> list = DMRoomService.selectByUserNo(userNo);
-//            System.out.println(list);
-            return ResponseEntity.ok().body(list);
+            List<Integer> readCheckList = new ArrayList<>();
+            for(DMRoomListDTO i : list) {
+            	int readCheckFromUserNo = DMRoomService.readCheckFromUserNo(i.getRoomId(), userNo);
+            	readCheckList.add(readCheckFromUserNo);
+            }
+            data.put("list", list);
+            data.put("checkList", readCheckList);
+            
+            return ResponseEntity.ok().body(data);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -87,6 +97,14 @@ public class ChatController {
         }
     }
 
+    // dm 수신시 lastreadmessageid 업데이트하기
+    @PutMapping("updateDMRead")
+    public void updateDMRead(@RequestParam(value = "roomId") int roomId,
+    		@RequestParam(value = "userNo") int userNo,
+    		@RequestParam(value = "messageId") int messageId) {
+    	DMRoomUserService.updateDMRead(roomId,userNo,messageId);
+    }
+    
 
     @DeleteMapping("deleteUserDMRoomUser")
     public void deleteUserDMRoomUser(@RequestParam(value = "roomId") int roomId, @RequestParam(value = "userNo") int userNo) {

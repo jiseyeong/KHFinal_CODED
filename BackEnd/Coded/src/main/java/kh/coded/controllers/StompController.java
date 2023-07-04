@@ -53,7 +53,8 @@ public class StompController {
     @MessageMapping("/chat/{roomId}")
     public void handleChatMessage(@DestinationVariable int roomId, @Payload DMDTO dmDto) {
         dmDto.setRoomId(roomId);
-        DMService.inserDM(dmDto);
+        int messageId = DMService.insertDM(roomId ,dmDto).getMessageId();
+        dmDto.setMessageId(messageId);
         dmDto.setIsDelete('F');
         System.out.println(dmDto.toString());
         template.convertAndSend("/topic/" + roomId, dmDto);

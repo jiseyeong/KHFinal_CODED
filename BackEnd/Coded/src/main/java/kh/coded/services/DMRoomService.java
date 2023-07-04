@@ -40,6 +40,11 @@ public class DMRoomService {
 		return dmRoomDAO.createRoomId(DMRoomDto);
 	}
 	
+	//읽음 유무 체크 기능
+	public int readCheckFromUserNo (int roomId, int userNo) {
+		return dmRoomDAO.readCheckFromUserNo(roomId, userNo);
+	}
+	
 	//Admin page 기능
 	
 	public void deleteRoomByRoomId(int roomId) {
