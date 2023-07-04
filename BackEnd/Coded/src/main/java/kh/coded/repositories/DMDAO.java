@@ -24,11 +24,10 @@ public class DMDAO {
 		return mybatis.selectList("DM.selectDMbyRoomid",roomId);
 	}
 
-	public DMDTO inserDM(DMDTO dmDto) {
-		mybatis.insert("DM.inserDM",dmDto);
+	public DMDTO insertDM(DMDTO dmDto) {
+		mybatis.insert("DM.insertDM",dmDto);
 		return dmDto;
 	}
-
 
 	public void insertDMImage(DMDTO dmDto) {
 		mybatis.insert("DM.insertDMImage",dmDto);
