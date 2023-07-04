@@ -53,11 +53,12 @@ public class StompController {
     @MessageMapping("/chat/{roomId}")
     public void handleChatMessage(@DestinationVariable int roomId, @Payload DMDTO dmDto) {
         dmDto.setRoomId(roomId);
+        int messageId = DMService.insertDM(roomId ,dmDto).getMessageId();
+        dmDto.setMessageId(messageId);
         // messageId를 받아오도록 구성하였씁니다.
-        DMDTO dto = DMService.inserDM(dmDto);
         dmDto.setIsDelete('F');
         System.out.println(dmDto.toString());
-        template.convertAndSend("/topic/" + roomId, dto);
+        template.convertAndSend("/topic/" + roomId, dmDto);
     }
 
     @MessageMapping("/chatImage/{roomId}")

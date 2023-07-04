@@ -6,9 +6,10 @@
 	<select id="selectDMbyRoomid" resultType="kh.coded.dto.DMDTO">
 		select * from dm where roomid = ${roomId}
 	</select>
-	<insert id="inserDM">
-		<selectKey keyProperty="messageId" resultType="int" order="BEFORE">
-			select messageId_seq.nextval from dual
+
+	<insert id="insertDM">
+		<selectKey order="BEFORE" resultType="int" keyProperty="messageId">
+			select messageid_seq.nextval from dual
 		</selectKey>
 		insert into DM values(${messageId},${roomId},${userNo},#{message},sysdate,default)
 	</insert>

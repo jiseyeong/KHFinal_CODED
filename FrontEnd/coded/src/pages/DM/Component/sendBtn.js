@@ -18,7 +18,7 @@ function SendBtn(props) {
   const isReadOnly = Object.keys(DMRoom).length !== 0 ? false : true;
 
   const sendToServer = (e) => {
-    if (e.target.value !== undefined) {
+    if (sendRef.current.value !== '') {
       Send(sendRef.current.value);
       // 입력 필드 초기화
       sendRef.current.value = '';
@@ -26,7 +26,7 @@ function SendBtn(props) {
   };
 
   const sentToServerByEnter = (e) => {
-    if (e.key === 'Enter' && e.target.value !== undefined) {
+    if (e.key === 'Enter' && e.target.value !== '') {
       Send(sendRef.current.value);
       // 입력 필드 초기화
       sendRef.current.value = '';

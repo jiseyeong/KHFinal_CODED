@@ -59,4 +59,14 @@ public class DMRoomUserDAO {
 		data.put("clickuserNo", clickuserNo);
 		return mybatis.selectOne("DMRoomUser.selectAlreadyChat",data);
 	}
+
+	public void updateDMRead(int roomId, int userNo, int messageId) {
+		Map<String, Integer> data = new HashMap<>();
+		data.put("roomId", roomId);
+		data.put("userNo",userNo);
+		System.out.println(messageId);
+		data.put("messageId",messageId);
+		System.out.println(data.get("messageId"));
+		mybatis.update("DMRoomUser.updateDMRead",data);
+	}
 }
