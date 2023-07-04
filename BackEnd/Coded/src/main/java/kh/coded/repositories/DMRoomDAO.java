@@ -30,7 +30,11 @@ public class DMRoomDAO {
 	}
 	
 	public void deleteRoomByRoomId(int roomId) {
-		mybatis.delete("DMRoom.deleteByRoomId");
+		mybatis.delete("DMRoom.deleteByRoomId", roomId);
+	}
+	
+	public void deleteRoomByUserNo(int userNo) {
+		mybatis.delete("DMRoom.deleteByUserId", userNo);
 	}
 
 	public List<DMRoomDTO> selectPagingList(int startNum, int endNum){
