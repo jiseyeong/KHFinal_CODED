@@ -72,27 +72,21 @@ const Footer = () => {
           <div className="title">
             <p>us.</p>
           </div>
-          <div className="descList">
-            <Link
-              to=""
-              onClick={() => {
-                setModal(true);
-              }}
-            >
-              Terms of Use
-            </Link>
-            {modal === true ? <Modal /> : null}
-            {/* {console.log(modal)} */}
+          <div
+            className="descList"
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            Terms of Use
           </div>
-          <div className="descList">
-            <Link
-              to=""
-              onClick={() => {
-                setModal(true);
-              }}
-            >
-              Privacy Policy
-            </Link>
+          <div
+            className="descList"
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            Privacy Policy
           </div>
         </div>
 
@@ -107,6 +101,7 @@ const Footer = () => {
           </div>
         </div>
         {loginConfirm && <ConfirmDialog setAlertCheck={setLoginConfirm} />}
+        {modal && <Modal />}
       </div>
     </div>
   );

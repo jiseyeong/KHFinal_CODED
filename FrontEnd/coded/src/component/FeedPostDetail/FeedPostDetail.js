@@ -253,12 +253,12 @@ const FeedPostDetail = (props) => {
               <div className={styles.feedHashTagLayout}>
                 {hashTagList.length > 0 ? (
                   hashTagList.map((e, i) => (
-                    <Link to={`/feedList/search?keyword=${e.hashTag}`} key={i}>
+                    <a href={`/feedList/search?keyword=${e.hashTag}`} key={i}>
                       <span>
                         #{e.hashTag}
                         &nbsp;&nbsp;
                       </span>
-                    </Link>
+                    </a>
                   ))
                 ) : (
                   <span>no tag</span>

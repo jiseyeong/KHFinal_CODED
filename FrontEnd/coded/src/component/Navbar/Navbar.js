@@ -40,10 +40,10 @@ function Navbar() {
     [dispatch],
   );
   const onNavbarSetMem = useCallback(() => dispatch(setMember()), [dispatch]);
-  const onNavbarSetWeekly = useCallback(
-    () => dispatch(setWeekly()),
-    [dispatch],
-  );
+  // const onNavbarSetWeekly = useCallback(
+  //   () => dispatch(setWeekly()),
+  //   [dispatch],
+  // );
   const onLogout = useCallback(() => dispatch(logout()), [dispatch]);
 
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ function Navbar() {
     setIsOotdBorder(false);
     setIsWeeklyBorder(true);
 
-    onNavbarSetWeekly();
+    // onNavbarSetWeekly();
 
     navigate('/weekly');
   }

@@ -1,14 +1,14 @@
 import React from 'react';
 import { styled } from 'styled-components';
 
-const NoticeBarLayout = styled('div')`
+const NoticeBarLayout = styled('h3')`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const NoticeDataDiv = styled('div')`
+const NoticeDataH3 = styled('div')`
   width: 1180px;
   height: 50px;
   font-size: 16px;
@@ -28,7 +28,7 @@ const SilverHor = styled('hr')`
 const NoticeBar = ({ keyword }) => {
   return (
     <NoticeBarLayout>
-      <NoticeDataDiv>'{keyword}' 에 대한 검색 결과</NoticeDataDiv>
+      <NoticeDataH3>'{keyword}' 에 대한 검색 결과</NoticeDataH3>
     </NoticeBarLayout>
   );
 };
