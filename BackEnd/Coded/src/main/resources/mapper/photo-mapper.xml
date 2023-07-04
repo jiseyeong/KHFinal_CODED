@@ -50,6 +50,21 @@
     	select * from photo where messageId=${messageId}
     </select>
 
+    <insert id="insertChatPhoto">
+        <selectKey keyProperty="messageId" resultType="int" order="BEFORE" >
+            select messageId_seq.nextval from dual
+        </selectKey>
+        insert into photo values (photoid_seq.nextval, #{oriName}, #{sysName}, 0, ${messageId}, 0)
+    </insert>
+
+    <select id="selectAllMessagePhotos" resultType="kh.coded.dto.PhotoDTO">
+        select * from photo where messageId in(select messageId from dm where roomid = ${roomId})
+    </select>
+
+    <select id="deleteAllMessagePhotos" resultType="kh.coded.dto.PhotoDTO">
+        delete from photo where messageId in(select messageId from dm where roomid = ${roomId})
+    </select>
+
 </mapper>
 
   

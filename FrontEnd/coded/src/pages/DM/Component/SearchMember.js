@@ -109,7 +109,6 @@ const SearchBox = (props) => {
 
     setSearchInput(input);
     setCompletedData(temp);
-    console.log(searchInput);
   };
 
   return (

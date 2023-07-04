@@ -7,17 +7,25 @@ import './sendBtn.scss';
 
 function SendBtn(props) {
   const Send = props.Send;
+  const imageSend = props.imageSend;
+  const DMRoom = props.DMRoom;
+  const setViewImage = props.setViewImage;
   const sendRef = useRef(null);
   const [upLoadForm, setUploadForm] = useState(false);
 
-  const sendToServer = () => {
-    Send(sendRef.current.value);
-    // 입력 필드 초기화
-    sendRef.current.value = '';
+  // DMRoom 지정하지 않으면 입력 불가
+  const isReadOnly = Object.keys(DMRoom).length !== 0 ? false : true;
+
+  const sendToServer = (e) => {
+    if (e.target.value !== undefined) {
+      Send(sendRef.current.value);
+      // 입력 필드 초기화
+      sendRef.current.value = '';
+    }
   };
 
   const sentToServerByEnter = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && e.target.value !== undefined) {
       Send(sendRef.current.value);
       // 입력 필드 초기화
       sendRef.current.value = '';
@@ -35,38 +43,44 @@ function SendBtn(props) {
       >
         <ImageAddButton />
       </IconLayout>
-      {upLoadForm && <ImageUpload setUploadForm={setUploadForm} />}
-      <SendChat type="text" ref={sendRef} onKeyUp={sentToServerByEnter} />
+      {upLoadForm && !isReadOnly && (
+        <ImageUpload
+          setUploadForm={setUploadForm}
+          Send={Send}
+          imageSend={imageSend}
+        />
+      )}
+      <SendChat
+        type="text"
+        ref={sendRef}
+        onKeyUp={sentToServerByEnter}
+        readOnly={isReadOnly}
+      />
       <SendButton onClick={sendToServer}>Send</SendButton>
     </SendBtnContainer>
   );
 }
 
-const ImageUpload = ({ setUploadForm }) => {
-  const [file, setFile] = useState({}); //파일
+const ImageUpload = ({ setUploadForm, imageSend }) => {
+  const [file, setFile] = useState([]); //파일
   const [imgBase64, setImgBase64] = useState(null); // 파일 base64
   const [inputFileButtonStyle, setInputFileButtonStyle] = useState({
     display: 'inline-block',
   });
   const [uploadStats, setUploadStats] = useState(false);
-
-  // 이미지 띄워주기
-  const [bodyImage, setBodyImage] = useState('');
+  const fileRef = useRef();
 
   // 취소 버튼 클릭 시
   const Cancelpicture = () => {
-    setBodyImage('');
     setImgBase64(null);
-    // setInputFileButtonStyle({ display: 'inline-block' });
+    setFile(null);
   };
 
   // 이미지 변경 시 적용,
   const handleChangeFile = (event) => {
-    setFile(event.target.files[0]); //파일 갯수 추가
-    console.log(event.target.files);
+    setFile(event.target.files); //파일 갯수 추가
 
     if (event.target.files[0]) {
-      console.log(event.target.files[0].size);
       let reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       // 1. 파일을 읽어 버퍼에 저장.
@@ -84,7 +98,11 @@ const ImageUpload = ({ setUploadForm }) => {
     }
   };
 
-  const submit = () => {};
+  const submit = () => {
+    imageSend(file);
+    // 입력 필드 초기화
+    setUploadForm(false);
+  };
 
   return (
     <div className="chatImageUploadForm">
@@ -145,6 +163,7 @@ const ImageUpload = ({ setUploadForm }) => {
           id="input-file"
           onChange={handleChangeFile}
           style={{ display: 'none' }}
+          ref={fileRef}
           accept="image/gif,image/jpeg,image/png"
         ></input>
       </div>
@@ -203,6 +222,7 @@ const SendButton = styled.button`
 const IconLayout = styled('div')`
   width: 5%;
   height: 100%;
+  margin: 10px 0px 0px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
