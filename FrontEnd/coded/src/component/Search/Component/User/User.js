@@ -1,10 +1,9 @@
-import React, { Component } from "react";
-import "./User.scss";
+import React, { Component } from 'react';
+import './User.scss';
 
 class User extends Component {
   render() {
     const { usersList } = this.props;
-    console.log(usersList);
 
     return (
       <div className="user">

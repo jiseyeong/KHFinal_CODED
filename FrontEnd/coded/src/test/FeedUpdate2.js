@@ -43,7 +43,6 @@ const FeedUpdate = ({ clickdata }) => {
           });
           // userNo = resp.data;
           // return userNo;
-          console.log('1');
         })
         // .then(getUserData(userNo))
         .catch((error) => {
@@ -69,7 +68,6 @@ const FeedUpdate = ({ clickdata }) => {
           });
           setOptions([...options, ...arrTemp]);
         });
-        console.log('2');
       })
       .catch((error) => {
         console.log(error);
@@ -104,7 +102,6 @@ const FeedUpdate = ({ clickdata }) => {
         // console.log(data.feedPost); //객체로 나옴
         // console.log(data.feedPost.body); //test
         setContentbody(data.feedPost.body);
-        console.log('3');
       })
       .catch((error) => {
         console.log(error);
@@ -143,14 +140,9 @@ const FeedUpdate = ({ clickdata }) => {
     const formData = new FormData();
     if (clickdata) {
       setImgBase64([...CopyimgBase64]);
-      console.log(contentRef.current.innerText);
-      console.log(CopyimgBase64.length);
-      console.log(imgBase64.length);
       selectedOptions.forEach((option) => {
         formData.append('HashTag', option.value);
-        console.log(option.value);
       });
-      console.log(feedpost);
       formData.append('userNo', feedpost.userNo);
       formData.append('body', feedpost.body);
       for (var i = 0; i < file.length; i++) {
@@ -181,7 +173,6 @@ const FeedUpdate = ({ clickdata }) => {
     if (imgBase64.length + event.target.files.length > 10) {
       alert('사진은 최대 10개까지 밖에 안들어갑니다.');
       setImgBase64([...imgBase64]);
-      console.log(imgBase64.length + event.target.files.length);
       return;
     } else {
       for (var i = 0; i < event.target.files.length; i++) {

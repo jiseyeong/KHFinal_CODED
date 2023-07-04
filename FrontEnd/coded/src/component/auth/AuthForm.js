@@ -360,7 +360,6 @@ const AuthForm = ({ type }) => {
       timeout: 5000,
     })
       .then(function (response) {
-        console.log(response);
         if (response.status == 202) {
           alert(response.data);
         } else {

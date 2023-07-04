@@ -32,7 +32,7 @@ const UserList = ({
         )}
       </div>
       <div className={styles.userMiddleSide1}>{userNickName}</div>
-      <div className={styles.userMiddleSide2}>{userId}</div>
+      <div className={styles.userMiddleSide2}>@{userId}</div>
       {/* <div className={styles.userRightSide}>
           <img src="assets/imgs/north_west.svg" alt="arrowIcon" />
         </div> */}

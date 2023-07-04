@@ -137,7 +137,14 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   }
 
   function writeComment() {
-    console.log(editorRef.current.innerText);
+    if (editorRef.current.innerText === '') {
+      return;
+    }
+    if (editorRef.current.innerText.length > 100) {
+      alert('댓글은 100자 이하로 작성이 가능합니다.');
+      return;
+    }
+
     axios({
       method: 'post',
       url: '/feedpost/nestedComment',
@@ -169,6 +176,14 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
   }
 
   function updateComment() {
+    if (commentRef.current.innerText === '') {
+      return;
+    }
+    if (commentRef.current.innerText.length > 100) {
+      alert('댓글은 100자 이하로 작성이 가능합니다.');
+      return;
+    }
+
     handleUpdate();
     axios({
       method: 'Put',

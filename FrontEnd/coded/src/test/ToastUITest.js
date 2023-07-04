@@ -8,7 +8,6 @@ import axios from 'axios';
 function ToastUITest({ setImgBase64 }) {
   const [file, setFile] = useState(null); //파일
   const handleChangeFile = (event) => {
-    console.log(event.target.files);
     setFile(event.target.files);
     setImgBase64([]);
 

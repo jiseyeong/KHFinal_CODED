@@ -14,7 +14,7 @@ const FeedListImgLoadingBar = () => {
         alignItems: 'center',
         // width: '100%',
         width: '100%',
-        height: '250px',
+        height: '100%',
       }}
     >
       {/* <h3>잠시만 기다려주세요.</h3> */}

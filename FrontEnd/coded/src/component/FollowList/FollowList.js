@@ -33,8 +33,6 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
       .then(([resp1, resp2]) => {
         setFollowerList(resp1.data);
         setFollowingList(resp2.data);
-        console.log(resp1.data);
-        console.log(resp2.data);
         // 리스트 내에 내가 그 유저를 팔로우 했는 지 여부도 가져옴
         // 로그인 되어있지 않다면 무조건 언팔로우 상태 (userNo : defaultValue=0)
       })
@@ -93,7 +91,6 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
           {!showFollowingStats &&
             followerList &&
             followerList.map((item, index) => {
-              console.log(item);
               return (
                 <FollowUser
                   key={index}
@@ -106,7 +103,6 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
           {showFollowingStats &&
             followingList &&
             followingList.map((item, index) => {
-              console.log(item);
               return (
                 <FollowUser
                   key={index}
@@ -124,7 +120,6 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
 
 const FollowUser = ({ followUser, isFollow, myUserNo }) => {
   const [followCheck, setFollowCheck] = useState(isFollow);
-  // console.log(followCheck + ' / ' + followUser.userNo);
   const [isLogintrue, setIsLogintrue] = useState(false);
 
   function follow(toUserNo) {

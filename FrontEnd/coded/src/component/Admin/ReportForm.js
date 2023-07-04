@@ -48,7 +48,6 @@ function ReportForm({ type }) {
   function updateReportList() {
     if (accessToken) {
       if (type === 'feedPost') {
-        console.log(cpage);
         axios({
           method: 'get',
           url: '/feedReport/feed',
