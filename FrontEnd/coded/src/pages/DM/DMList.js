@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import ChatBox from './Component/ChatBox';
@@ -26,13 +26,24 @@ function DMList() {
   const dispatch = useDispatch();
   const onSetDMNONE = useCallback(() => dispatch(setDMNONE(), [dispatch]));
 
-  let currentPhoto = useMemo(() => {}, []);
+  var headers = {
+    login: '1',
+    passcode: '1',
+    accessToken : accessToken,
+    loginUserNo :loginUserNo,
+    roomId : DMRoom.roomId,
+    settingChatUserNo : settingChatUserNo
+  }
 
   // DMList 페이지에 올 시 웹소켓 연결을 준비하여 STOMP를 연결하는 코드
   useEffect(() => {
     const socketUrl = `http://localhost:9999/ws`;
     const socket = new SockJS(socketUrl);
     const client = Stomp.over(socket);
+    client.heartbeat.outgoing=10000;
+    client.heartbeat.incoming=10000;
+
+
     setStompClient(client);
     console.log('웹소켓 준비');
 
@@ -54,9 +65,10 @@ function DMList() {
       const subscription = stompClient.subscribe(
         `/topic/${DMRoom.roomId}`,
         (receivedMessage) => {
+          // console.log(receivedMessage.body);
           setDMList((prev) => [...prev, JSON.parse(receivedMessage.body)]);
         },
-        {},
+        headers,
       );
 
       return () => {
@@ -93,7 +105,6 @@ function DMList() {
   useEffect(()=>{
     if(accessToken) {
       if(DMList.length>0) {
-        console.log(DMList);
     axios({
       method : 'put',
       url : '/DM/updateDMRead',
@@ -131,6 +142,7 @@ function DMList() {
           },
         })
           .then((resp) => {
+            console.log(resp.data);
             if (resp.data !== '') {
               setDMRoomList(resp.data);
             } else {
@@ -149,6 +161,10 @@ function DMList() {
   //sendBtn 컴포넌트로 넘겨주어 send버튼 클릭시 메세지를 보내고 채팅내역에 추가
   const Send = (message) => {
     const currentTime = new Date().getTime();
+    {
+      console.log(currentTime);
+    }
+    console.log(message);
     stompClient.send(
       '/app/chat/' + DMRoom.roomId,
       {},
@@ -221,9 +237,8 @@ function DMList() {
       })
         .then((resp) => {
           console.log(resp.data);
+          setDMRoomList(resp.data);
           
-          setDMRoomList(resp.data.list);
-
         })
         .catch((error) => console.log(error));
     }
@@ -236,6 +251,7 @@ function DMList() {
   //ListElement(채팅목록 클릭시 DB를 통한 DM내역 불러오기)
   const updateDMList = () => {
     if (accessToken) {
+      console.log(DMRoom);
       axios
         .request({
           url: '/DM/selectDMbyRoomid',
@@ -248,6 +264,8 @@ function DMList() {
           },
         })
         .then((resp) => {
+          console.log(resp.data);
+
           setDMList(resp.data);
         })
         .catch((error) => console.log(error));

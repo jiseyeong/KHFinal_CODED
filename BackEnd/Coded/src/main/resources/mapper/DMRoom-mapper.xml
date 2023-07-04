@@ -5,14 +5,17 @@
 <mapper namespace="DMRoom">
 	<select id="selectByUserNo" resultType="kh.coded.dto.DMRoomListDTO">
 		 <![CDATA[
-		select dm.roomid, m.userno, m.userid, m.usernickname, p.photoid, p.oriname, p.sysname
-		from member m
-		join dmroomuser dm on m.userno=dm.userno
-		left join photo p on m.userno=p.userno
-		where m.userno = any(select userno from dmroomuser where roomid = 
-		any(select roomid from dmroomuser where userno = ${userNo}) 
-		and userno <> ${userNo}) and dm.roomid = any(select roomid from dmroomuser where userno = ${userNo})
-		]]>
+		 select dm.roomid, m.userno, m.userid, m.usernickname, p.photoid, p.oriname, p.sysname, dm.chk
+      from member m
+      join
+      (select user1.*, (select count(*)
+      from dmroom room where room.roomid = user1.roomid and room.lastmessageid > 
+      (select user2.lastreadmessageid from dmroomuser user2 where user2.userno = ${userNo} and user1.roomid = user2.roomid)) as chk from dmroomuser user1) dm on m.userno=dm.userno
+      left join photo p on m.userno=p.userno
+      where m.userno = any(select userno from dmroomuser where roomid = 
+      any(select roomid from dmroomuser where userno = ${userNo}) 
+      and userno <> ${userNo}) and dm.roomid = any(select roomid from dmroomuser where userno = ${userNo})
+      ]]>
 	</select>
 	
 	<insert id="createRoomId">

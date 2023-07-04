@@ -58,7 +58,7 @@ public class StompController {
         // messageId를 받아오도록 구성하였씁니다.
         dmDto.setIsDelete('F');
         System.out.println(dmDto.toString());
-        template.convertAndSend("/topic/" + roomId, dto);
+        template.convertAndSend("/topic/" + roomId, dmDto);
     }
 
     @MessageMapping("/chatImage/{roomId}")

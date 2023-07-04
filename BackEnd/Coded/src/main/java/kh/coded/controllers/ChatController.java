@@ -48,17 +48,8 @@ public class ChatController {
     public ResponseEntity<?> selectChatList(@RequestParam(value = "userNo") int userNo) {
 //        System.out.println("채팅 참가자 조회" + userNo);
         try {
-        	Map<String, Object> data = new HashMap<>(); 
             List<DMRoomListDTO> list = DMRoomService.selectByUserNo(userNo);
-            List<Integer> readCheckList = new ArrayList<>();
-            for(DMRoomListDTO i : list) {
-            	int readCheckFromUserNo = DMRoomService.readCheckFromUserNo(i.getRoomId(), userNo);
-            	readCheckList.add(readCheckFromUserNo);
-            }
-            data.put("list", list);
-            data.put("checkList", readCheckList);
-            
-            return ResponseEntity.ok().body(data);
+            return ResponseEntity.ok().body(list);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
