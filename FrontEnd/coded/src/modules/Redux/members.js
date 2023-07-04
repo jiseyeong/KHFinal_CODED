@@ -25,21 +25,7 @@ function tokenReducer(state = initialState, action){
             state = {...state, refresh : action.payload};
             return state;
         case LOGOUT :
-            axios({
-                method:"get",
-                url:"/auth/logout",
-                headers:{
-                    Authorization:`Bearer ${state.access}`
-                }
-            })
-            .then((response)=>{
-                //여기선 invalid Hook call 이 발생하여서 navigate 사용 곤란함.
-                location.href = "/";
-            })
-            .catch((error)=>{
-                console.log(error);
-            })
-            state = {access:"", refresh:"", userId:"", userNo:0};
+            state = {...state, access:"", refresh:"", userId:"", userNo:0};
             return state;
         default:
             return state;
