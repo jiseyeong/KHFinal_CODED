@@ -79,18 +79,16 @@
 		resultType="kh.coded.dto.FeedPostAddDTO">
 		select f.*
 		from (select fe.*,
-		(select ABS(fe.writeTemp -
-		${targetTemp}) from dual) as writeTempDiff,
-		(select
-		ABS(fe.writeTempRange - ${targetTempRange}) from dual) as
-		writeTempRangeDiff,
 		row_number() over(order by fe.FeedPostId desc) rn,
 		m.userNickName,
 		m.address1,
 		m.address2,
 		m.sysName as profileSysName,
 		thum.sysName as thumbNailSysName
-		from feedpost fe
+		from (select fep.*,
+			(select ABS(fep.writeTemp - ${targetTemp}) from dual) as writeTempDiff,
+			(select ABS(fep.writeTempRange - ${targetTempRange}) from dual) as writeTempRangeDiff
+			from feedpost fep)fe
 		left join (select
 		mem.userNo, mem.userNickName, mem.address1, mem.address2, prof.SysName
 		from member
