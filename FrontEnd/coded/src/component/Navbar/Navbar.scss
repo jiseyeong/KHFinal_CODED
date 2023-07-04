@@ -205,9 +205,10 @@ $storeBorderColor: #f0f1f4;
 
     .rightNavBar {
       width: 20%;
-      align-items: center;
       right: 80px;
       display: flex;
+      justify-content: center;
+      align-items: center;
 
       .myId {
         font-size: 14px;
