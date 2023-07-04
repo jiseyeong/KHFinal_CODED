@@ -112,6 +112,7 @@ function FeedList({ type }) {
   }, [accessToken]);
 
   const addFeedList = () => {
+    console.log(cpage.current);
     if (!pageLoading) {
       setPageLoading(true);
       if (type === 'recent') {
@@ -203,10 +204,7 @@ function FeedList({ type }) {
   // window.scrollY 페이지 상단에서부터 스크롤된 값
   // document.body.offsetHeight 페이지 전체 총 높이
   window.onscroll = function () {
-    if (
-      window.innerHeight + window.scrollY + 200 >=
-      document.body.offsetHeight
-    ) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       addFeedList();
     }
   };
@@ -217,7 +215,7 @@ function FeedList({ type }) {
         <Masonry className={'my-masonry-grid'} options={masonryOptions}>
           {feedPost.map((e, i) => (
             <div className="grid-item" key={i}>
-              <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+              <FeedPostDetail feedType="normal" feedPost={e}></FeedPostDetail>
             </div>
           ))}
         </Masonry>

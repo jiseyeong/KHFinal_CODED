@@ -12,11 +12,13 @@ const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
     axios({
       url: '/feedpost/selectfeedlist/',
       method: 'GET',
-    }).then((resp) => {
-      setFeedList(resp.data);
-    }).catch((error)=>{
-      console.log(error);
-    });
+    })
+      .then((resp) => {
+        setFeedList(resp.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -57,7 +59,6 @@ const FeedPhotoUpload = ({ uploadState, setUploadState }) => {
         data: formData,
       })
       .then((resp) => {
-        console.log('완료 : ' + resp.data);
         setUploadState(
           '피드 번호 : ' + feedPostId + ' : ' + files[0].name + ' 업로드 완료',
         );
@@ -109,7 +110,6 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
       type: 'GET',
     })
       .then((resp) => {
-        console.log(resp.data);
         setUserList(resp.data);
       })
       .catch((error) => {
@@ -135,7 +135,6 @@ const UserProfileUpload = ({ uploadState, setUploadState }) => {
     }
 
     const formData = new FormData();
-    console.log(file);
     formData.append('userNo', userNo);
     formData.append('files', file);
     // 파일 하나만 넣는 경우

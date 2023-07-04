@@ -198,7 +198,6 @@ function FeedModal({
   // 수정하기 완료
   function editComplate() {
     const Contentvalue = contentRef.current.value;
-    console.log(Contentvalue);
     if (
       contentRef.current.value === '' ||
       contentRef.current.value === undefined
@@ -429,7 +428,6 @@ function FeedModal({
               <div className="information">
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
-                    {/* {console.log(feedPost)} */}
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
                       <img
                         className="commentUserImg"
