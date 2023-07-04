@@ -126,25 +126,25 @@ function ReportModal({ feedPostId, onReportView }) {
     switch (reportType) {
       case 'a':
         {
-          str = '개인정보 침해 및 명예훼손 게시물';
+          str = '개인정보 침해 및 명예훼손';
         }
         break;
 
       case 'b':
         {
-          str = '불법 광고 게시물';
+          str = '불법 광고';
         }
         break;
 
       case 'c':
         {
-          str = '도배성 게시물';
+          str = '도배';
         }
         break;
 
       case 'd':
         {
-          str = '저작권 침해 게시물';
+          str = '저작권 침해';
         }
         break;
 
@@ -202,7 +202,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    개인정보 침해 및 명예훼손 게시물
+                    개인정보 침해 및 명예훼손
                   </label>
                 </p>
               </div>
@@ -215,7 +215,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    불법 광고 게시물
+                    불법 광고
                   </label>
                 </p>
               </div>
@@ -228,7 +228,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    도배성 게시물
+                    도배
                   </label>
                 </p>
               </div>
@@ -241,7 +241,7 @@ function ReportModal({ feedPostId, onReportView }) {
                       name="test"
                       onChange={handleReportNumber}
                     />
-                    저작권 침해 게시물
+                    저작권 침해
                   </label>
                 </p>
               </div>
