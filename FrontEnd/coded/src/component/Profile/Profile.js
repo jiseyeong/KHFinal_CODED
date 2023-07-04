@@ -13,7 +13,6 @@ import naverImage from '../../assets/imageAsset/naver.png';
 import naverImage_hb from '../../assets/imageAsset/naver_hb.png';
 import googleImage from '../../assets/imageAsset/google.png';
 import googleImage_hb from '../../assets/imageAsset/google_hb.png';
-import BackButton from '../../assets/ButtonAsset/BackButton';
 import { LocalConvenienceStoreOutlined } from '@material-ui/icons';
 
 const ProfileTemplateBlock = styled.div`
@@ -789,9 +788,6 @@ const ProfileTemplate = () => {
                 )}
               </div>
             </div>
-          </div>
-          <div className={styles.backButtonLayout}>
-            <BackButton backPagesCount={-1} />
           </div>
         </ProfileFormBlock>
       </WhiteBox>
