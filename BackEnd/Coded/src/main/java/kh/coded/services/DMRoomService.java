@@ -57,6 +57,10 @@ public class DMRoomService {
 		dmRoomDAO.deleteRoomByUserNo(userNo);
 	}
 	
+	public int isRoomCheck (int roomId) {
+		return dmRoomDAO.isRoomCheck(roomId);
+	}
+	
 	//Admin page 기능
 	
 
