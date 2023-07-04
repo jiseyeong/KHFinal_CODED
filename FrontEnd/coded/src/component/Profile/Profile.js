@@ -70,7 +70,8 @@ const ProfileTemplate = () => {
   const regexId = /^[a-z0-9_]{7,13}$/;
   const regexNickName = /^[가-힣A-Za-z0-9_]{1,8}$/;
   const regexEmail = /^(?=.{1,30}$)[^@\s]+@[^@\s]+\.[^@\s]+$/;
-  const regexBio = /^[가-힣A-Za-z0-9_]{1,20}$/;
+  const regexBio = /^.{0,30}$/;
+  const regexHashTag = /^.{0,10}$/;
 
   //계정 연동 창
   const accountLinkRef = useRef();
@@ -311,21 +312,15 @@ const ProfileTemplate = () => {
 
   // 회원 정보 수정 완료 버튼 클릭 시
   const updateMemberInfo = async () => {
-    if (
-      memberInfo.userId === '' ||
-      memberInfo.userNickName === '' ||
-      memberInfo.email === '' ||
-      memberInfo.bio === '' ||
-      memberInfo.hashTag === ''
-    ) {
-      alert('모든 정보를 입력해주세요');
+    if (memberInfo.userNickName === '') {
+      alert('닉네임을 입력해주세요.');
       return;
     }
 
-    if (!regexId.test(memberInfo.userId)) {
-      alert('아이디는 7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
-      return;
-    }
+    // if (!regexId.test(memberInfo.userId)) {
+    //   alert('아이디는 7-13자리의 알파벳 소문자, 숫자만 사용 가능합니다.');
+    //   return;
+    // }
 
     if (!regexNickName.test(memberInfo.userNickName)) {
       alert(
@@ -334,16 +329,26 @@ const ProfileTemplate = () => {
       return;
     }
 
-    if (!regexEmail.test(memberInfo.email)) {
-      alert('올바르지 않은 이메일 형식입니다.');
+    if (!regexBio.test(memberInfo.bio)) {
+      alert('한 줄 소개는 30자 이하로 작성해주세요.');
       return;
     }
+
+    if (!regexHashTag.test(memberInfo.hashTag)) {
+      alert('유저 해시태그는 10자 이하로 작성해주세요.');
+      return;
+    }
+    // if (!regexEmail.test(memberInfo.email)) {
+    //   alert('올바르지 않은 이메일 형식입니다.');
+    //   return;
+    // }
 
     axios
       .put('/auth/updateMemberByUserNo', memberInfo)
       .then(() => {
         alert('Updated!');
         // forceUpdate();
+        handleEditing();
       })
       .catch((error) => {
         console.log(error);
@@ -582,7 +587,6 @@ const ProfileTemplate = () => {
                   <div className={styles.infoBody}>
                     <input
                       type="text"
-                      className="forEdit"
                       placeholder="아이디를 입력해주세요"
                       name="userId"
                       onChange={handleMemberInfo}
@@ -611,7 +615,6 @@ const ProfileTemplate = () => {
                   <div className={styles.infoBody}>
                     <input
                       type="text"
-                      className="forEdit"
                       placeholder="이메일을 입력해주세요"
                       name="email"
                       onChange={handleMemberInfo}

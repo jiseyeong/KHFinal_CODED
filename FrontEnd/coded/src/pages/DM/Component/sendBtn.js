@@ -9,7 +9,6 @@ function SendBtn(props) {
   const Send = props.Send;
   const imageSend = props.imageSend;
   const DMRoom = props.DMRoom;
-  const setViewImage = props.setViewImage;
   const sendRef = useRef(null);
   const [upLoadForm, setUploadForm] = useState(false);
 
