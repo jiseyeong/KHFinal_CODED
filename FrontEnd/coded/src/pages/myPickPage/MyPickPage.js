@@ -404,7 +404,7 @@ const MyPickPage = () => {
           </div>
         ) : (
           <ErrorConfirmPage
-            message={'새로운 글을 작성해보세요!!'}
+            message={'새로운 글을 작성해보세요!'}
             backPagesCount={-1}
             removeButton={true}
           />
