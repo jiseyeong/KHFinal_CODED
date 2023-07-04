@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import FeedPostDetail from '../FeedPostDetail/FeedPostDetail';
 import Masonry from 'react-masonry-component';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import NoticeBar from './NoticeBar';
 import NoneSearchedBar from './NoneSearchedBar';
 
@@ -50,30 +50,40 @@ function SearchedFeedList() {
   const feedPostOuterRef = useRef(null);
   const cpage = useRef(1);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const keyword = searchParams.get('keyword');
+  // const searchParams = new URLSearchParams(location.search);
+  // const keyword = searchParams.get('keyword');
   let pageLoading = false;
+  let newSearch;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState(searchParams.get('keyword'));
 
   useEffect(() => {
     cpage.current = 1;
-    let newSearch = true;
+    newSearch = true;
     addSearchedFeedList(keyword, newSearch);
-    window.onscroll = function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        newSearch = false;
-        addSearchedFeedList(keyword, newSearch);
-      }
-    };
     return () => {
       window.onscroll = null;
     };
   }, [keyword]);
 
+  useEffect(() => {
+    setKeyword(searchParams.get('keyword'));
+  });
+
+  window.onscroll = function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      newSearch = false;
+      addSearchedFeedList(keyword, newSearch);
+    }
+  };
+
   // 현재 위치 (현재 페이지) 별 피드 리스트 출력
   const addSearchedFeedList = (keyword, newSearch) => {
     if (!pageLoading) {
-      console.log(newSearch);
       pageLoading = true;
+      console.log(newSearch);
+      console.log(keyword);
+      console.log(cpage.current);
       axios
         .request({
           method: 'GET',
@@ -86,14 +96,17 @@ function SearchedFeedList() {
           pageLoading = false;
           // 새로 검색했을 때,
           if (newSearch) {
-            setFeedPost(() => [...resp.data]);
+            setFeedPost([]);
+            setFeedPost(resp.data);
           } else {
+            console.log('b');
             setFeedPost((prev) => [...prev, ...resp.data]);
           }
           cpage.current = cpage.current + 1;
         })
         .catch((error) => {
           console.log(error);
+          window.onscroll = null;
           pageLoading = false;
         });
     }

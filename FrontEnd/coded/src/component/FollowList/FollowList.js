@@ -4,6 +4,7 @@ import { CloseBtn2 } from '../../assets/ModalAsset/IconAsset';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import ConfirmDialog from '../Common/ConfirmDialog';
 
 function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
   const [followingList, setFollowingList] = useState([]);
@@ -124,24 +125,29 @@ function FollowerList({ setFollowerIsOpen, followModalMode, userNo }) {
 const FollowUser = ({ followUser, isFollow, myUserNo }) => {
   const [followCheck, setFollowCheck] = useState(isFollow);
   // console.log(followCheck + ' / ' + followUser.userNo);
+  const [isLogintrue, setIsLogintrue] = useState(false);
 
   function follow(toUserNo) {
     //버튼 클릭시 insert, delete..
 
-    axios({
-      method: 'post',
-      url: '/follow/handleFollow',
-      params: {
-        toUserNo: toUserNo,
-        fromUserNo: myUserNo,
-      },
-    })
-      .then((response) => {
-        setFollowCheck((prev) => !prev);
+    if (myUserNo) {
+      axios({
+        method: 'post',
+        url: '/follow/handleFollow',
+        params: {
+          toUserNo: toUserNo,
+          fromUserNo: myUserNo,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          setFollowCheck((prev) => !prev);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      setIsLogintrue(true);
+    }
   }
 
   return (
@@ -181,6 +187,7 @@ const FollowUser = ({ followUser, isFollow, myUserNo }) => {
             </button>
           ))}
       </div>
+      {isLogintrue && <ConfirmDialog setAlertCheck={setIsLogintrue} />}
     </li>
   );
 };
