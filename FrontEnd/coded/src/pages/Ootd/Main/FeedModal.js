@@ -429,17 +429,21 @@ function FeedModal({
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
-                      {feedPost.profileSysName ? (<img
-                        className="commentUserImg"
-                        src={'/images/' + feedPost.profileSysName}
-                        width="40"
-                        height="40"
-                      />) : (<img
-                        className="commentUserImg"
-                        src='/images/test.jpg'
-                        width="40"
-                        height="40"
-                      />)}
+                      {feedPost.profileSysName ? (
+                        <img
+                          className="commentUserImg"
+                          src={'/images/' + feedPost.profileSysName}
+                          width="40"
+                          height="40"
+                        />
+                      ) : (
+                        <img
+                          className="commentUserImg"
+                          src="/images/test.jpg"
+                          width="40"
+                          height="40"
+                        />
+                      )}
                     </Link>
                   </div>
                   <div className="authorInfomation">
@@ -548,26 +552,20 @@ function FeedModal({
                         value={HashTag}
                         ref={selectRef}
                         onChange={(selectedOptions) => {
-  
-
+                          setHashTag(selectedOptions)
+                          setSelectHashTag([])
+                          selectedOptions.forEach((e)=>{
+                            setSelectHashTag((prev)=>{
+                              return [...prev, e.value]
+                            })
+                          })
+                          
                           setTimeout(() => {
-                            if (selectRef.current.getValue().length >= 5) {
+                            if (selectRef.current.getValue().length > 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');
-                              selectRef.current.getValue().splice(-1, 1);
-                              setSelectHashTag([]);
-                              selectRef.current.getValue().forEach((e)=>{
-                                setSelectHashTag((prev)=>{return [...prev, e.value]});
-                              })
-                              // setSelectHashTag(selectRef.current.getValue());
-                              
-                            }else{
-                              setHashTag(selectedOptions);
-                              setSelectHashTag([]);
-                              selectedOptions.forEach((e) => {
-                                setSelectHashTag((prev) => {
-                                  return [...prev, e.value];
-                                });
-                              });
+                              setSelectHashTag((prevValues) =>
+                                prevValues.slice(0, -1),
+                              );
                             }
                           }, 100);
                         }}
