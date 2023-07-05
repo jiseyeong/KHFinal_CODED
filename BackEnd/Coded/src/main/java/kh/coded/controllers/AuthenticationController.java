@@ -47,17 +47,17 @@ public class AuthenticationController {
     private String KAKAO_CLIENT_ID;
     @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
     private String KAKAO_CLIENT_SECRET;
-    private String KAKAO_REDIRECT_URI = "http://localhost:3000/login/oauth2/code/kakao";
+    private String KAKAO_REDIRECT_URI = "http://kh-coded.duckdns.org:9999/login/oauth2/code/kakao";
     @Value("${spring.security.oauth2.client.registration.naver.client-id}")
     private String NAVER_CLIENT_ID;
     @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
     private String NAVER_CLIENT_SECRET;
-    private String NAVER_REDIRECT_URI = "http://localhost:3000/login/oauth2/code/naver";
+    private String NAVER_REDIRECT_URI = "http://kh-coded.duckdns.org:9999/login/oauth2/code/naver";
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String GOOGLE_CLIENT_ID;
     @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String GOOGLE_CLIENT_SECRET;
-    private String GOOGLE_REDIRECT_URI = "http://localhost:3000/login/oauth2/code/google";
+    private String GOOGLE_REDIRECT_URI = "http://kh-coded.duckdns.org:9999//login/oauth2/code/google";
 
     @PostMapping(value = "/auth/member")
     public ResponseEntity<?> join(
