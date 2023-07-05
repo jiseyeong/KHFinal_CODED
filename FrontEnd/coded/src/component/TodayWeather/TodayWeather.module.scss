@@ -1,58 +1,62 @@
 .todayCardWrapper {
-    display: sticky;
-    .mainWrapper{
-
-        .innerWrapper{
-            .blankWrapper{
-
-            }
-                .infoWrapper{
-                    display:flex;
-                    height:50px;
-                    line-height:50px;
-                    color: #ffffff;
-                    background-color: #ff0066;
-                    // font-family: 'sofia-pro', 'Nanum Gothic', sans-serif;
-                    font-size: 13px;    
-                    overflow: hidden;
-                    .title{
-                        font-weight: bold;
-                        margin-left:300px;
-                        width:32%;
-                    }
-                    .icon{
-                        width:20%;
-                        text-align:center;
-                        padding-top:8px;
-                        margin-right:20px;
-                        svg{
-                            width:30px;
-                            height:30px;
-                            filter:drop-shadow(2px 2px 3px rgb(247, 247, 247));
-                           
-                        }
-                    }
-                    .recentTemp{
-                        width:2%;
-                    }
-                    .highestTemp{
-                        width:4.5%;
-                    }
-                    .lowestTemp{
-                        width:5%;
-                        margin-right:300px;
-                    }
-                    .message{
-                        width:27%;
-                        font-weight: bold;
-                        
-                    }
-                }
-
-
-            
+  display: sticky;
+  .mainWrapper {
+    .innerWrapper {
+      .blankWrapper {
+      }
+      .infoWrapper {
+        display: flex;
+        height: 50px;
+        line-height: 50px;
+        color: #ffffff;
+        background-color: #ff0066;
+        // font-family: 'sofia-pro', 'Nanum Gothic', sans-serif;
+        font-size: 13px;
+        overflow: hidden;
+        justify-content: space-evenly;
+        .title {
+          text-align: center;
+          font-weight: bold;
+          width: 380px;
         }
+        .message {
+          text-align: center;
+          width: 30%;
+          font-weight: bold;
+        }
+        .weather {
+          width: 380px;
+          display: flex;
+          justify-content: center;
+          .icon {
+            width: 30px;
+            padding-top: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg {
+              width: 30px;
+              height: 30px;
+              filter: drop-shadow(2px 2px 3px rgb(247, 247, 247));
+            }
+          }
+          .recentTemp {
+            width: 40px;
+            text-align: center;
+            margin-right: 5px;
+          }
+          .highestTemp {
+            width: 100px;
+            text-align: center;
+          }
+          .lowestTemp {
+            width: 100px;
+            text-align: center;
+          }
+        }
+      }
     }
+  }
 
-// box-shadow: rgba(27, 29, 31, 0.12) 0px 2px 10px;
+  // box-shadow: rgba(27, 29, 31, 0.12) 0px 2px 10px;
 }
