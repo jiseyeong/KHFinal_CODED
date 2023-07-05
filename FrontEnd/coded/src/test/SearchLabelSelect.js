@@ -30,10 +30,6 @@ const SearchLabelSelect = () => {
       });
   }, []);
 
-  const check = () => {
-    console.log(selectRef.current.getValue());
-  };
-
   // 옵션 내 선택 상자를 custom 가능
   const formatOptionLabel = ({ value, label, customAbbreviation }) => (
     <div style={{ display: 'flex' }}>
@@ -59,7 +55,7 @@ const SearchLabelSelect = () => {
         <p>ag</p>
         <Select options={options} defaultValue={options[0]} />
       </div>
-      <button onClick={check}>Check</button>
+      <button>Check</button>
     </>
   );
 };

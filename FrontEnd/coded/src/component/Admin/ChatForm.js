@@ -113,7 +113,6 @@ function ChatForm() {
           },
         })
           .then((response) => {
-            console.log(response.data);
             if (response.data) {
               setChatRoomList(response.data);
             } else {
@@ -225,36 +224,38 @@ function ChatForm() {
         roomId: roomId,
       },
     })
-    .then((response)=>{
+      .then((response) => {
         setDMList([...response.data]);
         setPhotoLists([]);
         response.data.forEach((item, index) => {
-            axios({
-                method:'get',
-                url:'/photo/dm',
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                params:{
-                    messageId:item.messageId,
-                },
+          axios({
+            method: 'get',
+            url: '/photo/dm',
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+            params: {
+              messageId: item.messageId,
+            },
+          })
+            .then((response2) => {
+              setPhotoLists((prev) => {
+                return [...prev, { index: index, list: [...response2.data] }];
+              });
             })
-            .then((response2)=>{
-                setPhotoLists((prev)=>{return [...prev, {index:index, list:[...response2.data]}]});
-            })
-            .catch((error)=>{
-                console.log(error);
-            })
-        })
-    })
-    .catch((error)=>{
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+      })
+      .catch((error) => {
         console.log(error);
-    })
+      });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(dmList);
-  },[dmList]);
+  }, [dmList]);
   return (
     <div>
       <table
@@ -276,7 +277,13 @@ function ChatForm() {
           {chatRoomList.map((item, index) => {
             return (
               <tr key={item.room.roomId}>
-                <td onClick={()=>{updateDMList(item.room.roomId)}}>{item.room.roomId}</td>
+                <td
+                  onClick={() => {
+                    updateDMList(item.room.roomId);
+                  }}
+                >
+                  {item.room.roomId}
+                </td>
                 <td>
                   {item.userList.map((item2, index2) => {
                     return item2.userNo + ',';
@@ -367,28 +374,34 @@ function ChatForm() {
           </tr>
         </thead>
         <tbody>
-            {dmList.map((item, i)=>{
-                return(
-                    <tr key={item.messageId}>
-                        <td align='center'>{item.messageId}</td>
-                        <td align='center'>{item.userNo}</td>
-                        <td style={{wordBreak:'break-all'}}>{item.message}</td>
-                        <td align='center'>{photoLists.map((item2)=>{
-                            return item2.index === i ? (
-                                    <>
-                                        {item2.list.map((item3)=>{
-                                            return(
-                                                <image src={`/images/${item3.sysName}`} alt="ChatImg" Style={{width:'100%'}} />
-                                            )
-                                        })}
-                                    </>
-                                ):null;
-                        })}</td>
-                        <td align='center'>{item.formedWriteDate}</td>
-                        <td align='center'>{item.isDelete}</td>
-                    </tr>
-                );
-            })}
+          {dmList.map((item, i) => {
+            return (
+              <tr key={item.messageId}>
+                <td align="center">{item.messageId}</td>
+                <td align="center">{item.userNo}</td>
+                <td style={{ wordBreak: 'break-all' }}>{item.message}</td>
+                <td align="center">
+                  {photoLists.map((item2) => {
+                    return item2.index === i ? (
+                      <>
+                        {item2.list.map((item3) => {
+                          return (
+                            <image
+                              src={`/images/${item3.sysName}`}
+                              alt="ChatImg"
+                              Style={{ width: '100%' }}
+                            />
+                          );
+                        })}
+                      </>
+                    ) : null;
+                  })}
+                </td>
+                <td align="center">{item.formedWriteDate}</td>
+                <td align="center">{item.isDelete}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

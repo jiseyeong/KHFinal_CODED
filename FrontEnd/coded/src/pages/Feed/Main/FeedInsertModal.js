@@ -162,7 +162,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
     const regexImage = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
     const addfile = event.target.files;
 
-
     if (file.length + addfile.length == 10) {
       setInputFileButtonStyle({ display: 'none' });
     }
@@ -177,12 +176,11 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
         if (addfile[i]) {
           const currentfile = addfile[i];
           let reader = new FileReader();
-          console.log(addfile[i]);
           if (!regexImage.test(event.target.files[0].name)) {
             alert('이미지 파일만 등록이 가능합니다.');
             return;
           }
-      
+
           if (event.target.files[0].size > 20000000) {
             alert('20MB 이하의 이미지 파일만 등록이 가능합니다.');
             return;
@@ -193,9 +191,7 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
             // 2. 읽기가 완료되면 아래코드가 실행.
             const base64 = reader.result;
             if (base64) {
-              console.log(currentfile)
               setaddfiles((prevAddfiles) => [...prevAddfiles, currentfile]);
-              console.log(addfiles)
               setNewimgBase64((prevNewimgBase64) => [
                 ...prevNewimgBase64,
                 base64,
@@ -210,18 +206,15 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
     }
   };
 
-  useEffect(() => {
-  }, [addfiles]);
-
+  useEffect(() => {}, [addfiles]);
 
   useEffect(() => {
-    console.log(forEnd);
     const imageJB = imgBase64.some((e) => newimgBase64.includes(e));
-    if (imageJB&&forEnd) {
+    if (imageJB && forEnd) {
       alert('같은 사진이 존재합니다.');
       setFile([...file]);
       setNewimgBase64([]);
-      setaddfiles([])
+      setaddfiles([]);
       newfileRef.current.value = null;
     }
     if (forEnd) {
@@ -230,15 +223,13 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   }, [forEnd]);
 
   useEffect(() => {
-    
     const imageJB = imgBase64.some((e) => newimgBase64.includes(e));
     if (imageJB) {
-      console.log(forEnd);
       setForEnd(true);
     } else if (newimgBase64.length > 0) {
       setImgBase64((prevImgBase64) => [...prevImgBase64, ...newimgBase64]);
       setFile([...file, ...addfiles]);
-      setaddfiles([])
+      setaddfiles([]);
       setNewimgBase64([]);
       newfileRef.current.value = null;
     }
@@ -248,8 +239,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   const Cancelpicture = (index) => {
     const updatedfile = file;
     const updatedImgBase64 = [...imgBase64];
-    console.log(updatedfile);
-    console.log(updatedImgBase64);
     if (bodyImageRef.current.src === updatedImgBase64[index]) {
       setBodyImage('');
     }
@@ -279,8 +268,6 @@ function FeedInsertModal({ setFeedPostInsertOpen }) {
   useEffect(() => {}, [imgBase64]);
   // 폼 입력
   const insertForm = () => {
-    console.log(addfiles)
-    console.log(file)
     if (feedpost.body === '' || feedpost.body === undefined) {
       alert('내용을 입력해주세요');
       return;

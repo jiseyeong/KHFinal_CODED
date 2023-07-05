@@ -81,9 +81,6 @@ function SearchedFeedList() {
   const addSearchedFeedList = (keyword, newSearch) => {
     if (!pageLoading) {
       pageLoading = true;
-      console.log(newSearch);
-      console.log(keyword);
-      console.log(cpage.current);
       axios
         .request({
           method: 'GET',
@@ -96,10 +93,8 @@ function SearchedFeedList() {
           pageLoading = false;
           // 새로 검색했을 때,
           if (newSearch) {
-            setFeedPost([]);
             setFeedPost(resp.data);
           } else {
-            console.log('b');
             setFeedPost((prev) => [...prev, ...resp.data]);
           }
           cpage.current = cpage.current + 1;
@@ -125,7 +120,10 @@ function SearchedFeedList() {
             <Masonry className={'my-masonry-grid'} options={masonryOptions}>
               {feedPost.map((e, i) => (
                 <div className="grid-item" key={i}>
-                  <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+                  <FeedPostDetail
+                    feedType="search"
+                    feedPost={e}
+                  ></FeedPostDetail>
                 </div>
               ))}
             </Masonry>

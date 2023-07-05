@@ -35,10 +35,10 @@ const customStyle = {
 const MyPickPage = () => {
   const [feedPost, setFeedPost] = useState([]);
   const [memberInfo, setMemberInfo] = useState({});
-  const cpage = useRef(1);
 
   const loginUserNo = useSelector((state) => state.member.userNo);
   const accessToken = useSelector((state) => state.member.access);
+  const cpage = useRef(1);
 
   const dispatch = useDispatch();
   const denyAccess = useCallback(() => dispatch(setNonMember()), [dispatch]);
@@ -67,6 +67,7 @@ const MyPickPage = () => {
   const [feedWriteModal, setFeedWriteModal] = useState(false);
   const [followStats, setFollowStats] = useState(false);
   const [isLogintrue, setIsLogintrue] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
 
   // 피드 작성 모달창 세팅
   const insertModalStyle = {
@@ -100,6 +101,9 @@ const MyPickPage = () => {
   useEffect(() => {
     setNavbarIndexOOTD();
     setNavIndeMyPick();
+    return () => {
+      window.onscroll = null;
+    };
   }, []);
 
   useEffect(() => {
@@ -126,13 +130,9 @@ const MyPickPage = () => {
     } else {
       getMyPickData();
     }
-    return () => {
-      window.onscroll = null;
-    };
   }, [accessToken, currentUserNo]);
 
   const getMyPickData = () => {
-    console.log(currentUserNo);
     axios({
       url: '/auth/selectMyPickPageData',
       method: 'get',
@@ -168,35 +168,54 @@ const MyPickPage = () => {
         });
       })
       .then(checkFollow)
-      .then(addFeedList)
       .catch((error) => {
         console.log(error);
       });
   };
 
+  useEffect(() => {
+    addFeedList();
+  }, [currentUserNo]);
+
   const addFeedList = () => {
-    axios({
-      method: 'GET',
-      url: '/feedpost/selectUserFeedPost',
-      params: {
-        userNo: currentUserNo,
-        cpage: cpage.current,
-      },
-    })
-      .then((resp) => {
-        setFeedPost((prev) => [...prev, ...resp.data]);
-        cpage.current = cpage.current + 1;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (currentUserNo) {
+      if (!pageLoading) {
+        console.log(cpage);
+        setPageLoading(() => {
+          return true;
+        });
+        axios({
+          method: 'GET',
+          url: '/feedpost/selectUserFeedPost',
+          params: {
+            userNo: currentUserNo,
+            cpage: cpage.current,
+          },
+        })
+          .then((resp) => {
+            if (resp.data.length === 0) {
+              return () => {
+                addFeedList = null;
+              };
+            }
+            setFeedPost((prev) => [...prev, ...resp.data]);
+            cpage.current = cpage.current + 1;
+            setPageLoading(() => {
+              return false;
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            setPageLoading(() => {
+              return false;
+            });
+          });
+      }
+    }
   };
 
   window.onscroll = function () {
-    if (
-      window.innerHeight + window.scrollY + 200 >=
-      document.body.offsetHeight
-    ) {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       addFeedList();
     }
   };
@@ -402,7 +421,7 @@ const MyPickPage = () => {
           <div className="feed">
             {feedPost.map((e, i) => (
               <div className="grid-item" key={i}>
-                <FeedPostDetail index={i} feedPost={e}></FeedPostDetail>
+                <FeedPostDetail feedType="myPick" feedPost={e}></FeedPostDetail>
               </div>
             ))}
           </div>
