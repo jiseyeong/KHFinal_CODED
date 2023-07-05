@@ -160,7 +160,7 @@ function Navbar() {
             {accessToken && (
               <>
               <div className="myId" style={{fontSize:"14px",cursor:"pointer"}} 
-                      onClick={()=>navigate('/myPickPage')}>{userId + "님 환영합니다."}</div>
+                      onClick={()=>navigate('/myPickPage')}>{userId}님 <br/> 환영합니다.</div>
               <motion.div
                 className="rightMenuWrapper"
                 whileHover={{ scale: 1.1 }}
