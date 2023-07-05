@@ -253,5 +253,6 @@ public class FeedReportService {
         data.put("needNext", needNext);
 
         return data;
+        
 	}
 }
