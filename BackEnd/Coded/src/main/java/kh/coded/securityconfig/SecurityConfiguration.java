@@ -72,6 +72,7 @@ public class SecurityConfiguration {
 			"/DMList",
 			"/error",
 			"/HomePage",
+			"/Admin/**",
 			
 			
 			"/searchBox",
