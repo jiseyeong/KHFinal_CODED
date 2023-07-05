@@ -274,13 +274,14 @@
           .feedPostBody {
             width: 100%;
             word-break: break-all;
+            overflow: auto;
+            max-height: 100%;
             .post {
               height: 100%;
               width: 100%;
               resize: none;
               border: 1px solid hsl(0, 0%, 80%);
             }
-            overflow: hidden;
           }
 
           .feedPostBodyRight {
