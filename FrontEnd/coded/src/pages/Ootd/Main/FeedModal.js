@@ -280,9 +280,9 @@ function FeedModal({
 
   function editCancel() {
     setSelectHashTag([]);
-    HashTag.forEach((e) => {
+    hashTagList.forEach((e) => {
       setSelectHashTag((prev) => {
-        return [...prev, e.value];
+        return [...prev, e.hashTag];
       });
     });
     // setInputCount(200 - content.value.length);
@@ -543,20 +543,26 @@ function FeedModal({
                         value={HashTag}
                         ref={selectRef}
                         onChange={(selectedOptions) => {
-                          setHashTag(selectedOptions);
-                          setSelectHashTag([]);
-                          selectedOptions.forEach((e) => {
-                            setSelectHashTag((prev) => {
-                              return [...prev, e.value];
-                            });
-                          });
+  
 
                           setTimeout(() => {
-                            if (selectRef.current.getValue().length > 5) {
+                            if (selectRef.current.getValue().length >= 5) {
                               alert('해시 태그는 5개 까지 입력 가능합니다.');
-                              setSelectHashTag((prevValues) =>
-                                prevValues.slice(0, -1),
-                              );
+                              selectRef.current.getValue().splice(-1, 1);
+                              setSelectHashTag([]);
+                              selectRef.current.getValue().forEach((e)=>{
+                                setSelectHashTag((prev)=>{return [...prev, e.value]});
+                              })
+                              // setSelectHashTag(selectRef.current.getValue());
+                              
+                            }else{
+                              setHashTag(selectedOptions);
+                              setSelectHashTag([]);
+                              selectedOptions.forEach((e) => {
+                                setSelectHashTag((prev) => {
+                                  return [...prev, e.value];
+                                });
+                              });
                             }
                           }, 100);
                         }}
