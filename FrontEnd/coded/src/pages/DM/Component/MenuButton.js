@@ -24,7 +24,7 @@ function MenuButton(props) {
         // <div className="modal">
         <div className="modal-content">
           <ul className="ul">
-            <li className="li" onClick={handleReportModalToggle}>
+            <li className="liReport" onClick={handleReportModalToggle}>
               신고
             </li>
             <li
@@ -99,6 +99,7 @@ const MenuButtonContainer = styled.div`
   .closeBtn2 {
     display: none;
   }
+  .liReport{display:none;}
 `;
 
 export default MenuButton;
