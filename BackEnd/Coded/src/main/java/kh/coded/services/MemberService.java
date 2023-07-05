@@ -369,7 +369,7 @@ public class MemberService implements UserDetailsService {
 		body.add("grant_type", "authorization_code");
 		body.add("client_id", NAVER_CLIENT_ID);
 		body.add("client_secret", NAVER_CLIENT_SECRET);
-		body.add("redirect_uri", "http://localhost:3000/login/oauth2/code/naver");
+		body.add("redirect_uri", "http://kh-coded.duckdns.org:9999/login/oauth2/code/naver");
 		body.add("code", code);
 		body.add("state", "test");
 
@@ -454,7 +454,7 @@ public class MemberService implements UserDetailsService {
 		body.add("grant_type", "authorization_code");
 		body.add("client_id", GOOGLE_CLIENT_ID);
 		body.add("client_secret", GOOGLE_CLIENT_SECRET);
-		body.add("redirect_uri", "http://localhost:3000/login/oauth2/code/google");
+		body.add("redirect_uri", "http://kh-coded.duckdns.org:9999/login/oauth2/code/google");
 		body.add("code", code);
 
 		HttpEntity<MultiValueMap<String, String>> googleTokenRequest = new HttpEntity<>(body, headers);
