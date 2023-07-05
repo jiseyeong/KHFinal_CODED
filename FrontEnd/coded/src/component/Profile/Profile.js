@@ -219,7 +219,6 @@ const ProfileTemplate = () => {
     if (addressList.length > 0) {
       addressList.forEach((item, index) => {
         if (item.value === member.address2) {
-          console.log('true');
           setAddressIndex2(index);
           return;
         }

@@ -522,9 +522,6 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
     setImgBase64([...CopyimgBase64]);
     delete feedpost.address1;
     delete feedpost.address2;
-    console.log(feedpost);
-    console.log(file.length);
-    console.log(imgBase64.length);
     formData.append('dto', feedpost);
     // formData.append('userNo', feedpost.userNo);
     // formData.append('body', feedpost.body);
@@ -534,7 +531,6 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
     });
     for (var i = 0; i < file.length; i++) {
       formData.append('files', file[i]);
-      console.log(file[i]);
     }
     axios({
       method: 'Put',
@@ -578,12 +574,12 @@ const FeedUpdate = ({ clickdata, setFeedPostUpdateOpen }) => {
 
   const onTextareaHandler = (e) => {
     const value = e.target.value.length;
-    const value2 = (200 - value);
+    const value2 = 200 - value;
     setInputCount(value2);
-    if(value2 >= 0) {
-      inputCountRef.current.style.color = "blue";
-    }else{
-      inputCountRef.current.style.color = "red";
+    if (value2 >= 0) {
+      inputCountRef.current.style.color = 'blue';
+    } else {
+      inputCountRef.current.style.color = 'red';
     }
   };
 

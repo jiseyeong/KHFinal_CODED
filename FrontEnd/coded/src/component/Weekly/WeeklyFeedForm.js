@@ -70,15 +70,6 @@ function WeeklyFeedForm() {
   }, [maxTemp, tempRange]);
 
   useEffect(() => {
-    console.log(feedList);
-  }, [feedList]);
-
-  useEffect(() => {
-    window.onscroll = function () {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        addFeedList();
-      }
-    };
     return () => {
       window.onscroll = null;
     };
@@ -87,7 +78,6 @@ function WeeklyFeedForm() {
   function addFeedList() {
     if (!pageLoading) {
       if (accessToken) {
-        console.log(cpage);
         pageLoading = true;
         setLoading(true);
         axios({
@@ -125,6 +115,12 @@ function WeeklyFeedForm() {
     }
   }
 
+  window.onscroll = function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+      addFeedList();
+    }
+  };
+
   if (needLogin) {
     return <h3>MEMBER-ONLY SERVICE. Login First!</h3>;
   }
@@ -136,14 +132,8 @@ function WeeklyFeedForm() {
           return (
             <div className="grid-item" key={index}>
               <FeedPostDetail
-                index={index}
-                // columnHeights={columnHeights}
-                // setColumnHeights={setColumnHeights}
+                feedType="weekly"
                 feedPost={item}
-                // thumbNail={thumbNail[index]}
-                // member={member[index]}
-                // userProfile={userProfile[index]}
-                // hashTagList={hashTagList[index]}
               ></FeedPostDetail>
             </div>
           );

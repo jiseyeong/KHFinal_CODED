@@ -1,12 +1,12 @@
-import React, { Component, useEffect, useState } from "react";
-import NavbarWeekly from "../../../Component/Navbar/NavbarWeekly/NavbarWeekly";
+import React, { Component, useEffect, useState } from 'react';
+import NavbarWeekly from '../../../Component/Navbar/NavbarWeekly/NavbarWeekly';
 import CardList from './CardList.scss';
 import Modal from './Modal';
 // import InfiniteScroll from 'react-infinite-scroller';
-import WeeklyDate from "./Component/WeeklyDate/WeeklyDate";
-import WeatherCodi from "./Component/WeatherCodi/WeatherCodi";
-import style from "./Main.scss";
-import axios from "axios";
+import WeeklyDate from './Component/WeeklyDate/WeeklyDate';
+import WeatherCodi from './Component/WeatherCodi/WeatherCodi';
+import style from './Main.scss';
+import axios from 'axios';
 
 // class Main extends Component {
 //   render() {
@@ -24,11 +24,10 @@ import axios from "axios";
 
 // export default Main;
 
-
 const API = 'http://';
 const LIMIT = 100;
 
-function Main({isModal, infiniteScroll}){
+function Main({ isModal, infiniteScroll }) {
   const [likeBtn, setLikeBtn] = useState(false);
   const [cards, setCards] = useState([]);
   const [data, setData] = useState('');
@@ -38,25 +37,24 @@ function Main({isModal, infiniteScroll}){
   const [offSet, setOffSet] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  function openModal(data){
+  function openModal(data) {
     setIsModal(data);
   }
 
-  function closeModal(){
+  function closeModal() {
     setIsModal(false);
     setModalData([]);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     window.addEventListener('scroll', infiniteScroll);
     axios({
-      method:'get',
-      url:`${API}/ootds?offset=${offSet}&limit=${LIMIT}`,
-    }).then((response)=>{
-      setCards(response.data.ootd_list),
-      setOffSet(offSet + LIMIT);
-    })
-  },[]);
+      method: 'get',
+      url: `${API}/ootds?offset=${offSet}&limit=${LIMIT}`,
+    }).then((response) => {
+      setCards(response.data.ootd_list), setOffSet(offSet + LIMIT);
+    });
+  }, []);
 
   // const loadFunc = () => {
   //   fetch(`${API}/ootds?offset=${this.state.offSet}&limit=${LIMIT}`)
@@ -69,69 +67,65 @@ function Main({isModal, infiniteScroll}){
   //   })
   // }
 
-  function getData(data){
+  function getData(data) {
     setData(data);
   }
 
-  function modalData(){
+  function modalData() {
     setCommentData(data);
   }
 
-  function handleModalData(data){
+  function handleModalData(data) {
     setModalData(data);
   }
 
-  useEffect(()=>{
-    console.log(offSet);
-  })
-
-  return(
+  return (
     <div style={{ overflow: 'auto' }}>
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={this.loadFunc}
-          hasMore={true || false}
-          loader={<div className="loader" key={0} />}
-          useWindow={false}
-        >
-          <NavbarWeekly />
-          <div className="mainWrapper">
-            <CardList
-              key={cards.id}
-              commentData={commentData}
-              getModalInputComment={getData}
-              isModal={this.openModal}
-              modalData={this.handleModalData}
-              cardsData={cards}
-              handleClickLike={this.handleClickLike}
-            />
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={this.loadFunc}
+        hasMore={true || false}
+        loader={<div className="loader" key={0} />}
+        useWindow={false}
+      >
+        <NavbarWeekly />
+        <div className="mainWrapper">
+          <CardList
+            key={cards.id}
+            commentData={commentData}
+            getModalInputComment={getData}
+            isModal={this.openModal}
+            modalData={this.handleModalData}
+            cardsData={cards}
+            handleClickLike={this.handleClickLike}
+          />
+        </div>
+        <div>
+          <div className="infiniteScrollTarget">
+            <input type="text" alt="target" value="target"></input>
           </div>
-          <div>
-            <div className="infiniteScrollTarget">
-              <input type="text" alt="target" value="target"></input>
-            </div>
-          </div>
-          <div className={isModal ? '' : 'displayNone'}>
-            <Modal
-              modalData={modalData}
-              getData={this.getData}
-              commentData={this.commetData}
-              closeModal={this.closeModal}
-              key={cards.id}
-              id={cards.id}
-              contentImg={cards?.contentImg}
-              authorImg={cards?.authorImg}
-              author={cards?.author}
-              date={cards?.date}
-              hashtag={cards?.hashtag}
-              description={cards?.description}
-              follower={cards?.follower}
-              commentNum={cards?.commentNum}
-              scrap={cards?.scrap}
-            />
-          </div>
-        </InfiniteScroll>
-      </div>
+        </div>
+        <div className={isModal ? '' : 'displayNone'}>
+          <Modal
+            modalData={modalData}
+            getData={this.getData}
+            commentData={this.commetData}
+            closeModal={this.closeModal}
+            key={cards.id}
+            id={cards.id}
+            contentImg={cards?.contentImg}
+            authorImg={cards?.authorImg}
+            author={cards?.author}
+            date={cards?.date}
+            hashtag={cards?.hashtag}
+            description={cards?.description}
+            follower={cards?.follower}
+            commentNum={cards?.commentNum}
+            scrap={cards?.scrap}
+          />
+        </div>
+      </InfiniteScroll>
+    </div>
   );
 }
 export default Main;

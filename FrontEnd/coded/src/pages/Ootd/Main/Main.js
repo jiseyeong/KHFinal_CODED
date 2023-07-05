@@ -72,10 +72,6 @@ function Main({ InfiniteScroll, handleClickLike }) {
     setModalData(data);
   }
 
-  useEffect(() => {
-    console.log(offSet);
-  });
-
   return (
     <div style={{ overflow: 'auto' }}>
       {/* <InfiniteScroll

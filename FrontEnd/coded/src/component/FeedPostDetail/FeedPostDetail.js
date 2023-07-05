@@ -12,7 +12,7 @@ import ConfirmDialog from '../Common/ConfirmDialog';
 import FeedListImgLoadingBar from '../Common/FeedListImgLoadingBar';
 
 const FeedPostDetail = (props) => {
-  const { index, feedPost } = props;
+  const { feedType, feedPost } = props;
   const [modal, setModal] = useState(false);
   const [hashTagList, setHashTagList] = useState([]);
   const [isThumbNailLoaded, setIsTuhmbNailLoaded] = useState(false);
@@ -173,11 +173,19 @@ const FeedPostDetail = (props) => {
   }
 
   return (
-    <div className={styles.feedInnerParentDiv}>
-      <div className={styles.feedInnerLayoutDiv} ref={myRef}>
+    <div
+      className={styles.feedInnerParentDiv}
+      style={feedType === 'myPick' ? { height: '100%' } : {}}
+    >
+      <div
+        className={styles.feedInnerLayoutDiv}
+        ref={myRef}
+        style={feedType === 'myPick' ? { height: '100%' } : {}}
+      >
         <div
           className={styles.feedImageDiv}
           onClick={openModal}
+          style={feedType === 'myPick' ? { height: '364px' } : {}}
           // onMouseOver={viewShortCutMenu}
           // onMouseLeave={noneShortCutMenu}
         >
@@ -187,7 +195,6 @@ const FeedPostDetail = (props) => {
           {myfeedpost.thumbNailSysName != null ? (
             <img
               className={styles.thumbNail}
-              // 수정
               src={`/images/${myfeedpost.thumbNailSysName}`}
               onLoad={handleThumbNailLoaded}
               onError={handleThumbNailLoaded}
@@ -195,7 +202,6 @@ const FeedPostDetail = (props) => {
           ) : (
             <img
               className={styles.thumbNail}
-              // 수정
               src={`/images/test.jpg`}
               onLoad={handleThumbNailLoaded}
             ></img>
@@ -208,7 +214,6 @@ const FeedPostDetail = (props) => {
               {myfeedpost.profileSysName != null ? (
                 <img
                   className={styles.userProfile}
-                  // 수정
                   src={`/images/${myfeedpost.profileSysName}`}
                   onLoad={handleProfileLoaded}
                   onError={handleProfileLoaded}
@@ -216,7 +221,6 @@ const FeedPostDetail = (props) => {
               ) : (
                 <img
                   className={styles.userProfile}
-                  // 수정
                   src={`/images/test.jpg`}
                   onLoad={handleProfileLoaded}
                 ></img>

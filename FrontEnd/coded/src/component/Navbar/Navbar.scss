@@ -47,7 +47,7 @@ $storeBorderColor: #f0f1f4;
       display: flex;
       -webkit-box-align: center;
       align-items: center;
-      padding-left: 100px;
+      // padding-left: 100px;
 
       .navLogo {
         outline: none;
@@ -66,6 +66,7 @@ $storeBorderColor: #f0f1f4;
       }
 
       .leftMenuWrapper {
+        width: 50%;
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: auto;
@@ -204,19 +205,20 @@ $storeBorderColor: #f0f1f4;
 
     .rightNavBar {
       width: 20%;
-      align-items: center;
       right: 80px;
       display: flex;
+      justify-content: center;
+      align-items: center;
 
       .myId {
         font-size: 14px;
         cursor: pointer;
       }
 
-      .myId:hover{
-        color:$hotpink;
+      .myId:hover {
+        color: $hotpink;
       }
-      
+
       .rightMenuWrapper {
         display: flex;
         align-items: center;
@@ -304,7 +306,7 @@ $storeBorderColor: #f0f1f4;
   z-index: 0;
 
   .categories {
-    width: 23%;
+    width: 380px;
     list-style: none;
     text-align: left;
     font-size: 16px;

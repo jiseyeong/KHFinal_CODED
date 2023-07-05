@@ -46,7 +46,6 @@ function TodayCard() {
           } else {
             if (response.data.today.skyCode == 1) {
               setWeatherIcon(weatherIcons.sun);
-
             } else {
               setWeatherIcon(weatherIcons.cloud);
             }
@@ -96,18 +95,30 @@ function TodayCard() {
   return (
     <div className={style.todayCardWrapper}>
       <div className={style.mainWrapper}>
-        <div className={style.innerWrapper} onClick={(e) => e.stopPropagation()}>
+        <div
+          className={style.innerWrapper}
+          onClick={(e) => e.stopPropagation()}
+        >
           {/* <button className="closeBtn" onClick={}>
             x
           </button> */}
           <div className={style.blankWrapper}></div>
           <div className={style.infoWrapper}>
-            <div className={style.title}>{`${address1}, ${address2} 의 날씨`}</div>
+            <div
+              className={style.title}
+            >{`${address1}, ${address2} 의 날씨`}</div>
             <div className={style.message}>{weatherMessage}</div>
-            <div className={style.icon} style={{height:"40px",width:"40px"}}>{weatherIcon}</div>
-            <div className={style.recentTemp}>{recentTemp}º</div>
-            <div className={style.highestTemp}>최고기온 {maxTemp}</div> 
-            <div className={style.lowestTemp}>최저기온 {minTemp}</div>
+            <div className={style.weather}>
+              <div
+                className={style.icon}
+                style={{ height: '40px', width: '40px' }}
+              >
+                {weatherIcon}
+              </div>
+              <div className={style.recentTemp}>{recentTemp}º</div>
+              <div className={style.highestTemp}>최고기온 {maxTemp}º</div>
+              <div className={style.lowestTemp}>최저기온 {minTemp}º</div>
+            </div>
           </div>
         </div>
       </div>

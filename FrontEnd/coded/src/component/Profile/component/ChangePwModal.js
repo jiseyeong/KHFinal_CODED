@@ -16,7 +16,6 @@ function ChangePwModal({ toggleChangePwModal }) {
   const handleInput = (e) => {
     const { name, value } = e.target;
     setPassword((prev) => ({ ...prev, [name]: value }));
-    console.log(e.target.value);
     handlePw();
   };
 

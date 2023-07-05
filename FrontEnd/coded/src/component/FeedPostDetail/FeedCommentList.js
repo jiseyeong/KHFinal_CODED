@@ -71,7 +71,9 @@ function FeedCommentList({ feedPostId, depth, parentId }) {
   }
 
   function writeComment() {
-    console.log(editorRef.current.innerText.length);
+    if (editorRef.current.innerText === '') {
+      return;
+    }
     if (editorRef.current.innerText.length > 100) {
       alert('댓글은 100자 이하로 작성이 가능합니다.');
       return;
