@@ -429,12 +429,17 @@ function FeedModal({
                 <div className="commentData">
                   <div className="commentUserImgWrapper">
                     <Link to={`/myPickPage?userNo=${feedPost.userNo}`}>
-                      <img
+                      {feedPost.profileSysName ? (<img
                         className="commentUserImg"
                         src={'/images/' + feedPost.profileSysName}
                         width="40"
                         height="40"
-                      />
+                      />) : (<img
+                        className="commentUserImg"
+                        src='/images/test.jpg'
+                        width="40"
+                        height="40"
+                      />)}
                     </Link>
                   </div>
                   <div className="authorInfomation">
