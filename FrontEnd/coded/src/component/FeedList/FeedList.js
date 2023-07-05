@@ -225,5 +225,4 @@ function FeedList({ type }) {
     </FeedPostOuter>
   );
 }
-
 export default FeedList;
