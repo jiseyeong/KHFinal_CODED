@@ -238,7 +238,9 @@ function FeedComment({ commentInfo, feedPostId, depth, readComments }) {
       <div className={style.feedCommentList}>
         <a href={`/myPickPage?userNo=${commentInfo.userNo}`}>
           <div className={style.imageBox}>
+          {profileSysName ? (
             <img src={`/images/${profileSysName}`}></img>
+          ) : (<img src={`/images/test.jpg`}></img>)}
           </div>
         </a>
         <div className={style.contentsBox}>
