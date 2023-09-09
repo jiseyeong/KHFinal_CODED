@@ -25,6 +25,22 @@
 ![image](https://github.com/jiseyeong/KH_study/assets/128104813/5babf050-d12f-4f59-a880-a6a225888dd6)
 
 <h2>✔주요 기능</h2>
+<h4>로그인/회원가입</h4>
+  <li>﻿API를 활용한 카카오, 네이버, 구글 간편로그인 기능 구현</li>
+  <li>Spring Security, JWT를 활용한 로그인 기능 구현</li>
+  <li>버튼을 이용한 비밀번호 표시/숨김 기능 구현</li>
+  <li>쿠키를 활용한 아이디 기억 기능 구현</li>
+
+![image](https://github.com/jiseyeong/KH_study/assets/128104813/16b1f737-6036-4f16-a76c-c844b65e8afe)
+![image](https://github.com/jiseyeong/KH_study/assets/128104813/e21a766e-b46e-428b-a617-2b26558412ca)
+
+<br>
+<h4>팔로잉/팔로워 목록</h4>
+  <li>axios의 멀티리퀘스트로 팔로잉, 팔로워 리스트, 팔로우 여부 출력</li>
+  <li>Redux에 저장된 로그인 한 유저의 유저 No를 보내서 팔로잉, 팔로워 리스트의 팔로우 여부를 확인 후 false, true로 데이터를 보냄</li>
+  <li>한번 누르면 팔로우, 다시 한번 누르면 언팔로우 되게 구현함</li>
+<br>
 
 ![image](https://github.com/jiseyeong/KH_study/assets/128104813/351b23fd-ae25-4320-ac35-a013d0fcd280)
 ![image](https://github.com/jiseyeong/KH_study/assets/128104813/dd17aeec-2c0e-4647-8ad0-86480c627094)
+
