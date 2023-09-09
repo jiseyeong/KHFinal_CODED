@@ -21,6 +21,10 @@
 
 <h2>✔ERD</h2>
 
+![image](https://github.com/jiseyeong/KH_study/assets/128104813/0ec7ddb1-f044-4422-80ca-9fb8e27c1958)
+![image](https://github.com/jiseyeong/KH_study/assets/128104813/5babf050-d12f-4f59-a880-a6a225888dd6)
 
 <h2>✔주요 기능</h2>
 
+![image](https://github.com/jiseyeong/KH_study/assets/128104813/351b23fd-ae25-4320-ac35-a013d0fcd280)
+![image](https://github.com/jiseyeong/KH_study/assets/128104813/dd17aeec-2c0e-4647-8ad0-86480c627094)
